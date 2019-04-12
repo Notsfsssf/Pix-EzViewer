@@ -4,8 +4,8 @@ A android client for Pixiv.net,support gif encode
 # FeedBack
 Email:PxEzFeedBack@outlook.com
 # Download
-In release page 
-在发布页
+In [releases](https://github.com/Notsfsssf/Pixiv-Ez/releases) page 
+在[发布页](https://github.com/Notsfsssf/Pixiv-Ez/releases)
 # Preview
 |![Preview](1.png) | ![Preview](2.png) | ![Preview](3.png) |
 |:-------------------:|:------------------------:|:-----------------:|
