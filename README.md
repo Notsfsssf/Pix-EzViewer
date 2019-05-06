@@ -10,6 +10,6 @@ In [releases](https://github.com/Notsfsssf/Pix-EzViewer/releases) page
 |![Preview](1.png) | ![Preview](2.png) | ![Preview](3.png) |
 |:-------------------:|:------------------------:|:-----------------:|
 # Support
-如果你觉得这个应用还不错，[点此](https://github.com/Notsfsssf/Pix-EzViewer/tree/master/donation)支持一下吧
+如果你觉得这个应用还不错，[点此](https://github.com/Notsfsssf/Pix-EzViewer/blob/master/donation/README.md)支持一下吧
 
 
