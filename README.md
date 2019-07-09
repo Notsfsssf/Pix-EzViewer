@@ -1,5 +1,5 @@
 # Pix-EzViewer
-A android client for Pixiv.net,support gif encode  
+应用现已开源 https://github.com/Notsfsssf/PxEz
 一个支持免代理直连及查看动图的第三方Pixiv安卓客户端  
 如果你觉得这个应用还不错，[点此](https://github.com/Notsfsssf/Pix-EzViewer/blob/master/donation/README.md)支持一下吧
 # 反馈
