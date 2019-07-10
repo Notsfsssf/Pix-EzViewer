@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".fragments.HelloM.HelloMDynamicsFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+       <FrameLayout
+           android:orientation="horizontal"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+
+           <com.google.android.material.tabs.TabLayout
+               android:id="@+id/tablayout_rankingm"
+               android:layout_width="match_parent"
+               android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+               android:layout_height="wrap_content"
+               app:tabIndicatorColor="@color/white"
+               app:tabIndicatorFullWidth="false"
+               app:tabMode="scrollable">
+               <com.google.android.material.tabs.TabItem
+                   android:layout_width="wrap_content"
+                   android:layout_height="match_parent" />
+           </com.google.android.material.tabs.TabLayout>
+
+               <ImageView
+                   android:id="@+id/imageview_triangle"
+                   android:layout_gravity="end"
+                   android:layout_width="20dp"
+                   android:paddingStart="10dp"
+                   android:paddingEnd="0dp"
+                   android:layout_height="match_parent"
+                   android:src="@drawable/triangle"/>
+
+
+       </FrameLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager.widget.ViewPager
+    android:id="@+id/viewpage_rankingm"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
+
+
+</LinearLayout>

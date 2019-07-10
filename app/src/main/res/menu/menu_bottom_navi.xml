@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_recent"
+        android:icon="@mipmap/ic_new"
+        android:title="works" />
+    <item
+        android:id="@+id/menu_center"
+        android:icon="@mipmap/ic_star"
+        android:title="2y" />
+    <item
+        android:id="@+id/menu_nearby"
+        android:icon="@mipmap/ic_star"
+        android:title="2y" />
+
+</menu>
