@@ -1,6 +1,5 @@
 package com.perol.asdpl.pixivez.networks
 
-import android.net.SSLCertificateSocketFactory
 import android.util.Log
 
 import com.google.gson.GsonBuilder
@@ -14,10 +13,10 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import java.net.InetAddress
-import java.net.Socket
 import java.security.cert.X509Certificate
 import javax.net.ssl.*
+import okhttp3.OkHttpClient
+
 
 /**
  * Created by asdpl on 2018/2/10.
@@ -25,39 +24,38 @@ import javax.net.ssl.*
 
 class RestClient {
     private val httpsDns = RubyHttpDns()
-    private val pixivOkHttpClient: OkHttpClient
-        get() {
-            val builder = OkHttpClient.Builder()
-
-            builder!!.addInterceptor(object : Interceptor {
-                @Throws(IOException::class)
-                override fun intercept(chain: Interceptor.Chain): Response {
-                    val original = chain.request()
-                    val requestBuilder = original.newBuilder()
-                            .addHeader("Accept-Language", if (PxEZApp.locale == "zh") "zh-cn" else "en-hk")
-                            .addHeader("User-Agent", "PixivIOSApp/5.8.0")
-                    val request = requestBuilder.build()
-                    return chain.proceed(request)
-                }
-            })
-            if (!PxEZApp.disableProxy) {
-                builder.sslSocketFactory(RubySSLSocketFactory(), object : X509TrustManager {
-                    override fun checkClientTrusted(p0: Array<out X509Certificate>?, p1: String?) {
-                    }
-
-                    override fun checkServerTrusted(p0: Array<out X509Certificate>?, p1: String?) {
-                    }
-
-                    override fun getAcceptedIssuers(): Array<X509Certificate> {
-                        return arrayOf()
-                    }
-                }).hostnameVerifier(HostnameVerifier { p0, p1 -> true })
-                builder.dns(httpsDns)
+    private val pixivOkHttpClient: OkHttpClient by lazy {
+        val builder = OkHttpClient.Builder()
+        builder.addInterceptor(object : Interceptor {
+            @Throws(IOException::class)
+            override fun intercept(chain: Interceptor.Chain): Response {
+                val original = chain.request()
+                val requestBuilder = original.newBuilder()
+                        .addHeader("Accept-Language", if (PxEZApp.locale == "zh") "zh-cn" else "en-hk")
+                        .addHeader("User-Agent", "PixivIOSApp/5.8.0")
+                val request = requestBuilder.build()
+                return chain.proceed(request)
             }
-            val okHttpClient = builder.build()
+        })
+        if (!PxEZApp.disableProxy) {
+            builder.sslSocketFactory(RubySSLSocketFactory(), object : X509TrustManager {
+                override fun checkClientTrusted(p0: Array<out X509Certificate>?, p1: String?) {
+                }
 
-            return okHttpClient
+                override fun checkServerTrusted(p0: Array<out X509Certificate>?, p1: String?) {
+                }
+
+                override fun getAcceptedIssuers(): Array<X509Certificate> {
+                    return arrayOf()
+                }
+            }).hostnameVerifier(HostnameVerifier { p0, p1 -> true })
+            builder.dns(httpsDns)
         }
+        val okHttpClient = builder.build()
+
+        return@lazy okHttpClient
+    }
+
     val imageHttpClient: OkHttpClient
         get() {
             val builder = OkHttpClient.Builder()
@@ -75,7 +73,6 @@ class RestClient {
             val okHttpClient = builder.build()
             return okHttpClient
         }
-
 
 
     private val gson = GsonBuilder()
@@ -159,7 +156,7 @@ class RestClient {
             })
             httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             val builder = OkHttpClient.Builder()
-            builder!!.addInterceptor(object : Interceptor {
+            builder.addInterceptor(object : Interceptor {
                 @Throws(IOException::class)
                 override fun intercept(chain: Interceptor.Chain): Response {
                     val original = chain.request()
@@ -181,7 +178,7 @@ class RestClient {
                         return arrayOf()
                     }
                 }).hostnameVerifier(HostnameVerifier { p0, p1 -> true })
-                builder.dns(httpsDns)
+                builder.dns(RubyHttpDns())
             }
             return builder
                     .build()

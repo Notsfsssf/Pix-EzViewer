@@ -107,13 +107,13 @@
         \nGlide-transformations\nhttps://github.com/wasabeef/glide-transformations
         \nSpinKitView\nhttps://github.com/ybq/Android-SpinKit
         \nBaner\nhttps://github.com/youth5201314/banner
-        \nColorful\nhttps://github.com/garretyoder/Colorful
+        \nMaterialDrawer\nhttps://github.com/mikepenz/MaterialDrawer
     </string>
     <string name="focus">關註</string>
     <string name="unfocus">未關註</string>
     <string name="title_activity_fullscreen2">FullscreenActivity2</string>
     <string name="support"><a href='https://mobilecodec.alipay.com/client_download.htm?qrcode=a6x081149rgg2dqhhysnp2a'> 支付寶:912756674@qq.com</a></string>
-    <string name="thanks">感謝腐奇，愛醬,Snake，PoisonBCat,濤灬,萬物皆虛,繁落,碘酒,betray,right now,niconiconi,firok,YAMAHA,OneMice,幫助我測試的彈幕委員會的熱心妳群群友們，以及提供會員帳號的果幹辣，還有積極提供建議的@吸血姬，逢田梨香子的老公等熱心用戶們</string>
+    <string name="thanks">感谢腐奇，爱酱,Snake，PoisonBCat,涛灬,万物皆虚,繁落,碘酒,betray,right now,niconiconi,firok,YAMAHA,OneMice,SC61帮助我测试的弹幕委员会的热心你群群友们，以及提供会员帐号的果干辣，还有积极提供建议的吸血姬，逢田梨香子的老公,吃猫的咸鱼等热心用户们</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="title_activity_saucenao">SaucenaoActivity</string>
@@ -238,4 +238,6 @@
     <string name="cancel">取消</string>
     <string name="mutichoicesave">多选保存</string>
     <string name="choice">选择</string>
+    <string name="logoutallaccount">Log out of all accounts</string>
+    <string name="mypage">我的主页</string>
 </resources>

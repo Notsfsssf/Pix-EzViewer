@@ -15,9 +15,11 @@ import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.TagsShowAdapter
 import com.perol.asdpl.pixivez.networks.RestClient
 import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
+import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.services.AppApiPixivService
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.runBlocking
 
 
 class TagsShowDialog : DialogFragment() {
@@ -81,8 +83,12 @@ class TagsShowDialog : DialogFragment() {
             }
 
             override fun onTabSelected(p0: TabLayout.Tab?) {
+                var Authorization:String=""
+                runBlocking {
+                    Authorization = AppDataRepository.getUser().Authorization
+                }
                 if (p0 != null)
-                    appApiPixivService.getIllustBookmarkTags(sharedPreferencesServices.getString("Authorization"), id, if (p0.position == 0) {
+                    appApiPixivService.getIllustBookmarkTags(Authorization, id, if (p0.position == 0) {
                         "public"
                     } else {
                         "private"
@@ -105,7 +111,11 @@ class TagsShowDialog : DialogFragment() {
         })
         tagsShowAdapter.setOnLoadMoreListener({
             if (!nexturl.isNullOrBlank()) {
-                appApiPixivService.getNexttags(sharedPreferencesServices.getString("Authorization"), nexturl)
+                var Authorization:String=""
+                runBlocking {
+                    Authorization = AppDataRepository.getUser().Authorization
+                }
+                appApiPixivService.getNexttags(Authorization, nexturl)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
                         .subscribe({

@@ -1,13 +1,10 @@
 package com.perol.asdpl.pixivez.networks
-
-import android.net.SSLCertificateSocketFactory
 import android.util.Log
 import java.net.InetAddress
 import java.net.Socket
 import javax.net.ssl.HttpsURLConnection
 import javax.net.ssl.SSLSocket
 import javax.net.ssl.SSLSocketFactory
-
 class RubySSLSocketFactory : SSLSocketFactory() {
     var hostnameVerifier = HttpsURLConnection.getDefaultHostnameVerifier()
     private val conn: HttpsURLConnection? = null
@@ -21,11 +18,12 @@ class RubySSLSocketFactory : SSLSocketFactory() {
         if (autoClose) {
             plainSocket.close()
         }
-        val sslSocketFactory = SSLCertificateSocketFactory.getDefault(0) as SSLCertificateSocketFactory
+        val sslSocketFactory = getDefault()
         val ssl = sslSocketFactory.createSocket(address, port) as SSLSocket
         ssl.enabledProtocols = ssl.supportedProtocols
-        Log.i("X", "SNI hostname")
         val session = ssl.session
+        Log.i("!", "Protocol: " + session.protocol + " PeerHost: " + session.peerHost +
+                " CipherSuite: " + session.cipherSuite);
         return ssl
     }
 
@@ -47,5 +45,4 @@ class RubySSLSocketFactory : SSLSocketFactory() {
 
     override fun getSupportedCipherSuites(): Array<String> {
         return arrayOf<String>()
-    }
-}
+    }}

@@ -9,11 +9,14 @@ import androidx.viewpager.widget.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewManager
 import android.widget.TextView
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.viewpager.HelloMRecomViewPager
 import com.perol.asdpl.pixivez.objects.LazyV4Fragment
+import kotlinx.android.synthetic.main.fragment_hello_main.*
 import org.jetbrains.anko.colorAttr
+import org.jetbrains.anko.custom.ankoView
 import org.jetbrains.anko.design.appBarLayout
 import org.jetbrains.anko.design.coordinatorLayout
 import org.jetbrains.anko.design.tabLayout
@@ -23,6 +26,7 @@ import org.jetbrains.anko.support.v4.UI
 import org.jetbrains.anko.support.v4.viewPager
 import org.jetbrains.anko.verticalLayout
 import org.jetbrains.anko.wrapContent
+import java.util.zip.Inflater
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,8 +41,8 @@ private const val ARG_PARAM2 = "param2"
  */
 class HelloMainFragment : LazyV4Fragment() {
     override fun lazyLoad() {
-        tab.setupWithViewPager(pager)
-
+        tablayout.setupWithViewPager(viewpager)
+        viewpager.adapter=HelloMRecomViewPager(this@HelloMainFragment.context,childFragmentManager)
     }
 
     // TODO: Rename and change types of parameters
@@ -52,41 +56,17 @@ class HelloMainFragment : LazyV4Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
-
-    private object Ids {
-        val userpic = 1
-
-    }
-
-    lateinit var tab: TabLayout;
-    lateinit var pager: ViewPager;
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        isViewCreated = true
-        return UI {
-            verticalLayout {
-                appBarLayout {
-                    tab = themedTabLayout(theme = R.style.ThemeOverlay_AppCompat_Dark_ActionBar) {
-                        isTabIndicatorFullWidth = true
-                        addTab(newTab().setText("推荐"))
+        val view= inflater.inflate(R.layout.fragment_hello_main, container, false)
 
-                        addTab(newTab().setText("画师"))
-                        setSelectedTabIndicatorColor(Color.WHITE)
-                    }.lparams(width = matchParent, height = wrapContent) {
-
-                    }
-                }.lparams(width = matchParent, height = wrapContent)
-                pager = viewPager {
-                    id = Ids.userpic
-                    adapter = HelloMRecomViewPager(this@HelloMainFragment.context,childFragmentManager).apply {
-                        offscreenPageLimit = 2
-                    }
-
-                }.lparams(width = matchParent, height = matchParent)
-            }
-        }.view
+        return view
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        lazyLoad()
+    }
 
     companion object {
         /**

@@ -16,9 +16,8 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tablayout_hellomth"
         android:layout_width="match_parent"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        style="@style/Widget.MaterialComponents.TabLayout.Colored"
         app:tabIndicatorHeight="3dp"
-        app:tabIndicatorColor="@color/white"
         android:layout_height="wrap_content" />
 
 

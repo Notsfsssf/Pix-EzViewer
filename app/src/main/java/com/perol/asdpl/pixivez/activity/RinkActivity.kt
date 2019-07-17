@@ -3,6 +3,8 @@ package com.perol.asdpl.pixivez.activity
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
 import com.perol.asdpl.pixivez.objects.MyContextWrapper

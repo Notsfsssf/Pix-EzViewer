@@ -13,7 +13,7 @@ import com.perol.asdpl.pixivez.fragments.HelloM.HelloMRecommandFragment
 import com.perol.asdpl.pixivez.fragments.HelloM.HelloRecomUserFragment
 import com.perol.asdpl.pixivez.services.PxEZApp
 
-class HelloMRecomViewPager (var activity:Context?,fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+class HelloMRecomViewPager (var activity:Context?,fm: FragmentManager) : FragmentStatePagerAdapter(fm,FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     override fun getItem(p0: Int): Fragment =when(p0){
         0->HelloMRecommandFragment.newInstance("","");
         else->HelloRecomUserFragment.newInstance("","");

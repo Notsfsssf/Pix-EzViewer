@@ -2,7 +2,6 @@ package com.perol.asdpl.pixivez.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.perol.asdpl.pixivez.responses.IllustBean
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.sql.AppDatabase
 import com.perol.asdpl.pixivez.sql.IllustBeanEntity
@@ -28,7 +27,7 @@ class HistoryMViewModel : ViewModel() {
     fun fabOnClick() {
         Observable.just(1).observeOn(Schedulers.io())
                 .subscribe {
-                    appDatabase.illusthistoryDao().deletehistory()
+                    appDatabase.illusthistoryDao().deleteHistory()
                 }
     }
 }

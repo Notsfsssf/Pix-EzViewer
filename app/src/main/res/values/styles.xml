@@ -92,19 +92,9 @@
         <item name="android:actionBarStyle">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
     </style>
 
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
-        <!--将ActionBar隐藏,这里使用ToolBar-->
+    <style name="AppTheme.Base" parent="Theme.MaterialComponents.Light">
         <item name="windowActionBar">false</item>
-        <!-- 使用 API Level 22以上编译的话，要拿掉前綴字 -->
         <item name="windowNoTitle">true</item>
-        <!--colorPrimaryDark对应状态栏的颜色-->
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-
-        <!--colorPrimary 对应ToolBar的颜色-->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <!--colorAccent 对应EditText编辑时、RadioButton选中、CheckBox等选中时的颜色。-->
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:listPopupWindowStyle">@style/MyListPopupWindow</item>
     </style>
 
     <!--<style name="AppTheme.Pink">-->

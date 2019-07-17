@@ -75,7 +75,7 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        isViewCreated = true
+
         return inflater.inflate(R.layout.fragment_illust, container, false)
     }
 

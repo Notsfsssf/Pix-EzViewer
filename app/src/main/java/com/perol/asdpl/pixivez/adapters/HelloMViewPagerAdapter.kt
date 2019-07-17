@@ -7,7 +7,7 @@ import com.perol.asdpl.pixivez.fragments.HelloM.HelloMDynamicsFragment
 import com.perol.asdpl.pixivez.fragments.HelloM.HelloMThFragment
 import com.perol.asdpl.pixivez.fragments.HelloM.HelloMainFragment
 
-class HelloMViewPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+class HelloMViewPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm,FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     override fun getCount(): Int {
         return 3
     }

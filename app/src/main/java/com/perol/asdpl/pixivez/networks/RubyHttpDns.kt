@@ -1,13 +1,10 @@
 package com.perol.asdpl.pixivez.networks
 
-import android.util.Log
 import com.perol.asdpl.pixivez.services.OneZeroService
 import okhttp3.Dns
-import java.net.InetAddress
-
-import java.io.IOException
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.net.InetAddress
 
 
 class RubyHttpDns : Dns {
@@ -31,16 +28,24 @@ class RubyHttpDns : Dns {
             val response = oneZeroService.getItem("application/dns-json", hostname, "A", "false", "false").execute()
             val oneZeroResponse = response.body()
             if (oneZeroResponse != null) {
-                for (i in oneZeroResponse.answer) {
-                    list.addAll(InetAddress.getAllByName(i.data))
+                if (oneZeroResponse.answer != null) {
+                    if (oneZeroResponse.answer.isNotEmpty())
+                        for (i in oneZeroResponse.answer) {
+                            list.addAll(InetAddress.getAllByName(i.data))
+                        }
+                } else {
+                    list.add(InetAddress.getByName("210.140.131.222"))
+                    list.add(InetAddress.getByName("210.140.131.219"))
+                    return list
                 }
 
             }
             return list
         } catch (e: Exception) {
-
+            e.printStackTrace()
         }
         list.add(InetAddress.getByName("210.140.131.222"))
+        list.add(InetAddress.getByName("210.140.131.219"))
         return list
     }
 

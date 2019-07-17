@@ -29,15 +29,17 @@ class UserMActivity : RinkActivity() {
         id = intent.getLongExtra("data", 1)
         val viewmodel = ViewModelProviders.of(this).get(UserMViewModel::class.java)
         viewmodel.getdata(id)
-        viewmodel.isuser(id).doOnSuccess {
-            if (it) {
-                fab.hide()
-                mviewpager.setCurrentItem(2)
-            }
-        }.subscribe()
+
         viewmodel.userDetail.observe(this, Observer {
             if (it != null) {
                 fab.show()
+                viewmodel.isuser(id).doOnSuccess {
+                    if (it) {
+                        fab.hide()
+                        mviewpager.setCurrentItem(2)
+                    }
+                }.subscribe()
+
                 binding.user = it
                 /*     GlideApp.with(this).asDrawable().load(viewmodel.userDetail.value!!.profile.background_image_url).into(object : SimpleTarget<Drawable>() {
                          override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
@@ -46,7 +48,6 @@ class UserMActivity : RinkActivity() {
                      })*/
                 val userMPagerAdapter = UserMPagerAdapter(this,supportFragmentManager, id.toLong(), UserMessageFragment.newInstance(it))
                 mviewpager.adapter = userMPagerAdapter
-                mviewpager.offscreenPageLimit = 4
                 mtablayout.setupWithViewPager(mviewpager)
             }
         })
@@ -107,9 +108,9 @@ class UserMActivity : RinkActivity() {
             android.R.id.home -> finishAfterTransition()
             R.id.action_share -> share()
             R.id.action_download -> {
-                val intent =Intent(this,WorkActivity::class.java)
-                intent.putExtra("id",id)
-                startActivity(intent)
+//                val intent =Intent(this,WorkActivity::class.java)
+//                intent.putExtra("id",id)
+//                startActivity(intent)
             }
         }
         return super.onOptionsItemSelected(item)

@@ -55,7 +55,6 @@ class IllustBeanEntity (
         var illustid: Long
 
 )
-
 @Entity(tableName = "user")
 class UserEntity constructor(@ColumnInfo(name = "userimage")
                              var userimage: String,
@@ -66,7 +65,13 @@ class UserEntity constructor(@ColumnInfo(name = "userimage")
                              @ColumnInfo(name = "useremail")
                              var useremail: String,
                              @ColumnInfo(name = "ispro")
-                             var ispro: Boolean
+                             var ispro: Boolean,
+                             @ColumnInfo
+                             var Device_token: String,
+                             @ColumnInfo
+                             var Refresh_token: String,
+                             @ColumnInfo
+                             var Authorization: String
 
 ) {
     @PrimaryKey(autoGenerate = true)

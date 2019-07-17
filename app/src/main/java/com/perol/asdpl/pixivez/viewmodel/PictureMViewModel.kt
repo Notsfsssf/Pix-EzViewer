@@ -16,7 +16,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.io.File
 
-
+data class ProgressInfo(var all: Long, var now: Long)
 class PictureMViewModel : ViewModel() {
     val illustDetailResponse = MutableLiveData<IllustDetailResponse>()
     val retrofitRespository: RetrofitRespository = RetrofitRespository.getInstance()
@@ -29,7 +29,7 @@ class PictureMViewModel : ViewModel() {
     var bean = IllustBean()
     var ready = ObservableField<Boolean>()
     val appDatabase = AppDatabase.getInstance(PxEZApp.instance)
-
+    val progress = MutableLiveData<ProgressInfo>()
     fun firstget(long: Long) {
 
         retrofitRespository.getIllust(long)!!.subscribe({
@@ -123,12 +123,26 @@ class PictureMViewModel : ViewModel() {
 //        val zippath = "${PxEZApp.instance.cacheDir.path}/${illustDetailResponse.value!!.illust.id}.zip"
         val zippath = "${PxEZApp.instance.cacheDir}/${illustDetailResponse.value!!.illust.id}.zip"
         val file = File(zippath)
+        progress.value=ProgressInfo(0,0)
         retrofitRespository.getGIFFile(medium).subscribe({ response ->
             val inputstream = response.byteStream()
             Observable.create<Int> { ob ->
+
                 val output = file.outputStream()
                 println("----------")
-                inputstream.copyTo(output)
+                progress.value!!.all = response.contentLength()
+                var bytesCopied: Long = 0
+                val buffer = ByteArray(8 * 1024)
+                var bytes = inputstream.read(buffer)
+                while (bytes >= 0) {
+                    output.write(buffer, 0, bytes)
+                    bytesCopied += bytes
+                    bytes = inputstream.read(buffer)
+                    progress.value!!.now = bytesCopied
+                   Observable.just(1).observeOn(AndroidSchedulers.mainThread()).subscribe {
+                       progress.value=progress.value!!
+                   }
+                }
                 inputstream.close()
                 output.close()
                 println("+++++++++")
@@ -138,12 +152,12 @@ class PictureMViewModel : ViewModel() {
                 downloadgifsucc.value = true
                 println("wwwwwwwwwwwwwwwwwwwwww")
             }, {
-            it.printStackTrace()
+                it.printStackTrace()
             }, {
 
             })
 
-        },{
+        }, {
             it.printStackTrace()
         })
     }

@@ -18,7 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
-            android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
             app:title="about">
 
             <com.google.android.material.tabs.TabLayout
@@ -26,6 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:tabIndicatorFullWidth="false"
+                style="@style/Widget.MaterialComponents.TabLayout.Colored"
                 app:tabIndicatorHeight="0dp"
                 app:tabMode="scrollable">
 
@@ -83,6 +83,7 @@
 
             <Button
                 android:id="@+id/checkforupdate"
+                android:visibility="gone"
                 style="@style/Base.Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -415,16 +416,10 @@
                 android:autoLink="web"
                 android:text="如果觉得还不错，评分支持一个吧" />
 
-            <Button
-                android:id="@+id/donation_botton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="点击跳转"
-                android:visibility="gone" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
                 android:orientation="horizontal"
             >
 

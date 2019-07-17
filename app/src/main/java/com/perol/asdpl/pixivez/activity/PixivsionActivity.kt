@@ -11,6 +11,7 @@ import com.perol.asdpl.pixivez.networks.RestClient
 import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
 import com.perol.asdpl.pixivez.objects.ReFreshFunction
 import com.perol.asdpl.pixivez.objects.ThemeUtil
+import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.responses.SpotlightResponse
 import com.perol.asdpl.pixivez.services.AppApiPixivService
 import com.perol.asdpl.pixivez.services.PxEZApp
@@ -22,6 +23,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_pixivision.*
+import kotlinx.coroutines.runBlocking
 
 class PixivsionActivity : RinkActivity() {
 
@@ -40,7 +42,9 @@ class PixivsionActivity : RinkActivity() {
         setSupportActionBar(toobar_pixivision)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         sharedPreferencesServices = SharedPreferencesServices.getInstance()
-        Authorization = sharedPreferencesServices!!.getString("Authorization")
+        runBlocking {
+            Authorization = AppDataRepository.getUser().Authorization
+        }
         initbind()
     }
 
@@ -60,7 +64,9 @@ class PixivsionActivity : RinkActivity() {
         appApiPixivService = restClient!!.pixiviSion_AppAPI.create(AppApiPixivService::class.java)
         Observable.just(1).flatMap(object : Function<Int, ObservableSource<SpotlightResponse>> {
             override fun apply(t: Int): ObservableSource<SpotlightResponse> {
-                Authorization = sharedPreferencesServices!!.getString("Authorization")
+                runBlocking {
+                    Authorization = AppDataRepository.getUser().Authorization
+                }
                 return appApiPixivService!!.getPixivisionArticles(Authorization, "all")
             }
 
@@ -80,7 +86,9 @@ class PixivsionActivity : RinkActivity() {
                         recyclerview_pixivision.adapter = pixiviSionAdapter
                         pixiviSionAdapter.setOnLoadMoreListener({
                             Observable.just(1).flatMap {
-                                Authorization = sharedPreferencesServices!!.getString("Authorization")
+                                runBlocking {
+                                    Authorization = AppDataRepository.getUser().Authorization
+                                }
                                 appApiPixivService!!.getNextPixivisionArticles(Authorization, Nexturl)
                             }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                                     .retryWhen(ReFreshFunction(applicationContext))

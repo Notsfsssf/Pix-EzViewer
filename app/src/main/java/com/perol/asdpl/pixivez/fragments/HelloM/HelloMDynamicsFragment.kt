@@ -35,7 +35,6 @@ class HelloMDynamicsFragment : LazyV4Fragment() {
 
     private fun initview() {
         viewpage_rankingm.adapter = RankingMAdapter(context!!,childFragmentManager)
-        /*  viewpage_rankingm.offscreenPageLimit=2*/
         val sharemodel = ViewModelProviders.of(activity!!).get(RankingShareViewModel::class.java)
         tablayout_rankingm.setupWithViewPager(viewpage_rankingm)
 
@@ -57,7 +56,6 @@ class HelloMDynamicsFragment : LazyV4Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        isViewCreated=true
         return inflater.inflate(R.layout.fragment_hello_mdynamics, container, false)
     }
 

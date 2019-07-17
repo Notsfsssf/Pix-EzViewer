@@ -10,7 +10,7 @@ import com.perol.asdpl.pixivez.fragments.UserBookMarkFragment
 import com.perol.asdpl.pixivez.fragments.UserIllustFragment
 import com.perol.asdpl.pixivez.services.PxEZApp
 
-class UserMPagerAdapter(var activity:Activity,fm: FragmentManager, var long: Long,var newInstance: Fragment) : FragmentStatePagerAdapter(fm) {
+class UserMPagerAdapter(var activity:Activity,fm: FragmentManager, var long: Long,var newInstance: Fragment) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     override fun getItem(position: Int)=
         when (position) {
             0 ->  UserIllustFragment.newInstance(long, "illust")

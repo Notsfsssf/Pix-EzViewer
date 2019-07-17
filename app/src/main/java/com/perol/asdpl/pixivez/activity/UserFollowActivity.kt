@@ -12,6 +12,7 @@ import com.perol.asdpl.pixivez.adapters.UserShowAdapter
 import com.perol.asdpl.pixivez.networks.RestClient
 import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
 import com.perol.asdpl.pixivez.objects.ThemeUtil
+import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.responses.SearchUserResponse
 import com.perol.asdpl.pixivez.services.AppApiPixivService
 import io.reactivex.Observable
@@ -20,6 +21,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_user_follow.*
+import kotlinx.coroutines.runBlocking
 
 class UserFollowActivity : RinkActivity() {
 
@@ -63,7 +65,9 @@ class UserFollowActivity : RinkActivity() {
 
         restClient = RestClient()
         sharedPreferencesServices = SharedPreferencesServices(applicationContext)
-        Authorization = sharedPreferencesServices!!.getString("Authorization")
+        runBlocking {
+            Authorization = AppDataRepository.getUser().Authorization
+        }
         spinner.setVisibility(View.GONE)
 
         linearLayoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
@@ -93,31 +97,34 @@ class UserFollowActivity : RinkActivity() {
                         userShowAdapter = UserShowAdapter(R.layout.view_usershow_item)
                         userShowAdapter!!.setNewData(searchUserResponse.user_previews)
                         recyclerviewusersearch!!.adapter = userShowAdapter
+                        runBlocking {
+                            val user = AppDataRepository.getUser()
+                            if (userid == user.userid && !isfollower!!) {
+                                spinner.visibility = View.VISIBLE
+                                spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                                    override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                                        when (position) {
+                                            0 -> {
+                                                restrict = "public"
+                                                againrefresh()
+                                            }
+                                            1 -> {
+                                                restrict = "private"
+                                                againrefresh()
+                                            }
+                                        }
+                                    }
 
-                        if (userid == sharedPreferencesServices!!.getString("userid").toLong() && !isfollower!!) {
-                            spinner.setVisibility(View.VISIBLE)
-                            spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                                override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                                    when (position) {
-                                        0 -> {
-                                            restrict = "public"
-                                            againrefresh()
-                                        }
-                                        1 -> {
-                                            restrict = "private"
-                                            againrefresh()
-                                        }
+                                    override fun onNothingSelected(parent: AdapterView<*>) {
+
                                     }
                                 }
 
-                                override fun onNothingSelected(parent: AdapterView<*>) {
-
-                                }
+                            } else {
+                                spinner.setVisibility(View.GONE)
                             }
-
-                        } else {
-                            spinner.setVisibility(View.GONE)
                         }
+
                         userShowAdapter!!.setOnLoadMoreListener({
                             if (Next_url != null) {
                                 appApiPixivService!!.getNextUser(Authorization, Next_url).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())

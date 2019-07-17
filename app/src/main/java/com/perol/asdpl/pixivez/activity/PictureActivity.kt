@@ -42,7 +42,6 @@ class PictureActivity: RinkActivity() {
             x!![0]=i
         }
         val picturePagerAdapter = PicturePagerAdapter(supportFragmentManager, x!!)
-        viewpage_picture!!.offscreenPageLimit = 1
         viewpage_picture!!.adapter = picturePagerAdapter
         viewpage_picture!!.currentItem = nowpostion
         setSupportActionBar(toolbar)

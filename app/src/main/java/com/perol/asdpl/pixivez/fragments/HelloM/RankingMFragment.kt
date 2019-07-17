@@ -121,7 +121,7 @@ class RankingMFragment : LazyV4Fragment(), DateDialog.Callback {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         rankingAdapter = RankingAdapter(R.layout.view_ranking_item, null, PxEZApp.isR18On)
-        isViewCreated=true
+
         return UI {
             coordinatorLayout {
                 swiperefresh_rankingm = swipeRefreshLayout {

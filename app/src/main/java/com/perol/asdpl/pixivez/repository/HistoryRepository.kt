@@ -1,6 +1,6 @@
 package com.perol.asdpl.pixivez.repository
 
-class HistoryRespository {
+class HistoryRepository {
     companion object {
 
     }

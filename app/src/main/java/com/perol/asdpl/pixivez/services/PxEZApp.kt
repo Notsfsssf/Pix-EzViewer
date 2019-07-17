@@ -3,11 +3,11 @@ package com.perol.asdpl.pixivez.services
 import android.app.Application
 import android.os.Build
 import android.os.Environment
+import android.util.Log
 import android.widget.Toast
 import androidx.core.os.BuildCompat
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
-import com.tencent.bugly.Bugly
 import io.multimoon.colorful.*
 import java.io.File
 
@@ -37,7 +37,6 @@ class PxEZApp : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-        println("illust:" + PxEZApp.instance.getString(R.string.illust))
         val sharedPreferencesServices = SharedPreferencesServices(this)
         isR18On = sharedPreferencesServices.getBoolean("r18on")
         disableProxy = sharedPreferencesServices.getBoolean("disableproxy")
@@ -52,8 +51,7 @@ class PxEZApp : Application() {
         } else {
             locale = resources.configuration.locale.language;
         }
-        Bugly.init(this, "1a2d5c746f", false);
-
+        Log.d("locale", locale)
         val list = ArrayList<ThemeColorInterface>().also {
             val myCustomColor1 = CustomThemeColor(
                     this,

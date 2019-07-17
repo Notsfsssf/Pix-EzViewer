@@ -9,9 +9,16 @@ import android.view.ViewGroup
 
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.viewpager.HelloMThViewPager
-import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
 import com.perol.asdpl.pixivez.objects.LazyV4Fragment
+import com.perol.asdpl.pixivez.repository.AppDataRepository
+import com.perol.asdpl.pixivez.services.PxEZApp
+import com.perol.asdpl.pixivez.sql.AppDatabase
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_hello_mth.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.jetbrains.anko.support.v4.runOnUiThread
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,9 +33,14 @@ private const val ARG_PARAM2 = "param2"
  */
 class HelloMThFragment : LazyV4Fragment() {
     override fun lazyLoad() {
-        viewpager_hellomth.adapter = HelloMThViewPager(context!!,childFragmentManager, SharedPreferencesServices.getInstance().getString("userid").toLong())
-        tablayout_hellomth.setupWithViewPager(viewpager_hellomth)
-        viewpager_hellomth.offscreenPageLimit=3
+        GlobalScope.launch {
+         val it=   AppDataRepository.getUser()
+            val userid = it.userid
+            runOnUiThread {
+                viewpager_hellomth.adapter = HelloMThViewPager(context!!, childFragmentManager, userid)
+                tablayout_hellomth.setupWithViewPager(viewpager_hellomth)
+            }
+        }
     }
 
     // TODO: Rename and change types of parameters
@@ -43,15 +55,10 @@ class HelloMThFragment : LazyV4Fragment() {
         }
     }
 
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(isVisibleToUser)
-    }
-
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        isViewCreated=true
+
         return inflater.inflate(R.layout.fragment_hello_mth, container, false)
     }
 

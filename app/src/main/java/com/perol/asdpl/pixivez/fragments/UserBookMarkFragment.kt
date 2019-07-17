@@ -154,7 +154,6 @@ class UserBookMarkFragment : LazyV4Fragment(), TagsShowDialog.Callback {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        isViewCreated = true
         recommendAdapter = RecommendAdapter(R.layout.view_recommand_item, null, PxEZApp.isR18On)
         return inflater.inflate(R.layout.fragment_user_book_mark, container, false)
     }

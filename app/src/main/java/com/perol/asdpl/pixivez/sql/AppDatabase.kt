@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.perol.asdpl.pixivez.sql.dao.IllustDao
 import com.perol.asdpl.pixivez.sql.entity.Illust
 
-@Database(entities = arrayOf(SearchHistoryEntity::class, IllustBeanEntity::class,UserEntity::class,Illust::class), version = 3, exportSchema = false)
+@Database(entities = arrayOf(SearchHistoryEntity::class, IllustBeanEntity::class,UserEntity::class,Illust::class), version = 4, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun searchhistoryDao(): SearchHistoryDao
     abstract fun illusthistoryDao(): IllustHistoryDao

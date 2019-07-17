@@ -86,7 +86,8 @@
             app:layout_constraintStart_toEndOf="@+id/textView3" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.zhy.view.flowlayout.TagFlowLayout android:layout_marginTop="15dp"
+    <com.zhy.view.flowlayout.TagFlowLayout
+        android:layout_marginTop="15dp"
         android:layout_marginLeft="14dp"
         android:layout_marginStart="14dp"
         android:layout_marginEnd="14dp"

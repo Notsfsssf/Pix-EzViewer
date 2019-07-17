@@ -64,7 +64,6 @@ class SearchResultActivity : RinkActivity() {
         arrayList.add(IllustFragment.newInstance(searchword))
         arrayList.add(UserFragment.newInstance(searchword))
         viewpage_searchresult.adapter = SearchResultAdapter(this,supportFragmentManager, arrayList)
-        viewpage_searchresult.offscreenPageLimit = arrayList.size
         viewpage_searchresult.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
 

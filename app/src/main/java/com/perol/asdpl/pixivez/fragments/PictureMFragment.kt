@@ -32,6 +32,7 @@ import com.perol.asdpl.pixivez.responses.IllustDetailResponse
 import com.perol.asdpl.pixivez.responses.IllustsBean
 import com.perol.asdpl.pixivez.responses.UgoiraMetadataResponse
 import com.perol.asdpl.pixivez.services.GlideApp
+import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.services.Works
 import com.perol.asdpl.pixivez.viewmodel.PictureMViewModel
 import com.perol.asdpl.pixivez.viewmodel.factory.PictureFactory
@@ -48,6 +49,7 @@ import org.jetbrains.anko.support.v4.UI
 import org.jetbrains.anko.support.v4.alert
 import org.jetbrains.anko.support.v4.toast
 import java.io.File
+import java.lang.Exception
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
@@ -61,26 +63,24 @@ private const val ARG_PARAM1 = "param1"
  */
 class PictureMFragment : Fragment() {
 
-
     var imagebutton_gif: ImageView? = null
-
-
+    var progressBar: ProgressBar? = null
     lateinit var pictureMViewModel: PictureMViewModel
     var pictureAdapter: PictureAdapter? = null
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        lazyLoad()
+    override fun onResume() {
+        super.onResume()
+        pictureMViewModel.firstget(param1!!.toLong())
     }
 
     fun lazyLoad() {
         val pictureAdapter1 = PictureAdapter(R.layout.view_picture_item1, null, null)
-        pictureAdapter1!!.emptyView = layoutInflater.inflate(R.layout.empty_picture, null)
+        pictureAdapter1.emptyView = layoutInflater.inflate(R.layout.empty_picture, null)
         recyclerview_srcpicture.adapter = pictureAdapter1
         val typedValue = TypedValue();
         activity!!.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
         colorPrimary = typedValue.resourceId
-        initData()
-        initView()
+
+
     }
 
 
@@ -92,7 +92,6 @@ class PictureMFragment : Fragment() {
         recyclerview_srcpicture.transitionName = "mainimage"
         fab.setOnClickListener {
             pictureMViewModel.fabclick(pictureMViewModel.illustDetailResponse.value!!.illust.id)
-
         }
         fab.setOnLongClickListener {
             toast(resources.getString(R.string.fetchtags))
@@ -102,7 +101,6 @@ class PictureMFragment : Fragment() {
     }
 
     private fun initData() {
-        pictureMViewModel = ViewModelProviders.of(this, PictureFactory()).get(PictureMViewModel::class.java)
 
         pictureMViewModel.illustDetailResponse.observe(this, androidx.lifecycle.Observer {
             if (it != null) {
@@ -133,7 +131,11 @@ class PictureMFragment : Fragment() {
         pictureMViewModel.aboutpics.observe(this, Observer {
             aboutpics(it)
         })
-        pictureMViewModel.firstget(param1!!.toLong())
+
+        pictureMViewModel.progress.observe(this, Observer {
+            progressBar!!.max=it.all.toInt()
+            progressBar!!.progress=it.now.toInt()
+        })
 
     }
 
@@ -147,7 +149,6 @@ class PictureMFragment : Fragment() {
 
     private fun showTagsDialog(it: List<BookMarkDetailResponse.BookmarkDetailBean.TagsBean>?) {
         val arrayList = ArrayList<String>()
-
         if (it != null && !pictureMViewModel.likeillust.value!!) {
             it.map {
                 arrayList.add(it.name)
@@ -212,17 +213,10 @@ class PictureMFragment : Fragment() {
                     dialog.dismiss()
                 }
             }.show()
-
-
         }
     }
 
-    private fun playgif(it: Boolean?) {
-        if (it != null) {
-            toast(resources.getString(R.string.encodinggif))
-            recyclerview_srcpicture.adapter = gifAdapter
-        }
-    }
+
 
     var pic_image_back: ImageView? = null
     var colorPrimary: Int = 0
@@ -237,25 +231,39 @@ class PictureMFragment : Fragment() {
     }
 
     private var gifAdapter: GifAdapter? = null
+    private  var alreadyVisible=false
     private fun loadinggif(it: UgoiraMetadataResponse?) {
         val path = activity!!.applicationContext!!.cacheDir.path + "/" + pictureMViewModel.illustDetailResponse.value!!.illust.id.toString()
         val files = ArrayList<File>()
         files.add(File(path))
-        gifAdapter = GifAdapter(R.layout.view_picture_item, files, it, pictureMViewModel.illustDetailResponse.value!!.illust, activity!!.applicationContext)
+        gifAdapter = GifAdapter(R.layout.view_picture_item, files, it!!, pictureMViewModel.illustDetailResponse.value!!.illust)
         //   gifAdapter = BiliGifAdapter(R.layout.view_picture_item,files,  pictureMViewModel.illustDetailResponse.value!!.illust,it!!)
-        imagebutton_gif!!.visibility = View.VISIBLE
+        if (!alreadyVisible)
+        {
+            alreadyVisible=true
+            imagebutton_gif!!.visibility = View.VISIBLE
+        }
         imagebutton_gif!!.setOnClickListener {
             imagebutton_gif!!.visibility = View.GONE
             downloadgif()
         }
     }
-
+    private fun playgif(it: Boolean?) {
+        if (it != null) {
+            val file = File(PxEZApp.instance.cacheDir.path + "/" + pictureMViewModel.illustDetailResponse.value!!.illust.id)
+            try {
+                toast("约有" + file.listFiles().size + "张图片等待合成")
+            } catch (e: Exception) {
+            }
+            recyclerview_srcpicture.adapter = gifAdapter
+        }
+    }
     private fun isgifdownloaded(): Boolean {
         val ugoria = pictureMViewModel.ugoiraMetadataResponse.value!!.ugoira_metadata.frames
         val finalfilename = ugoria.get(ugoria.size - 1).getFile();
         val firstfilename = ugoria.get(0).getFile();
-        val file = File(activity!!.applicationContext.getCacheDir().getPath() + "/" + pictureMViewModel.illustDetailResponse.value!!.illust.id + "/" + finalfilename);
-        val file1 = File(activity!!.applicationContext.getCacheDir().getPath() + "/" + pictureMViewModel.illustDetailResponse.value!!.illust.id + "/" + firstfilename);
+        val file = File(activity!!.applicationContext.cacheDir.path + "/" + pictureMViewModel.illustDetailResponse.value!!.illust.id + "/" + finalfilename);
+        val file1 = File(activity!!.applicationContext.cacheDir.path + "/" + pictureMViewModel.illustDetailResponse.value!!.illust.id + "/" + firstfilename);
         return !(!file.exists() || !file1.exists())
 
     }
@@ -263,7 +271,6 @@ class PictureMFragment : Fragment() {
     inline fun ViewManager.tagFlowLayout(init: TagFlowLayout.() -> Unit = {}): TagFlowLayout {
         return ankoView({ TagFlowLayout(it) }, theme = 0, init = init)
     }
-
     private fun downloadgif() {
         Toasty.info(activity!!.applicationContext, "等待加载zip", Toast.LENGTH_LONG).show()
         if (!isgifdownloaded()) {
@@ -309,7 +316,6 @@ class PictureMFragment : Fragment() {
 
     var viewinfoot: View? = null
     private fun loadimages(it: IllustDetailResponse) {
-
         val imageurls: ArrayList<String> = ArrayList()
         val mVals = ArrayList<String>()
         it.illust.tags.map {
@@ -511,6 +517,10 @@ class PictureMFragment : Fragment() {
                         margin = dip(8)
                     }
                 }.lparams(width = matchParent, height = wrapContent)
+                include<View>(R.layout.view_progress) {
+                }.lparams(width = matchParent, height = wrapContent) {
+                    margin = dip(8)
+                }
                 tagFlowLayout {
                     adapter = object : TagAdapter<String>(mVals) {
                         override fun getView(parent: FlowLayout, position: Int, s: String): View {
@@ -556,7 +566,7 @@ class PictureMFragment : Fragment() {
                         textSize = 14f
                         setOnClickListener {
                             val commentDialog = CommentDialog.newInstance(pictureMViewModel.illustDetailResponse.value!!.illust.id)
-                            commentDialog.show(fragmentManager)
+                            commentDialog.show(childFragmentManager)
                         }
                     }.lparams(width = wrapContent, height = wrapContent) {
                         alignParentBottom()
@@ -570,6 +580,11 @@ class PictureMFragment : Fragment() {
                 }
             }
         }.view
+        progressBar=viewinfoot!!.findViewById(R.id.progress_gif)
+        progressBar!!.visibility=View.GONE
+        if (it.illust.type.contains("ugoira")){
+            progressBar!!.visibility=View.VISIBLE
+        }
         pictureAdapter!!.addFooterView(viewinfoot)
         pictureAdapter!!.addFooterView(UI {
             linearLayout {
@@ -614,24 +629,26 @@ class PictureMFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getLong(ARG_PARAM1)
-
         }
+        pictureMViewModel=ViewModelProviders.of(this).get(PictureMViewModel::class.java)
+        initData()
     }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-
-//        act!!.setSupportActionBar(toolbar)
-
         aboutPictureAdapter = AboutPictureAdapter(R.layout.view_aboutpic_item)
         view = FragmentPictureMBinding.inflate(inflater, container, false)
         view.lifecycleOwner = this
-//        isViewCreated = true
+
         return view.root
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        initView()
+        lazyLoad()
+    }
 
     companion object {
         /**

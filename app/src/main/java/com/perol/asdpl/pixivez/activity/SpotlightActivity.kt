@@ -13,6 +13,7 @@ import com.perol.asdpl.pixivez.networks.RestClient
 import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
 import com.perol.asdpl.pixivez.objects.Spotlight
 import com.perol.asdpl.pixivez.objects.ThemeUtil
+import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.responses.IllustDetailResponse
 import com.perol.asdpl.pixivez.services.AppApiPixivService
 import com.perol.asdpl.pixivez.services.PxEZApp
@@ -23,6 +24,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_spotlight.*
+import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.jsoup.Jsoup
@@ -124,8 +126,12 @@ class SpotlightActivity : RinkActivity() {
             num = 0
             for (id in reurls) {
                 num += 1
+                var Authorization:String=""
+                runBlocking {
+                    Authorization = AppDataRepository.getUser().Authorization
+                }
 
-                appApiPixivService!!.getIllust(sharedPreferencesServices!!.getString("Authorization"), id.toLong()).subscribeOn(Schedulers.io())
+                appApiPixivService!!.getIllust(Authorization, id.toLong()).subscribeOn(Schedulers.io())
                         .subscribe(object : Observer<IllustDetailResponse> {
                             override fun onSubscribe(d: Disposable) {
 

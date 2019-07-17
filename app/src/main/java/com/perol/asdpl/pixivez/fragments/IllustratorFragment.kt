@@ -133,7 +133,7 @@ class IllustratorFragment :LazyV4Fragment(), AdapterView.OnItemSelectedListener 
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         userShowAdapter = UserShowAdapter(R.layout.view_usershow_item)
-isViewCreated=true
+
         return inflater.inflate(R.layout.fragment_illustrator, container, false)
     }
 

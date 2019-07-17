@@ -51,31 +51,20 @@ private const val ARG_PARAM2 = "param2"
 class HelloMRecommandFragment : LazyV4Fragment() {
     lateinit var rankingAdapter: RecommendAdapter
     var viewmodel: HelloMRecomModel? = null
+    var banner: Banner? = null
     override fun lazyLoad() {
-//        val view = layoutInflater.inflate(R.layout.header_recom, null)
-//        rankingAdapter.addHeaderView(view)
-        val banner = banerview.findViewById<Banner>(R.id.banner)
-        banner.setImageLoader(object : ImageLoader() {
-            override fun displayImage(context: Context?, path: Any?, imageView: ImageView?) {
-                GlideApp.with(context!!).load(path).into(imageView!!)
-            }
-        })
-
-        viewmodel = ViewModelProviders.of(this).get(HelloMRecomModel::class.java)
         viewmodel!!.articles.observe(this, Observer { it ->
-            //设置图片集合
             if (it != null) {
                 val arrayList = ArrayList<String>()
                 it.spotlight_articles.map {
                     arrayList.add(it.thumbnail)
                 }
-                banner.setDelayTime(3800);
-                banner.setImages(arrayList)
-                banner.setOnBannerListener {
+                banner!!.setDelayTime(3800);
+                banner!!.setImages(arrayList)
+                banner!!.setOnBannerListener {
                     startActivity(Intent(activity!!.applicationContext, PixivsionActivity::class.java))
                 }
-                //banner设置方法全部调用完毕时最后调用
-                banner.start()
+                banner!!.start()
             }
 
         })
@@ -101,21 +90,9 @@ class HelloMRecommandFragment : LazyV4Fragment() {
                 rankingAdapter.loadMoreComplete()
             }
         })
-        swiperefresh_recom.setOnRefreshListener {
-            viewmodel!!.OnRefreshListener()
 
-        }
-        rankingAdapter.setOnLoadMoreListener({
-            viewmodel!!.onLoadMoreRequested()
-        }, recyclerview_recom)
-        viewmodel!!.firstget()
     }
 
-    inline fun ViewManager.spinKitView(theme: Int = 0, init: SpinKitView.() -> Unit = {}): SpinKitView {
-        return ankoView({ SpinKitView(it) }, theme = 0, init = init)
-    }
-
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
@@ -125,6 +102,13 @@ class HelloMRecommandFragment : LazyV4Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        viewmodel = ViewModelProviders.of(this).get(HelloMRecomModel::class.java)
+        lazyLoad()
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewmodel!!.firstget()
     }
 
     lateinit var recyclerview_recom: RecyclerView
@@ -132,12 +116,9 @@ class HelloMRecommandFragment : LazyV4Fragment() {
     lateinit var swiperefresh_recom: SwipeRefreshLayout
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        rankingAdapter = RecommendAdapter(R.layout.view_recommand_item, null, PxEZApp.isR18On).also {
-            it.emptyView= layoutInflater.inflate(R.layout.empty_illusts,null)
-        }
+        rankingAdapter = RecommendAdapter(R.layout.view_recommand_item, null, PxEZApp.isR18On)
 
-        isViewCreated = true
-        return UI {
+        val view = UI {
             coordinatorLayout {
                 swiperefresh_recom = swipeRefreshLayout {
                     recyclerview_recom = recyclerView {
@@ -157,7 +138,21 @@ class HelloMRecommandFragment : LazyV4Fragment() {
                 }
             }
         }.view
+        banner = banerview.findViewById<Banner>(R.id.banner)
+        banner!!.setImageLoader(object : ImageLoader() {
+            override fun displayImage(context: Context?, path: Any?, imageView: ImageView?) {
+                GlideApp.with(context!!).load(path).into(imageView!!)
+            }
+        })
+        swiperefresh_recom.setOnRefreshListener {
+            viewmodel!!.OnRefreshListener()
 
+        }
+        rankingAdapter.setOnLoadMoreListener({
+            viewmodel!!.onLoadMoreRequested()
+        }, recyclerview_recom)
+
+        return view
     }
 
     companion object {

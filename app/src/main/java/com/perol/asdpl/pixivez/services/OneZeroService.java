@@ -8,5 +8,5 @@ import retrofit2.http.Query;
 
 public interface OneZeroService {
     @GET("dns-query")
-    Call<OneZeroResponse> getItem(@Query("ct") String ct,@Query("name") String name,@Query("type") String type,@Query("do") String doo,@Query("cd") String cd);
+    Call<OneZeroResponse> getItem(@Query(value = "ct",encoded = true) String ct,@Query("name") String name,@Query("type") String type,@Query("do") String doo,@Query("cd") String cd);
 }

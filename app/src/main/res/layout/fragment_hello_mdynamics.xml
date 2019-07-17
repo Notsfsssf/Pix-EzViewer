@@ -18,9 +18,8 @@
            <com.google.android.material.tabs.TabLayout
                android:id="@+id/tablayout_rankingm"
                android:layout_width="match_parent"
-               android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+               style="@style/Widget.MaterialComponents.TabLayout.Colored"
                android:layout_height="wrap_content"
-               app:tabIndicatorColor="@color/white"
                app:tabIndicatorFullWidth="false"
                app:tabMode="scrollable">
                <com.google.android.material.tabs.TabItem

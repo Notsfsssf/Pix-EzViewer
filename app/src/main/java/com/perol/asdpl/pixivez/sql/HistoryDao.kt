@@ -45,7 +45,7 @@ abstract class IllustHistoryDao {
     abstract fun insert(query: IllustBeanEntity)
 
     @Query("DELETE FROM illusthistory")
-    abstract fun deletehistory()
+    abstract fun deleteHistory()
 
     @Query("SELECT * FROM illusthistory WHERE illustid=:illustid")
     abstract fun getHistoryOne(illustid: Long): List<IllustBeanEntity>
@@ -56,12 +56,21 @@ abstract class IllustHistoryDao {
 
 @Dao
 abstract class UserDao {
+    @Query("SELECT * FROM user WHERE userid=:userid")
+    abstract fun findUsers(userid: Long): List<UserEntity>
+
     @Query("SELECT * FROM user")
-    abstract fun getIllustHistory(): Flowable<List<UserEntity>>
+    abstract fun getUsers(): List<UserEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insert(query: UserEntity)
 
+    @Delete
+    abstract fun deleteUser(query: UserEntity)
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun updateUser(query: UserEntity)
+
     @Query("DELETE FROM user")
-    abstract fun deletehistory()
+    abstract fun deleteUsers()
 }

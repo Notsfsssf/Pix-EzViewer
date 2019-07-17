@@ -3,13 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.HelloMActivity">
-
+    android:layout_height="match_parent">
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:elevation="0dp">
     <com.google.android.material.appbar.CollapsingToolbarLayout
         android:layout_width="match_parent"
@@ -28,12 +25,10 @@
                 android:id="@+id/tablayout_hellom"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                style="@style/Widget.MaterialComponents.TabLayout.Colored"
                 app:tabPadding="0dp"
                 app:tabGravity="center"
                 app:tabPaddingStart="20dp"
-                android:background="?attr/colorPrimary"
-                app:tabTextAppearance="@style/Widget.MaterialComponents.TabLayout.Colored"
-                style="@style/Widget.MaterialComponents.TabLayout.Colored"
                 app:tabIndicatorHeight="0dp">
             </com.google.android.material.tabs.TabLayout>
 

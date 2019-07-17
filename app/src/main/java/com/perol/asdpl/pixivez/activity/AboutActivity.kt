@@ -23,7 +23,6 @@ import com.perol.asdpl.pixivez.objects.ThemeUtil
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.PxEZApp
-import com.tencent.bugly.beta.Beta
 import kotlinx.android.synthetic.main.activity_about.*
 import org.jetbrains.anko.*
 
@@ -270,10 +269,6 @@ class AboutActivity : RinkActivity(), IconDialog.Callback, TabLayout.OnTabSelect
             }
 
         }
-        donation_botton.setOnClickListener {
-            val uri = Uri.parse("https://github.com/Notsfsssf/Pix-EzViewer/blob/master/donation/README.md");
-            startActivity(Intent(Intent.ACTION_VIEW, uri));
-        }
         quality.setSelection(sharedPreferencesServices!!.getInt("quality"))
         quality.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -319,7 +314,6 @@ class AboutActivity : RinkActivity(), IconDialog.Callback, TabLayout.OnTabSelect
 
     fun checkforupdate(v: View) {
 
-   Beta.checkUpgrade();
 
     }
 

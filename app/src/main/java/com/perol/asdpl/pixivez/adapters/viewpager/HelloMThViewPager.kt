@@ -10,7 +10,7 @@ import com.perol.asdpl.pixivez.fragments.HelloM.HelloMMyFragment
 import com.perol.asdpl.pixivez.fragments.IllustratorFragment
 import com.perol.asdpl.pixivez.services.PxEZApp
 
-class HelloMThViewPager(var context: Context,fm: FragmentManager, var long: Long) : FragmentStatePagerAdapter(fm) {
+class HelloMThViewPager(var context: Context,fm: FragmentManager, var long: Long) : FragmentStatePagerAdapter(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> {

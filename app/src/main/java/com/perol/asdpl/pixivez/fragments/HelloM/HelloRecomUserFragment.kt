@@ -36,36 +36,35 @@ private const val ARG_PARAM2 = "param2"
  *
  */
 class HelloRecomUserFragment : LazyV4Fragment() {
+    var viewmodel:HelloRecomUserViewModel?=null
     override fun lazyLoad() {
-        val viewmodel = ViewModelProviders.of(this).get(HelloRecomUserViewModel::class.java)
-        userShowAdapter.setOnLoadMoreListener({
-            viewmodel.getNext()
-        }, recyclerView)
-        viewmodel.adddata.observe(this, Observer {
+
+        viewmodel!!.adddata.observe(this, Observer {
             if (it != null) {
                 userShowAdapter.addData(it)
             } else {
                 userShowAdapter.loadMoreFail()
             }
         })
-        viewmodel.data.observe(this, Observer {
+        viewmodel!!.data.observe(this, Observer {
             userShowAdapter.setNewData(it)
             swipe.isRefreshing = false
         })
-        viewmodel.nexturl.observe(this, Observer {
+        viewmodel!!.nexturl.observe(this, Observer {
             if (it != null) {
                 userShowAdapter.loadMoreComplete()
             } else {
                 userShowAdapter.loadMoreEnd()
             }
         })
-        viewmodel.reData()
-        swipe.setOnRefreshListener {
-            viewmodel.reData()
 
-        }
+
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewmodel!!.reData()
+    }
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -76,6 +75,8 @@ class HelloRecomUserFragment : LazyV4Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        viewmodel = ViewModelProviders.of(this).get(HelloRecomUserViewModel::class.java)
+        lazyLoad()
     }
 
     val userShowAdapter = UserShowAdapter(R.layout.view_usershow_item)
@@ -83,8 +84,8 @@ class HelloRecomUserFragment : LazyV4Fragment() {
     lateinit var swipe: SwipeRefreshLayout
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        isViewCreated = true
-        return UI {
+
+     val view =UI {
             swipe = swipeRefreshLayout {
                 coordinatorLayout {
                     recyclerView = recyclerView {
@@ -95,6 +96,14 @@ class HelloRecomUserFragment : LazyV4Fragment() {
             }
         }.view
 
+            userShowAdapter.setOnLoadMoreListener({
+            viewmodel!!.getNext()
+        }, recyclerView)
+        swipe.setOnRefreshListener {
+            viewmodel!!.reData()
+
+        }
+        return view
     }
 
 

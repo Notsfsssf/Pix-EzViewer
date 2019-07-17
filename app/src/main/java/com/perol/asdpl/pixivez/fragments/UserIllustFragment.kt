@@ -85,7 +85,7 @@ class UserIllustFragment : LazyV4Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         recommendAdapter = RecommendAdapter(R.layout.view_recommand_item, null, PxEZApp.isR18On)
-        isViewCreated=true
+
         return inflater.inflate(R.layout.fragment_user_illust, container, false)
     }
 
