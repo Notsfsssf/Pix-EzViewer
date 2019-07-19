@@ -30,7 +30,17 @@ private const val ARG_PARAM2 = "param2"
  *
  */
 class UserIllustFragment : LazyV4Fragment() {
-    override fun lazyLoad() {
+    override fun loadData() {
+        viewmodel!!.first(param1!!,param2!!)
+    }
+
+    fun lazyLoad() {
+        recommendAdapter.setOnLoadMoreListener({
+            viewmodel!!.OnLoadMoreListener()
+        }, mrecyclerview)
+        mrefreshlayout.setOnRefreshListener {
+            viewmodel!!.OnRefreshListener(param1!!,param2!!)
+        }
         mrecyclerview.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         mrecyclerview.adapter = recommendAdapter
         initvoid()
@@ -46,37 +56,39 @@ class UserIllustFragment : LazyV4Fragment() {
             param1 = it.getLong(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        initvoid()
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+     lazyLoad()
+    }
+var viewmodel:UserMillustViewModel?=null
     private fun initvoid() {
-        val viewmodel = ViewModelProviders.of(this).get(UserMillustViewModel::class.java)
-        viewmodel.nexturl.observe(this, Observer {
+       viewmodel = ViewModelProviders.of(this).get(UserMillustViewModel::class.java)
+
+        viewmodel!!.nexturl.observe(this, Observer {
             if (it.isNullOrEmpty()) {
                 recommendAdapter.loadMoreEnd()
             } else {
                 recommendAdapter.loadMoreComplete()
             }
         })
-        viewmodel.data.observe(this, Observer {
+        viewmodel!!.data.observe(this, Observer {
             if (it != null) {
                 mrefreshlayout.isRefreshing = false
                 recommendAdapter.setNewData(it)
             }
 
         })
-        viewmodel.adddata.observe(this, Observer {
+        viewmodel!!.adddata.observe(this, Observer {
             if (it != null) {
                 recommendAdapter.addData(it)
                 recommendAdapter.loadMoreComplete()
             }
         })
-        viewmodel.first(param1!!,param2!!)
-        recommendAdapter.setOnLoadMoreListener({
-            viewmodel.OnLoadMoreListener()
-        }, mrecyclerview)
-        mrefreshlayout.setOnRefreshListener {
-            viewmodel.OnRefreshListener(param1!!,param2!!)
-        }
+
+
     }
 
 

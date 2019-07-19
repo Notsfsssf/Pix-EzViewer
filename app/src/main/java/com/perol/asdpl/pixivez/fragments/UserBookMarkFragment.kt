@@ -32,14 +32,62 @@ private const val ARG_PARAM2 = "param2"
  */
 
 class UserBookMarkFragment : LazyV4Fragment(), TagsShowDialog.Callback {
+    override fun loadData() {
+        viewmodel!!.first(param1!!, pub).doOnSuccess {
+            if (it) {
+                val view = layoutInflater.inflate(R.layout.header_bookmark, null)
+                val imagebutton = view.findViewById<ImageView>(R.id.imagebutton_showtags)
+                recommendAdapter.addHeaderView(view)
+                imagebutton.setOnClickListener {
+                    showtagdialog()
+                }
+            }
+        }.subscribe()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mrecyclerview.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        mrecyclerview.adapter = recommendAdapter
+        recommendAdapter.setOnLoadMoreListener({
+            viewmodel!!.OnLoadMoreListener()
+        }, mrecyclerview)
+
+        mrefreshlayout.setOnRefreshListener {
+            viewmodel!!.OnRefreshListener(param1!!, pub, null)
+        }
+    }
     override fun onClick(string: String, public: String) {
         viewmodel!!.OnRefreshListener(param1!!, public, if(string.isNotBlank()){string}else{null})
     }
 
-    override fun lazyLoad() {
-        mrecyclerview.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        mrecyclerview.adapter = recommendAdapter
-        initvoid()
+    fun lazyLoad() {
+        viewmodel = ViewModelProviders.of(this).get(UserBookMarkViewModel::class.java)
+        viewmodel!!.nexturl.observe(this, Observer {
+            if (it.isNullOrEmpty()) {
+                recommendAdapter.loadMoreEnd()
+            } else {
+                recommendAdapter.loadMoreComplete()
+            }
+        })
+        viewmodel!!.data.observe(this, Observer {
+            if (it != null) {
+                mrefreshlayout.isRefreshing = false
+                recommendAdapter.setNewData(it)
+
+            }
+
+        })
+        viewmodel!!.adddata.observe(this, Observer {
+            if (it != null) {
+                recommendAdapter.addData(it)
+                recommendAdapter.loadMoreComplete()
+            }
+        })
+        viewmodel!!.tags.observe(this, Observer {
+
+        })
+
     }
 
 //    override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -74,59 +122,14 @@ class UserBookMarkFragment : LazyV4Fragment(), TagsShowDialog.Callback {
             param1 = it.getLong(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        lazyLoad()
+
     }
 
     var pub = "public"
 
     var viewmodel: UserBookMarkViewModel? = null
-    private fun initvoid() {
 
-        viewmodel = ViewModelProviders.of(this).get(UserBookMarkViewModel::class.java)
-        viewmodel!!.first(param1!!, pub).doOnSuccess {
-            if (it) {
-                val view = layoutInflater.inflate(R.layout.header_bookmark, null)
-                val imagebutton = view.findViewById<ImageView>(R.id.imagebutton_showtags)
-                recommendAdapter.addHeaderView(view)
-                imagebutton.setOnClickListener {
-                    showtagdialog()
-                }
-            }
-        }.subscribe()
-        viewmodel!!.nexturl.observe(this, Observer {
-            if (it.isNullOrEmpty()) {
-                recommendAdapter.loadMoreEnd()
-            } else {
-                recommendAdapter.loadMoreComplete()
-            }
-        })
-        viewmodel!!.data.observe(this, Observer {
-            if (it != null) {
-                mrefreshlayout.isRefreshing = false
-                recommendAdapter.setNewData(it)
-
-            }
-
-        })
-        viewmodel!!.adddata.observe(this, Observer {
-            if (it != null) {
-                recommendAdapter.addData(it)
-                recommendAdapter.loadMoreComplete()
-            }
-        })
-        viewmodel!!.tags.observe(this, Observer {
-
-        })
-
-        recommendAdapter.setOnLoadMoreListener({
-            viewmodel!!.OnLoadMoreListener()
-        }, mrecyclerview)
-
-        mrefreshlayout.setOnRefreshListener {
-            viewmodel!!.OnRefreshListener(param1!!, pub, null)
-        }
-
-
-    }
 
     fun showtagdialog() {
         val arrayList = ArrayList<String>()

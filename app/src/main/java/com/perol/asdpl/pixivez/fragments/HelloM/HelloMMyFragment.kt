@@ -31,13 +31,14 @@ private const val ARG_PARAM2 = "param2"
  *
  */
 class HelloMMyFragment : LazyV4Fragment() {
+    override fun loadData() {
+
+    }
+
     lateinit var rankingAdapter:RecommendAdapter
     var viewmodel:HelloMMyViewModel?=null
     var restrict="all"
-    override fun lazyLoad() {
-        recyclerview_mym.layoutManager= StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
-        recyclerview_mym.adapter=rankingAdapter
-
+    fun lazyLoad() {
         viewmodel= ViewModelProviders.of(this).get(HelloMMyViewModel::class.java)
         viewmodel!!.addillusts.observe(this, Observer {
             if (it != null) {
@@ -60,13 +61,39 @@ class HelloMMyFragment : LazyV4Fragment() {
                 rankingAdapter.loadMoreComplete()
             }
         })
+
+    }
+
+
+    // TODO: Rename and change types of parameters
+    private var param1: String? = null
+    private var param2: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            param1 = it.getString(ARG_PARAM1)
+            param2 = it.getString(ARG_PARAM2)
+        }
+        lazyLoad()
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        rankingAdapter= RecommendAdapter(R.layout.view_recommand_item, null, PxEZApp.isR18On);
+        return inflater.inflate(R.layout.fragment_hello_mmy, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        recyclerview_mym.layoutManager= StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
+        recyclerview_mym.adapter=rankingAdapter
         swiperefresh_mym.setOnRefreshListener {
             viewmodel!!.OnRefreshListener(restrict)
         }
         rankingAdapter.setOnLoadMoreListener({
             viewmodel!!.onLoadMoreRequested()
         }, recyclerview_mym)
-//        viewmodel!!.firstget()
         spinner_mmy.onItemSelectedListener= object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 when (position) {
@@ -89,28 +116,6 @@ class HelloMMyFragment : LazyV4Fragment() {
 
         }
     }
-
-
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        rankingAdapter= RecommendAdapter(R.layout.view_recommand_item, null, PxEZApp.isR18On);
-
-        return inflater.inflate(R.layout.fragment_hello_mmy, container, false)
-    }
-
 
     companion object {
         /**

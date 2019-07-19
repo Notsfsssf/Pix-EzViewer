@@ -24,15 +24,20 @@ private const val ARG_PARAM2 = "param2"
  *
  */
 
-class PictureRFragment : LazyV4Fragment() {
-    override fun lazyLoad() {
+class PictureRFragment : Fragment() {
+
+
+    fun lazyLoad() {
         recyclerView_r.layoutManager=LinearLayoutManager(activity!!)
     }
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        lazyLoad()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {

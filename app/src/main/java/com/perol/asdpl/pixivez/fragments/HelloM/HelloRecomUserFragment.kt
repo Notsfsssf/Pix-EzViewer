@@ -36,8 +36,12 @@ private const val ARG_PARAM2 = "param2"
  *
  */
 class HelloRecomUserFragment : LazyV4Fragment() {
+    override fun loadData() {
+        viewmodel!!.reData()
+    }
+
     var viewmodel:HelloRecomUserViewModel?=null
-    override fun lazyLoad() {
+    fun lazyLoad() {
 
         viewmodel!!.adddata.observe(this, Observer {
             if (it != null) {
@@ -61,10 +65,6 @@ class HelloRecomUserFragment : LazyV4Fragment() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewmodel!!.reData()
-    }
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null

@@ -32,8 +32,26 @@ private const val ARG_PARAM1 = "param1"
  *
  */
 class UserFragment : LazyV4Fragment() {
+    override fun loadData() {
+        userViewModel.getSearchUser(param1!!)
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        userShowAdapter = UserShowAdapter(R.layout.view_usershow_item)
+        recyclerview_user.adapter = userShowAdapter
+        recyclerview_user.layoutManager = LinearLayoutManager(activity)
+        userShowAdapter.setOnLoadMoreListener( {
+            if (userViewModel.nexturl.value != null)
+                userViewModel.getnextusers(userViewModel.nexturl.value!!)
 
+        },recyclerview_user)
+        userShowAdapter.setOnItemClickListener { adapter, view, position ->
+            val intent = Intent(activity!!.applicationContext, UserMActivity::class.java)
+            intent.putExtra("data", userShowAdapter.data[position].user.id)
+            startActivity(intent)
+        }
+    }
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     lateinit var userShowAdapter: UserShowAdapter;
@@ -44,6 +62,7 @@ class UserFragment : LazyV4Fragment() {
             param1 = it.getString(ARG_PARAM1)
 
         }
+        lazyLoad()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -53,29 +72,18 @@ class UserFragment : LazyV4Fragment() {
         return inflater.inflate(R.layout.fragment_user, container, false)
     }
 
-    override fun lazyLoad() {
+    fun lazyLoad() {
         userViewModel = ViewModelProviders.of(this, userFactory()).get(UserViewModel::class.java)
 
-        userShowAdapter = UserShowAdapter(R.layout.view_usershow_item)
-        recyclerview_user.adapter = userShowAdapter
-        recyclerview_user.layoutManager = LinearLayoutManager(activity)
+
         userViewModel.users.observe(this, Observer {
             users(it)
         })
-        userViewModel.getSearchUser(param1!!)
+
         userViewModel.nexturl.observe(this, Observer {
             nexturl(it)
         })
-        userShowAdapter.setOnLoadMoreListener( {
-            if (userViewModel.nexturl.value != null)
-                    userViewModel.getnextusers(userViewModel.nexturl.value!!)
 
-        },recyclerview_user)
-        userShowAdapter.setOnItemClickListener { adapter, view, position ->
-            val intent = Intent(activity!!.applicationContext, UserMActivity::class.java)
-            intent.putExtra("data", userShowAdapter.data[position].user.id)
-            startActivity(intent)
-        }
 
     }
 

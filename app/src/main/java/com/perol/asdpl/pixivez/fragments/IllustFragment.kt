@@ -38,6 +38,9 @@ private const val ARG_PARAM1 = "word"
  *
  */
 class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
+    override fun loadData() {
+
+    }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
@@ -53,57 +56,13 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
 
     }
 
-    private val starnum = intArrayOf(10000, 5000, 1000, 500, 250, 100)
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    lateinit var sharedPreferencesServices: SharedPreferencesServices
-    lateinit var searchIllustAdapter: RecommendAdapter
-    var sort = arrayOf("date_desc", "date_asc", "popular_desc")
-    var search_target = arrayOf("partial_match_for_tags", "exact_match_for_tags", "title_and_caption")
-    var duration = arrayOf("within_last_day", "within_last_week", "within_last_month")
-    var selectsort: Int = 0
-    var selecttarget: Int = 0
-    var selectduration: Int = 0
-    private lateinit var illustfragmentViewModel: IllustfragmentViewModel
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-
-        }
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-
-        return inflater.inflate(R.layout.fragment_illust, container, false)
-    }
-
-
-    override fun lazyLoad() {
-        sharedPreferencesServices = SharedPreferencesServices(activity!!.applicationContext)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val searchtext=activity!!.findViewById<TextView>(R.id.searchtext)
         searchIllustAdapter = RecommendAdapter(R.layout.view_recommand_item, ArrayList<IllustsBean>(), sharedPreferencesServices.getBoolean("r18on"))
         searchtext.text=param1
         recyclerview_illust.adapter = searchIllustAdapter
         recyclerview_illust.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-//        val view = layoutInflater.inflate(R.layout.headerview_illust, null)
-//        val imageView = view.findViewById<ImageButton>(R.id.imagebutton_section)
-//        searchIllustAdapter.addHeaderView(view)
-        illustfragmentViewModel = ViewModelProviders.of(this, illustFactory()).get(IllustfragmentViewModel::class.java)
-
-//        searchIllustAdapter.setNewData(illustfragmentViewModel.llustlivedata.value)
-        illustfragmentViewModel.llustlivedata.observe(this, Observer {
-            updateillust(it)
-        })
-
-        illustfragmentViewModel.nexturl.observe(this, Observer {
-            nexturl(it)
-        })
-        illustfragmentViewModel.bookmarkid.observe(this, Observer {
-            changetoblue(it)
-        })
-
         for (i in 0 until bmbill.piecePlaceEnum.pieceNumber()) {
             val builder = HamButton.Builder().listener { index ->
                 val query = param1 + " " + starnum[index].toString() + "users入り"
@@ -142,6 +101,55 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
         }
         val spinner: Spinner = activity!!.findViewById<Spinner>(R.id.spinner_result)
         spinner.onItemSelectedListener = this
+    }
+    private val starnum = intArrayOf(10000, 5000, 1000, 500, 250, 100)
+    // TODO: Rename and change types of parameters
+    private var param1: String? = null
+    lateinit var sharedPreferencesServices: SharedPreferencesServices
+    lateinit var searchIllustAdapter: RecommendAdapter
+    var sort = arrayOf("date_desc", "date_asc", "popular_desc")
+    var search_target = arrayOf("partial_match_for_tags", "exact_match_for_tags", "title_and_caption")
+    var duration = arrayOf("within_last_day", "within_last_week", "within_last_month")
+    var selectsort: Int = 0
+    var selecttarget: Int = 0
+    var selectduration: Int = 0
+    private lateinit var illustfragmentViewModel: IllustfragmentViewModel
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            param1 = it.getString(ARG_PARAM1)
+
+        }
+        lazyLoad()
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+
+        return inflater.inflate(R.layout.fragment_illust, container, false)
+    }
+
+
+    fun lazyLoad() {
+        sharedPreferencesServices = SharedPreferencesServices(activity!!.applicationContext)
+
+//        val view = layoutInflater.inflate(R.layout.headerview_illust, null)
+//        val imageView = view.findViewById<ImageButton>(R.id.imagebutton_section)
+//        searchIllustAdapter.addHeaderView(view)
+        illustfragmentViewModel = ViewModelProviders.of(this, illustFactory()).get(IllustfragmentViewModel::class.java)
+
+//        searchIllustAdapter.setNewData(illustfragmentViewModel.llustlivedata.value)
+        illustfragmentViewModel.llustlivedata.observe(this, Observer {
+            updateillust(it)
+        })
+
+        illustfragmentViewModel.nexturl.observe(this, Observer {
+            nexturl(it)
+        })
+        illustfragmentViewModel.bookmarkid.observe(this, Observer {
+            changetoblue(it)
+        })
+
     }
 
     private var position: Int? = null

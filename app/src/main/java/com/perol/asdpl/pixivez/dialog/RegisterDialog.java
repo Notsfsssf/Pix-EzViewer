@@ -87,6 +87,7 @@ public class RegisterDialog extends DialogFragment {
         buttonregister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 accountPixivService.editAccount(edittextemail.getText().toString(), edittextnewuseraccount.getText().toString(), sharedPreferencesServices.getString("password"), edittextnewpassword.getText().toString(), sharedPreferencesServices.getString("Authorization")).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<PixivAccountsEditResponse>() {
                             @Override

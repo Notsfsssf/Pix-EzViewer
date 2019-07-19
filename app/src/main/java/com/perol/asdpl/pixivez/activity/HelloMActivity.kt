@@ -405,13 +405,7 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
 
     }
 
-    override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
-    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.hello_m, menu)

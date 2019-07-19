@@ -70,9 +70,8 @@ class PictureActivity: RinkActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            android.R.id.home ->
                 finishAfterTransition()
-            }else finish()
             R.id.action_share -> share()
 
         }

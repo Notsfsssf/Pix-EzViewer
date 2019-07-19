@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import android.view.*
 import android.widget.ImageView
+import android.widget.TextView
 import com.github.ybq.android.spinkit.SpinKitView
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.PixivsionActivity
@@ -37,6 +38,7 @@ import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.support.v4.UI
 import org.jetbrains.anko.support.v4.dip
 import org.jetbrains.anko.support.v4.swipeRefreshLayout
+import org.jetbrains.anko.support.v4.toast
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
@@ -49,10 +51,14 @@ private const val ARG_PARAM2 = "param2"
  *
  */
 class HelloMRecommandFragment : LazyV4Fragment() {
+    override fun loadData() {
+        viewmodel!!.firstget()
+    }
+
     lateinit var rankingAdapter: RecommendAdapter
     var viewmodel: HelloMRecomModel? = null
     var banner: Banner? = null
-    override fun lazyLoad() {
+    fun lazyLoad() {
         viewmodel!!.articles.observe(this, Observer { it ->
             if (it != null) {
                 val arrayList = ArrayList<String>()
@@ -74,10 +80,11 @@ class HelloMRecommandFragment : LazyV4Fragment() {
             }
         })
         viewmodel!!.illusts.observe(this, Observer {
+            val view=layoutInflater.inflate(R.layout.empty_erro, null)
+            rankingAdapter.emptyView=view
             swiperefresh_recom.isRefreshing = false
             rankingAdapter.setNewData(it)
         })
-
         viewmodel!!.bookmarknum.observe(this, Observer {
             if (it != null) {
                 viewmodel!!.OnItemChildLongClick(it)
@@ -104,11 +111,6 @@ class HelloMRecommandFragment : LazyV4Fragment() {
         }
         viewmodel = ViewModelProviders.of(this).get(HelloMRecomModel::class.java)
         lazyLoad()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewmodel!!.firstget()
     }
 
     lateinit var recyclerview_recom: RecyclerView

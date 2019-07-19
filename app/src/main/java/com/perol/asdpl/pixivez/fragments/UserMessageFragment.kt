@@ -26,13 +26,14 @@ import java.util.*
  * Use the [UserMessageFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class UserMessageFragment : LazyV4Fragment() {
+class UserMessageFragment : Fragment() {
 
 
     // TODO: Rename and change types of parameters
     private var mParam1: UserDetailResponse? = null
 
-    override fun lazyLoad() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initdata()
     }
 

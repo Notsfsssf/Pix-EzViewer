@@ -18,7 +18,9 @@ class HelloMRecomModel : ViewModel() {
         retrofitRespository.getRecommend().subscribe ({
             nexturl.value = it.next_url
             illusts.value = it.illusts as ArrayList<IllustsBean>?
-        },{},{})
+        },{
+
+        },{})
         retrofitRespository.getPixivison("all").subscribe({
             articles.value=it
         },{},{})

@@ -9,8 +9,8 @@ android {
         applicationId "com.perol.asdpl.play.pixivez"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 26
-        versionName "1.2.5 R"
+        versionCode 27
+        versionName "1.2.6 R"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true

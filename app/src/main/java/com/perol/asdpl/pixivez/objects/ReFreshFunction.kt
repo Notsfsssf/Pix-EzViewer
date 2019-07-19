@@ -46,7 +46,7 @@ class ReFreshFunction : io.reactivex.functions.Function<Observable<Throwable>, O
         return throwableObservable.flatMap(Function<Throwable, ObservableSource<*>> { throwable ->
             if (throwable is TimeoutException || throwable is SocketTimeoutException
                     || throwable is ConnectException) {
-                return@Function Observable.just(throwable)
+                return@Function Observable.error<Any>(throwable)
             } else if (throwable is HttpException) {
                 if (throwable.response()!!.code() == 400) {
                     if (++retryCount <= maxRetries) {
@@ -69,7 +69,7 @@ class ReFreshFunction : io.reactivex.functions.Function<Observable<Throwable>, O
                     return@Function Observable.error<Any>(throwable)
                 }
             }
-            Observable.error<Any>(throwable)
+          return@Function  Observable.error<Any>(throwable)
         })
 
     }

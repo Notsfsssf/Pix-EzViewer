@@ -32,6 +32,10 @@ private const val ARG_PARAM2 = "param2"
  *
  */
 class IllustratorFragment :LazyV4Fragment(), AdapterView.OnItemSelectedListener {
+    override fun loadData() {
+        viewModel!!.first(param1!!, restrict, param2!!)
+    }
+
     var firststart = true
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
         when (p2) {
@@ -62,14 +66,22 @@ class IllustratorFragment :LazyV4Fragment(), AdapterView.OnItemSelectedListener 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerview_illustrator.adapter = userShowAdapter
-    }
-    override fun lazyLoad() {
-
         recyclerview_illustrator.layoutManager = LinearLayoutManager(activity!!.applicationContext, RecyclerView.VERTICAL, false)
         spinner_illustrator.onItemSelectedListener = this
         userShowAdapter.setOnLoadMoreListener({
             viewModel!!.OnLoadMore(viewModel!!.nexturl.value!!)
         }, recyclerview_illustrator)
+        swiperefresh_illustrator.setOnRefreshListener {
+            viewModel!!.OnRefresh(param1!!, restrict, param2!!)
+        }
+        userShowAdapter.setOnItemClickListener { adapter, view, position ->
+            val intent = Intent(activity!!.applicationContext, UserMActivity::class.java)
+            val userid = viewModel!!.userpreviews.value!![position].user.id
+            intent.putExtra("data", userid)
+            startActivity(intent)
+        }
+    }
+    fun lazyLoad() {
         viewModel = ViewModelProviders.of(this).get(IllustratorViewModel::class.java)
         viewModel!!.userpreviews.observe(this, Observer {
             userpreviews(it)
@@ -80,21 +92,14 @@ class IllustratorFragment :LazyV4Fragment(), AdapterView.OnItemSelectedListener 
         viewModel!!.adduserpreviews.observe(this, Observer {
             adduserpreviews(it)
         })
-        viewModel!!.first(param1!!, restrict, param2!!)
-        swiperefresh_illustrator.setOnRefreshListener {
-            viewModel!!.OnRefresh(param1!!, restrict, param2!!)
-        }
+
+
         viewModel!!.refreshcomplete.observe(this, Observer {
             if (it != null) {
                 swiperefresh_illustrator.isRefreshing = false
             }
         })
-        userShowAdapter.setOnItemClickListener { adapter, view, position ->
-            val intent = Intent(activity!!.applicationContext, UserMActivity::class.java)
-            val userid = viewModel!!.userpreviews.value!![position].user.id
-            intent.putExtra("data", userid)
-            startActivity(intent)
-        }
+
     }
 
     private fun adduserpreviews(it: ArrayList<SearchUserResponse.UserPreviewsBean>?) {
@@ -127,6 +132,7 @@ class IllustratorFragment :LazyV4Fragment(), AdapterView.OnItemSelectedListener 
             param1 = it.getLong(ARG_PARAM1)
             param2 = it.getBoolean(ARG_PARAM2)
         }
+        lazyLoad()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

@@ -39,8 +39,8 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class HelloMainFragment : LazyV4Fragment() {
-    override fun lazyLoad() {
+class HelloMainFragment : Fragment() {
+    fun lazyLoad() {
         tablayout.setupWithViewPager(viewpager)
         viewpager.adapter=HelloMRecomViewPager(this@HelloMainFragment.context,childFragmentManager)
     }
@@ -63,8 +63,8 @@ class HelloMainFragment : LazyV4Fragment() {
         return view
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         lazyLoad()
     }
 

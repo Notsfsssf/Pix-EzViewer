@@ -27,9 +27,12 @@ private const val ARG_PARAM1 = "param1"
  *
  */
 class HelloMDynamicsFragment : LazyV4Fragment() {
+    override fun loadData() {
+
+    }
 
 
-    override fun lazyLoad() {
+    fun lazyLoad() {
         initview()
     }
 
@@ -44,7 +47,10 @@ class HelloMDynamicsFragment : LazyV4Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
 
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        lazyLoad()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -55,7 +61,6 @@ class HelloMDynamicsFragment : LazyV4Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_hello_mdynamics, container, false)
     }
 

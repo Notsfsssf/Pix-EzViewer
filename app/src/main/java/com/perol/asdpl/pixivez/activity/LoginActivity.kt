@@ -82,7 +82,7 @@ class LoginActivity : RinkActivity() {
             if (!sharedPreferencesServices!!.getBoolean("firstinfo")) {
                 val normalDialog = AlertDialog.Builder(this)
                 normalDialog.setMessage("1.在图片详情页长按可以保存选定图片，长按头像快速关注作者，请提供应用权限\n2.浏览动图时，点击播放按钮等待合成动图，完毕即可播放,合成过程内存开销相当之大,偶发崩溃不可避免\n3.若播放动图页面长时间白屏,请退出页面或者清除缓存后重试,这一般会起作用\n" +
-                        "4.这是一个个人开发的应用,反馈请发邮件到设置页标注的邮箱,个人精力和能力是有限的,请不要使用极端方式进行反馈,体谅开发者,也欢迎共同开发设计\n5.限制总开关在官网里，遇到无权限访问的插画，自行至网页开启，开发者不提供帮助服务，开发者并不是老好人"
+                        "4.这是一个个人开发的应用,反馈请发邮件到设置页标注的邮箱,个人精力和能力是有限的,请不要使用极端方式进行反馈,体谅开发者,也欢迎共同开发设计\n5.遇到更新后闪退的问题,请尝试清除应用数据,多数情况下这是有效的\n6.限制总开关在官网里，遇到无权限访问的插画，自行至网页开启，开发者不提供帮助服务，开发者并不是老好人"
                 )
                 normalDialog.setTitle("请务必读完")
                 normalDialog.setPositiveButton("不再提示"
@@ -91,16 +91,6 @@ class LoginActivity : RinkActivity() {
                 }
                 normalDialog.show()
             }
-//            if (!sharedPreferencesServices!!.getBoolean("readproxy")) {
-//                val normalDialog = AlertDialog.Builder(this, R.style.AlertDialogCustom)
-//                normalDialog.setMessage("1.应用可以在大陆地区直连获得数据，与其他应用不同，不借助任何第三方服务器或DNS中继，通过改写通讯底层实现，请放心使用\n2.应用是完全免费的，没有进行过任何出售贩卖APP的行为\n3.应用本身因为各种原因不是且不希望开源\n4.应用集成了Bugly来推送更新和收集错误信息，如果十分介意请卸载本应用")
-//                normalDialog.setTitle("!使用前")
-//                normalDialog.setPositiveButton("不再提示"
-//                ) { dialog, which ->
-//                    sharedPreferencesServices!!.setBoolean("readproxy", true)
-//                }
-//                normalDialog.show()
-//            }
         } catch (e: Exception) {
 
         }

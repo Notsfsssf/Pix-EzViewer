@@ -3,17 +3,12 @@ package com.perol.asdpl.pixivez.fragments.HelloM
 
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
-import android.os.SharedMemory
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +23,6 @@ import com.perol.asdpl.pixivez.viewmodel.RankingMViewModel
 import com.perol.asdpl.pixivez.viewmodel.factory.RankingShareViewModel
 import org.jetbrains.anko.*
 import org.jetbrains.anko.design.coordinatorLayout
-import org.jetbrains.anko.design.floatingActionButton
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.support.v4.UI
 import org.jetbrains.anko.support.v4.swipeRefreshLayout
@@ -44,20 +38,21 @@ private const val ARG_PARAM1 = "param1"
  *
  */
 class RankingMFragment : LazyV4Fragment(), DateDialog.Callback {
-    override fun onClick(data: String?) {
-        Log.d("s",data)
-        sharemodel!!.picdateshare.value=data
+    override fun loadData() {
+        viewmodel!!.first(param1!!, picDate)
     }
 
-    var picdate: String? = null
-    var viewmodel: RankingMViewModel? = null
-    var sharemodel:RankingShareViewModel?=null
-    override fun lazyLoad() {
+    override fun onClick(data: String?) {
+        Log.d("s", data)
+        sharemodel!!.picdateshare.value = data
+    }
 
-        viewmodel = ViewModelProviders.of(this).get(RankingMViewModel::class.java)
-      sharemodel  = ViewModelProviders.of(activity!!).get(RankingShareViewModel::class.java)
+    var picDate: String? = null
+    var viewmodel: RankingMViewModel? = null
+    var sharemodel: RankingShareViewModel? = null
+    fun lazyLoad() {
         sharemodel!!.picdateshare.observe(this, Observer {
-            viewmodel!!.datapick(param1!!,it)
+            viewmodel!!.datapick(param1!!, it)
         })
         viewmodel!!.addillusts.observe(this, Observer {
             if (it != null) {
@@ -80,22 +75,22 @@ class RankingMFragment : LazyV4Fragment(), DateDialog.Callback {
                 rankingAdapter.loadMoreComplete()
             }
         })
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        activity!!.findViewById<ImageView>(R.id.imageview_triangle).apply {
+            setOnClickListener {
+                val dateDialog = DateDialog()
+                dateDialog.callback = this@RankingMFragment
+                dateDialog.show(childFragmentManager)
+            }
+        }
         swiperefresh_rankingm.setOnRefreshListener {
-            viewmodel!!.OnRefresh(param1!!, picdate)
+            viewmodel!!.OnRefresh(param1!!, picDate)
         }
         rankingAdapter.setOnLoadMoreListener({
             viewmodel!!.OnLoadMore()
         }, recyclerview_rankingm)
-        viewmodel!!.first(param1!!, picdate)
-        activity!!.findViewById<ImageView>(R.id.imageview_triangle).apply {
-        setOnClickListener {
-            val dateDialog = DateDialog()
-            dateDialog.callback = this@RankingMFragment
-            dateDialog.show(childFragmentManager)
-        }
-    }
-
-
     }
 
     lateinit var rankingAdapter: RankingAdapter
@@ -103,16 +98,15 @@ class RankingMFragment : LazyV4Fragment(), DateDialog.Callback {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
         }
+        viewmodel = ViewModelProviders.of(this).get(RankingMViewModel::class.java)
+        sharemodel = ViewModelProviders.of(activity!!).get(RankingShareViewModel::class.java)
+        lazyLoad()
     }
 
     lateinit var swiperefresh_rankingm: SwipeRefreshLayout
