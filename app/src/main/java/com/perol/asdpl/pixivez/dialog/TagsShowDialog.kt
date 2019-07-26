@@ -115,7 +115,7 @@ class TagsShowDialog : DialogFragment() {
                 runBlocking {
                     Authorization = AppDataRepository.getUser().Authorization
                 }
-                appApiPixivService.getNexttags(Authorization, nexturl)
+                appApiPixivService.getNexttags(Authorization, nexturl!!)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())
                         .subscribe({

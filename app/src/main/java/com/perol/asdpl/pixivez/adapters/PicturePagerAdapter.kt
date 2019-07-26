@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.PagerAdapter
 import com.perol.asdpl.pixivez.fragments.PictureMFragment
+import com.perol.asdpl.pixivez.fragments.PictureXFragment
 
 class PicturePagerAdapter(fm: FragmentManager, private val fragments: LongArray) : FragmentStatePagerAdapter(fm, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
@@ -16,7 +17,7 @@ class PicturePagerAdapter(fm: FragmentManager, private val fragments: LongArray)
 
     override fun getItem(position: Int): Fragment {
 
-        return PictureMFragment.newInstance(fragments[position])
+        return PictureXFragment.newInstance(fragments[position])
     }
 
     override fun getCount(): Int {

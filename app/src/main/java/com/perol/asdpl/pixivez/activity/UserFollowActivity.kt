@@ -79,10 +79,10 @@ class UserFollowActivity : RinkActivity() {
         //        appApiPixivService.getUserFollower(Authorization,userid)
         Observable.just(1).flatMap {
             if (isfollower!!) {
-                appApiPixivService!!.getUserFollower(Authorization, userid)
+                appApiPixivService!!.getUserFollower(Authorization!!, userid)
 
             } else
-                appApiPixivService!!.getUserFollowing(Authorization, userid, restrict)
+                appApiPixivService!!.getUserFollowing(Authorization!!, userid, restrict)
         }.observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(object : Observer<SearchUserResponse> {
@@ -127,7 +127,7 @@ class UserFollowActivity : RinkActivity() {
 
                         userShowAdapter!!.setOnLoadMoreListener({
                             if (Next_url != null) {
-                                appApiPixivService!!.getNextUser(Authorization, Next_url).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+                                appApiPixivService!!.getNextUser(Authorization!!, Next_url!!).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
                                         .subscribe(object : Observer<SearchUserResponse> {
                                             override fun onSubscribe(d: Disposable) {
 
@@ -164,7 +164,7 @@ class UserFollowActivity : RinkActivity() {
     }
 
     private fun againrefresh() {
-        appApiPixivService!!.getUserFollowing(Authorization, userid, restrict).observeOn(AndroidSchedulers.mainThread())
+        appApiPixivService!!.getUserFollowing(Authorization!!, userid, restrict).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(object : Observer<SearchUserResponse> {
                     override fun onSubscribe(d: Disposable) {

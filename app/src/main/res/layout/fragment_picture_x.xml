@@ -2,9 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <data>
-
         <variable
             name="illust"
             type="com.perol.asdpl.pixivez.responses.IllustBean" />
@@ -15,28 +13,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".fragments.PictureFragment">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize" />
-
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview_srcpicture"
+                android:id="@+id/recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout_fold"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="68dp"
+                android:visibility="invisible"
                 android:layout_gravity="bottom"
-                android:background="@android:color/background_light"
-                android:visibility="gone">
+                android:background="@android:color/background_light">
 
                 <ImageButton
                     android:id="@+id/imageButton"
@@ -55,6 +46,7 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageButton"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -63,10 +55,13 @@
                     android:id="@+id/textView6"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:text="@{illust.title}"
                     android:textColor="?attr/colorPrimary"
+                    android:lines="1"
+                    android:ellipsize="end"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView5"
                     app:layout_constraintTop_toTopOf="@+id/imageView5" />
@@ -76,6 +71,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:lines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/black"
                     android:layout_marginEnd="8dp"
                     android:text="@{illust.user.name}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -86,8 +84,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:textSize="12sp"
                     android:layout_marginEnd="8dp"
                     android:text="@{illust.create_date}"
+                    android:textColor="@android:color/darker_gray"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView5"
                     app:layout_constraintTop_toBottomOf="@+id/textView21" />

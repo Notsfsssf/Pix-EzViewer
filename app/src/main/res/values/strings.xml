@@ -251,4 +251,7 @@
     <string name="add">添加</string>
     <string name="logoutallaccount">登出所有账户？</string>
     <string name="mypage">我的主页</string>
+    <string name="savegifsuccess">Saved ugoira</string>
+    <string name="savegifsuccesserr">Saved ugoira error</string>
+    <string name="encodegif">合成动图？</string>
 </resources>

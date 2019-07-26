@@ -31,8 +31,8 @@
                            android:id="@+id/tablayout_searchresult"
                            android:layout_width="wrap_content"
                            app:tabIndicatorFullWidth="false"
-                           app:tabIndicatorHeight="3dp"
-                           app:tabIndicatorColor="@color/white"
+                           app:tabIndicatorHeight="0dp"
+
                            style="@style/Widget.MaterialComponents.TabLayout.Colored"
                            app:tabMode="scrollable"
                            android:layout_height="wrap_content" />

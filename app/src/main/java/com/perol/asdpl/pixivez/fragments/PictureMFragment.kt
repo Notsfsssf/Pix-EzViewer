@@ -11,12 +11,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewManager
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.PictureActivity
@@ -35,11 +37,11 @@ import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.services.Works
 import com.perol.asdpl.pixivez.viewmodel.PictureMViewModel
-import com.perol.asdpl.pixivez.viewmodel.factory.PictureFactory
 import com.zhy.view.flowlayout.FlowLayout
 import com.zhy.view.flowlayout.TagAdapter
 import com.zhy.view.flowlayout.TagFlowLayout
 import kotlinx.android.synthetic.main.fragment_picture_m.*
+import kotlinx.android.synthetic.main.view_trendingtag_item.view.*
 import org.jetbrains.anko.*
 import org.jetbrains.anko.cardview.v7.cardView
 import org.jetbrains.anko.constraint.layout.constraintLayout
@@ -63,25 +65,21 @@ private const val ARG_PARAM1 = "param1"
  */
 class PictureMFragment : Fragment() {
 
+
     var imagebutton_gif: ImageView? = null
     var progressBar: ProgressBar? = null
     lateinit var pictureMViewModel: PictureMViewModel
     var pictureAdapter: PictureAdapter? = null
-
-
-    fun lazyLoad() {
-        val pictureAdapter1 = PictureAdapter(R.layout.view_picture_item1, null, null)
-        pictureAdapter1.emptyView = layoutInflater.inflate(R.layout.empty_picture, null)
-        recyclerview_srcpicture.adapter = pictureAdapter1
-        val typedValue = TypedValue();
-        activity!!.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
-        colorPrimary = typedValue.resourceId
-
-
-    }
-
-
     lateinit var aboutPictureAdapter: AboutPictureAdapter
+    private var isLoaded = false
+    var pic_image_back: ImageView? = null
+    var colorPrimary: Int = 0
+    private var gifAdapter: GifAdapter? = null
+    private var alreadyVisible = false
+    var viewinfoot: View? = null
+    private var param1: Long? = null
+    lateinit var view: FragmentPictureMBinding
+    var constrains: ConstraintLayout? = null
 
 
     private fun initView() {
@@ -95,26 +93,55 @@ class PictureMFragment : Fragment() {
             pictureMViewModel.fabsetOnLongClick()
             true
         }
+        imageButton.setOnClickListener {
+            if (pictureAdapter != null)
+                recyclerview_srcpicture.smoothScrollToPosition(pictureAdapter!!.data.size - 1)
+        }
+        imageView5.setOnClickListener {
+            val intent = Intent(context, UserMActivity::class.java)
+            intent.putExtra("data", pictureMViewModel.illustDetailResponse.value!!.illust.user.id)
+            startActivity(intent)
+        }
+
+        recyclerview_srcpicture.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (constrains != null) {
+                    if (constrains!!.hasWindowFocus()) {
+
+                        constraintLayout_fold.visibility = View.GONE
+                    } else {
+                        constraintLayout_fold.visibility = View.VISIBLE
+                    }
+                }
+            }
+        })
+        val pictureAdapter1 = PictureAdapter(R.layout.view_picture_item1, null, null)
+        pictureAdapter1.emptyView = layoutInflater.inflate(R.layout.empty_picture, null)
+        recyclerview_srcpicture.adapter = pictureAdapter1
+        val typedValue = TypedValue();
+        activity!!.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
+        colorPrimary = typedValue.resourceId
     }
 
-    private var isLoaded = false
+
     override fun onResume() {
         super.onResume()
         if (!isLoaded) {
-            isLoaded=true
+            isLoaded = true
             pictureMViewModel.firstget(param1!!.toLong())
         }
     }
 
     private fun initData() {
-
+        pictureMViewModel = ViewModelProviders.of(this).get(PictureMViewModel::class.java)
         pictureMViewModel.illustDetailResponse.observe(this, androidx.lifecycle.Observer {
             if (it != null) {
                 if (it.illust.type.contains("ugoira")) {
-                    loadimages(it)
-                    loadgif(it)
+                    loadImages(it)
+                    loadGif(it)
                 } else {
-                    loadimages(it)
+                    loadImages(it)
                 }
             }
         })
@@ -122,20 +149,20 @@ class PictureMFragment : Fragment() {
             showTagsDialog(it)
         })
         pictureMViewModel.ugoiraMetadataResponse.observe(this, Observer {
-            loadinggif(it)
+            loadingGif(it)
         })
         pictureMViewModel.followuser.observe(this, Observer {
             followUser(it)
 
         })
         pictureMViewModel.likeillust.observe(this, Observer {
-            bookmark(it)
+            bookMark(it)
         })
         pictureMViewModel.downloadgifsucc.observe(this, Observer {
-            playgif(it)
+            playGif(it)
         })
         pictureMViewModel.aboutpics.observe(this, Observer {
-            aboutpics(it)
+            aboutPic(it)
         })
 
         pictureMViewModel.progress.observe(this, Observer {
@@ -145,7 +172,7 @@ class PictureMFragment : Fragment() {
 
     }
 
-    private fun aboutpics(it: ArrayList<IllustsBean>?) {
+    private fun aboutPic(it: ArrayList<IllustsBean>?) {
         if (it != null) {
             val a = ArrayList<String>()
             it.map { a.add(it.image_urls.square_medium) }
@@ -153,7 +180,8 @@ class PictureMFragment : Fragment() {
         }
     }
 
-    private fun showTagsDialog(it: List<BookMarkDetailResponse.BookmarkDetailBean.TagsBean>?) {
+    private fun showTagsDialog(itRaw: BookMarkDetailResponse.BookmarkDetailBean) {
+        val it = itRaw.tags
         val arrayList = ArrayList<String>()
         if (it != null && !pictureMViewModel.likeillust.value!!) {
             it.map {
@@ -197,7 +225,7 @@ class PictureMFragment : Fragment() {
                         }
                         switch = switch {
                             hint = resources.getString(R.string.privatep)
-                            isChecked = pictureMViewModel.illustDetailResponse.value!!.illust.isIs_bookmarked
+                            isChecked = !itRaw.restrict.equals("public")
                         }.lparams(width = matchParent, height = wrapContent) {
                             marginStart = dip(8)
                             marginEnd = dip(8)
@@ -222,9 +250,6 @@ class PictureMFragment : Fragment() {
         }
     }
 
-
-    var pic_image_back: ImageView? = null
-    var colorPrimary: Int = 0
     private fun followUser(it: Boolean?) {
         if (it != null) {
             if (it) {
@@ -235,9 +260,7 @@ class PictureMFragment : Fragment() {
         }
     }
 
-    private var gifAdapter: GifAdapter? = null
-    private var alreadyVisible = false
-    private fun loadinggif(it: UgoiraMetadataResponse?) {
+    private fun loadingGif(it: UgoiraMetadataResponse?) {
         val path = activity!!.applicationContext!!.cacheDir.path + "/" + pictureMViewModel.illustDetailResponse.value!!.illust.id.toString()
         val files = ArrayList<File>()
         files.add(File(path))
@@ -249,11 +272,11 @@ class PictureMFragment : Fragment() {
         }
         imagebutton_gif!!.setOnClickListener {
             imagebutton_gif!!.visibility = View.GONE
-            downloadgif()
+            downloadGif()
         }
     }
 
-    private fun playgif(it: Boolean?) {
+    private fun playGif(it: Boolean?) {
         if (it != null) {
             val file = File(PxEZApp.instance.cacheDir.path + "/" + pictureMViewModel.illustDetailResponse.value!!.illust.id)
             try {
@@ -264,7 +287,7 @@ class PictureMFragment : Fragment() {
         }
     }
 
-    private fun isgifdownloaded(): Boolean {
+    private fun isGifDownloaded(): Boolean {
         val ugoria = pictureMViewModel.ugoiraMetadataResponse.value!!.ugoira_metadata.frames
         val finalfilename = ugoria.get(ugoria.size - 1).getFile();
         val firstfilename = ugoria.get(0).getFile();
@@ -278,51 +301,32 @@ class PictureMFragment : Fragment() {
         return ankoView({ TagFlowLayout(it) }, theme = 0, init = init)
     }
 
-    private fun downloadgif() {
+    private fun downloadGif() {
         Toasty.info(activity!!.applicationContext, "等待加载zip", Toast.LENGTH_LONG).show()
-        if (!isgifdownloaded()) {
+        if (!isGifDownloaded()) {
             pictureMViewModel.downloadzip(pictureMViewModel.ugoiraMetadataResponse.value!!.ugoira_metadata.zip_urls.medium)
 
         } else pictureMViewModel.downloadgifsucc.value = true
     }
 
-    private fun bookmark(it: Boolean?) {
+    private fun bookMark(it: Boolean?) {
         if (it != null) {
             if (it) {
-                GlideApp.with(this).load(R.drawable.heart_red).into(fab)
+                    GlideApp.with(this).load(R.drawable.heart_red).into(fab)
             } else {
                 GlideApp.with(this).load(R.drawable.ic_action_heart).into(fab)
+
             }
 
         }
     }
 
-    private fun loadgif(it: IllustDetailResponse) {
+    private fun loadGif(it: IllustDetailResponse) {
         pictureMViewModel.loadgif(it.illust.id)
     }
 
-    private object Ids {
-        val userpic = 1
-        val username = 2
-        val title = 3
-        val date = 4
-        val chahuaid = 5
-        val illustid = 6
-        val chakan = 7
-        val totalview = 8
-        val shoucang = 9
-        val totalbookmark = 10
-        val fenbianlv = 11
-        val pix = 12
-        val pic_user = 13
-        val recyclerview_aboutpic = 14
-        val search_page_flowlayout = 15
-
-
-    }
-
-    var viewinfoot: View? = null
-    private fun loadimages(it: IllustDetailResponse) {
+    private fun loadImages(it: IllustDetailResponse) {
+        view.illust = it.illust
         val imageurls: ArrayList<String> = ArrayList()
         val mVals = ArrayList<String>()
         it.illust.tags.map {
@@ -354,7 +358,7 @@ class PictureMFragment : Fragment() {
         viewinfoot = UI {
             linearLayout {
                 orientation = LinearLayout.VERTICAL
-                constraintLayout {
+                constrains = constraintLayout {
                     val userpic = frameLayout {
                         id = Ids.userpic
                         pic_image_back = imageView {
@@ -616,6 +620,8 @@ class PictureMFragment : Fragment() {
             }
         }.view)
         recyclerview_srcpicture.adapter = pictureAdapter
+
+
         pictureAdapter!!.callback = object : PictureAdapter.Callback {
             override fun onFirst() {
                 activity!!.startPostponedEnterTransition()
@@ -629,18 +635,13 @@ class PictureMFragment : Fragment() {
 
     }
 
-    private var param1: Long? = null
-
-    lateinit var view: FragmentPictureMBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getLong(ARG_PARAM1)
         }
-        pictureMViewModel = ViewModelProviders.of(this).get(PictureMViewModel::class.java)
         initData()
     }
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -650,11 +651,25 @@ class PictureMFragment : Fragment() {
         return view.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initView()
-        lazyLoad()
+    }
 
+    private object Ids {
+        val userpic = 1
+        val username = 2
+        val title = 3
+        val date = 4
+        val chahuaid = 5
+        val illustid = 6
+        val chakan = 7
+        val totalview = 8
+        val shoucang = 9
+        val totalbookmark = 10
+        val fenbianlv = 11
+        val pix = 12
+        val pic_user = 13
     }
 
     companion object {

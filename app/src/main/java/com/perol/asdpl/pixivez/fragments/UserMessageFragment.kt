@@ -42,7 +42,7 @@ class UserMessageFragment : Fragment() {
             textView_tacomment!!.text = mParam1!!.user.comment
         else
             textView_tacomment!!.text = "ta还未留下任何信息哦"
-        val mInflater = LayoutInflater.from(activity)
+        val mInflater = LayoutInflater.from(activity!!)
         textView_fans!!.text = mParam1!!.profile.total_mypixiv_users.toString()
         textView_fans!!.setOnClickListener {
             val intent = Intent(activity!!.applicationContext, UserFollowActivity::class.java)
@@ -85,7 +85,7 @@ class UserMessageFragment : Fragment() {
                         run {
                             if (mParam1!!.profile.twitter_url == null)
                                 return true
-                            else if (mParam1!!.profile.twitter_url != "") {
+                            else if (mParam1!!.profile.twitter_url.isNotBlank()) {
                                 val uri = Uri.parse(mParam1!!.profile.twitter_url)
                                 val intent = Intent()
                                 intent.action = Intent.ACTION_VIEW
@@ -93,19 +93,19 @@ class UserMessageFragment : Fragment() {
                                 startActivity(intent)
                             }
                         }
-                        run {
-                            if (mParam1!!.profile.pawoo_url == null)
-                                return true
-                            else if (mParam1!!.profile.pawoo_url != "") {
-                                val uri = Uri.parse(mParam1!!.profile.pawoo_url)
-                                val intent = Intent()
-                                intent.action = Intent.ACTION_VIEW
-                                intent.data = uri
-                                startActivity(intent)
-                            }
-
-
-                        }
+//                        run {
+//                            if (mParam1!!.profile.pawoo_url == null)
+//                                return true
+//                            else if (mParam1!!.profile.pawoo_url.isNotBlank()) {
+//                                val uri = Uri.parse(mParam1!!.profile.pawoo_url)
+//                                val intent = Intent()
+//                                intent.action = Intent.ACTION_VIEW
+//                                intent.data = uri
+//                                startActivity(intent)
+//                            }
+//
+//
+//                        }
                     }
                     1 -> {
                         if (mParam1!!.profile.pawoo_url == null)

@@ -118,6 +118,7 @@
             android:id="@+id/textView_tacomment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textIsSelectable="true"
             android:padding="5dp"
             android:text="eaffffffffffffffffffffffffffffffffffffffffffefaoijjjjjawhgfoawehgovnhaogvnhoarnons" />
     </androidx.cardview.widget.CardView>

@@ -25,6 +25,7 @@ public class IllustBean extends BaseObservable {
     private int width;
     private int height;
     private int sanity_level;
+    private int x_restrict;
     private Object series;
     private MetaSinglePageBean meta_single_page;
     private int total_view;
@@ -223,6 +224,14 @@ public class IllustBean extends BaseObservable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public int getX_restrict() {
+        return x_restrict;
+    }
+
+    public void setX_restrict(int x_restrict) {
+        this.x_restrict = x_restrict;
     }
 
     public static class ImageUrlsBean {

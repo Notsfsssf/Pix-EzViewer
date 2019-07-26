@@ -88,7 +88,7 @@ class PictureAdapter(layoutResId: Int, data: List<String>?, private val data1: I
             intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
             mContext.startActivity(intent)
         }
-        GlideApp.with(imageView.context).load(item).placeholder(R.color.white).transition(withCrossFade()).skipMemoryCache(true).listener(object : RequestListener<Drawable> {
+        GlideApp.with(imageView.context).load(item).placeholder(R.color.white).transition(withCrossFade()).error(R.drawable.buzhisuocuo).listener(object : RequestListener<Drawable> {
 
             override fun onLoadFailed(e: GlideException?, model: Any, target: Target<Drawable>, isFirstResource: Boolean): Boolean {
                 return false

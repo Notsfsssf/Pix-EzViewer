@@ -98,7 +98,7 @@
              />
         <activity
             android:name=".activity.PictureActivity"
-            
+
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".activity.ZoomActivity"

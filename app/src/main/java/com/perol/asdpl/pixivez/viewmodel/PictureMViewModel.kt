@@ -25,7 +25,7 @@ class PictureMViewModel : ViewModel() {
     val downloadgifsucc = MutableLiveData<Boolean>()
     val ugoiraMetadataResponse = MutableLiveData<UgoiraMetadataResponse>()
     val aboutpics = MutableLiveData<ArrayList<IllustsBean>>()
-    var tags = MutableLiveData<List<BookMarkDetailResponse.BookmarkDetailBean.TagsBean>>()
+    var tags = MutableLiveData<BookMarkDetailResponse.BookmarkDetailBean>()
     var bean = IllustBean()
     var ready = ObservableField<Boolean>()
     val appDatabase = AppDatabase.getInstance(PxEZApp.instance)
@@ -164,10 +164,10 @@ class PictureMViewModel : ViewModel() {
 
     fun fabsetOnLongClick() {
         val c = retrofitRespository.getBookmarkDetail(illustDetailResponse.value!!.illust.id.toLong())
-
         c!!.subscribe(
                 {
-                    tags.value = it.bookmark_detail.tags
+
+                    tags.value = it.bookmark_detail
 
                 }
                 , {}, {})

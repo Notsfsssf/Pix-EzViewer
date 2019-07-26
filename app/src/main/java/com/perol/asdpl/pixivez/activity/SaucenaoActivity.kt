@@ -47,9 +47,9 @@ class SaucenaoActivity : RinkActivity() {
             startActivityForResult(intent, IMAGE)
 
         }
-        val httpLoggingInterceptor = HttpLoggingInterceptor(object :HttpLoggingInterceptor.Logger{
+        val httpLoggingInterceptor = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
             override fun log(message: String) {
-                Log.d("aaa","$message")
+                Log.d("aaa", "$message")
             }
         })
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -106,11 +106,11 @@ class SaucenaoActivity : RinkActivity() {
                             res = cursor.getString(column_index)
                         }
                         cursor.close();
-                        Toasty.success(this,"解析成功正在上传", Toast.LENGTH_SHORT).show()
+                        Toasty.success(this, "解析成功正在上传", Toast.LENGTH_SHORT).show()
                         val file = File(res)
                         val builder = MultipartBody.Builder()
                         builder.setType(MultipartBody.FORM)
-                        val body =RequestBody.create("image/jpeg".toMediaTypeOrNull(),file)
+                        val body = RequestBody.create("image/jpeg".toMediaTypeOrNull(), file)
                         builder.addFormDataPart("file", file.name, body)
                         api.searchpicforresult(builder.build().part(0)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
                             Toasty.success(this, "上传成功，正在进行匹配", Toast.LENGTH_SHORT).show()
@@ -138,15 +138,15 @@ class SaucenaoActivity : RinkActivity() {
     }
 
     fun trytoParseHtml(string: String) {
-        val arrayList =ArrayList<Long>()
-        runBlocking{
+        val arrayList = ArrayList<Long>()
+        runBlocking {
             val doc = Jsoup.parse(string)
             val el = doc.select("a[href]");
             for (i in el.indices) {
                 val string = el[i].attr("href")
                 Log.d("w", string)
                 if (string.contains("https://www.pixiv.net/member_illust.php?mode=medium&illust_id=")) {
-                    val id=  string.replace("https://www.pixiv.net/member_illust.php?mode=medium&illust_id=", "").toLong()
+                    val id = string.replace("https://www.pixiv.net/member_illust.php?mode=medium&illust_id=", "").toLong()
                     arrayList.add(id)
                 }
 
@@ -154,13 +154,15 @@ class SaucenaoActivity : RinkActivity() {
         }
         val bundle = Bundle()
 
-        val it=arrayList.toLongArray()
-        bundle.putLongArray("illustlist", it)
-        bundle.putLong("illustid", it[0])
-        val intent2 = Intent(applicationContext, PictureActivity::class.java)
-        intent2.putExtras(bundle)
-        startActivity(intent2)
-        GlideApp.with(this).load(ContextCompat.getDrawable(this, R.drawable.buzhisuocuo)).into(imageview)
+if (arrayList.isNotEmpty()){
+    val it = arrayList.toLongArray()
+    bundle.putLongArray("illustlist", it)
+    bundle.putLong("illustid", it[0])
+    val intent2 = Intent(applicationContext, PictureActivity::class.java)
+    intent2.putExtras(bundle)
+    startActivity(intent2)
+}else         GlideApp.with(this).load(ContextCompat.getDrawable(this, R.drawable.buzhisuocuo)).into(imageview)
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -173,7 +175,8 @@ class SaucenaoActivity : RinkActivity() {
 
     var path: String? = null
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-             if (requestCode == IMAGE && resultCode == Activity.RESULT_OK && data != null) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == IMAGE && resultCode == Activity.RESULT_OK && data != null) {
             val selectedImage = data.getData();
             val filePathColumns = arrayOf(MediaStore.Images.Media.DATA);
             val c = getContentResolver().query(selectedImage!!, filePathColumns, null, null, null);

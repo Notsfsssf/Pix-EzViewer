@@ -202,7 +202,7 @@
     <string name="nodiscribe">No explanation~</string>
     <string name="proxy">Not in Mainland China</string>
     <string name="proxydetail">Disable direct link to Pixiv</string>
-    <string name="encodinggif">Encoding Gif</string>
+    <string name="encodinggif">Encoding ugoria</string>
     <string name="privatep">private</string>
     <string name="fetchtags" >fetch tags....</string>
     <string name="publics">公开</string>
@@ -224,5 +224,8 @@
     <string name="errorgif">动图文件似乎出现了损坏，请清除缓存后重试</string>
     <string name="add">Add</string>
     <string name="logoutallaccount">Log out of all accounts？</string>
-    <string name="mypage">我的主页</string>
+    <string name="mypage">My Page</string>
+    <string name="savegifsuccess">Saved ugoira</string>
+    <string name="savegifsuccesserr">Saved ugoira error</string>
+    <string name="encodegif">Encode ugoria?</string>
 </resources>

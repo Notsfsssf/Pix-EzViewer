@@ -10,10 +10,12 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.appcompat.widget.ListPopupWindow
 import androidx.appcompat.widget.SearchView
+import com.google.android.material.tabs.TabLayout
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.TrendingtagAdapter
 import com.perol.asdpl.pixivez.databinding.ActivitySearchMBinding
@@ -73,6 +75,26 @@ class SearchMActivity : RinkActivity() {
             settrendtags(it)
         })
         searchMViewModel.getIllustTrendTags()
+        tablayout_searchm.clearOnTabSelectedListeners()
+        tablayout_searchm.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (tab!=null){
+                    if(tab.position==0){
+                        searchview_searchm.inputType=EditorInfo.TYPE_CLASS_TEXT
+                    }else{
+                        searchview_searchm.inputType=EditorInfo.TYPE_CLASS_NUMBER
+                    }
+                }
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+
+            }
+        })
         searchview_searchm.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null && !query.isBlank())

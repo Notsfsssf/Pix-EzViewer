@@ -67,7 +67,7 @@ class PixivsionActivity : RinkActivity() {
                 runBlocking {
                     Authorization = AppDataRepository.getUser().Authorization
                 }
-                return appApiPixivService!!.getPixivisionArticles(Authorization, "all")
+                return appApiPixivService!!.getPixivisionArticles(Authorization!!, "all")
             }
 
 
@@ -89,7 +89,7 @@ class PixivsionActivity : RinkActivity() {
                                 runBlocking {
                                     Authorization = AppDataRepository.getUser().Authorization
                                 }
-                                appApiPixivService!!.getNextPixivisionArticles(Authorization, Nexturl)
+                                appApiPixivService!!.getNextPixivisionArticles(Authorization!!, Nexturl!!)
                             }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                                     .retryWhen(ReFreshFunction(applicationContext))
                                     .subscribe(object : Observer<SpotlightResponse> {

@@ -7,7 +7,6 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardview_recommand"
-            style="@style/Widget.MaterialComponents.CardView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"

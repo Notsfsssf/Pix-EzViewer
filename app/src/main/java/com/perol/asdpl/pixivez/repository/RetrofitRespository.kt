@@ -1,17 +1,16 @@
 package com.perol.asdpl.pixivez.repository
 
-import com.perol.asdpl.pixivez.R.color.tag
 import com.perol.asdpl.pixivez.networks.RestClient
 import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
 import com.perol.asdpl.pixivez.objects.ReFreshFunction
 import com.perol.asdpl.pixivez.responses.*
 import com.perol.asdpl.pixivez.services.AppApiPixivService
-import com.perol.asdpl.pixivez.services.PxEZApp
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody
+import retrofit2.HttpException
 import java.lang.Exception
 
 
@@ -21,7 +20,7 @@ class RetrofitRespository {
     var restClient = RestClient()
     var appApiPixivService: AppApiPixivService
     var sharedPreferencesServices: SharedPreferencesServices
-    var Authorization: String=""
+    var Authorization: String = ""
     var gifApiPixivService: AppApiPixivService
     var reFreshFunction: ReFreshFunction
 
@@ -33,13 +32,13 @@ class RetrofitRespository {
         reFreshFunction = ReFreshFunction.getInstance()
 
     }
+
     private fun resetToken() {
         runBlocking {
-          try {
-              Authorization = AppDataRepository.getUser().Authorization
-          }catch (e:Exception){
-              e.printStackTrace()
-          }
+            try {
+                Authorization = AppDataRepository.getUser().Authorization
+            } catch (e: Exception) {
+            }
         }
     }
 
@@ -80,7 +79,7 @@ class RetrofitRespository {
         }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).retryWhen(reFreshFunction)
     }
 
-    fun getSearchAutoCompleteKeywords(newText: String?): Observable<PixivResponse> {
+    fun getSearchAutoCompleteKeywords(newText: String): Observable<PixivResponse> {
         return Observable.just(1).flatMap {
             resetToken()
             appApiPixivService.getSearchAutoCompleteKeywords(Authorization, newText)
@@ -173,11 +172,32 @@ class RetrofitRespository {
             }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).retryWhen(reFreshFunction)
 
 
-    fun getIllust(long: Long): Observable<IllustDetailResponse>? {
+    fun getIllust(long: Long): Observable<IllustDetailResponse>{
         return Observable.just(1).flatMap {
             resetToken()
             appApiPixivService.getIllust(Authorization, long)
         }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).retryWhen(reFreshFunction)
+    }
+
+    suspend fun getIllustCor(long: Long): IllustDetailResponse? {
+        var illustDetailResponse: IllustDetailResponse? = null
+        try {
+            illustDetailResponse = appApiPixivService.getIllustCor(Authorization, long)
+        } catch (e: Exception) {
+            if (e is HttpException) {
+                resetToken()
+                getIllustCor(long)
+            }
+        } finally {
+            if (illustDetailResponse == null) {
+                resetToken()
+                getIllustCor(long)
+            }
+
+
+            return illustDetailResponse
+        }
+
     }
 
     fun postUnlikeIllust(long: Long): Observable<ResponseBody> {

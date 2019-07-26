@@ -17,7 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        style="@style/Widget.MaterialComponents.CardView"
         app:cardPreventCornerOverlap="true"
         android:layout_margin="8dp"
         app:cardUseCompatPadding="true">

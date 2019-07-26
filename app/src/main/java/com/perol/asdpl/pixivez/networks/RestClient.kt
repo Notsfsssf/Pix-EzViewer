@@ -165,7 +165,8 @@ class RestClient {
                     val request = requestBuilder.build()
                     return chain.proceed(request)
                 }
-            }).addInterceptor(httpLoggingInterceptor)
+            })
+//                    .addInterceptor(httpLoggingInterceptor)
             if (!PxEZApp.disableProxy) {
                 builder.sslSocketFactory(RubySSLSocketFactory(), object : X509TrustManager {
                     override fun checkClientTrusted(p0: Array<out X509Certificate>?, p1: String?) {

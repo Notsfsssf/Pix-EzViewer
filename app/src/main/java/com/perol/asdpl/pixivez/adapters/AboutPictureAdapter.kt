@@ -11,6 +11,9 @@ class AboutPictureAdapter(layoutResId: Int) : BaseQuickAdapter<String, BaseViewH
 
     override fun convert(helper: BaseViewHolder, item: String) {
         val imageView = helper.getView<ImageView>(R.id.imageview_aboutpic)
-        GlideApp.with(imageView.context).load(item).transition(withCrossFade()).skipMemoryCache(true).into(imageView)
+        if (helper.layoutPosition%2!=0)
+        GlideApp.with(imageView.context).load(item).placeholder(R.color.white).transition(withCrossFade()).centerInside().into(imageView)
+        else
+        GlideApp.with(imageView.context).load(item).placeholder(R.color.gray).transition(withCrossFade()).centerInside().into(imageView)
     }
 }

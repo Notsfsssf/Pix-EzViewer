@@ -80,15 +80,13 @@ class CommentDialog : DialogFragment() {
 
         val restClient = RestClient()
         appApiPixivService = restClient.retrofit_AppAPI.create(AppApiPixivService::class.java)
-        Observable.just(1).flatMap(object : Function<Int, ObservableSource<IllustCommentsResponse>> {
-            override fun apply(t: Int): ObservableSource<IllustCommentsResponse> {
-                var Authorization: String = ""
-                runBlocking {
-                    Authorization = AppDataRepository.getUser().Authorization
-                }
-                return appApiPixivService!!.getIllustComments(Authorization, id!!)
+        Observable.just(1).flatMap {
+            var Authorization: String = ""
+            runBlocking {
+                Authorization = AppDataRepository.getUser().Authorization
             }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            appApiPixivService!!.getIllustComments(Authorization, id!!)
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .retryWhen(ReFreshFunction(context!!))
                 .subscribe(object : Observer<IllustCommentsResponse> {
                     override fun onSubscribe(d: Disposable) {
@@ -102,7 +100,7 @@ class CommentDialog : DialogFragment() {
                         recyclerviewPicture.adapter = commentAdapter
                         recyclerviewPicture.addItemDecoration(DividerItemDecoration(context!!, DividerItemDecoration.HORIZONTAL))
                         commentAdapter!!.setOnItemClickListener { adapter, view, position ->
-                            val builder = androidx.appcompat.app.AlertDialog.Builder(activity!!, R.style.AlertDialogCustom)
+                            val builder = AlertDialog.Builder(activity!!)
 
                             val comment = illustCommentsResponse.comments[position].comment
                             builder.setMessage(comment)
@@ -138,7 +136,7 @@ class CommentDialog : DialogFragment() {
     }
 
     fun commit() {
-        appApiPixivService!!.postIllustComment(Authorization, id!!, edittextComment.text.toString(), if (Parent_comment_id == 1) null else Parent_comment_id)
+        appApiPixivService!!.postIllustComment(Authorization!!, id!!, edittextComment.text.toString(), if (Parent_comment_id == 1) null else Parent_comment_id)
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<ResponseBody> {
                     override fun onSubscribe(d: Disposable) {
