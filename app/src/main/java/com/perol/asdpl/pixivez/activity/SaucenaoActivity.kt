@@ -90,7 +90,7 @@ class SaucenaoActivity : RinkActivity() {
 
         if (intent != null) {
             val action = intent.action;
-            val type = intent.getType();
+            val type = intent.type;
             if (action != null && type != null)
                 if (action.equals(Intent.ACTION_SEND) && type.startsWith("image/")) {
                     val uri = intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM);

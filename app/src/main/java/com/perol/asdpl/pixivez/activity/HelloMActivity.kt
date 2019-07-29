@@ -18,6 +18,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -87,7 +88,7 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
         return false
     }
 
-    var activityHelloMBinding: ActivityHelloMBinding? = null
+    private var activityHelloMBinding: ActivityHelloMBinding? = null
     lateinit var sharedPreferencesServices: SharedPreferencesServices
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
@@ -110,7 +111,7 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
         }
     }
 
-    lateinit var header: AccountHeader
+    private lateinit var header: AccountHeader
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPreferencesServices = SharedPreferencesServices.getInstance()
@@ -303,10 +304,14 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
 
                 }
                 if (drawerItem.identifier == 888L) {
-                    val url = "https://github.com/Notsfsssf"
-                    val uri = Uri.parse(url)
-                    val intent = Intent(Intent.ACTION_VIEW, uri)
-                    startActivity(intent)
+                 try{
+                     val url = "https://github.com/Notsfsssf"
+                     val uri = Uri.parse(url)
+                     val intent = Intent(Intent.ACTION_VIEW, uri)
+                     startActivity(intent)
+                 }catch (e:Exception){
+
+                 }
                 }
                 return true
             }
@@ -429,112 +434,7 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
         }
 
     }
-//    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-//        // Handle navigation view item clicks here.
-//        when (item.itemId) {
-//            R.id.nav_gallery -> {
-//                startActivity(Intent(applicationContext, SaucenaoActivity::class.java))
-//            }
-//            R.id.nav_slideshow -> {
-//                clearn()
-//            }
-//            R.id.nav_manage -> {
-//                val intent = Intent(applicationContext, AboutActivity::class.java)
-//                startActivity(intent)
-//            }
-//            R.id.nav_theme -> {
-//                val list = ArrayList<ThemeColorInterface>().also {
-//                    val myCustomColor1 = CustomThemeColor(
-//                            this,
-//                            R.style.bili_primary_color,
-//                            R.style.bili_primary_dark_color,
-//                            R.color.pink, // <= use the color you defined in my_custom_primary_color
-//                            R.color.pink // <= use the color you defined in my_custom_primary_dark_color
-//                    )
-//                    val myCustomColor2 = CustomThemeColor(
-//                            this,
-//                            R.style.blue_primary_color,
-//                            R.style.blue_primary_dark_color,
-//                            R.color.blue, // <= use the color you defined in my_custom_primary_color
-//                            R.color.blue // <= use the color you defined in my_custom_primary_dark_color
-//                    )
-//                    it += ThemeColor.BLUE
-//                    it += ThemeColor.AMBER
-//                    it += ThemeColor.GREEN
-//                    it += ThemeColor.PINK
-//                    it += ThemeColor.PURPLE
-//                    it += ThemeColor.BLUE_GREY
-//                    it += ThemeColor.ORANGE
-//                    it += ThemeColor.RED
-//                    it += ThemeColor.TEAL
-//                    it += ThemeColor.LIGHT_BLUE
-//                    it += ThemeColor.LIGHT_GREEN
-//                    it += myCustomColor1
-//                    it += myCustomColor2
-//                }
-//                alert {
-//                    title = "选择主题"
-//                    customView {
-//                        verticalLayout {
-//                            recyclerView {
-//                                layoutManager = GridLayoutManager(this@HelloMActivity, 4)
-//                                adapter = ColorfulAdapter(R.layout.view_colorfulitem, list).apply {
-//                                    onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
-//                                        sharedPreferencesServices.setInt("colornum", position)
-//                                        Colorful().edit().setPrimaryColor(list[position]).apply(applicationContext) {
-//                                            recreate()
-//                                        }
-//                                    }
-//                                }
-//                            }.lparams(height = dip(0), width = matchParent) {
-//                                topMargin = dip(20)
-//                                weight = 5f
-//                            }
-//                            switch {
-//                                hint = "Dark"
-//                                isChecked = Colorful().getDarkTheme()
-//                                setOnCheckedChangeListener { compoundButton, b ->
-//                                    Colorful().edit().setDarkTheme(isChecked).apply(this@HelloMActivity.applicationContext).apply {
-//                                        recreate()
-//                                    }
-//                                }
-//                            }.lparams(height = dip(0), width = matchParent) {
-//                                weight = 1f
-//                                marginStart = dip(8)
-//                                marginEnd = dip(8)
-//                            }
-//                        }
-//                    }
-//
-//                }.show()
-//            }
-//            R.id.nav_history -> {
-//                val intent = Intent(applicationContext, HistoryMActivity::class.java)
-//                startActivity(intent)
-//            }
-//            R.id.nav_share -> {
-//                val url = "https://github.com/Notsfsssf"
-//                val uri = Uri.parse(url)
-//                val intent = Intent(Intent.ACTION_VIEW, uri)
-//                startActivity(intent)
-//            }
-//            R.id.nav_send -> {
-//                sharedPreferencesServices.setBoolean("islogin", false)
-//                Observable.just(1).observeOn(Schedulers.io()).subscribe({
-//                    appDatabase.userDao().deleteUser()
-//                }, {}, {})
-//                startActivity(Intent(this, LoginActivity::class.java))
-//                finish()
-//            }
-//            R.id.nav_regist -> {
-//                val registerDialog = RegisterDialog()
-//                registerDialog.show(supportFragmentManager)
-//            }
-//        }
-//
-//        drawer_layout.closeDrawer(GravityCompat.START)
-//        return true
-//    }
+
 
     private fun clearn() {
         val normalDialog = AlertDialog.Builder(this)

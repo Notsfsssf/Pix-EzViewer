@@ -139,7 +139,7 @@ class RecommendAdapter(layoutResId: Int, data: List<IllustsBean>?, private val R
         when (item.type) {
             "illust" -> if (item.meta_pages.isEmpty()) {
                 constraintLayout.visibility = View.INVISIBLE
-            } else if (!item.meta_pages.isEmpty()) {
+            } else if (item.meta_pages.isNotEmpty()) {
                 constraintLayout.visibility = View.VISIBLE
                 helper.setText(R.id.textview_num, item.meta_pages.size.toString())
             }
@@ -169,7 +169,7 @@ class RecommendAdapter(layoutResId: Int, data: List<IllustsBean>?, private val R
                 }
             }
             if (isr18) {
-                imageView.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.h))
+                GlideApp.with(imageView.context).load(ContextCompat.getDrawable(mContext, R.drawable.h)).into(imageView)
             } else {
                 GlideApp.with(imageView.context).load(loadurl)
                         .transition(withCrossFade()).placeholder(R.color.grayx)

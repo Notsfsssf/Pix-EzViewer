@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardview_recommand"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardPreventCornerOverlap="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="8dp"
-    android:foreground="?android:attr/selectableItemBackground"
-    app:cardCornerRadius="2dp"
-    app:cardElevation="2dp"
-    app:cardPreventCornerOverlap="true">
+    android:layout_margin="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,8 +25,7 @@
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:maxHeight="400dp"
-                android:scaleType="centerCrop"
-                android:src="@color/grayx" />
+                android:scaleType="centerCrop" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
 
@@ -39,20 +37,19 @@
                 android:background="#e0000000">
 
                 <TextView
-
                     android:id="@+id/textview_num"
                     android:layout_width="wrap_content"
-
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
+android:textColor="@color/white"
+                    android:layout_marginStart="2dp"
                     android:layout_marginTop="1dp"
-                    android:layout_marginEnd="3dp"
+                    android:layout_marginEnd="1dp"
                     android:layout_marginBottom="1dp"
                     android:text="1"
-                    android:textColor="@color/white"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </FrameLayout>
@@ -65,9 +62,10 @@
                 android:id="@+id/title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="16dp"
+
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
                 android:maxLines="1"
                 android:text="title"

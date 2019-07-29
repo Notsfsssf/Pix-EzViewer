@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.text.util.Linkify
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -38,10 +39,11 @@ class UserMessageFragment : Fragment() {
     }
 
     private fun initdata() {
+        textView_tacomment.autoLinkMask = Linkify.WEB_URLS
         if (mParam1!!.user != null || mParam1!!.user.comment != "")
             textView_tacomment!!.text = mParam1!!.user.comment
         else
-            textView_tacomment!!.text = "ta还未留下任何信息哦"
+            textView_tacomment!!.text = "~"
         val mInflater = LayoutInflater.from(activity!!)
         textView_fans!!.text = mParam1!!.profile.total_mypixiv_users.toString()
         textView_fans!!.setOnClickListener {

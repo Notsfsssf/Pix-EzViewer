@@ -5,14 +5,17 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AlertDialog;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CalendarView;
+import android.widget.DatePicker;
 
 import com.perol.asdpl.pixivez.R;
 
@@ -72,33 +75,29 @@ public class DateDialog extends DialogFragment {
         if (getActivity() == null) {
             return null;
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogCustom);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.dialog_data, null);
+        DatePicker calendarView = view.findViewById(R.id.calendarview_);
         builder.setView(view).setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (callback != null) {
-                    CalendarView calendarView = view.findViewById(R.id.calendarview_);
-                    Log.d("data", String.valueOf(calendarView.getDate()));
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    Log.d("data", String.valueOf(calendarView.getDayOfMonth()));
                     callback.onClick(year + "-" + month + "-" + day);
-//                    callback.onClick(String.valueOf(sdf.format(calendarView.getDate())));
                 }
             }
 
         });
-        CalendarView calendarView = view.findViewById(R.id.calendarview_);
+
         calendarView.setMaxDate(System.currentTimeMillis());
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-
-
+        calendarView.init(0, 0, 0, new DatePicker.OnDateChangedListener() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                System.out.println(year+":"+month+":"+dayOfMonth);
+            public void onDateChanged(DatePicker datePicker, int year, int month, int dayOfMonth) {
+                System.out.println(year + ":" + month + ":" + dayOfMonth);
                 setDay(dayOfMonth);
                 setYear(year);
-                setMonth(month+1);
+                setMonth(month + 1);
             }
         });
 

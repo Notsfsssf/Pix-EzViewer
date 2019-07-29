@@ -97,6 +97,7 @@ class SearchMActivity : RinkActivity() {
         })
         searchview_searchm.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
+
                 if (query != null && !query.isBlank())
                     when (tablayout_searchm.selectedTabPosition) {
                         0 -> {
@@ -133,6 +134,9 @@ class SearchMActivity : RinkActivity() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                if(tablayout_searchm.selectedTabPosition!=0){
+                    return true
+                }
                 if (!newText.isNullOrBlank())
                     searchMViewModel.onQueryTextChange(newText!!)
 
