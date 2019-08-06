@@ -114,28 +114,23 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
     private lateinit var header: AccountHeader
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedPreferencesServices = SharedPreferencesServices.getInstance()
-//        val islogin = sharedPreferencesServices.getBoolean("islogin")
-//        if (!islogin) {
-//            startActivity(Intent(this, LoginActivity::class.java))
-//            finish()
-//            return
-//        }
+
         var allUser = ArrayList<UserEntity>()
         runBlocking {
             allUser = AppDataRepository.getAllUser() as ArrayList<UserEntity>
 
         }
-        if (allUser.isEmpty()) {
+        if (allUser.isEmpty()||allUser[0].username == "olduser") {
             startActivity(Intent(this@HelloMActivity, LoginActivity::class.java))
             finish()
             return
         }
+
         ThemeUtil.Themeinit(this)
         activityHelloMBinding = DataBindingUtil.setContentView(this, R.layout.app_bar_hello_m)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
-
+        sharedPreferencesServices = SharedPreferencesServices.getInstance()
         DrawerImageLoader.init(object : AbstractDrawerImageLoader() {
             override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable, tag: String?) {
                 GlideApp.with(imageView.context).load(uri).optionalCenterCrop().into(imageView)

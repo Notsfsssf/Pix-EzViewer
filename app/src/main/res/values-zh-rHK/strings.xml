@@ -243,4 +243,5 @@
     <string name="savegifsuccess">Saved ugoira</string>
     <string name="savegifsuccesserr">Saved ugoira error</string>
     <string name="encodegif">Encode ugoria?</string>
+    <string name="crash_report">crash report</string>
 </resources>

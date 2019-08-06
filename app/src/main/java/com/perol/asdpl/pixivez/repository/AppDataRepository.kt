@@ -27,7 +27,7 @@ class AppDataRepository {
 
                 val refresh = pre.getString("Refresh_token")
                 val device = pre.getString("Device_token")
-                return UserEntity("", 0, "", "", false, device, refresh, "")
+                return UserEntity("olduser", 0, "", "", false, device, refresh, "")
             }
         }
 

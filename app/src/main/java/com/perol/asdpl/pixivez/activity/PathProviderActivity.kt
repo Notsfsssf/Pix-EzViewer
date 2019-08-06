@@ -33,6 +33,7 @@ class PathProviderActivity : RinkActivity() {
         if(nowPath.isBlank()){
             toast(resources.getString(R.string.noaccess))
             finish()
+            return
         }
         nowPathLists = ArrayList<File>()
         val pathProviderAdapter = PathProviderAdapter(R.layout.view_item_path_provider, getPathList(nowPath))

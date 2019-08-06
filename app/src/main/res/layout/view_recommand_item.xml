@@ -25,6 +25,7 @@
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:maxHeight="400dp"
+                android:src="@color/grayx"
                 android:scaleType="centerCrop" />
 
             <androidx.constraintlayout.widget.ConstraintLayout

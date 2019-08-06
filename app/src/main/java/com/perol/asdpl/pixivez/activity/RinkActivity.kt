@@ -8,13 +8,13 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
 import com.perol.asdpl.pixivez.objects.MyContextWrapper
+import com.perol.asdpl.pixivez.services.PxEZApp
 import java.util.*
 
 
 abstract class RinkActivity : AppCompatActivity() {
     override fun attachBaseContext(newBase: Context?) {
-        val pref = SharedPreferencesServices.getInstance()
-        val locale = when (pref.getInt("language")) {
+        val locale = when (PxEZApp.language) {
             1 -> {
                 Locale.ENGLISH
             }

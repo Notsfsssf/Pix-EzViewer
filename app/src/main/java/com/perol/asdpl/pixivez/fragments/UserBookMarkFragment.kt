@@ -42,6 +42,8 @@ class UserBookMarkFragment : LazyV4Fragment(), TagsShowDialog.Callback {
                     showtagdialog()
                 }
             }
+        }.doOnError {
+
         }.subscribe()
     }
 

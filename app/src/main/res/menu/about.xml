@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-<item
-    android:id="@+id/menu_language"
-    android:icon="@drawable/ic_action_share_setting"
-    android:title="language" />
+    <item
+        android:id="@+id/menu_language"
+        android:icon="@drawable/ic_action_share_setting"
+        android:title="language" />
+    <item
+        android:id="@+id/menu_crash"
+        android:icon="@drawable/ic_action_share_setting"
+        android:title="@string/crash_report" />
 </menu>

@@ -254,4 +254,5 @@
     <string name="savegifsuccess">Saved ugoira</string>
     <string name="savegifsuccesserr">Saved ugoira error</string>
     <string name="encodegif">合成动图？</string>
+    <string name="crash_report">报告</string>
 </resources>

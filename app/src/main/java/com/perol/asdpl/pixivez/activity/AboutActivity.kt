@@ -2,6 +2,7 @@ package com.perol.asdpl.pixivez.activity
 
 import android.app.Activity
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -19,12 +20,16 @@ import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.dialog.IconDialog
 import com.perol.asdpl.pixivez.dialog.ThanksDialog
 import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
+import com.perol.asdpl.pixivez.objects.CrashHandler
 import com.perol.asdpl.pixivez.objects.ThemeUtil
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.PxEZApp
 import kotlinx.android.synthetic.main.activity_about.*
 import org.jetbrains.anko.*
+import java.io.File
+import java.io.FilenameFilter
+import java.util.*
 
 class AboutActivity : RinkActivity(), IconDialog.Callback, TabLayout.OnTabSelectedListener {
     override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -146,6 +151,12 @@ class AboutActivity : RinkActivity(), IconDialog.Callback, TabLayout.OnTabSelect
                 PackageManager.DONT_KILL_APP)
     }
 
+    private fun getCrashReportFiles(): Array<String>? {
+        val filesDir = filesDir
+        val filter = FilenameFilter { dir, name -> name.endsWith(".cr") }
+        return filesDir.list(filter)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
@@ -159,6 +170,24 @@ class AboutActivity : RinkActivity(), IconDialog.Callback, TabLayout.OnTabSelect
                         sharedPreferencesServices!!.setInt("language", i);
                     toast("Please restart app")
                 }
+                true
+            }
+            R.id.menu_crash -> {
+                val list = getCrashReportFiles()
+                var string = ""
+                for (a in list!!.indices) {
+                    if (a > 10) {
+                        continue
+                    }
+                    val cr = File(filesDir, list[a])
+                    string += cr.readText()
+                }
+                val dialogBuild = AlertDialog.Builder(this)
+                dialogBuild.setMessage(string).setTitle("这是崩溃报告，如果遇到个别功能闪退，请将此报告反馈给开发者")
+                        .setPositiveButton(android.R.string.ok) { _, _ ->
+
+                        }
+                        .create().show()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -186,7 +215,7 @@ class AboutActivity : RinkActivity(), IconDialog.Callback, TabLayout.OnTabSelect
 
         switch_r18.isChecked = sharedPreferencesServices!!.getBoolean("r18on")
         switch_proxy.isChecked = sharedPreferencesServices!!.getBoolean("disableproxy")
-
+switch1.isChecked=!sharedPreferencesServices!!.getBoolean("disablecrash")
         textView_storepath.text = PxEZApp.storepath
         textView_storepath2.text = if (sharedPreferencesServices!!.getString("storepath1") == null) {
             "未指定"
@@ -233,6 +262,9 @@ class AboutActivity : RinkActivity(), IconDialog.Callback, TabLayout.OnTabSelect
         switch_proxy.setOnCheckedChangeListener { compoundButton, b ->
             sharedPreferencesServices!!.setBoolean("disableproxy", b)
             Toast.makeText(applicationContext, "重启应用后生效", Toast.LENGTH_SHORT).show()
+        }
+        switch1.setOnCheckedChangeListener { compoundButton, b ->
+            sharedPreferencesServices!!.setBoolean("disablecrash",!b)
         }
         setSupportActionBar(toobar_about)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
