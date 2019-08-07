@@ -56,7 +56,7 @@ class RestClient {
         return@lazy okHttpClient
     }
 
-    val imageHttpClient: OkHttpClient
+    private val imageHttpClient: OkHttpClient
         get() {
             val builder = OkHttpClient.Builder()
             builder.addInterceptor(object : Interceptor {
@@ -69,9 +69,8 @@ class RestClient {
                     val request = requestBuilder.build()
                     return chain.proceed(request)
                 }
-            })
-            val okHttpClient = builder.build()
-            return okHttpClient
+            }).dns(ImageHttpDns())
+            return builder.build()
         }
 
 

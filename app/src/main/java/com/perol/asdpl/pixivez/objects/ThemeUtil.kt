@@ -11,14 +11,9 @@ import io.multimoon.colorful.CustomThemeColor
 class ThemeUtil {
     companion object {
         @JvmStatic
-        fun Themeinit(activity: AppCompatActivity) {
-           Colorful().apply(activity,override =true)
-//            activity.apply {
-//                window.statusBarColor = Color.TRANSPARENT;
-//                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-//            }
-     activity.window.statusBarColor=Colorful().getPrimaryColor().getColorPack().normal().asInt()
-
+        fun themeInit(activity: AppCompatActivity) {
+            Colorful().apply(activity, override = true)
+            activity.window.statusBarColor = Colorful().getPrimaryColor().getColorPack().normal().asInt()
         }
     }
 }
