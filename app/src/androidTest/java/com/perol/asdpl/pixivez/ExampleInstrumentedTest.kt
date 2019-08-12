@@ -5,6 +5,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 
 import androidx.test.InstrumentationRegistry
 import com.perol.asdpl.pixivez.repository.AppDataRepository
+import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.OneZeroService
 import com.perol.asdpl.pixivez.services.PxEZApp
 import kotlinx.coroutines.GlobalScope
@@ -41,21 +42,7 @@ runBlocking {
     }
     @Test
     fun testRetrofit(){
-        val okHttpClient=OkHttpClient.Builder().addInterceptor(object :Interceptor{
-            override fun intercept(chain: Interceptor.Chain): Response {
-                val original = chain.request()
-                val request = original.newBuilder().build()
-                println(request.url)
-                return chain.proceed(request)
-            }
-        }).build()
-        var retrofit = Retrofit.Builder()
-                .baseUrl("https://1.0.0.1/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpClient)
-                .build()
-        var oneZeroService: OneZeroService= retrofit.create(OneZeroService::class.java)
-        val response = oneZeroService.getItem("application/dns-json","oauth.secure.pixiv.net", "A", "false", "false").execute()
-        val oneZeroResponse = response.body()
+        val appContext = InstrumentationRegistry.getTargetContext()
+ GlideApp.with(appContext).load("https://i.pximg.net/user-profile/img/2018/06/11/22/00/29/14348260_c1f2b130248005062b7c6c358812160a_170.jpg")
     }
 }

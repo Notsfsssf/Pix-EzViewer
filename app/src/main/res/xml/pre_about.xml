@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:key="about_screen"
+    app:initialExpandedChildrenCount="4">
+
+    <PreferenceCategory
+        app:key="feedback"
+        app:title="@string/feed_back">
+        <Preference
+            app:key="about_feedback_email"
+            app:title="Email"
+            app:summary="PxEzFeedBack@outlook.com"/>
+        <Preference
+            app:key="about_feedback_telegram"
+            app:title="Telegram"
+            app:summary="https://t.me/PixEzViewer"/>
+        <Preference
+            app:key="about_feedback_qq"
+            app:title="QQ group"
+            app:summary="815791942"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:key="rate"
+        app:title="Page">
+        <Preference
+            app:key="about_rate_github"
+            app:title="Github"
+            app:summary="https://github.com/Notsfsssf"/>
+    </PreferenceCategory>
+</PreferenceScreen>

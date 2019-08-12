@@ -3,14 +3,16 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-platform-android'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+
 android {
+
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.perol.asdpl.play.pixivez"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 31
-        versionName "1.3.2 R"
+        versionCode 32
+        versionName "1.3.3 R"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -21,6 +23,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions "version"
+
     dataBinding {
         enabled = true
     }
@@ -42,7 +46,7 @@ android {
 }
 
 dependencies {
-   implementation 'com.dinuscxj:circleprogressbar:1.3.0'
+    implementation 'com.dinuscxj:circleprogressbar:1.3.0'
     implementation 'com.github.SheHuan:NiceImageView:1.0.5'
     implementation "com.mikepenz:materialdrawer:7.0.0-rc04"
 
