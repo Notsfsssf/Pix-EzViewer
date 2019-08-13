@@ -15,7 +15,6 @@ Email:PxEzFeedBack@outlook.com
 Edxposed与本应用内容冲突，请将应用加入Edxposed黑名单  <br/>
 暂不支持Android Q<br/>
 # 关于项目
-整个项目是从初学做到现在的，一言难尽<br/>没有使用驼峰命名法，也没有任何规范，什么都试，为了MVVM而MVVM<br/>缺点一箩筐，有意义的就是直连代码的具体实现思路了<br/>
 你也可以为这个应用PR<br/>
 欢迎进企鹅群交流经验或者反馈815791942<br/>
 <a href='https://ko-fi.com/W7W5YU4B' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
