@@ -13,7 +13,6 @@ Email:PxEzFeedBack@outlook.com
 # 注意
 如果直连代码对你有所启发，在项目或者程序中注明我的ID的话,我会很高兴的ヽ✿゜▽゜)ノ<br/>
 Edxposed与本应用内容冲突，请将应用加入Edxposed黑名单  <br/>
-暂不支持Android Q<br/>
 # 关于项目
 你也可以为这个应用PR<br/>
 欢迎进企鹅群交流经验或者反馈815791942<br/>
