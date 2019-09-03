@@ -31,7 +31,7 @@ class UserShowAdapter(layoutResId: Int) : BaseQuickAdapter<SearchUserResponse.Us
 
     override fun convert(helper: BaseViewHolder, item: SearchUserResponse.UserPreviewsBean) {
         val linearLayoutManager = LinearLayoutManager(helper.itemView.context, LinearLayoutManager.HORIZONTAL, false)
-        val userSearchillustAdapter = UserSearchillustAdapter(R.layout.view_usersearchillust_item, item.illusts)
+        val userSearchillustAdapter = UserSearchIllustAdapter(R.layout.view_usersearchillust_item, item.illusts)
         //        helper.addOnClickListener(R.id.cardview_recommand).addOnClickListener(R.id.imageview_usershow).addOnClickListener(R.id.textview_usershowname);
         val recyclerView = helper.getView<RecyclerView>(R.id.recyclerview_usershow)
         recyclerView.layoutManager = linearLayoutManager

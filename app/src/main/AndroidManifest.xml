@@ -13,52 +13,35 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcherep"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme.Base"
-        android:supportsRtl="true">
-        <activity android:name=".activity.AccountActivity"
-            ></activity>
+        android:requestLegacyExternalStorage="true"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.Base">
+        <activity
+            android:name=".activity.SearchRActivity"
+            android:label="@string/title_activity_search_r"></activity>
+        <activity android:name=".activity.AboutXActivity" />
+        <activity android:name=".activity.AccountActivity" />
         <activity android:name=".activity.ThemeActivity" />
         <activity
-            android:name=".activity.WorkActivity"
-            android:label="@string/title_activity_work"
-             />
-        <activity
             android:name=".activity.PathProviderActivity"
-            android:label="@string/title_activity_path_provider"
-             />
+            android:label="@string/title_activity_path_provider" />
 
         <meta-data
             android:name="com.perol.asdpl.pixivez.services.CustomGlideModule"
             android:value="GlideModule" />
 
-        <activity
-            android:name=".activity.HelloMActivity"
-            >
+        <activity android:name=".activity.HelloMActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
 
         <activity-alias
-            android:name=".md"
-            android:enabled="false"
-            android:icon="@mipmap/ic_launchermd"
-            android:label="@string/app_name"
-            android:targetActivity=".activity.HelloMActivity"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
-        <activity-alias
             android:name=".normal"
             android:enabled="false"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
-            android:targetActivity=".activity.HelloMActivity"
-            >
+            android:targetActivity=".activity.HelloMActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -70,8 +53,7 @@
             android:enabled="true"
             android:icon="@mipmap/ic_launcherep"
             android:label="@string/app_name"
-            android:targetActivity=".activity.HelloMActivity"
-            >
+            android:targetActivity=".activity.HelloMActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -83,8 +65,19 @@
             android:enabled="false"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
-            android:targetActivity=".activity.HelloMActivity"
-            >
+            android:targetActivity=".activity.HelloMActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name=".md"
+            android:enabled="false"
+            android:icon="@mipmap/ic_launchermd"
+            android:label="@string/app_name"
+            android:targetActivity=".activity.HelloMActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -94,20 +87,16 @@
 
         <activity
             android:name=".activity.LoginActivity"
-            android:label="@string/title_activity_login"
-             />
+            android:label="@string/title_activity_login" />
         <activity
             android:name=".activity.PictureActivity"
-
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".activity.ZoomActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity android:name=".activity.UserFollowActivity" />
         <activity android:name=".activity.AboutActivity" />
-        <activity
-            android:name=".activity.IntentActivity"
-            >
+        <activity android:name=".activity.IntentActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -120,14 +109,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.NewUserActivity" />
-        <activity
-            android:name=".activity.PixivsionActivity"
-             />
+        <activity android:name=".activity.PixivsionActivity" />
         <activity android:name=".activity.SpotlightActivity" />
         <activity
             android:name=".activity.SaucenaoActivity"
-            android:label="@string/title_activity_saucenao"
-            >
+            android:label="@string/title_activity_saucenao">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -145,29 +131,18 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/new_app_widget_info" />
-        </receiver> <!-- <activity android:name=".objects.NewAppWidgetConfigureActivity"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" /> -->
-        <!-- </intent-filter> -->
-        <!-- </activity> -->
-        <activity
-            android:name=".activity.SearchMActivity"
-             />
+        </receiver>
+
         <activity
             android:name=".activity.SearchResultActivity"
-            android:label="@string/title_activity_search_result"
-             />
+            android:label="@string/title_activity_search_result" />
         <activity
             android:name=".activity.ResultActivity"
-            android:label="@string/title_activity_result"
-             />
-        <activity
-            android:name=".activity.HistoryMActivity"
-             />
+            android:label="@string/title_activity_result" />
+        <activity android:name=".activity.HistoryMActivity" />
         <activity android:name=".activity.UserShowActivity" />
         <activity android:name=".activity.ReadPaperActivity" />
-        <activity
-            android:name=".activity.UserMActivity"/>
+        <activity android:name=".activity.UserMActivity" />
     </application>
 
 </manifest>

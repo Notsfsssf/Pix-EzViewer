@@ -3,7 +3,6 @@ package com.perol.asdpl.pixivez.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -47,7 +46,7 @@ class SpotlightActivity : RinkActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ThemeUtil.Themeinit(this)
+        ThemeUtil.themeInit(this)
         setContentView(R.layout.activity_spotlight)
 
         sharedPreferencesServices = SharedPreferencesServices.getInstance()
@@ -66,14 +65,24 @@ class SpotlightActivity : RinkActivity() {
         })
         val restClient = RestClient()
         appApiPixivService = restClient.retrofit_AppAPI.create(AppApiPixivService::class.java)
+        val local = when (PxEZApp.language) {
+            1 -> {
+                Locale.ENGLISH
+            }
+            2 -> {
+                Locale.TRADITIONAL_CHINESE
+            }
+            else -> {
+                Locale.SIMPLIFIED_CHINESE
+            }
+        }
         Observable.create(ObservableOnSubscribe<String> { emitter ->
             val builder = OkHttpClient.Builder()
-            //
             val okHttpClient = builder.build()
             val request = Request.Builder()
 
                     .url(url)
-                    .addHeader("Accept-Language", if(PxEZApp.locale=="zh"){"zh-cn"}else{"en-hk"})
+                    .addHeader("Accept-Language",local.language)
                     .build()
             val response = okHttpClient.newCall(request).execute()
             val result = response.body!!.string()

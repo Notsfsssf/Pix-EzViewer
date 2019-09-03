@@ -24,7 +24,7 @@ class HistoryMActivity : RinkActivity() {
     lateinit var sharedPreferencesServices: SharedPreferencesServices
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ThemeUtil.Themeinit(this)
+        ThemeUtil.themeInit(this)
         activityHistoryMBinding = DataBindingUtil.setContentView(this, R.layout.activity_history_m)
         sharedPreferencesServices = SharedPreferencesServices.getInstance()
         initView()

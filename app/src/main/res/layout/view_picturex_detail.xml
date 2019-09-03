@@ -177,7 +177,7 @@
             android:id="@+id/tagflowlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="6dp" />
+            android:layout_margin="8dp" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

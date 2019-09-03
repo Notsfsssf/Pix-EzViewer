@@ -2,7 +2,6 @@ package com.perol.asdpl.pixivez.activity
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.MenuItem
 import com.perol.asdpl.pixivez.R
@@ -37,7 +36,7 @@ class PixivsionActivity : RinkActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ThemeUtil.Themeinit(this)
+        ThemeUtil.themeInit(this)
         setContentView(R.layout.activity_pixivision)
         setSupportActionBar(toobar_pixivision)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)

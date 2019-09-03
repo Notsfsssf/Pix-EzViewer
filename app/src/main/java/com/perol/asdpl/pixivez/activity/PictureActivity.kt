@@ -2,10 +2,8 @@ package com.perol.asdpl.pixivez.activity
 
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import androidx.viewpager.widget.ViewPager
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
@@ -13,9 +11,7 @@ import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.PicturePagerAdapter
 import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
 import com.perol.asdpl.pixivez.objects.ThemeUtil
-import com.perol.asdpl.pixivez.responses.IllustBean
 import kotlinx.android.synthetic.main.activity_picture.*
-import java.util.*
 
 class PictureActivity: RinkActivity() {
 
@@ -26,7 +22,7 @@ class PictureActivity: RinkActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPreferences =SharedPreferencesServices.getInstance()
         super.onCreate(savedInstanceState)
-        ThemeUtil.Themeinit(this)
+        ThemeUtil.themeInit(this)
         setContentView(R.layout.activity_picture)
         if (!sharedPreferences.getBoolean("needstatusbar")) {
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

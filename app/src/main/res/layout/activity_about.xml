@@ -22,10 +22,10 @@
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tablayout_top"
+                style="@style/Widget.MaterialComponents.TabLayout.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:tabIndicatorFullWidth="false"
-                style="@style/Widget.MaterialComponents.TabLayout.Colored"
                 app:tabIndicatorHeight="0dp"
                 app:tabMode="scrollable">
 
@@ -83,13 +83,13 @@
 
             <Button
                 android:id="@+id/checkforupdate"
-                android:visibility="gone"
                 style="@style/Base.Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/checkupdate"
-                android:textSize="18sp"/>
+                android:textSize="18sp"
+                android:visibility="gone" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -261,33 +261,33 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-       <androidx.constraintlayout.widget.ConstraintLayout
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-           <Spinner
-               android:id="@+id/spinner_format"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_marginEnd="8dp"
-               android:entries="@array/format"
-               app:layout_constraintBottom_toBottomOf="parent"
-               app:layout_constraintEnd_toEndOf="parent"
-               app:layout_constraintTop_toTopOf="@+id/switch1" />
+                <Spinner
+                    android:id="@+id/spinner_format"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:entries="@array/format"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/switch1" />
 
-           <Switch
+                <Switch
 
-               android:id="@+id/switch1"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_marginStart="8dp"
-               android:layout_marginTop="8dp"
-               android:layout_marginBottom="8dp"
-               android:hint="@string/crash_report"
-               app:layout_constraintBottom_toBottomOf="parent"
-               app:layout_constraintStart_toStartOf="parent"
-               app:layout_constraintTop_toTopOf="parent" />
-       </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:id="@+id/switch1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:hint="@string/crash_report"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
             <!--<Spinner-->
             <!--android:id="@+id/spinner_locale"-->
             <!--android:layout_width="wrap_content"-->
@@ -445,7 +445,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginLeft="8dp"
-                    android:text="@string/support" />
+                    android:text="@string/support"
+                    android:textIsSelectable="true" />
 
                 <TextView
                     android:id="@+id/textview_weixin"

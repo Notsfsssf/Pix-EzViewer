@@ -2,7 +2,6 @@ package com.perol.asdpl.pixivez.activity
 
 import android.app.Activity
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -20,7 +19,6 @@ import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.dialog.IconDialog
 import com.perol.asdpl.pixivez.dialog.ThanksDialog
 import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
-import com.perol.asdpl.pixivez.objects.CrashHandler
 import com.perol.asdpl.pixivez.objects.ThemeUtil
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.services.GlideApp
@@ -29,7 +27,6 @@ import kotlinx.android.synthetic.main.activity_about.*
 import org.jetbrains.anko.*
 import java.io.File
 import java.io.FilenameFilter
-import java.util.*
 
 class AboutActivity : RinkActivity(), IconDialog.Callback, TabLayout.OnTabSelectedListener {
     override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -201,7 +198,7 @@ class AboutActivity : RinkActivity(), IconDialog.Callback, TabLayout.OnTabSelect
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ThemeUtil.Themeinit(this)
+        ThemeUtil.themeInit(this)
         setContentView(R.layout.activity_about)
 
 
@@ -277,7 +274,6 @@ switch1.isChecked=!sharedPreferencesServices!!.getBoolean("disablecrash")
             versionname.text = "Beta"
         }
         tablayout_top.addOnTabSelectedListener(this)
-        textview_support.movementMethod = LinkMovementMethod.getInstance()
 
         spinner_chushi.setSelection(sharedPreferencesServices!!.getInt("firstpage"), true)
         spinner_chushi.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

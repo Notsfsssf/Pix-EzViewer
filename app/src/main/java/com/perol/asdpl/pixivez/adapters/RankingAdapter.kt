@@ -189,9 +189,7 @@ mContext.startActivity(intent,option.toBundle())
                 }
             }
             if (isr18) {
-                imageView.setImageDrawable(mContext.resources.getDrawable(R.drawable.h))
-
-
+                GlideApp.with(imageView.context).load(ContextCompat.getDrawable(mContext, R.drawable.h)).placeholder(R.drawable.h).into(imageView)
             } else {
 
                 GlideApp.with(imageView.context).load(loadurl).transition(withCrossFade()).placeholder(R.color.grayx).into(object : ImageViewTarget<Drawable>(imageView) {

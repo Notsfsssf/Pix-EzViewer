@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
@@ -13,10 +12,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.PathProviderAdapter
 import com.perol.asdpl.pixivez.objects.ThemeUtil
-import kotlinx.android.synthetic.main.view_ranking_item.view.*
 import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.toolbar
-import org.jetbrains.anko.design.appBarLayout
 import org.jetbrains.anko.design.themedAppBarLayout
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.sdk21.coroutines.onClick
@@ -27,7 +24,7 @@ class PathProviderActivity : RinkActivity() {
     lateinit var nowPathLists: ArrayList<File>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ThemeUtil.Themeinit(this)
+        ThemeUtil.themeInit(this)
         var a=1
         nowPath = Environment.getExternalStorageDirectory().absolutePath
         if(nowPath.isBlank()){

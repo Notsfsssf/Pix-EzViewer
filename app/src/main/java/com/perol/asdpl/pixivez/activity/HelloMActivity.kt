@@ -4,7 +4,6 @@ package com.perol.asdpl.pixivez.activity
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
@@ -13,21 +12,23 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.widget.AppCompatDrawableManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.HttpException
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.google.android.material.navigation.NavigationView
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
@@ -43,21 +44,16 @@ import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.ColorfulAdapter
 import com.perol.asdpl.pixivez.adapters.HelloMViewPagerAdapter
 import com.perol.asdpl.pixivez.databinding.ActivityHelloMBinding
-import com.perol.asdpl.pixivez.dialog.RegisterDialog
 import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
 import com.perol.asdpl.pixivez.objects.ThemeUtil
 import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.services.GlideApp
-import com.perol.asdpl.pixivez.sql.AppDatabase
 import com.perol.asdpl.pixivez.sql.UserEntity
 import com.perol.asdpl.pixivez.viewmodel.HelloMViewModel
 import io.multimoon.colorful.Colorful
 import io.multimoon.colorful.CustomThemeColor
 import io.multimoon.colorful.ThemeColor
 import io.multimoon.colorful.ThemeColorInterface
-import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_hello_m.*
 import kotlinx.android.synthetic.main.app_bar_hello_m.*
 import kotlinx.android.synthetic.main.content_hello_m.*
 import kotlinx.coroutines.*
@@ -66,7 +62,6 @@ import org.jetbrains.anko.collections.forEachWithIndex
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import java.io.File
 import java.lang.Runnable
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -126,20 +121,25 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
             return
         }
 
-        ThemeUtil.Themeinit(this)
+        ThemeUtil.themeInit(this)
         activityHelloMBinding = DataBindingUtil.setContentView(this, R.layout.app_bar_hello_m)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
         sharedPreferencesServices = SharedPreferencesServices.getInstance()
         DrawerImageLoader.init(object : AbstractDrawerImageLoader() {
+
+
             override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable, tag: String?) {
-                GlideApp.with(imageView.context).load(uri).optionalCenterCrop().into(imageView)
+                val url="https://"+uri.host+uri.path
+                println(url)
+                GlideApp.with(imageView).load(url).error(R.drawable.ai).optionalCenterCrop().into(imageView)
             }
         })
         header = AccountHeaderBuilder()
                 .withActivity(this)
                 .withOnAccountHeaderListener(this)
                 .build()
+        AppCompatDrawableManager.get().getDrawable(this, R.drawable.ic_action_my_white)
         val drawer = DrawerBuilder().withActivity(this)
                 .withAccountHeader(header)
                 .addDrawerItems(
@@ -299,14 +299,7 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
 
                 }
                 if (drawerItem.identifier == 888L) {
-                 try{
-                     val url = "https://github.com/Notsfsssf"
-                     val uri = Uri.parse(url)
-                     val intent = Intent(Intent.ACTION_VIEW, uri)
-                     startActivity(intent)
-                 }catch (e:Exception){
-
-                 }
+               startActivity(Intent(this@HelloMActivity,AboutXActivity::class.java))
                 }
                 return true
             }
@@ -421,7 +414,7 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings -> {
-                val intent = Intent(this, SearchMActivity::class.java)
+                val intent = Intent(this, SearchRActivity::class.java)
                 startActivity(intent)
                 true
             }

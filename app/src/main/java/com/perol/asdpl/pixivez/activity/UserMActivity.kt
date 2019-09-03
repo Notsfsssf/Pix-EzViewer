@@ -22,23 +22,23 @@ class UserMActivity : RinkActivity() {
     var id: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        ThemeUtil.Themeinit(this)
+        ThemeUtil.themeInit(this)
         super.onCreate(savedInstanceState)
         val binding = DataBindingUtil.setContentView<ActivityUserMBinding>(this, R.layout.activity_user_m)
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         id = intent.getLongExtra("data", 1)
-        val viewmodel = ViewModelProviders.of(this).get(UserMViewModel::class.java)
-        viewmodel.getdata(id)
+        val viewModel = ViewModelProviders.of(this).get(UserMViewModel::class.java)
+        viewModel.getdata(id)
 
-        viewmodel.userDetail.observe(this, Observer {
+        viewModel.userDetail.observe(this, Observer {
             if (it != null) {
                 fab.show()
-                viewmodel.isuser(id).doOnSuccess {
+                viewModel.isuser(id).subscribe({
                     if (it) {
                         fab.hide()
-                        mviewpager.setCurrentItem(2)
+                        mviewpager.currentItem = 2
                     }
-                }.subscribe()
+                },{})
 
                 binding.user = it
                 /*     GlideApp.with(this).asDrawable().load(viewmodel.userDetail.value!!.profile.background_image_url).into(object : SimpleTarget<Drawable>() {
@@ -51,7 +51,7 @@ class UserMActivity : RinkActivity() {
                 mtablayout.setupWithViewPager(mviewpager)
             }
         })
-        viewmodel.isfollow.observe(this, Observer {
+        viewModel.isfollow.observe(this, Observer {
             if (it != null) {
                 if (it) {
                     fab.setImageResource(R.drawable.ic_check_white_24dp)
@@ -68,10 +68,10 @@ class UserMActivity : RinkActivity() {
         }
 
         fab.setOnClickListener {
-            viewmodel.onFabclick(id.toLong())
+            viewModel.onFabclick(id.toLong())
         }
         fab.setOnLongClickListener {
-            viewmodel.onFabLongClick(id.toLong())
+            viewModel.onFabLongClick(id.toLong())
             true
         }
         val shareLink = "https://www.pixiv.net/member.php?id=$id";

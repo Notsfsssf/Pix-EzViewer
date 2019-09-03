@@ -1,14 +1,13 @@
 package com.perol.asdpl.pixivez.fragments
 
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.opengl.Visibility
 import android.os.Bundle
 import android.view.*
+import android.widget.*
 import androidx.fragment.app.Fragment
-import android.widget.AbsListView
-import android.widget.Switch
-import android.widget.Toast
 import androidx.core.view.get
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -25,9 +24,6 @@ import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.viewmodel.PictureXViewModel
 import kotlinx.android.synthetic.main.fragment_picture_x.*
-import org.jetbrains.anko.*
-import org.jetbrains.anko.recyclerview.v7.recyclerView
-import org.jetbrains.anko.support.v4.alert
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -62,10 +58,10 @@ class PictureXFragment : LazyV4Fragment() {
                     it.setListener {
 
                         startPostponedEnterTransition()
-                    if (!hasMoved){
-                        recyclerview.scrollToPosition(0)
-                        ( recyclerview.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(0,0)
-                    }
+                        if (!hasMoved) {
+                            recyclerview.scrollToPosition(0)
+                            (recyclerview.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(0, 0)
+                        }
                         pictureXViewModel.getRelative(param1!!)
 
                     }
@@ -113,7 +109,9 @@ class PictureXFragment : LazyV4Fragment() {
             pictureXAdapter!!.setUserPicColor(it)
         })
         pictureXViewModel.progress.observe(this, Observer {
-            pictureXAdapter!!.setProgress(it)
+            if (pictureXAdapter != null) {
+                pictureXAdapter!!.setProgress(it)
+            }
         })
         pictureXViewModel.downloadGifSuccess.observe(this, Observer {
             pictureXAdapter!!.setProgressComplete(it)
@@ -130,66 +128,99 @@ class PictureXFragment : LazyV4Fragment() {
                     checkStatus[i] = false
                 }
                 val tagsAdapter = TagsAdapter(R.layout.view_tags_item, arrayList, checkStatus)
-                var switch: Switch? = null
-                alert {
-                    customView {
-                        verticalLayout {
-                            linearLayout {
-                                val tagText = editText { }.lparams {
-                                    weight = 3f
-                                    width = dip(0)
-                                    height = wrapContent
-                                }
-                                button("Add") {
-                                    setOnClickListener {
-                                        if (tagText.text.isNotBlank())
-                                            tagsAdapter.addData(0, tagText.text.toString())
-                                    }
-                                }.lparams {
-                                    weight = 1f
-                                    width = dip(0)
-                                    height = wrapContent
-                                }
+                val alertBuilder = AlertDialog.Builder(activity!!)
+                val view = LayoutInflater.from(context).inflate(R.layout.dialog_star, null)
 
-                            }.lparams(width = matchParent, height = dip(0)) {
-                                margin = dip(8)
-                                weight = 1f
-                            }
-                            recyclerView {
-                                layoutManager = LinearLayoutManager(activity!!.applicationContext)
-                                adapter = tagsAdapter
-                            }.lparams(width = matchParent, height = dip(0)) {
-                                weight = 5f
-                            }
-                            switch = switch {
-                                hint = resources.getString(R.string.privatep)
-                                isChecked = !itRaw.restrict.equals("public")
-                            }.lparams(width = matchParent, height = wrapContent) {
-                                marginStart = dip(8)
-                                marginEnd = dip(8)
-                                weight = 1f
-                            }
-
+                val switch = view.findViewById<Switch>(R.id.switch_private).also {
+                    it.isChecked=itRaw.restrict != "public"
+                }
+                val edit = view.findViewById<EditText>(R.id.edit)
+                val add = view.findViewById<Button>(R.id.add).also {
+                    it.setOnClickListener {
+                        if (!edit.text.isNullOrBlank()) {
+                            tagsAdapter.addData(0, edit.text.toString())
                         }
                     }
-                    positiveButton("LIKE!") { dialog ->
-                        val taglist = ArrayList<String>()
-                        if (tagsAdapter.checkStatus.isNotEmpty())
-                            for (i in 0 until tagsAdapter.checkStatus.size) {
-                                if (tagsAdapter.checkStatus[i]!!) {
-                                    taglist.add(arrayList[i])
-                                }
+                }
+                val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerview).also {
+                    it.layoutManager = LinearLayoutManager(activity)
+                    it.adapter = tagsAdapter
+                }
+
+                alertBuilder.setView(view)
+                alertBuilder.setPositiveButton("LIKE!") { a, b->
+                    val taglist = ArrayList<String>()
+                    if (tagsAdapter.checkStatus.isNotEmpty())
+                        for (i in 0 until tagsAdapter.checkStatus.size) {
+                            if (tagsAdapter.checkStatus[i]!!) {
+                                taglist.add(arrayList[i])
                             }
-                        println(taglist)
-                        pictureXViewModel.onDialogClick(taglist, switch!!.isChecked, pictureXViewModel.illustDetailResponse.value!!.illust.id);
-                        dialog.dismiss()
-                    }
-                }.show()
+                        }
+                    println(taglist)
+                    pictureXViewModel.onDialogClick(taglist, switch!!.isChecked, pictureXViewModel.illustDetailResponse.value!!.illust.id);
+                    a.dismiss()
+                }
+                alertBuilder.create().show()
+//                alert {
+//                    customView {
+//                        verticalLayout {
+//                            linearLayout {
+//                                val tagText = editText { }.lparams {
+//                                    weight = 3f
+//                                    width = dip(0)
+//                                    height = wrapContent
+//                                }
+//                                button("Add") {
+//                                    setOnClickListener {
+//                                        if (tagText.text.isNotBlank())
+//                                            tagsAdapter.addData(0, tagText.text.toString())
+//                                    }
+//                                }.lparams {
+//                                    weight = 1f
+//                                    width = dip(0)
+//                                    height = wrapContent
+//                                }
+//
+//                            }.lparams(width = matchParent, height = dip(0)) {
+//                                margin = dip(8)
+//                                weight = 1f
+//                            }
+//                            recyclerView {
+//                                layoutManager = LinearLayoutManager(activity!!.applicationContext)
+//                                adapter = tagsAdapter
+//                            }.lparams(width = matchParent, height = dip(0)) {
+//                                weight = 5f
+//                            }
+//                            switch = switch {
+//                                hint = resources.getString(R.string.privatep)
+//                                isChecked = itRaw.restrict != "public"
+//                            }.lparams(width = matchParent, height = wrapContent) {
+//                                marginStart = dip(8)
+//                                marginEnd = dip(8)
+//                                weight = 1f
+//                            }
+//
+//                        }
+//                    }
+//                    positiveButton("LIKE!") { dialog ->
+//                        val taglist = ArrayList<String>()
+//                        if (tagsAdapter.checkStatus.isNotEmpty())
+//                            for (i in 0 until tagsAdapter.checkStatus.size) {
+//                                if (tagsAdapter.checkStatus[i]!!) {
+//                                    taglist.add(arrayList[i])
+//                                }
+//                            }
+//                        println(taglist)
+//                        pictureXViewModel.onDialogClick(taglist, switch!!.isChecked, pictureXViewModel.illustDetailResponse.value!!.illust.id);
+//                        dialog.dismiss()
+//                    }
+//                }.show()
             }
         })
 
     }
-    var hasMoved=false
+
+    var hasMoved = false
     private fun initView() {
         fab.setOnClickListener {
             pictureXViewModel.FabClick()
@@ -209,8 +240,9 @@ class PictureXFragment : LazyV4Fragment() {
         recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                hasMoved=true
+                hasMoved = true
             }
+
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
 
                 if (linearLayoutManager.findLastCompletelyVisibleItemPosition() == position || linearLayoutManager.findFirstCompletelyVisibleItemPosition() == position || linearLayoutManager.findFirstVisibleItemPosition() == position || linearLayoutManager.findLastVisibleItemPosition() == position) {
@@ -239,6 +271,7 @@ class PictureXFragment : LazyV4Fragment() {
         }
         return rootBinding.root
     }
+
     var position = 0
 
 

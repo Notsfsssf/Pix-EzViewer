@@ -6,14 +6,15 @@ public class Spotlight {
     private String userpic;
     private String pictureurl;
     private String illustrateid;
-private Long userid;
-    public Spotlight(String title, String username, String userpic, String pictureurl, String illustrateid,Long userid) {
+    private Long userid;
+
+    public Spotlight(String title, String username, String userpic, String pictureurl, String illustrateid, Long userid) {
         this.title = title;
         this.username = username;
         this.userpic = userpic;
         this.pictureurl = pictureurl;
         this.illustrateid = illustrateid;
-        this.userid=userid;
+        this.userid = userid;
     }
 
     public String getTitle() {

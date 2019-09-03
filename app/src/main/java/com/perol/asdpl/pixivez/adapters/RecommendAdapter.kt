@@ -29,7 +29,7 @@ import com.perol.asdpl.pixivez.responses.IllustsBean
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.services.Works
-import org.jetbrains.anko.layoutInflater
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 
 /**
@@ -169,7 +169,7 @@ class RecommendAdapter(layoutResId: Int, data: List<IllustsBean>?, private val R
                 }
             }
             if (isr18) {
-                GlideApp.with(imageView.context).load(ContextCompat.getDrawable(mContext, R.drawable.h)).into(imageView)
+                GlideApp.with(imageView.context).load(ContextCompat.getDrawable(mContext, R.drawable.h)).placeholder(R.drawable.h).into(imageView)
             } else {
                 GlideApp.with(imageView.context).load(loadurl)
                         .transition(withCrossFade()).placeholder(R.color.grayx)
@@ -194,7 +194,7 @@ class RecommendAdapter(layoutResId: Int, data: List<IllustsBean>?, private val R
             }
         } else {
 
-            GlideApp.with(imageView.context).load(loadurl).transition(withCrossFade()).placeholder(R.color.grayx).error(ContextCompat.getDrawable(imageView.context, R.drawable.ai)).skipMemoryCache(true).into(object : ImageViewTarget<Drawable>(imageView) {
+            GlideApp.with(imageView.context).load(loadurl).transition(withCrossFade()).placeholder(R.color.white).error(ContextCompat.getDrawable(imageView.context, R.drawable.ai)).into(object : ImageViewTarget<Drawable>(imageView) {
                 override fun setResource(resource: Drawable?) {
                     imageView.setImageDrawable(resource)
                 }

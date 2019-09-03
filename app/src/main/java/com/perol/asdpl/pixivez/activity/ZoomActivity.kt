@@ -13,38 +13,33 @@ import java.util.*
 
 class ZoomActivity : RinkActivity() {
 
-
-
     private var str: ArrayList<String>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_zoom)
         val intent = intent
         val bundle = intent.extras
-        //获取传递的值
-
         str = bundle!!.getStringArrayList("url")
         val num = bundle.getInt("num", 0)
-        val zoomPagerAdapter = ZoomPagerAdapter(this, str)
-       textview_zoom.setText(1.toString() + "/" + str!!.size)
-        viewpage_zoom.setAdapter(zoomPagerAdapter)
-        viewpage_zoom.getCurrentItem()
+        val zoomPagerAdapter = ZoomPagerAdapter(this, str!!)
+        textview_zoom.text = 1.toString() + "/" + str!!.size
+        viewpage_zoom.adapter = zoomPagerAdapter
         viewpage_zoom.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
 
             }
 
             override fun onPageSelected(position: Int) {
-                viewpage_zoom.setTag(position)
+                viewpage_zoom.tag = position
                 val positonx = position + 1
-                textview_zoom.text = positonx.toString() + "/" + str!!.size
+                textview_zoom.text =  "$positonx/${str!!.size}"
             }
 
             override fun onPageScrollStateChanged(state: Int) {
 
             }
         })
-        viewpage_zoom.setCurrentItem(num)
+        viewpage_zoom.currentItem = num
 
     }
 

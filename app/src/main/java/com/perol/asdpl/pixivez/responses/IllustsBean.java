@@ -28,7 +28,7 @@ public class IllustsBean implements Serializable {
     private boolean is_bookmarked;
     private boolean visible;
     private boolean is_muted;
-    private List<TagsBean> tags;
+    private List<Tags> tags;
     private List<?> tools;
     private List<MetaPagesBean> meta_pages;
 
@@ -179,11 +179,11 @@ public class IllustsBean implements Serializable {
         this.is_muted = is_muted;
     }
 
-    public List<TagsBean> getTags() {
+    public List<Tags> getTags() {
         return tags;
     }
 
-    public void setTags(List<TagsBean> tags) {
+    public void setTags(List<Tags> tags) {
         this.tags = tags;
     }
 
@@ -265,23 +265,6 @@ public class IllustsBean implements Serializable {
             this.original_image_url = original_image_url;
         }
     }
-
-    public static class TagsBean implements Serializable {
-        /**
-         * name : 木之本桜
-         */
-
-        private String name;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-    }
-
     public static class MetaPagesBean implements Serializable{
         /**
          * image_urls : {"square_medium":"https://i.pximg.net/c/360x360_70/img-master/img/2017/01/03/18/12/50/60743858_p0_square1200.jpg","medium":"https://i.pximg.net/c/540x540_70/img-master/img/2017/01/03/18/12/50/60743858_p0_master1200.jpg","large":"https://i.pximg.net/c/600x1200_90/img-master/img/2017/01/03/18/12/50/60743858_p0_master1200.jpg","original":"https://i.pximg.net/img-original/img/2017/01/03/18/12/50/60743858_p0.jpg"}

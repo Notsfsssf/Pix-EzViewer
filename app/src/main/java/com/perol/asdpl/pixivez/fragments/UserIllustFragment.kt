@@ -43,7 +43,6 @@ class UserIllustFragment : LazyV4Fragment() {
         }
         mrecyclerview.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         mrecyclerview.adapter = recommendAdapter
-        initvoid()
     }
 
     // TODO: Rename and change types of parameters
@@ -61,7 +60,7 @@ class UserIllustFragment : LazyV4Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-     lazyLoad()
+        lazyLoad()
     }
 var viewmodel:UserMillustViewModel?=null
     private fun initvoid() {

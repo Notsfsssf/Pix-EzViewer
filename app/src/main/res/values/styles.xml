@@ -1,16 +1,20 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <style name="bili_primary_color">
         <item name="android:colorPrimary">@color/pink</item>
         <item name="colorPrimary">@color/pink</item>
     </style>
+
     <style name="bili_primary_dark_color">
         <item name="android:colorPrimaryDark">@color/pink</item>
         <item name="colorPrimaryDark">@color/pink</item>
     </style>
+
     <style name="blue_primary_color">
         <item name="android:colorPrimary">@color/blue</item>
         <item name="colorPrimary">@color/blue</item>
     </style>
+
     <style name="blue_primary_dark_color">
         <item name="android:colorPrimaryDark">@color/md_blue_400</item>
         <item name="colorPrimaryDark">@color/md_blue_400</item>
@@ -197,6 +201,15 @@
         <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
         <item name="android:windowExitAnimation">@anim/dialog_out</item>
     </style>
+
+    <style name="AppTheme.Base.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.Base.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.Base.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
 </resources>

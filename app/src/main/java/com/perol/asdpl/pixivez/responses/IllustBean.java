@@ -34,7 +34,7 @@ public class IllustBean extends BaseObservable {
     private boolean visible;
     private boolean is_muted;
     private int total_comments;
-    private List<TagsBean> tags;
+    private List<Tags> tags;
     private List<String> tools;
     private List<IllustsBean.MetaPagesBean> meta_pages;
 
@@ -167,7 +167,7 @@ public class IllustBean extends BaseObservable {
 
     public void setIs_bookmarked(boolean is_bookmarked) {
         this.is_bookmarked = is_bookmarked;
-        notifyPropertyChanged(BR.is_bookmarked);
+
     }
 
     public boolean isVisible() {
@@ -194,11 +194,11 @@ public class IllustBean extends BaseObservable {
         this.total_comments = total_comments;
     }
 
-    public List<TagsBean> getTags() {
+    public List<Tags> getTags() {
         return tags;
     }
 
-    public void setTags(List<TagsBean> tags) {
+    public void setTags(List<Tags> tags) {
         this.tags = tags;
     }
 
@@ -318,7 +318,6 @@ public class IllustBean extends BaseObservable {
 
         public void setIs_followed(boolean is_followed) {
             this.is_followed = is_followed;
-            notifyPropertyChanged(BR.is_bookmarked);
         }
 
         public Long getId() {
@@ -359,22 +358,6 @@ public class IllustBean extends BaseObservable {
 
         public void setOriginal_image_url(String original_image_url) {
             this.original_image_url = original_image_url;
-        }
-    }
-
-    public static class TagsBean {
-        /**
-         * name : 崩坏3
-         */
-
-        private String name;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
         }
     }
 }

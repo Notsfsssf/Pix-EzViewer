@@ -92,25 +92,6 @@ class UserBookMarkFragment : LazyV4Fragment(), TagsShowDialog.Callback {
 
     }
 
-//    override fun onNothingSelected(parent: AdapterView<*>?) {
-//
-//    }
-//
-//    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-//        when (position) {
-//            0 -> {
-//                pub = "public"
-//
-//            }
-//            1 -> {
-//                pub = "private"
-//
-//            }
-//        }
-//        if (!first)
-//            viewmodel!!.OnRefreshListener(param1!!, pub, null)
-//        else first = false
-//    }
 
     var first = true
 

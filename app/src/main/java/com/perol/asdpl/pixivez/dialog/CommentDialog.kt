@@ -42,6 +42,7 @@ import io.reactivex.ObservableSource
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.annotations.Nullable
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
@@ -50,9 +51,16 @@ import okhttp3.ResponseBody
 import retrofit2.HttpException
 
 class CommentDialog : DialogFragment() {
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+    }
 
     lateinit var recyclerviewPicture: RecyclerView
 
+    override fun onStop() {
+        super.onStop()
+    }
 
     lateinit var edittextComment: EditText
 
@@ -69,17 +77,23 @@ class CommentDialog : DialogFragment() {
     private var id: Long? = null
     private var Parent_comment_id = 1
     private var appApiPixivService: AppApiPixivService? = null
-
+    var compositeDisposable = CompositeDisposable();
     private var callback: Callback? = null
 
     fun show(fragmentManager: FragmentManager) {
         show(fragmentManager, "ViewDialogFragment")
     }
 
+    override fun onPause() {
+        super.onPause()
+        compositeDisposable.clear()
+    }
     private fun getData() {
 
         val restClient = RestClient()
         appApiPixivService = restClient.retrofit_AppAPI.create(AppApiPixivService::class.java)
+
+
         Observable.just(1).flatMap {
 
             runBlocking {
@@ -90,11 +104,11 @@ class CommentDialog : DialogFragment() {
                 .retryWhen(ReFreshFunction(context!!))
                 .subscribe(object : Observer<IllustCommentsResponse> {
                     override fun onSubscribe(d: Disposable) {
-
+                        compositeDisposable.add(d)
                     }
 
                     override fun onNext(illustCommentsResponse: IllustCommentsResponse) {
-                        button.isClickable=true
+                        button.isClickable = true
                         commentAdapter = CommentAdapter(R.layout.view_comment_item, illustCommentsResponse.comments, context)
                         recyclerviewPicture.isNestedScrollingEnabled = false
                         recyclerviewPicture.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)

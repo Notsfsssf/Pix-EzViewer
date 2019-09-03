@@ -124,23 +124,23 @@ class UserMessageFragment : Fragment() {
                 return true
             }
         })
-        search_page_flowlayout!!.adapter = object : TagAdapter<String>(strings.toTypedArray()) {
+        search_page_flowlayout!!.adapter = object : TagAdapter<String>(strings) {
             override fun getView(parent: FlowLayout, position: Int, s: String): View {
                 when (position) {
                     0 -> {
-                        val tv = mInflater.inflate(R.layout.picture_tag, search_page_flowlayout, false) as TextView
+                        val tv = mInflater.inflate(R.layout.picture_tag_single, search_page_flowlayout, false) as TextView
                         tv.text = s
                         tv.setTextColor(Color.BLUE)
                         return tv
                     }
                     1 -> {
-                        val tv = mInflater.inflate(R.layout.picture_tag, search_page_flowlayout, false) as TextView
+                        val tv = mInflater.inflate(R.layout.picture_tag_single, search_page_flowlayout, false) as TextView
                         tv.text = s
                         tv.setTextColor(Color.YELLOW)
                         return tv
                     }
                     else -> {
-                        val tv = mInflater.inflate(R.layout.picture_tag, search_page_flowlayout, false) as TextView
+                        val tv = mInflater.inflate(R.layout.picture_tag_single, search_page_flowlayout, false) as TextView
                         tv.text = s
                         return tv
                     }
