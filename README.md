@@ -5,6 +5,7 @@
 如果你觉得这个应用还不错，[点此](https://github.com/Notsfsssf/Pix-EzViewer/blob/master/donation/README.md)支持一下吧<br/>-
 java端通过修改Okhttp的SslSocket实现绕过Sni审查（既旁路阻断）直连Pixiv的功能<br/>
 具体实现[点此](https://github.com/Notsfsssf/Pix-EzViewer/tree/master/app/src/main/java/com/perol/asdpl/pixivez/networks)浏览<br/>
+如果你正在使用Muzei的话,那么[Pixiv for Muzei 3](https://github.com/yellowbluesky/PixivforMuzei3)是个不错的选择
 # 反馈- ![](https://img.shields.io/badge/PR-welcome-blue.svg)
 Email:PxEzFeedBack@outlook.com
 # Preview
