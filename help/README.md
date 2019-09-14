@@ -4,7 +4,7 @@
     http 400 bad request
 ```
 请尝试以下步骤  
-1.确保应用是最新的，到google play或者github获取最新的版本  
+1.确保应用是最新的，到google play或者[github](https://github.com/Notsfsssf/Pix-EzViewer/releases)获取最新的版本  
 2.已是最新版，则用户名或者密码必定有错，需要核对账号密码  
 ps:账号密码指的是pixiv的账号密码，而不是github的
 
