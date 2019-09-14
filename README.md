@@ -3,7 +3,7 @@
 <br/>
 一个支持免代理直连及查看动图的第三方Pixiv安卓客户端<br/>
 如果你觉得这个应用还不错，[点此](https://github.com/Notsfsssf/Pix-EzViewer/blob/master/donation/README.md)支持一下吧<br/>-
-java端通过修改Okhttp的SslSocket实现绕过Sni审查（既旁路阻断）直连Pixiv的功能<br/>
+java端通过修改Okhttp的SslSocket实现绕过Sni审查（即旁路阻断）直连Pixiv的功能<br/>
 -具体实现[点此](https://github.com/Notsfsssf/Pix-EzViewer/tree/master/app/src/main/java/com/perol/asdpl/pixivez/networks)浏览<br/>
 如果你正在使用Muzei的话,那么由[@Antony](https://github.com/yellowbluesky)开发的[Pixiv for Muzei 3](https://github.com/yellowbluesky/PixivforMuzei3)是个不错的选择<br/>
 如果你需要一个UWP客户端,那么由[@tobiichiamane](https://github.com/tobiichiamane)开发的[pixivfs-uwp](https://github.com/tobiichiamane/pixivfs-uwp)会是不二之选
