@@ -1,4 +1,4 @@
-# PixEz阅读器 - [![](https://img.shields.io/badge/Get%20it%20on-Play-green.svg)](https://play.google.com/store/apps/details?id=com.perol.asdpl.play.pixivez) - [![](https://img.shields.io/badge/%E7%82%B9%E6%AD%A4%E8%8E%B7%E5%8F%96-%E5%9B%BD%E5%86%85-brightgreen)](https://tc5.us/file/21124045-398653049)
+# PixEz阅读器 - [![](https://img.shields.io/badge/Get%20it%20on-Play-green.svg)](https://play.google.com/store/apps/details?id=com.perol.asdpl.play.pixivez) - [![](https://img.shields.io/badge/%E7%82%B9%E6%AD%A4%E8%8E%B7%E5%8F%96-%E5%9B%BD%E5%86%85-brightgreen)](https://tc5.us/file/21124045-398811245)
 ![](https://github.com/Notsfsssf/Pix-EzViewer/blob/master/app/src/main/res/mipmap-xxhdpi/ic_launcherep.png)<br/>
 <br/>
 一个支持免代理直连及查看动图的第三方Pixiv安卓客户端<br/>
