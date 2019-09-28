@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/exit"
-        android:title="收藏为私人"/>
-    <item android:id="@+id/set"
-        android:title="多选保存"/>
-
-</menu>

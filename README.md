@@ -10,7 +10,7 @@ java端通过修改Okhttp的SslSocket实现绕过Sni审查（即旁路阻断）�
 # 反馈- ![](https://img.shields.io/badge/PR-welcome-blue.svg)
 Email:PxEzFeedBack@outlook.com
 # Preview
-|![Preview](1.png) | ![Preview](2.png) | ![Preview](3.png) |
+|![Preview](./preview/1.png) | ![Preview](./preview/1.png) | ![Preview](./preview/1.png) |
 |:-------------------:|:------------------------:|:-----------------:|
 # 注意
 如果直连代码对你有所启发，在项目或者程序中注明我的ID的话,我会很高兴的ヽ✿゜▽゜)ノ<br/>
