@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="APP Info">
+        <Preference
+            app:key="version"
+            app:icon="@mipmap/ic_launcherep_round"
+            app:title="Version"
+            />
+        <Preference
+            app:key="me"
+            app:icon="@drawable/xinobu"
+            app:title="Perol_Notsf"
+            android:summary="编写开发,发布调试,反馈处理"
+            />
+        <Preference
+            app:key="me"
+            app:title="Right Now"
+            app:icon="@drawable/rightnow"
+            android:summary="主界面,Actionbar Icon,主Icon设计"
+            />
+
+        <Preference
+            app:key="icons"
+            app:icon="@drawable/nizhuren"
+            app:title="@string/changeicons"
+            app:summary="你主人(探姬);HK流星(MD)绘制"
+            />
+    </PreferenceCategory>
+    <PreferenceCategory app:title="Switch">
+        <SwitchPreference
+            android:summaryOn="H是可以的！ԅ(¯﹃¯ԅ) "
+            app:defaultValue="false"
+            app:key="r18on"
+            app:summaryOff="H是不行的！ (￣^￣) "
+            app:title="@string/_18" />
+        <SwitchPreference
+            app:key="disableproxy"
+            app:title="@string/proxy" />
+        <SwitchPreference
+            android:summary="——v——"
+            app:key="needstatusbar"
+            app:title="@string/needstatusbar" />
+        <SwitchPreference
+            android:summary="节省转场动画的运存"
+            app:defaultValue="true"
+            app:key="animation"
+            app:title="@string/animation" />
+        <SwitchPreference
+            android:key="crashreport"
+            app:defaultValue="true"
+            app:title="@string/crash_report" />
+        <Preference
+            app:key="viewreport"
+            android:title="@string/viewreport"/>
+    </PreferenceCategory>
+    <PreferenceCategory app:title="Selection">
+        <Preference
+            app:key="storepath1"
+            app:title="@string/savepath" />
+        <DropDownPreference
+            android:entries="@array/format"
+            android:entryValues="@array/format_value"
+            app:defaultValue="0"
+            app:key="saveformat"
+            app:title="@string/saveformat"
+            app:useSimpleSummaryProvider="true" />
+        <DropDownPreference
+            android:entries="@array/firstpage"
+            android:entryValues="@array/firstpage_value"
+            app:defaultValue="0"
+            app:key="firstpage"
+            app:title="@string/startpage"
+            app:useSimpleSummaryProvider="true" />
+        <DropDownPreference
+            android:entryValues="@array/quality_value"
+            app:defaultValue="0"
+            app:entries="@array/quality"
+            app:key="quality"
+            app:title="@string/picturequality"
+            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            android:entries="@array/language"
+            android:entryValues="@array/language_values"
+            app:defaultValue="0"
+            app:key="language"
+            app:title="Language" />
+    </PreferenceCategory>
+
+
+</androidx.preference.PreferenceScreen>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="bean"
+            type="com.perol.asdpl.pixivez.responses.Illust" />
+    </data>
+<RelativeLayout
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+  <LinearLayout
+
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+          <ImageView
+              android:id="@+id/imageView3"
+              userUrl="@{bean.user.profile_image_urls.medium}"
+              android:layout_width="80dp"
+              android:layout_height="80dp"
+              android:layout_marginStart="8dp"
+              android:layout_marginTop="8dp"
+
+
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toTopOf="parent" />
+
+          <TextView
+              android:id="@+id/textView17"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="8dp"
+              android:layout_marginTop="8dp"
+              android:singleLine="true"
+              android:text="@{bean.user.name}"
+              android:textColor="?attr/colorPrimary"
+              app:layout_constraintStart_toEndOf="@+id/imageView3"
+              app:layout_constraintTop_toTopOf="parent" />
+
+          <TextView
+              android:id="@+id/textView15"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="8dp"
+              android:layout_marginTop="8dp"
+              android:text='@{bean.title}'
+              app:layout_constraintStart_toEndOf="@+id/imageView3"
+              app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+          <TextView
+              android:id="@+id/textView20"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="8dp"
+              android:layout_marginTop="8dp"
+              android:text="浏览"
+              app:layout_constraintStart_toEndOf="@+id/imageView3"
+              app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+          <TextView
+              android:id="@+id/textView22"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="8dp"
+              android:layout_marginTop="8dp"
+              android:text="收藏"
+              app:layout_constraintStart_toEndOf="@+id/textView18"
+              app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+          <TextView
+              android:id="@+id/textView18"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="8dp"
+              android:layout_marginTop="8dp"
+              android:text='@{String.valueOf(bean.total_view)}'
+              android:textColor="?attr/colorPrimary"
+              app:layout_constraintStart_toEndOf="@+id/textView20"
+              app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+          <TextView
+              android:id="@+id/textView19"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textColor="?attr/colorPrimary"
+              android:layout_marginStart="8dp"
+              android:text='@{String.valueOf(bean.total_bookmarks)}'
+              app:layout_constraintStart_toEndOf="@+id/textView22"
+              app:layout_constraintTop_toTopOf="@+id/textView22" />
+      </androidx.constraintlayout.widget.ConstraintLayout>
+  </LinearLayout>
+</RelativeLayout>
+</layout>

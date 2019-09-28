@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+
+        tools:context=".fragments.PictureFragment">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_picture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:focusable="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview_srcpicture"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:minHeight="300dp">
+
+                    <LinearLayout
+                        android:id="@+id/hidecontent"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/pic_constrain"
+                            android:layout_width="match_parent"
+                            android:layout_height="?attr/actionBarSize">
+
+                            <ProgressBar
+                                android:id="@+id/progressbar_picture"
+                                android:layout_width="30dp"
+                                android:layout_height="33dp"
+                                android:layout_marginBottom="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="8dp"
+                                android:visibility="invisible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/button_picture_likeuser"
+                                app:layout_constraintStart_toEndOf="@+id/pic_image"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/imagebutton_gif"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_marginTop="8dp"
+                                android:background="@color/white"
+                                android:src="@drawable/ic_file_download_black_24dp"
+                                android:visibility="invisible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/button_picture_likeuser"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageView
+                                android:id="@+id/pic_image"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_marginBottom="8dp"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginStart="8dp"
+
+                                android:layout_marginTop="8dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/pic_detail"
+                                android:layout_width="0dp"
+                                android:layout_height="20dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginStart="8dp"
+                                android:enabled="true"
+                                android:textIsSelectable="true"
+                                android:focusable="true"
+                                android:longClickable="true"
+                                android:text="少女前线"
+                                app:layout_constraintEnd_toStartOf="@+id/imagebutton_gif"
+                                app:layout_constraintStart_toEndOf="@+id/pic_image"
+                                app:layout_constraintTop_toBottomOf="@+id/pic_user" />
+
+                            <TextView
+                                android:id="@+id/pic_user"
+                                android:layout_width="0dp"
+                                android:layout_height="18dp"
+                                android:layout_marginStart="8dp"
+                                android:text="少女前线"
+                                android:enabled="true"
+                                android:textIsSelectable="true"
+                                android:focusable="true"
+                                android:longClickable="true"
+                                android:textColor="@color/colorAccent"
+                                app:layout_constraintEnd_toEndOf="@+id/pic_detail"
+                                app:layout_constraintStart_toEndOf="@+id/pic_image"
+                                app:layout_constraintTop_toTopOf="@+id/pic_image" />
+
+                            <TextView
+                                android:id="@+id/pic_time"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginStart="8dp"
+                                android:textSize="10dp"
+
+                                app:layout_constraintStart_toEndOf="@+id/pic_image"
+                                app:layout_constraintTop_toBottomOf="@+id/pic_detail" />
+
+                            <Button
+                                android:id="@+id/button_picture_likeuser"
+                                style="@style/Base.Widget.AppCompat.ActionButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_marginTop="8dp"
+                                android:text="关注"
+
+                            app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="60dp">
+
+                                <TextView
+                                    android:id="@+id/textView_illustrateid"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_marginTop="8dp"
+                                    android:text="11111111"
+                                    android:enabled="true"
+                                    android:textIsSelectable="true"
+                                    android:focusable="true"
+                                    android:longClickable="true"
+                                    android:textColor="@color/colorPrimary"
+                                    app:layout_constraintStart_toEndOf="@+id/textView9"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/textView9"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_marginTop="8dp"
+                                    android:text="插画ID"
+                                    app:layout_constraintStart_toEndOf="@+id/textView_pix"
+                                    app:layout_constraintTop_toTopOf="parent" />
+                                <TextView
+                                    android:id="@+id/textView10"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:text="1080"
+                                    android:textColor="@color/colorPrimary"
+                                    app:layout_constraintStart_toEndOf="@+id/textView12"
+                                    app:layout_constraintTop_toTopOf="@+id/textView12" />
+
+                                <TextView
+                                    android:id="@+id/textView_pix"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:text="1080"
+                                    android:textColor="@color/colorPrimary"
+                                    app:layout_constraintStart_toEndOf="@+id/textView11"
+                                    app:layout_constraintTop_toTopOf="@+id/textView11" />
+
+                                <TextView
+                                    android:id="@+id/textView12"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_marginTop="8dp"
+                                    android:text="查看"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+                                <TextView
+                                    android:id="@+id/textView_bookmarknum"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:text="1188"
+                                    android:textColor="@color/colorPrimary"
+                                    app:layout_constraintStart_toEndOf="@+id/textView13"
+                                    app:layout_constraintTop_toTopOf="@+id/textView13" />
+
+                                <TextView
+                                    android:id="@+id/textView13"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:text="收藏"
+                                    app:layout_constraintStart_toEndOf="@+id/textView10"
+                                    app:layout_constraintTop_toTopOf="@+id/textView12" />
+                                <TextView
+                                    android:id="@+id/textView11"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_marginTop="8dp"
+                                    android:text="分辨率"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        <com.zhy.view.flowlayout.TagFlowLayout
+                            android:id="@+id/search_page_flowlayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp" />
+                        <androidx.cardview.widget.CardView
+                            android:layout_margin="8dp"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp"
+                            android:paddingTop="8dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:enabled="true"
+                                android:textIsSelectable="true"
+                                android:focusable="true"
+                                android:longClickable="true"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginBottom="8dp"
+                                android:textSize="16sp"
+                                android:id="@+id/textView_detail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+                        </androidx.cardview.widget.CardView>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp">
+                            <TextView
+                                android:layout_marginBottom="20dp"
+                                android:textSize="14sp"
+                                android:id="@+id/textView_comment"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_centerHorizontal="true"
+                                android:layout_gravity="center_horizontal"
+                                android:text="查看评论" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+
+                    <com.github.ybq.android.spinkit.SpinKitView
+                        android:id="@+id/progressbar_loading"
+                        style="@style/SpinKitView.CubeGrid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|center_vertical"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        app:SpinKit_Color="@color/gray" />
+
+
+                </FrameLayout>
+
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="18dp"
+            android:layout_marginEnd="18dp"
+            android:src="@drawable/ic_starx"
+            app:backgroundTint="@color/white" />
+
+
+    </RelativeLayout>
+</layout>

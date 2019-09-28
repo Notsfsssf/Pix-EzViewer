@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:anim/decelerate_interpolator">
+    <!--减速度加速器-->
+    <translate
+        android:duration="250"
+        android:fromYDelta="100%"
+        android:toYDelta="0"/>
+</set>

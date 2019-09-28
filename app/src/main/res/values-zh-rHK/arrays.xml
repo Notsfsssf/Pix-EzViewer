@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="week">
+        <item>全部</item>
+        <item>公開的</item>
+        <item>非公開</item>
+    </string-array>
+    <string-array name="user">
+        <item>公開的</item>
+        <item>非公開</item>
+    </string-array>
+    <string-array name="search">
+        <item>綜合</item>
+        <item>插畫id</item>
+        <item>畫師id</item>
+
+    </string-array>
+    <string-array name="sort">
+        <item>默認</item>
+        <item>默認asc</item>
+        <item>熱門</item>
+    </string-array>
+    <string-array name="firstpage">
+        <item>推薦</item>
+        <item>排行</item>
+        <item>個人</item>
+    </string-array>
+    <string-array name="format">
+        <item>默認:id_+part</item>
+        <item>P站:id_p+part</item>
+        <item>血書:userid_id_part</item>
+        <item>特殊:id_title_part</item>
+    </string-array>
+    <string-array name="quality">
+        <item>中圖（更快）</item>
+        <item>大圖（高配）</item>
+    </string-array>
+    <string-array name="locale">
+        <item>ZH</item>
+        <item>EN</item>
+    </string-array>
+    <!-- Reply Preference -->
+    <string-array name="reply_entries">
+        <item>Reply</item>
+        <item>Reply to all</item>
+    </string-array>
+
+    <string-array name="reply_values">
+        <item>reply</item>
+        <item>reply_all</item>
+    </string-array>
+    <string-array name="modellist" >
+          <item>每日</item>
+          <item>男性</item>
+          <item>女性</item>
+          <item>原創</item>
+          <item>新人</item>
+          <item>每周</item>
+          <item>每月</item>
+          <item>XVIII</item>
+          <item>XVIII_Week</item>
+    </string-array>
+</resources>

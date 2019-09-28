@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView android:layout_margin="5dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <ImageView
+        android:id="@+id/commentuserimage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/commentusername"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+android:textColor="@color/colorAccent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textIsSelectable="true"
+        android:text="111111111"
+        app:layout_constraintStart_toEndOf="@+id/commentuserimage"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/repley_to_hit"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:text="回复"
+        android:textColor="@color/colorPrimary"
+
+        android:textAlignment="center"
+        app:layout_constraintStart_toEndOf="@+id/commentusername"
+        app:layout_constraintBottom_toTopOf="@+id/commentdetail"
+/>
+
+    <TextView
+        android:id="@+id/commentdetail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+android:textIsSelectable="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="1111111122"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/commentuserimage"
+        app:layout_constraintTop_toBottomOf="@+id/commentusername" />
+
+    <TextView
+        android:id="@+id/commentdate"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:text="data"
+        android:textSize="10dp"
+        app:layout_constraintStart_toEndOf="@+id/commentuserimage"
+        app:layout_constraintTop_toBottomOf="@+id/commentdetail" />
+" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

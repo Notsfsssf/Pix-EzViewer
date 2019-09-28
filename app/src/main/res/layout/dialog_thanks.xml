@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+ <LinearLayout
+     android:orientation="vertical"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent">
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    app:cardUseCompatPadding="true"
+    app:cardPreventCornerOverlap="true"
+    android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="在刚接触JAVA的时候边学官方文档边做,摸索着完成了这个客户端,因为个人能力的问题,出过不少丢人的BUG,优化问题（不开源的原因之一）,在完善这个应用的过程中，我获得了很多的开发经验与比较深刻的教训，也得到了很多人的帮助和支持" />
+</androidx.cardview.widget.CardView>
+     <androidx.cardview.widget.CardView
+         android:layout_width="match_parent"
+         app:cardUseCompatPadding="true"
+         app:cardPreventCornerOverlap="true"
+         android:layout_height="wrap_content">
+         <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:textSize="22sp"
+             android:layout_margin="8dp"
+             android:text="非常感谢你们的支持:"
+             android:textColor="?attr/colorPrimary"/>
+
+     </androidx.cardview.widget.CardView>
+     <androidx.recyclerview.widget.RecyclerView
+         android:id="@+id/list"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content" />
+ </LinearLayout>
+
+
+</androidx.core.widget.NestedScrollView>
