@@ -72,7 +72,6 @@ import kotlin.collections.ArrayList
 class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data: Illust, var mContext: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val imageUrls = ArrayList<String>()
     lateinit var mListen: () -> Unit
-
     lateinit var mViewCommentListen: () -> Unit
     lateinit var mUserPicLongClick: () -> Unit
     fun setUserPicLongClick(listener: () -> Unit) {
@@ -128,7 +127,6 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
         private val imageView = itemView.findViewById<NiceImageView>(R.id.imageView5)
         private val imageButtonDownload = itemView.findViewById<ImageButton>(R.id.imagebutton_download)
         fun updateWithPage(mContext: Context, s: Illust, mViewCommentListen: () -> Unit, mUserPicLongClick: () -> Unit) {
-
             binding.illust = s
             captionTextView.autoLinkMask = Linkify.WEB_URLS
             val typedValue = TypedValue();
@@ -188,7 +186,7 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
 
             }
             imageButtonDownload.setOnClickListener {
-          Works.ImageDownloadAll(s)
+          Works.imageDownloadAll(s)
             }
         }
     }
@@ -296,10 +294,8 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
 
                     builder.setTitle(mContext.resources.getString(R.string.saveselectpic1))
                     builder.setMessage("描述: " + Html.fromHtml(data.caption))
-
-
                     builder.setPositiveButton(mContext.resources.getString(R.string.confirm)) { dialog, which ->
-                        Works.ImageDownloadOne( data,position)
+                        Works.imageDownloadOne(data,position)
                     }
                     builder.setNegativeButton(mContext.resources.getString(R.string.cancel)) { dialog, which ->
 
@@ -318,7 +314,7 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                                 showlist.add(i.toString())
                             }
                             val boolean = BooleanArray(showlist.size)
-                            for (i in 0..boolean.size - 1) {
+                            for (i in boolean.indices) {
                                 boolean[i] = false
                             }
                             builder.setTitle(R.string.choice)
@@ -337,13 +333,13 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                                     .setPositiveButton(android.R.string.ok) { dialog, id ->
 
                                         mSelectedItems.map {
-                                            Works.ImageDownloadOne(data, it)
+                                            Works.imageDownloadOne(data, it)
 
                                         }
                                     }
                                     .setNegativeButton(android.R.string.cancel) { dialog, id -> }
                                     .setNeutralButton("全选") { dialog, id ->
-                                        for (i in 0..boolean.size - 1) {
+                                        for (i in boolean.indices) {
                                             boolean[i] = true
                                         }
 
@@ -402,9 +398,8 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
             val play = holder.itemView.findViewById<ImageView>(R.id.imageview_play)
             imageViewGif = holder.itemView.findViewById(R.id.imageview_gif)
             imageViewGif!!.setOnLongClickListener {
-
                 if (!progressBar!!.isVisible) {
-                    Snackbar.make(imageViewGif!!, mContext.getString(R.string.encodegif), Snackbar.LENGTH_LONG).setAction(android.R.string.ok, { view ->
+                    Snackbar.make(imageViewGif!!, mContext.getString(R.string.encodegif), Snackbar.LENGTH_LONG).setAction(android.R.string.ok) { view ->
                         if (!isEncoding) {
                             isEncoding = true
                             val file1 = File(path2)
@@ -445,19 +440,19 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                         } else {
                             Toasty.info(PxEZApp.instance, "It's already going on", Toast.LENGTH_LONG).show()
                         }
-                    }).show()
+                    }.show()
                 }
                 true
             }
             play!!.setOnClickListener {
                 play.visibility = View.GONE
                 Toasty.info(PxEZApp.instance, "Downloading...", Toast.LENGTH_SHORT).show()
-                pictureXViewModel.loadgif(data.id).flatMap({
+                pictureXViewModel.loadgif(data.id).flatMap {
                     duration = it.ugoira_metadata.frames[0].delay
 
                     pictureXViewModel.downloadzip(it.ugoira_metadata.zip_urls.medium)
                     return@flatMap Observable.just(it)
-                }).subscribe({
+                }.subscribe({
                 }, {
                     Log.d("throw", "throw it")
                     play.visibility = View.VISIBLE

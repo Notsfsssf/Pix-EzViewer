@@ -15,18 +15,18 @@ import java.io.File
 
 class Works {
     companion object {
-        fun ImageDownloadAll(illust: Illust) {
+        fun imageDownloadAll(illust: Illust) {
             TToast.startDownload(PxEZApp.instance)
             if (illust.meta_pages.isEmpty()) {
-                ImageDownloadOne(illust, null)
+                imageDownloadOne(illust, null)
             } else {
                 for (i in illust.meta_pages.indices) {
-                    ImageDownloadOne(illust, i)
+                    imageDownloadOne(illust, i)
                 }
             }
         }
 
-        fun ImageDownloadOne(illust: Illust, part: Int?) {
+        fun imageDownloadOne(illust: Illust, part: Int?) {
             var url = ""
             val title = illust.title
             title.replace("/","")
@@ -39,9 +39,9 @@ class Works {
                     ?: 0
             var type = ".png"
             var filename = "${name}_p$part$type"
-            if (part != null) {
+            if (part != null&&illust.meta_pages.isNotEmpty()) {
                 url = illust.meta_pages[part].image_urls.original
-                type = if (illust.meta_pages[part].image_urls.original.contains("png")) {
+                type = if (url.contains("png")) {
                     ".png"
                 } else ".jpg"
                 when (format) {
@@ -60,7 +60,7 @@ class Works {
                 }
             } else {
                 url = illust.meta_single_page.original_image_url
-                type = if (illust.meta_single_page.original_image_url.contains("png")) {
+                type = if (url.contains("png")) {
                     ".png"
                 } else ".jpg"
                 when (format) {

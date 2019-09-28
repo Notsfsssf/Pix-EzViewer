@@ -49,7 +49,8 @@ class RestClient {
                 val original = chain.request()
                 val requestBuilder = original.newBuilder()
                         .addHeader("Accept-Language", local.language)
-                        .addHeader("User-Agent", "PixivIOSApp/5.8.0")
+                        .removeHeader("User-Agent")
+                        .addHeader("User-Agent", "PixivAndroidApp/5.0.155 (Android ${android.os.Build.VERSION.RELEASE}; Pixel C)")
                 val request = requestBuilder.build()
                 return chain.proceed(request)
             }
@@ -81,7 +82,8 @@ class RestClient {
                 override fun intercept(chain: Interceptor.Chain): Response {
                     val original = chain.request()
                     val requestBuilder = original.newBuilder()
-                            .addHeader("User-Agent", "PixivIOSApp/5.8.0")
+                            .removeHeader("User-Agent")
+                            .addHeader("User-Agent", "PixivAndroidApp/5.0.155 (Android ${android.os.Build.VERSION.RELEASE}; Pixel C)")
                             .addHeader("referer", "https://app-api.pixiv.net/")
                     val request = requestBuilder.build()
                     return chain.proceed(request)
@@ -170,7 +172,7 @@ class RestClient {
                     val original = chain.request()
                     val requestBuilder = original.newBuilder()
                             .removeHeader("User-Agent")
-                            .addHeader("User-Agent", "PixivIOSApp/5.8.0")
+                            .addHeader("User-Agent", "PixivAndroidApp/5.0.155 (Android ${android.os.Build.VERSION.RELEASE}; Pixel C)")
                             .addHeader("Accept-Language", local.language)
                             .addHeader("X-Client-Time", isoDate)
                             .addHeader("X-Client-Hash", encode("$isoDate$HashSalt"))

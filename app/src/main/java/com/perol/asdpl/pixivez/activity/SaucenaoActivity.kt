@@ -32,7 +32,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import java.io.File
 import java.lang.Exception
 import java.net.InetAddress
-
+import okhttp3.RequestBody.Companion.asRequestBody
 
 class SaucenaoActivity : RinkActivity() {
 
@@ -87,19 +87,11 @@ class SaucenaoActivity : RinkActivity() {
                 if (action == Intent.ACTION_SEND && type.startsWith("image/")) {
                     val uri = intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM);
                     if (uri != null) {
-                        var res: String? = null
-                        val proj = arrayOf(MediaStore.Images.Media.DATA)
-                        val cursor = contentResolver.query(uri, proj, null, null, null) ?: return
-                        if (cursor.moveToFirst()) {
-                            val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-                            res = cursor.getString(columnIndex)
-                        }
-                        cursor.close();
                         Toasty.success(this, "解析成功正在上传", Toast.LENGTH_SHORT).show()
-                        val file = File(res)
+                        val file = File(uri.path!!)
                         val builder = MultipartBody.Builder()
                         builder.setType(MultipartBody.FORM)
-                        val body = RequestBody.create("image/jpeg".toMediaTypeOrNull(), file)
+                        val body = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
                         builder.addFormDataPart("file", file.name, body)
                         api.searchpicforresult(builder.build().part(0)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
                             Toasty.success(this, "上传成功，正在进行匹配", Toast.LENGTH_SHORT).show()

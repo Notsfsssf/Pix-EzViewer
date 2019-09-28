@@ -43,7 +43,7 @@ class OkHttpUrlLoader(concreteLoader: ModelLoader<GlideUrl, InputStream>, modelC
 
     override fun getHeaders(model: String?, width: Int, height: Int, options: Options?): Headers? {
         return LazyHeaders.Builder()
-                .addHeader("User-Agent", "PixivIOSApp/5.8.0")
+                .addHeader("User-Agent", "PixivAndroidApp/5.0.155 (Android ${android.os.Build.VERSION.RELEASE}; Pixel C)")
                 .addHeader("referer", "https://app-api.pixiv.net/")
                 .build()
     }

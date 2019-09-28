@@ -105,10 +105,10 @@ class RankingAdapter(layoutResId: Int, data: List<Illust>?, private val R18on: B
         })
                 .setOnClickListener(R.id.save) {
                     val illust = item
-                  Works.ImageDownloadAll(illust)
+                  Works.imageDownloadAll(illust)
                 }
                 .setOnLongClickListener(R.id.save) {
-                  Works.ImageDownloadAll( item)
+                  Works.imageDownloadAll( item)
                     true
                 }
                 .setOnClickListener(R.id.like) { v ->

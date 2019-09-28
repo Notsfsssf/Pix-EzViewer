@@ -16,7 +16,6 @@ class HelloMViewPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm
         return when (position) {
             0 -> {
                 HelloMainFragment.newInstance("s","s")
-
             }
             1 -> {
                 HelloMDynamicsFragment.newInstance("d")

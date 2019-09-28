@@ -132,7 +132,7 @@ class HelloMActivity : AppCompatActivity(), Drawer.OnDrawerNavigationListener, A
 
         var allUser = ArrayList<UserEntity>()
         runBlocking {
-            allUser = AppDataRepository.getAllUser() as ArrayList<UserEntity>
+            allUser = ArrayList<UserEntity>(AppDataRepository.getAllUser())
 
         }
         if (allUser.isEmpty()||allUser[0].username == "olduser") {
@@ -141,15 +141,7 @@ class HelloMActivity : AppCompatActivity(), Drawer.OnDrawerNavigationListener, A
             return
         }
         sharedPreferencesServices = SharedPreferencesServices.getInstance()
-//        if (!sharedPreferencesServices.getBoolean("needstatusbar")) {
-//            val window = window
-//            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-//            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-//            window.statusBarColor = Color.TRANSPARENT
-//        }
         ThemeUtil.themeInit(this)
-//       window.statusBarColor = Colorful().getPrimaryColor().getColorPack().normal().asInt()
         activityHelloMBinding = DataBindingUtil.setContentView(this, R.layout.app_bar_hello_m)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)

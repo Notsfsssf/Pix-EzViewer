@@ -36,7 +36,7 @@ class CustomGlideModule : AppGlideModule() {
 //                val requestBuilder = chain.request().newBuilder()
 //                        .removeHeader("User-Agent")
 //                        .removeHeader("Accept-Encoding")
-//                        .addHeader("User-Agent", "PixivIOSApp/5.8.0")
+//                        .addHeader("User-Agent", "PixivAndroidApp/5.0.155 (Android 6.0.1; Pixel C)")
 //                        .addHeader("referer", "https://app-api.pixiv.net/")
 //                        .addHeader("Accept-Encoding", "gzip");
 //                val request = requestBuilder.build()

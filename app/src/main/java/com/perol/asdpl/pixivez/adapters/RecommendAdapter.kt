@@ -2,26 +2,22 @@ package com.perol.asdpl.pixivez.adapters
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.TextView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.bumptech.glide.request.target.ImageViewTarget
 import com.bumptech.glide.request.transition.Transition
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
 import com.chad.library.adapter.base.BaseViewHolder
-import com.github.ybq.android.spinkit.SpinKitView
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.PictureActivity
 import com.perol.asdpl.pixivez.repository.RetrofitRespository
@@ -40,8 +36,7 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
     val retrofit = RetrofitRespository.getInstance()
 
     init {
-
-        this.openLoadAnimation(BaseQuickAdapter.SCALEIN)
+        this.openLoadAnimation(SCALEIN)
         this.onItemClickListener = OnItemClickListener { adapter, view, position ->
             val bundle = Bundle()
             bundle.putLong("illustid", this@RecommendAdapter.data[position].id)
@@ -52,7 +47,6 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
             bundle.putLongArray("illustlist", illustlist)
             val intent = Intent(mContext, PictureActivity::class.java)
             intent.putExtras(bundle)
-         //   intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             if (PxEZApp.animationEnable) {
                 val mainimage = view!!.findViewById<View>(R.id.item_img)
                 val optionsCompat =
@@ -77,7 +71,7 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
             ContextCompat.getColor(mContext, colorPrimary)
         })
                 .setOnClickListener(R.id.save) {
-                  Works.ImageDownloadAll(item)
+                  Works.imageDownloadAll(item)
                 }
                 .setOnClickListener(R.id.like) { v ->
                     val textView = v as Button
