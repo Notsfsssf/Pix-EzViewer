@@ -2,7 +2,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="illust"
             type="com.perol.asdpl.pixivez.responses.Illust" />
@@ -15,21 +17,22 @@
         tools:context=".fragments.PictureFragment">
 
         <FrameLayout
+            android:id="@+id/frameLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout_fold"
                 android:layout_width="match_parent"
                 android:layout_height="68dp"
-                android:visibility="invisible"
                 android:layout_gravity="bottom"
-                android:background="@android:color/background_light">
+                android:background="@android:color/background_light"
+                android:visibility="invisible">
 
                 <ImageButton
                     android:id="@+id/imageButton"
@@ -47,8 +50,8 @@
                     userUrl="@{illust.user.profile_image_urls.medium}"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageButton"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -57,13 +60,13 @@
                     android:id="@+id/textView6"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
+                    android:ellipsize="end"
+                    android:lines="1"
                     android:text="@{illust.title}"
                     android:textColor="?attr/colorPrimary"
-                    android:lines="1"
-                    android:ellipsize="end"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView5"
                     app:layout_constraintTop_toTopOf="@+id/imageView5" />
@@ -73,11 +76,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:lines="1"
-                    android:ellipsize="end"
-                    android:textColor="@color/black"
                     android:layout_marginEnd="8dp"
+                    android:ellipsize="end"
+                    android:lines="1"
                     android:text="@{illust.user.name}"
+                    android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView5"
                     app:layout_constraintTop_toBottomOf="@+id/textView6" />
@@ -86,10 +89,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:textSize="12sp"
                     android:layout_marginEnd="8dp"
                     android:text="@{illust.create_date}"
                     android:textColor="@android:color/darker_gray"
+                    android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView5"
                     app:layout_constraintTop_toBottomOf="@+id/textView21" />
@@ -101,10 +104,11 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
             android:layout_margin="@dimen/fab_margin"
-            android:visibility="gone"
             app:backgroundTint="@color/white"
+            android:visibility="gone"
+            app:layout_anchor="@+id/frameLayout"
+            app:layout_anchorGravity="end|bottom"
             app:tint="@null" />
 
 

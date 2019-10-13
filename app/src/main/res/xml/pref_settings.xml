@@ -27,6 +27,10 @@
             app:title="@string/changeicons"
             app:summary="你主人(探姬);HK流星(MD)绘制"
             />
+        <Preference
+            app:key="check"
+            app:title="@string/checkupdate"
+            app:summary="update" />
     </PreferenceCategory>
     <PreferenceCategory app:title="Switch">
         <SwitchPreference

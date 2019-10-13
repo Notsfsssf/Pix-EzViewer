@@ -97,9 +97,9 @@
     </style>
 
     <style name="AppTheme.Base" parent="Theme.MaterialComponents.Light">
+        <item name="android:windowFullscreen">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowFullscreen">true</item>
     </style>
 
     <style name="MyListPopupWindow" parent="Base.Widget.AppCompat.ListPopupWindow">

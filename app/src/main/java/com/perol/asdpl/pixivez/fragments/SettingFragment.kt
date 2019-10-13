@@ -2,31 +2,19 @@ package com.perol.asdpl.pixivez.fragments
 
 import android.app.Activity
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.content.res.Configuration
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
-import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.content.ContextCompat
 import androidx.preference.*
-import com.bumptech.glide.Glide
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.PathProviderActivity
 import com.perol.asdpl.pixivez.dialog.IconDialog
 import com.perol.asdpl.pixivez.objects.Toasty
-import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.PxEZApp
-import kotlinx.android.synthetic.main.preference_author.*
 import java.io.File
 import java.io.FilenameFilter
 
@@ -156,6 +144,9 @@ class SettingFragment : PreferenceFragmentCompat(), IconDialog.Callback {
                 } catch (e: Exception) {
                     Toasty.info(PxEZApp.instance, "no browser found", Toast.LENGTH_SHORT).show()
                 }
+            }
+            "check" -> {
+
             }
             "storepath1" -> {
                 startActivityForResult(Intent(activity, PathProviderActivity::class.java), 887)

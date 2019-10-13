@@ -536,9 +536,11 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
         aboutPictureAdapter.setOnItemClickListener { adapter, view, position ->
             val id = it[position].id
             val bundle = Bundle()
-            val arrayList = LongArray(1)
-            arrayList[0] = id
-            bundle.putLongArray("illustlist", arrayList)
+            val arrayList = ArrayList<Long>()
+            it.forEach {
+                arrayList.add(it.id)
+            }
+            bundle.putLongArray("illustlist", arrayList.toLongArray())
             bundle.putLong("illustid", id)
             val intent = Intent(mContext, PictureActivity::class.java)
             intent.putExtras(bundle)

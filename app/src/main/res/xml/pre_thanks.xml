@@ -14,6 +14,7 @@
         app:key="thanks"
         app:summary="@string/thanks" />
     <PreferenceCategory
+        app:isPreferenceVisible="false"
         android:key="huonaicai"
         android:title="捐赠">
         <Preference
