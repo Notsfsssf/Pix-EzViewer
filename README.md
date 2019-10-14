@@ -5,7 +5,7 @@
 
 一个支持免代理直连及查看动图的第三方 Pixiv Android 客户端。
 
-如果你觉得这个应用还不错，[点此](https://github.com/Skimige/Pix-EzViewer#支持) 支持一下吧！
+如果你觉得这个应用还不错，[点此](https://github.com/Notsfsssf/Pix-EzViewer#支持) 支持一下吧！
 
 ***
 
