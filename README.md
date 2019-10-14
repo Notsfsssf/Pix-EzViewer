@@ -1,5 +1,7 @@
-# PixEz 阅读器 - [![](https://img.shields.io/badge/Get%20it%20on-Play-green.svg)](https://play.google.com/store/apps/details?id=com.perol.asdpl.play.pixivez) - [![](https://img.shields.io/badge/%E7%82%B9%E6%AD%A4%E8%8E%B7%E5%8F%96-%E5%9B%BD%E5%86%85-brightgreen)](https://tc5.us/file/21124045-400028290)
+# PixEz 阅读器
 ![](https://github.com/Notsfsssf/Pix-EzViewer/raw/master/app/src/main/res/mipmap-xxhdpi/ic_launcherep.png)
+
+![当前版本](https://img.shields.io/github/v/release/Notsfsssf/Pix-EzViewer?label=%E5%BD%93%E5%89%8D%E7%89%88%E6%9C%AC) [![](https://img.shields.io/badge/Get%20it%20on-Play-green.svg)](https://play.google.com/store/apps/details?id=com.perol.asdpl.play.pixivez) [![](https://img.shields.io/badge/%E7%82%B9%E6%AD%A4%E8%8E%B7%E5%8F%96-%E5%9B%BD%E5%86%85-brightgreen)](https://tc5.us/file/21124045-400028290) 
 
 一个支持免代理直连及查看动图的第三方 Pixiv Android 客户端。
 
@@ -15,19 +17,21 @@ Java 端通过修改 `OkHttp` 的 `SSLSocket` 实现绕过 SNI 审查（即旁�
 
 如果你需要一个 UWP 客户端，那么由 [@tobiichiamane](https://github.com/tobiichiamane) 开发的 [pixivfs-uwp ](https://github.com/tobiichiamane/pixivfs-uwp)会是不二之选。
 
-# 反馈 - ![](https://img.shields.io/badge/PR-welcome-blue.svg)
-Email: PxEzFeedBack@outlook.com
+# 反馈
+
+![](https://img.shields.io/badge/PR-welcome-blue.svg)如果你是有能 man，且愿意为本项目贡献代码，请不要犹豫提交 Pull Request 吧！
+
+普通用户可以通过 Email (PxEzFeedBack@outlook.com) 或 [GitHub Issues](https://github.com/Notsfsssf/Pix-EzViewer/issues) 提交反馈。
+
 # Preview
 |![Preview](./preview/1.png) | ![Preview](./preview/2.png) | ![Preview](./preview/3.png) |
 |:-------------------:|:------------------------:|:-----------------:|
 # 注意
 如果直连代码对你有所启发，在项目或者程序中注明我的 ID 的话，我会很高兴的ヽ✿゜▽゜)ノ
 
-如果你是从 Google Play 上下载安装的本应用，请不要使用备份、快传、APK 分享等功能进行二次打包，这会导致无法启动的 BUG。如果需要分享给朋友，请让他来这里下载安装包哦！
+如果你是从 Google Play 上下载安装的本应用，请不要使用备份、快传、APK 分享等功能进行二次打包，这会导致无法启动的 BUG。**如果需要分享给朋友，请让他来这里下载安装包哦！**
 
 # 关于项目
-你也可以为这个应用 PR。
-
 欢迎进企鹅群交流经验或者反馈：815791942
 
 也可以在 Telegram 群交流：[@PixEzViewer](https://t.me/PixEzViewer)
