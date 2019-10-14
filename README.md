@@ -19,7 +19,9 @@ Java 端通过修改 `OkHttp` 的 `SSLSocket` 实现绕过 SNI 审查（即旁�
 
 # 反馈
 
-![](https://img.shields.io/badge/PR-welcome-blue.svg)如果你是有能 man，且愿意为本项目贡献代码，请不要犹豫提交 Pull Request 吧！
+![](https://img.shields.io/badge/PR-welcome-blue.svg)
+
+如果你是有能 man，且愿意为本项目贡献代码，请不要犹豫提交 Pull Request 吧！
 
 普通用户可以通过 Email (PxEzFeedBack@outlook.com) 或 [GitHub Issues](https://github.com/Notsfsssf/Pix-EzViewer/issues) 提交反馈。
 
