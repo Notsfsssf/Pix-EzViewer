@@ -27,12 +27,6 @@ import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.viewmodel.PictureXViewModel
 import kotlinx.android.synthetic.main.fragment_picture_x.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
-import kotlin.collections.count
-import kotlin.collections.indices
-import kotlin.collections.isNotEmpty
-import kotlin.collections.map
 import kotlin.collections.set
 
 
