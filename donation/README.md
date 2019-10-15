@@ -1,5 +1,4 @@
 # 捐赠
-## Ali pay
-![Preview](aliqr.jpg)
-## WeChat pay
-![Preview](weixinqr.jpg)
+| Alipay                | Wechat Pay               |
+| --------------------- | ------------------------ |
+| ![Preview](aliqr.jpg) | ![Preview](weixinqr.jpg) |
