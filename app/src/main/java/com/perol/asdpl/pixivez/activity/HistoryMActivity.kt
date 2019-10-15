@@ -1,5 +1,6 @@
 package com.perol.asdpl.pixivez.activity
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -16,7 +17,6 @@ import com.perol.asdpl.pixivez.objects.ThemeUtil
 import com.perol.asdpl.pixivez.sql.IllustBeanEntity
 import com.perol.asdpl.pixivez.viewmodel.HistoryMViewModel
 import kotlinx.android.synthetic.main.activity_history_m.*
-import org.jetbrains.anko.alert
 
 
 class HistoryMActivity : RinkActivity() {
@@ -48,11 +48,9 @@ class HistoryMActivity : RinkActivity() {
             startActivity(intent2)
         }
         historyAdapter.setOnItemLongClickListener { baseQuickAdapter, view, i ->
-            alert {
-                title="Delete?"
-                positiveButton("ok"){
-                    historyMViewModel!!.deleteSelect(i)
-                }
+            AlertDialog.Builder(this)
+                    .setTitle("Delete?").setPositiveButton("OK") { _, j ->
+                        historyMViewModel!!.deleteSelect(i)
             }.show()
             true
         }

@@ -4,15 +4,17 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.preference.Preference
+import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
+import com.perol.asdpl.pixivez.BuildConfig
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.dialog.ThanksDialog
-import kotlinx.android.synthetic.main.nav_header_hello_m.*
 
 
 class ThanksFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.pre_thanks)
+        findPreference<PreferenceCategory>("huonaicai")?.isVisible = !BuildConfig.ISGOOGLEPLAY
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {

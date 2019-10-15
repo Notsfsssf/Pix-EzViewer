@@ -3,12 +3,14 @@ package com.perol.asdpl.pixivez.fragments
 
 import android.app.AlertDialog
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
-import android.view.*
-import android.widget.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.Switch
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.core.view.get
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +27,13 @@ import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.viewmodel.PictureXViewModel
 import kotlinx.android.synthetic.main.fragment_picture_x.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
+import kotlin.collections.count
+import kotlin.collections.indices
+import kotlin.collections.isNotEmpty
+import kotlin.collections.map
+import kotlin.collections.set
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -68,7 +77,7 @@ class PictureXFragment : LazyV4Fragment() {
 
                 pictureXAdapter = PictureXAdapter(pictureXViewModel, it.illust, activity!!).also {
                     it.setListener {
-                      //  startPostponedEnterTransition()
+                        //  startPostponedEnterTransition()
                         if (!hasMoved) {
                             recyclerview.scrollToPosition(0)
                             (recyclerview.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(0, 0)
@@ -100,7 +109,7 @@ class PictureXFragment : LazyV4Fragment() {
         })
         pictureXViewModel.aboutPics.observe(this, Observer {
             if (pictureXAdapter != null) {
-                pictureXAdapter!!.setRelativeNow(it)
+                pictureXAdapter?.setRelativeNow(it)
             }
         })
         pictureXViewModel.likeIllust.observe(this, Observer {
@@ -114,7 +123,7 @@ class PictureXFragment : LazyV4Fragment() {
             }
         })
         pictureXViewModel.followUser.observe(this, Observer {
-            pictureXAdapter!!.setUserPicColor(it)
+            pictureXAdapter?.setUserPicColor(it)
         })
         pictureXViewModel.progress.observe(this, Observer {
             if (pictureXAdapter != null) {
@@ -122,7 +131,8 @@ class PictureXFragment : LazyV4Fragment() {
             }
         })
         pictureXViewModel.downloadGifSuccess.observe(this, Observer {
-            pictureXAdapter!!.setProgressComplete(it)
+            if (pictureXAdapter != null)
+                pictureXAdapter?.setProgressComplete(it)
         })
         pictureXViewModel.tags.observe(this, Observer { itRaw ->
             val it = itRaw.tags

@@ -15,7 +15,7 @@
             android:summary="编写开发,发布调试,反馈处理"
             />
         <Preference
-            app:key="me"
+            app:key="me1"
             app:title="Right Now"
             app:icon="@drawable/rightnow"
             android:summary="主界面,Actionbar Icon,主Icon设计"
@@ -51,6 +51,11 @@
             app:defaultValue="true"
             app:key="animation"
             app:title="@string/animation" />
+        <SwitchPreference
+            app:defaultValue="true"
+            app:summary="play版本不生效"
+            app:key="autocheck"
+            app:title="自动检查更新" />
         <SwitchPreference
             android:key="crashreport"
             app:defaultValue="true"

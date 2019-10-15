@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
     tools:context="com.perol.asdpl.pixivez.activity.LoginActivity">
 
 
@@ -21,7 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:background="#fff"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +36,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
-                android:background="#fff"
                 android:orientation="horizontal">
 
                 <EditText
@@ -66,18 +63,16 @@
                 android:maxLines="1"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
-                android:textColor="#ff1d1d1d"
-                android:textColorHint="#ff666666"
                 android:textSize="16.0sp" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/loginBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                style="@style/Widget.MaterialComponents.Button"
                 android:background="?attr/colorPrimary"
                 android:text="@string/login"
-                android:textColor="#ffffff"
                 android:textSize="18sp" />
 
             <TextView

@@ -19,14 +19,12 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
-    <com.nightonke.boommenu.BoomMenuButton
-        android:id="@+id/bmbill"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:bmb_buttonEnum="ham"
-        app:bmb_buttonPlaceEnum="buttonPlace_ham_6"
-        app:bmb_normalColor="?attr/colorPrimary"
-        app:bmb_piecePlaceEnum="piecePlace_ham_6"
+        android:layout_margin="@dimen/fab_margin"
         app:layout_anchor="@+id/swiperefresh"
+        android:src="@drawable/ic_action_search"
         app:layout_anchorGravity="right|bottom" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

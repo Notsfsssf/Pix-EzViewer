@@ -2,6 +2,8 @@ package com.perol.asdpl.pixivez.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -15,24 +17,23 @@ import com.perol.asdpl.pixivez.databinding.ActivitySaucenaoBinding
 import com.perol.asdpl.pixivez.objects.ThemeUtil
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.services.GlideApp
+import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.services.SaucenaoService
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_saucenao.*
 import kotlinx.coroutines.runBlocking
-import okhttp3.Dns
+import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.OkHttpClient
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.logging.HttpLoggingInterceptor
+import okio.BufferedSink
 import org.jsoup.Jsoup
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import java.io.ByteArrayOutputStream
 import java.io.File
-import java.lang.Exception
 import java.net.InetAddress
-import okhttp3.RequestBody.Companion.asRequestBody
 
 class SaucenaoActivity : RinkActivity() {
 
@@ -88,16 +89,32 @@ class SaucenaoActivity : RinkActivity() {
                     val uri = intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM);
                     if (uri != null) {
                         Toasty.success(this, "解析成功正在上传", Toast.LENGTH_SHORT).show()
+                        val baos = ByteArrayOutputStream();
                         val file = File(uri.path!!)
                         val builder = MultipartBody.Builder()
                         builder.setType(MultipartBody.FORM)
-                        val body = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                        builder.addFormDataPart("file", file.name, body)
+                        if (file.length() > 10000000L) {
+                            val options = BitmapFactory.Options();
+                            options.inSampleSize = 4
+                            val decodeFile = BitmapFactory.decodeFile(file.path, options)
+                            builder.addFormDataPart("file", file.name, object : RequestBody() {
+                                override fun contentType(): MediaType? = "image/jpeg".toMediaTypeOrNull()
+
+                                override fun writeTo(sink: BufferedSink) {
+                                    decodeFile.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                                }
+
+                            })
+                            Log.d("bitmap", "large file")
+                        } else
+                            builder.addFormDataPart("file", file.name, file.asRequestBody("image/jpeg".toMediaTypeOrNull()))
                         api.searchpicforresult(builder.build().part(0)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
-                            Toasty.success(this, "上传成功，正在进行匹配", Toast.LENGTH_SHORT).show()
+                            Toasty.success(PxEZApp.instance, "上传成功，正在进行匹配", Toast.LENGTH_SHORT).show()
                             tryToParseHtml(it.string())
-                        }, { Toasty.error(this, "服务器或本地发生错误" + it.message).show() }, {
+                        }, { Toasty.error(PxEZApp.instance, "服务器或本地发生错误" + it.message).show() }, {
                         })
+
+
                     }
                 }
         }

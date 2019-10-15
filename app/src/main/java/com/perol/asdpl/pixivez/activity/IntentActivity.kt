@@ -1,12 +1,8 @@
 package com.perol.asdpl.pixivez.activity
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-
-import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.objects.Toasty
-import org.jetbrains.anko.toast
 
 class IntentActivity : RinkActivity() {
 
@@ -17,8 +13,8 @@ class IntentActivity : RinkActivity() {
         val uri = intent.data
         if (uri != null) {
             val segment = uri.pathSegments
-            if (segment.size == 2&& uri.path?.contains("artworks") == true) {
-                val id = segment[1].toLong()
+            if (uri.path?.contains("artworks") == true) {
+                val id = segment[segment.size - 1].toLong()
                 val bundle = Bundle()
                 val arrayList = LongArray(1)
                 try {

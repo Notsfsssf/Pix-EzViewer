@@ -2,23 +2,16 @@ package com.perol.asdpl.pixivez.fragments.HelloM
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.fragment.app.Fragment
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.viewpager.HelloMThViewPager
-import com.perol.asdpl.pixivez.objects.LazyV4Fragment
 import com.perol.asdpl.pixivez.repository.AppDataRepository
-import com.perol.asdpl.pixivez.services.PxEZApp
-import com.perol.asdpl.pixivez.sql.AppDatabase
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_hello_mth.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.jetbrains.anko.support.v4.runOnUiThread
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,7 +31,7 @@ class HelloMThFragment : Fragment() {
         GlobalScope.launch {
          val it=   AppDataRepository.getUser()
             val userid = it.userid
-            runOnUiThread {
+            activity?.runOnUiThread {
                 viewpager_hellomth.adapter = HelloMThViewPager(context!!, childFragmentManager, userid)
                 tablayout_hellomth.setupWithViewPager(viewpager_hellomth)
             }

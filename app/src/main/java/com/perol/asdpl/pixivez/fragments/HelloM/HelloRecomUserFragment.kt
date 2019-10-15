@@ -1,31 +1,22 @@
 package com.perol.asdpl.pixivez.fragments.HelloM
 
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.UserShowAdapter
 import com.perol.asdpl.pixivez.objects.LazyV4Fragment
 import com.perol.asdpl.pixivez.viewmodel.HelloRecomUserViewModel
-import org.jetbrains.anko.design.coordinatorLayout
-import org.jetbrains.anko.matchParent
-import org.jetbrains.anko.recyclerview.v7._RecyclerView
-import org.jetbrains.anko.recyclerview.v7.recyclerView
-import org.jetbrains.anko.support.v4.UI
-import org.jetbrains.anko.support.v4.swipeRefreshLayout
+import kotlinx.android.synthetic.main.fragment_recom_user.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
+
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
@@ -40,7 +31,7 @@ class HelloRecomUserFragment : LazyV4Fragment() {
         viewmodel!!.reData()
     }
 
-    var viewmodel:HelloRecomUserViewModel?=null
+    var viewmodel: HelloRecomUserViewModel? = null
     fun lazyLoad() {
 
         viewmodel!!.adddata.observe(this, Observer {
@@ -65,7 +56,6 @@ class HelloRecomUserFragment : LazyV4Fragment() {
 
     }
 
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
@@ -80,30 +70,25 @@ class HelloRecomUserFragment : LazyV4Fragment() {
     }
 
     val userShowAdapter = UserShowAdapter(R.layout.view_usershow_item)
-    lateinit var recyclerView: RecyclerView
-    lateinit var swipe: SwipeRefreshLayout
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-
-     val view =UI {
-            swipe = swipeRefreshLayout {
-                coordinatorLayout {
-                    recyclerView = recyclerView {
-                        adapter = userShowAdapter
-                        layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
-                    }.lparams(width = matchParent, height = matchParent)
-                }
-            }
-        }.view
-
-            userShowAdapter.setOnLoadMoreListener({
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        recyclerView.apply {
+            adapter = userShowAdapter
+            layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+        }
+        userShowAdapter.setOnLoadMoreListener({
             viewmodel!!.getNext()
         }, recyclerView)
         swipe.setOnRefreshListener {
             viewmodel!!.reData()
 
         }
-        return view
+
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_recom_user, container, false)
     }
 
 
@@ -116,7 +101,6 @@ class HelloRecomUserFragment : LazyV4Fragment() {
          * @param param2 Parameter 2.
          * @return A new instance of fragment HelloRecomUserFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
                 HelloRecomUserFragment().apply {

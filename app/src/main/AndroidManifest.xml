@@ -99,7 +99,6 @@
             android:name=".activity.ZoomActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity android:name=".activity.UserFollowActivity" />
-        <activity android:name=".activity.AboutActivity" />
         <activity android:name=".activity.IntentActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

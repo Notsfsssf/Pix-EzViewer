@@ -2,33 +2,24 @@ package com.perol.asdpl.pixivez.fragments.HelloM
 
 
 import android.app.DatePickerDialog
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.RankingAdapter
-import com.perol.asdpl.pixivez.dialog.DateDialog
 import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
 import com.perol.asdpl.pixivez.objects.LazyV4Fragment
-import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.viewmodel.RankingMViewModel
 import com.perol.asdpl.pixivez.viewmodel.factory.RankingShareViewModel
-import org.jetbrains.anko.*
-import org.jetbrains.anko.design.coordinatorLayout
-import org.jetbrains.anko.recyclerview.v7.recyclerView
-import org.jetbrains.anko.support.v4.UI
-import org.jetbrains.anko.support.v4.swipeRefreshLayout
+import kotlinx.android.synthetic.main.fragment_ranking_m.*
 import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -50,14 +41,13 @@ class RankingMFragment : LazyV4Fragment() {
     lateinit var rankingAdapter: RankingAdapter
     lateinit var sharedPreferencesServices: SharedPreferencesServices
     private var param1: String? = null
-    lateinit var swiperefresh_rankingm: SwipeRefreshLayout
-    lateinit var recyclerview_rankingm: RecyclerView
     override fun loadData() {
         viewmodel!!.first(param1!!, picDate)
     }
 
     fun onClick(data: String?) {
-        sharemodel!!.picdateshare.value = data
+
+        sharemodel?.picdateshare?.value = data
     }
 
     fun lazyLoad() {
@@ -113,6 +103,10 @@ class RankingMFragment : LazyV4Fragment() {
         rankingAdapter.setOnLoadMoreListener({
             viewmodel!!.OnLoadMore()
         }, recyclerview_rankingm)
+        recyclerview_rankingm.apply {
+            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            adapter = rankingAdapter
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -127,18 +121,7 @@ class RankingMFragment : LazyV4Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         rankingAdapter = RankingAdapter(R.layout.view_ranking_item, null, PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("r18on",false))
-
-        return UI {
-            coordinatorLayout {
-                swiperefresh_rankingm = swipeRefreshLayout {
-                    recyclerview_rankingm = recyclerView {
-                        layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-                        adapter = rankingAdapter
-                    }
-                }.lparams(width = matchParent, height = matchParent)
-
-            }
-        }.view
+        return inflater.inflate(R.layout.fragment_ranking_m, container, false)
     }
 
     companion object {

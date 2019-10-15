@@ -5,7 +5,6 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
@@ -14,7 +13,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -27,13 +25,6 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.preference.PreferenceManager
-import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.HttpException
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
@@ -46,26 +37,23 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
 import com.mikepenz.materialdrawer.util.DrawerImageLoader
 import com.perol.asdpl.pixivez.R
-import com.perol.asdpl.pixivez.adapters.ColorfulAdapter
 import com.perol.asdpl.pixivez.adapters.HelloMViewPagerAdapter
 import com.perol.asdpl.pixivez.databinding.ActivityHelloMBinding
+import com.perol.asdpl.pixivez.dialog.ThemeDialog
 import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
 import com.perol.asdpl.pixivez.objects.MyContextWrapper
 import com.perol.asdpl.pixivez.objects.ThemeUtil
+import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.PxEZApp
+import com.perol.asdpl.pixivez.services.Works
 import com.perol.asdpl.pixivez.sql.UserEntity
 import com.perol.asdpl.pixivez.viewmodel.HelloMViewModel
-import io.multimoon.colorful.*
 import kotlinx.android.synthetic.main.app_bar_hello_m.*
 import kotlinx.android.synthetic.main.content_hello_m.*
-import kotlinx.coroutines.*
-import org.jetbrains.anko.*
-import org.jetbrains.anko.collections.forEachWithIndex
-import org.jetbrains.anko.recyclerview.v7.recyclerView
+import kotlinx.coroutines.runBlocking
 import java.io.File
-import java.lang.Runnable
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -86,6 +74,7 @@ class HelloMActivity : AppCompatActivity(), Drawer.OnDrawerNavigationListener, A
         val context = MyContextWrapper.wrap(newBase, locale)
         super.attachBaseContext(context)
     }
+
     override fun onProfileChanged(view: View?, profile: IProfile<*>, current: Boolean): Boolean {
         when (profile.identifier) {
             -100L -> {
@@ -135,7 +124,7 @@ class HelloMActivity : AppCompatActivity(), Drawer.OnDrawerNavigationListener, A
             allUser = ArrayList<UserEntity>(AppDataRepository.getAllUser())
 
         }
-        if (allUser.isEmpty()||allUser[0].username == "olduser") {
+        if (allUser.isEmpty() || allUser[0].username == "olduser") {
             startActivity(Intent(this@HelloMActivity, LoginActivity::class.java))
             finish()
             return
@@ -150,7 +139,7 @@ class HelloMActivity : AppCompatActivity(), Drawer.OnDrawerNavigationListener, A
 
 
             override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable, tag: String?) {
-                val url="https://"+uri.host+uri.path
+                val url = "https://" + uri.host + uri.path
                 println(url)
                 GlideApp.with(imageView).load(url).error(R.drawable.ai).optionalCenterCrop().into(imageView)
             }
@@ -245,70 +234,8 @@ class HelloMActivity : AppCompatActivity(), Drawer.OnDrawerNavigationListener, A
                         startActivity(intent)
                     }
                     5 -> {
-                        val list = ArrayList<ThemeColorInterface>().also {
-                            val myCustomColor1 = CustomThemeColor(
-                                    this@HelloMActivity,
-                                    R.style.bili_primary_color,
-                                    R.style.bili_primary_dark_color,
-                                    R.color.pink, // <= use the color you defined in my_custom_primary_color
-                                    R.color.pink // <= use the color you defined in my_custom_primary_dark_color
-                            )
-                            val myCustomColor2 = CustomThemeColor(
-                                    this@HelloMActivity,
-                                    R.style.blue_primary_color,
-                                    R.style.blue_primary_dark_color,
-                                    R.color.blue, // <= use the color you defined in my_custom_primary_color
-                                    R.color.blue // <= use the color you defined in my_custom_primary_dark_color
-                            )
-                            it += ThemeColor.BLUE
-                            it += ThemeColor.AMBER
-                            it += ThemeColor.GREEN
-                            it += ThemeColor.PINK
-                            it += ThemeColor.PURPLE
-                            it += ThemeColor.BLUE_GREY
-                            it += ThemeColor.ORANGE
-                            it += ThemeColor.RED
-                            it += ThemeColor.TEAL
-                            it += ThemeColor.LIGHT_BLUE
-                            it += ThemeColor.LIGHT_GREEN
-                            it += myCustomColor1
-                            it += myCustomColor2
-                        }
-                        alert {
-                            title = "选择主题"
-                            customView {
-                                verticalLayout {
-                                    recyclerView {
-                                        layoutManager = GridLayoutManager(this@HelloMActivity, 4)
-                                        adapter = ColorfulAdapter(R.layout.view_colorfulitem, list).apply {
-                                            onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
-                                                sharedPreferencesServices.setInt("colornum", position)
-                                                Colorful().edit().setPrimaryColor(list[position]).apply(applicationContext) {
-                                                    recreate()
-                                                }
-                                            }
-                                        }
-                                    }.lparams(height = dip(0), width = matchParent) {
-                                        topMargin = dip(20)
-                                        weight = 5f
-                                    }
-                                    switch {
-                                        hint = "Dark"
-                                        isChecked = Colorful().getDarkTheme()
-                                        setOnCheckedChangeListener { compoundButton, b ->
-                                            Colorful().edit().setDarkTheme(isChecked).apply(this@HelloMActivity.applicationContext).apply {
-                                                recreate()
-                                            }
-                                        }
-                                    }.lparams(height = dip(0), width = matchParent) {
-                                        weight = 1f
-                                        marginStart = dip(8)
-                                        marginEnd = dip(8)
-                                    }
-                                }
-                            }
-
-                        }.show()
+                        val themeDialog = ThemeDialog()
+                        themeDialog.show(supportFragmentManager, "theme")
                     }
                     6 -> {
                         val intent = Intent(applicationContext, SettingActivity::class.java)
@@ -331,10 +258,12 @@ class HelloMActivity : AppCompatActivity(), Drawer.OnDrawerNavigationListener, A
         checkAndRequestPermissions(permissionList)
         initView()
         initData()
-        viewpager_hellom.currentItem = PreferenceManager.getDefaultSharedPreferences(this).getString("firstpage", "0")?.toInt()?:0
+        viewpager_hellom.currentItem = PreferenceManager.getDefaultSharedPreferences(this).getString("firstpage", "0")?.toInt()
+                ?: 0
 
-
+        Works.checkUpdate(this)
     }
+
 
     private fun checkAndRequestPermissions(permissionList: ArrayList<String>) {
         val list = ArrayList(permissionList)
@@ -399,24 +328,21 @@ class HelloMActivity : AppCompatActivity(), Drawer.OnDrawerNavigationListener, A
 
 
             runBlocking {
-                it.forEachWithIndex { index, it ->
-
+                for (i in it.indices) {
                     header.addProfile(
                             ProfileDrawerItem()
-                                    .withName(it.username)
-                                    .withIcon(it.userimage)
-                                    .withEmail(it.useremail)
-                                    .withIdentifier(index.toLong()), index
-                    )
+                                    .withName(it[i].username)
+                                    .withIcon(it[i].userimage)
+                                    .withEmail(it[i].useremail)
+                                    .withIdentifier(i.toLong()), i)
                 }
                 header.setActiveProfile(sharedPreferencesServices.getInt("usernum").toLong())
             }
         } else {
-            toast(resources.getString(R.string.conflict))
+            Toasty.error(this, resources.getString(R.string.conflict)).show()
         }
 
     }
-
 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

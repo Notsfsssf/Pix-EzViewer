@@ -1,15 +1,15 @@
 package com.perol.asdpl.pixivez.fragments
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.preference.PreferenceManager
-import com.nightonke.boommenu.BoomButtons.HamButton
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.RecommendAdapter
 import com.perol.asdpl.pixivez.dialog.SearchSectionDialog
@@ -71,17 +71,32 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
         searchtext.text = param1
         recyclerview_illust.adapter = searchIllustAdapter
         recyclerview_illust.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        for (i in 0 until bmbill.piecePlaceEnum.pieceNumber()) {
-            val builder = HamButton.Builder().listener { index ->
-                val query = param1 + " " + starnum[index].toString() + "users入り"
-                viewModel.firstsetdata(query, sort[selectSort], null, null)
-                recyclerview_illust.scrollToPosition(0)
+//        for (i in 0 until bmbill.piecePlaceEnum.pieceNumber()) {
+//            val builder = HamButton.Builder().listener { index ->
+//                val query = param1 + " " + starnum[index].toString() + "users入り"
+//                viewModel.firstsetdata(query, sort[selectSort], null, null)
+//                recyclerview_illust.scrollToPosition(0)
+//            }
+//                    .normalImageRes(R.drawable.ic_starx)
+//                    .normalText(starnum[i].toString() + " users入り!")
+//                    .subNormalText("超过 " + starnum[i] + " 收藏！")
+//            bmbill.addBuilder(builder)
+//
+//        }
+        fab.setOnClickListener {
+            val builder = MaterialAlertDialogBuilder(activity)
+            val arrayList = arrayOfNulls<String>(starnum.size)
+            for (i in starnum.indices) {
+                arrayList[i] = (param1 + " " + starnum[i].toString() + "users入り")
             }
-                    .normalImageRes(R.drawable.ic_starx)
-                    .normalText(starnum[i].toString() + " users入り!")
-                    .subNormalText("超过 " + starnum[i] + " 收藏！")
-            bmbill.addBuilder(builder)
-
+            builder.setTitle("users入り")
+                    .setItems(arrayList
+                    ) { dialog, which ->
+                        val query = param1 + " " + starnum[which].toString() + "users入り"
+                        viewModel.firstsetdata(query, sort[selectSort], null, null)
+                        recyclerview_illust.scrollToPosition(0)
+                    }
+            builder.create().show()
         }
         val imageButton = activity!!.findViewById<ImageButton>(R.id.imagebutton_section)
         imageButton.setOnClickListener {
@@ -104,7 +119,7 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
         swiperefresh.setOnRefreshListener {
             runBlocking {
                 val user = AppDataRepository.getUser()
-                if (!user.ispro&&selectSort==2) {
+                if (!user.ispro && selectSort == 2) {
                     Toasty.error(PxEZApp.instance, "not premium!").show()
                     viewModel.setPreview(param1!!, sort[selectSort], search_target[selectTarget], duration[selectDuration])
                 } else
@@ -115,7 +130,7 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
         spinner.onItemSelectedListener = this
     }
 
-    private val starnum = intArrayOf(10000, 5000, 1000, 500, 250, 100)
+    private val starnum = intArrayOf(50000, 30000, 20000, 10000, 5000, 1000, 500, 250, 100)
     private var param1: String? = null
     lateinit var searchIllustAdapter: RecommendAdapter
     var sort = arrayOf("date_desc", "date_asc", "popular_desc")

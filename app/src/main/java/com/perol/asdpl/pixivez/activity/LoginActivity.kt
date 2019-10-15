@@ -14,10 +14,12 @@ import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.networks.RestClient
 import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
 import com.perol.asdpl.pixivez.objects.ThemeUtil
+import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.responses.ErrorResponse
 import com.perol.asdpl.pixivez.responses.PixivOAuthResponse
 import com.perol.asdpl.pixivez.services.OAuthSecureService
+import com.perol.asdpl.pixivez.services.Works
 import com.perol.asdpl.pixivez.sql.UserEntity
 import io.noties.markwon.Markwon
 import io.reactivex.Observer
@@ -27,7 +29,6 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.jetbrains.anko.toast
 import retrofit2.HttpException
 import java.io.IOException
 import java.util.*
@@ -122,10 +123,8 @@ class LoginActivity : RinkActivity() {
             // obtain an instance of Markwon
             val markwon = Markwon.create(this);
 
-// parse markdown to commonmark-java Node
             val node = markwon.parse(markdownShot);
 
-// create styled text from parsed Node
             val markdown = markwon.render(node);
 
             // use it on a TextView
@@ -212,12 +211,13 @@ class LoginActivity : RinkActivity() {
                         }
                     })
         }
+        Works.checkUpdate(this)
     }
 
 
     fun s(view: View) {
 //        val intent = Intent(this@LoginActivity, NewUserActivity::class.java)
 //        startActivity(intent)
-        toast(this.resources.getString(R.string.registerclose))
+        Toasty.info(this, this.resources.getString(R.string.registerclose), Toast.LENGTH_LONG).show()
     }
 }

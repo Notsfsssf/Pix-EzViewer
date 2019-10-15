@@ -4,6 +4,7 @@ apply plugin: 'kotlin-platform-android'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.android.gms.oss-licenses-plugin'
+apply plugin: 'android-x2j'
 android {
 
     compileSdkVersion 29
@@ -21,6 +22,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField("Boolean","ISGOOGLEPLAY",ISGOOGLEPLAY)
+        }
+        debug{
+            buildConfigField("Boolean","ISGOOGLEPLAY",ISGOOGLEPLAY)
         }
     }
     flavorDimensions "version"
@@ -55,7 +60,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
     implementation 'com.dinuscxj:circleprogressbar:1.3.0'
     implementation 'com.github.SheHuan:NiceImageView:1.0.5'
-    implementation "com.mikepenz:materialdrawer:7.0.0-rc07"
+    implementation "com.mikepenz:materialdrawer:7.0.0-rc08"
     implementation 'net.lingala.zip4j:zip4j:2.0.3'
     implementation 'com.waynejo:androidndkgif:0.3.3'
     // optional - Test helpers
@@ -65,19 +70,19 @@ dependencies {
 
     implementation 'com.github.garretyoder:Colorful:2.3.4'
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
-    // Anko Layouts
-    implementation "org.jetbrains.anko:anko-sdk21:$anko_version"
-    // sdk15, sdk19, sdk21, sdk23 are also available
-    implementation "org.jetbrains.anko:anko-appcompat-v7:$anko_version"
-
-    // Coroutine listeners for Anko Layouts
-    implementation "org.jetbrains.anko:anko-design:$anko_version"
-    implementation "org.jetbrains.anko:anko-sdk21-coroutines:$anko_version"
-    implementation "org.jetbrains.anko:anko-appcompat-v7-coroutines:$anko_version"
-    implementation "org.jetbrains.anko:anko-recyclerview-v7:$anko_version"
-    implementation "org.jetbrains.anko:anko-constraint-layout:$anko_version"
-    implementation "org.jetbrains.anko:anko-cardview-v7:$anko_version"
-    implementation "org.jetbrains.anko:anko-commons:$anko_version"
+//    // Anko Layouts
+//    implementation "org.jetbrains.anko:anko-sdk21:$anko_version"
+////    // sdk15, sdk19, sdk21, sdk23 are also available
+//    implementation "org.jetbrains.anko:anko-appcompat-v7:$anko_version"
+//
+//    // Coroutine listeners for Anko Layouts
+//    implementation "org.jetbrains.anko:anko-design:$anko_version"
+//    implementation "org.jetbrains.anko:anko-sdk21-coroutines:$anko_version"
+//    implementation "org.jetbrains.anko:anko-appcompat-v7-coroutines:$anko_version"
+//    implementation "org.jetbrains.anko:anko-recyclerview-v7:$anko_version"
+//    implementation "org.jetbrains.anko:anko-constraint-layout:$anko_version"
+//    implementation "org.jetbrains.anko:anko-cardview-v7:$anko_version"
+//    implementation "org.jetbrains.anko:anko-commons:$anko_version"
     def room_version = "2.2.0-rc01"
 
     implementation "androidx.room:room-runtime:$room_version"
@@ -122,17 +127,16 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
     implementation 'com.google.android:flexbox:1.1.0'
-    implementation 'com.nightonke:boommenu:2.1.1'
     implementation 'jp.wasabeef:glide-transformations:3.1.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.squareup.okhttp3:logging-interceptor:4.0.0-RC1'
     implementation 'com.squareup.okhttp3:okhttp:4.0.0'
-    api 'com.github.bumptech.glide:glide:4.9.0'
-    api 'com.github.bumptech.glide:annotations:4.9.0'
-    api 'com.github.bumptech.glide:okhttp3-integration:4.9.0'
-    kapt 'com.github.bumptech.glide:compiler:4.9.0'
+    api 'com.github.bumptech.glide:glide:4.10.0'
+    api 'com.github.bumptech.glide:annotations:4.10.0'
+    api 'com.github.bumptech.glide:okhttp3-integration:4.10.0'
+    kapt 'com.github.bumptech.glide:compiler:4.10.0'
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
@@ -141,7 +145,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.core:core:1.1.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.material:material:1.1.0-alpha10'
+    implementation 'com.google.android.material:material:1.1.0-beta01'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta2'
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'

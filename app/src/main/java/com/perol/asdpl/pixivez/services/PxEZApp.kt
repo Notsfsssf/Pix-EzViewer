@@ -3,9 +3,6 @@ package com.perol.asdpl.pixivez.services
 import android.app.Application
 import android.os.Build
 import android.os.Environment
-import android.util.Log
-import android.widget.Toast
-import androidx.core.os.BuildCompat
 import androidx.preference.PreferenceManager
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
@@ -22,13 +19,13 @@ class PxEZApp : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-
         val sharedPreferencesServices = SharedPreferencesServices(this)
         val defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        animationEnable=defaultSharedPreferences.getBoolean("animation",true)
-        language = defaultSharedPreferences.getString("language", "0")?.toInt()?:0
-        storepath =  defaultSharedPreferences.getString("storepath1",Environment.getExternalStorageDirectory().absolutePath + File.separator + "PxEz")?:Environment.getExternalStorageDirectory().absolutePath + File.separator + "PxEz"
-        if (defaultSharedPreferences.getBoolean("crashreport",true)) {
+        animationEnable = defaultSharedPreferences.getBoolean("animation", true)
+        language = defaultSharedPreferences.getString("language", "0")?.toInt() ?: 0
+        storepath = defaultSharedPreferences.getString("storepath1", Environment.getExternalStorageDirectory().absolutePath + File.separator + "PxEz")
+                ?: Environment.getExternalStorageDirectory().absolutePath + File.separator + "PxEz"
+        if (defaultSharedPreferences.getBoolean("crashreport", true)) {
             CrashHandler.getInstance().init(this)
         }
         locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -76,7 +73,9 @@ class PxEZApp : Application() {
                 translucent = true)
         initColorful(this, defaults)
 
+
     }
+
 
     companion object {
         @JvmStatic
@@ -88,6 +87,7 @@ class PxEZApp : Application() {
         @JvmStatic
         var animationEnable: Boolean = false
         lateinit var instance: PxEZApp
+        var autochecked = false
 
     }
 

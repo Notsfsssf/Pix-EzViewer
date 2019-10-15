@@ -1,32 +1,14 @@
 package com.perol.asdpl.pixivez.fragments.HelloM
 
 
-import android.graphics.Color
 import android.os.Bundle
-import com.google.android.material.tabs.TabLayout
-import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewManager
-import android.widget.TextView
+import androidx.fragment.app.Fragment
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.viewpager.HelloMRecomViewPager
-import com.perol.asdpl.pixivez.objects.LazyV4Fragment
 import kotlinx.android.synthetic.main.fragment_hello_main.*
-import org.jetbrains.anko.colorAttr
-import org.jetbrains.anko.custom.ankoView
-import org.jetbrains.anko.design.appBarLayout
-import org.jetbrains.anko.design.coordinatorLayout
-import org.jetbrains.anko.design.tabLayout
-import org.jetbrains.anko.design.themedTabLayout
-import org.jetbrains.anko.matchParent
-import org.jetbrains.anko.support.v4.UI
-import org.jetbrains.anko.support.v4.viewPager
-import org.jetbrains.anko.verticalLayout
-import org.jetbrains.anko.wrapContent
-import java.util.zip.Inflater
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
