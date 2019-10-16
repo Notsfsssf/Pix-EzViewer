@@ -12,7 +12,6 @@ import com.perol.asdpl.pixivez.activity.SettingActivity
 import com.perol.asdpl.pixivez.objects.TToast
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.responses.Illust
-import io.multimoon.colorful.BuildConfig
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -134,8 +133,12 @@ class Works {
                         props.load(response.body?.byteStream())
                         val versioncode = props.getProperty("VERSIONCODE")
                         val versionName = props.getProperty("VERSIONNAME")
-                        Log.d("CODE", versioncode)
-                        if (BuildConfig.VERSION_CODE >= versioncode.toInt() || defaultSharedPreferences.getString("ignoreversion", "") == versioncode) {
+
+                        val pm = activty.packageManager;
+                        val packageInfo = pm.getPackageInfo(activty.packageName, 0);
+                        val versioncodeP = packageInfo.versionCode
+                        Log.d("CODE", versioncode + versioncodeP)
+                        if (versioncodeP >= versioncode.toInt() || defaultSharedPreferences.getString("ignoreversion", "") == versioncode) {
 
                         } else {
                             activty.runOnUiThread {
