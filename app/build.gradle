@@ -22,10 +22,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField("Boolean","ISGOOGLEPLAY",ISGOOGLEPLAY)
+            buildConfigField("Boolean", "ISGOOGLEPLAY", ISGOOGLEPLAY)
         }
-        debug{
-            buildConfigField("Boolean","ISGOOGLEPLAY",ISGOOGLEPLAY)
+        debug {
+            buildConfigField("Boolean", "ISGOOGLEPLAY", ISGOOGLEPLAY)
         }
     }
     flavorDimensions "version"
@@ -37,9 +37,11 @@ android {
         generateStubs = true
     }
     compileOptions {
-        sourceCompatibility 1.8
-        targetCompatibility 1.8
-
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
     }
 //    packagingOptions {
 //        exclude 'META-INF/library-core_release.kotlin_module'
@@ -53,6 +55,22 @@ android {
 }
 
 dependencies {
+    def work_version = "2.3.0-alpha01"
+
+    // (Java only)
+    implementation "androidx.work:work-runtime:$work_version"
+
+    // Kotlin + coroutines
+    implementation "androidx.work:work-runtime-ktx:$work_version"
+
+    // optional - RxJava2 support
+    implementation "androidx.work:work-rxjava2:$work_version"
+
+    // optional - GCMNetworkManager support
+    implementation "androidx.work:work-gcm:$work_version"
+
+    // optional - Test helpers
+    androidTestImplementation "androidx.work:work-testing:$work_version"
 
     implementation 'com.hyman:flowlayout-lib:1.1.2'
     implementation "io.noties.markwon:core:4.1.1"

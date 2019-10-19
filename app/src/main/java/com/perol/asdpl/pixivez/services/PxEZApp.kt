@@ -4,6 +4,7 @@ import android.app.Application
 import android.os.Build
 import android.os.Environment
 import androidx.preference.PreferenceManager
+import androidx.work.WorkManager
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
 import com.perol.asdpl.pixivez.objects.CrashHandler
@@ -66,6 +67,7 @@ class PxEZApp : Application() {
         if (sharedPreferencesServices.getInt("colornum").apply { colorNum = this } > (list.size - 1)) {
             sharedPreferencesServices.setInt("colornum", 0)
         }
+
         val defaults = Defaults(
                 primaryColor = list[colorNum],
                 accentColor = ThemeColor.PINK,
@@ -73,7 +75,7 @@ class PxEZApp : Application() {
                 translucent = true)
         initColorful(this, defaults)
 
-
+        WorkManager.getInstance(this).pruneWork()
     }
 
 

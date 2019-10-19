@@ -7,14 +7,13 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceManager
+import androidx.work.*
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.SettingActivity
 import com.perol.asdpl.pixivez.objects.TToast
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.responses.Illust
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.perol.asdpl.pixivez.works.ImgDownLoadWorker
 import okhttp3.*
 import java.io.File
 import java.io.IOException
@@ -41,7 +40,6 @@ class Works {
             title = title.replace(":", "")
             val user = illust.user.id
             val name = illust.id
-            TToast.startDownload(PxEZApp.instance)
             val format = PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance).getString("saveformat", "0")?.toInt()
                     ?: 0
             var type = ".png"
@@ -85,31 +83,57 @@ class Works {
                     }
                 }
             }
-            Observable.create<File> {
-                val storePath = PxEZApp.storepath
-                val appDir = File(storePath)
-                if (!appDir.exists()) {
-                    appDir.mkdirs()
-                }
-                val file = File(appDir, filename)
-                if (file.exists()) {
-                    it.onComplete()
-                    return@create
-                }
-                val futurefile = GlideApp.with(PxEZApp.instance).asFile().load(url).submit()
-                val finalfile = futurefile.get()
-                finalfile.copyTo(file)
-                GlideApp.with(PxEZApp.instance).clear(futurefile)
-                it.onNext(file)
-            }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
-                PxEZApp.instance.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(it)))
-                Toasty.success(PxEZApp.instance, PxEZApp.instance.resources.getString(R.string.savesuccess), Toast.LENGTH_SHORT).show()
 
-            }, {
-                it.printStackTrace()
-            }, {
-                Toasty.success(PxEZApp.instance, PxEZApp.instance.resources.getString(R.string.alreadysaved), Toast.LENGTH_SHORT).show()
-            }, {})
+//            Observable.create<File> {
+//                val storePath = PxEZApp.storepath
+//                val appDir = File(storePath)
+//                if (!appDir.exists()) {
+//                    appDir.mkdirs()
+//                }
+//                val file = File(appDir, filename)
+//                if (file.exists()) {
+//                    it.onComplete()
+//                    return@create
+//                }
+//                val futurefile = GlideApp.with(PxEZApp.instance).asFile().load(url).submit()
+//                val finalfile = futurefile.get()
+//                finalfile.copyTo(file)
+//                GlideApp.with(PxEZApp.instance).clear(futurefile)
+//                it.onNext(file)
+//            }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
+//                PxEZApp.instance.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(it)))
+//                Toasty.success(PxEZApp.instance, PxEZApp.instance.resources.getString(R.string.savesuccess), Toast.LENGTH_SHORT).show()
+//
+//            }, {
+//                it.printStackTrace()
+//            }, {
+//                Toasty.success(PxEZApp.instance, PxEZApp.instance.resources.getString(R.string.alreadysaved), Toast.LENGTH_SHORT).show()
+//            }, {})
+
+            val inputData = workDataOf("file" to filename, "url" to url)
+            val oneTimeWorkRequest = OneTimeWorkRequestBuilder<ImgDownLoadWorker>()
+                    .setInputData(inputData)
+                    .addTag("image")
+                    .build()
+            WorkManager.getInstance(PxEZApp.instance).enqueueUniqueWork(url, ExistingWorkPolicy.REPLACE, oneTimeWorkRequest)
+            WorkManager.getInstance(PxEZApp.instance).getWorkInfoByIdLiveData(oneTimeWorkRequest.id)
+                    .observeForever { workInfo ->
+                        if (workInfo == null) {
+                            return@observeForever
+                        }
+                        if (workInfo.state == WorkInfo.State.SUCCEEDED) {
+                            if (workInfo.outputData.getBoolean("exist", false)) {
+                                Toasty.success(PxEZApp.instance, PxEZApp.instance.resources.getString(R.string.alreadysaved), Toast.LENGTH_SHORT).show()
+                                return@observeForever
+                            }
+                            Toasty.success(PxEZApp.instance, PxEZApp.instance.resources.getString(R.string.savesuccess), Toast.LENGTH_SHORT).show()
+                            val uri = workInfo.outputData.getString("path")
+                            if (uri != null)
+                                PxEZApp.instance.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(File(uri))))
+                        } else if (workInfo.state == WorkInfo.State.FAILED) {
+
+                        }
+                    }
         }
 
         fun checkUpdate(activty: Activity) {

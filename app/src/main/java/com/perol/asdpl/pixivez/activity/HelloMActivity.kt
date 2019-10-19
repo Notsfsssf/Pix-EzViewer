@@ -189,14 +189,14 @@ class HelloMActivity : AppCompatActivity(), Drawer.OnDrawerNavigationListener, A
                                 .withIcon(ContextCompat.getDrawable(this, R.drawable.ic_action_share_setting))
                                 .withIconTintingEnabled(true)
                 )
-//                .addStickyDrawerItems(
-//                        PrimaryDrawerItem()
-//                                .withIcon(ContextCompat.getDrawable(this, R.drawable.ic_action_share))
-//                                .withName("About")
-//                                .withSelectable(false)
-//                                .withIconTintingEnabled(true)
-//                                .withIdentifier(888L)
-//                )
+                .addStickyDrawerItems(
+                        PrimaryDrawerItem()
+                                .withIcon(ContextCompat.getDrawable(this, R.drawable.ic_action_share))
+                                .withName("Progress")
+                                .withSelectable(false)
+                                .withIconTintingEnabled(true)
+                                .withIdentifier(888L)
+                )
                 .withSelectedItem(-1)
                 .withTranslucentStatusBar(false)
                 .withToolbar(toolbar).build()
@@ -244,9 +244,9 @@ class HelloMActivity : AppCompatActivity(), Drawer.OnDrawerNavigationListener, A
 
 
                 }
-//                if (drawerItem.identifier == 888L) {
-//               startActivity(Intent(this@HelloMActivity,AboutXActivity::class.java))
-//                }
+                if (drawerItem.identifier == 888L) {
+                    startActivity(Intent(this@HelloMActivity, ProgressActivity::class.java))
+                }
                 return true
             }
 

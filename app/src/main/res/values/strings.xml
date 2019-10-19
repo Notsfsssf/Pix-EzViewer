@@ -266,4 +266,5 @@
     <string name="viewreport">查看报告</string>
     <string name="needtorestart">重启应用生效</string>
     <string name="animation">动画</string>
+    <string name="title_activity_progress">ProgressActivity</string>
 </resources>
