@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 Perol_Notsfsssf
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE
+ */
+
 package com.perol.asdpl.pixivez.adapters
 
 import android.app.Activity
@@ -25,9 +49,6 @@ import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.services.Works
 
-/**
- * Created by asdpl on 2018/2/14.
- */
 
 class RankingAdapter(layoutResId: Int, data: List<Illust>?, private val R18on: Boolean) : BaseQuickAdapter<Illust, BaseViewHolder>(layoutResId, data), BaseQuickAdapter.OnItemClickListener {
 
@@ -45,13 +66,13 @@ class RankingAdapter(layoutResId: Int, data: List<Illust>?, private val R18on: B
 
         val intent = Intent(mContext, PictureActivity::class.java)
         intent.putExtras(bundle)
-       // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         if (PxEZApp.animationEnable) {
             val mainimage = view!!.findViewById<View>(R.id.item_img)
             val option = ActivityOptionsCompat
                     .makeSceneTransitionAnimation(mContext as Activity, mainimage, "mainimage")
             ContextCompat.startActivity(mContext, intent, option.toBundle())
-        } else ContextCompat.startActivity(mContext, intent,null)
+        } else ContextCompat.startActivity(mContext, intent, null)
     }
 
 
@@ -105,10 +126,10 @@ class RankingAdapter(layoutResId: Int, data: List<Illust>?, private val R18on: B
         })
                 .setOnClickListener(R.id.save) {
                     val illust = item
-                  Works.imageDownloadAll(illust)
+                    Works.imageDownloadAll(illust)
                 }
                 .setOnLongClickListener(R.id.save) {
-                  Works.imageDownloadAll( item)
+                    Works.imageDownloadAll(item)
                     true
                 }
                 .setOnClickListener(R.id.like) { v ->

@@ -237,4 +237,7 @@
     <string name="viewreport">View report</string>
     <string name="needtorestart">Need to restart the app</string>
     <string name="animation">Animation</string>
+    <string name="download_progress">Progress</string>
+    <string name="join_download_queue">Join download queue</string>
+    <string name="again_to_exit">Again to exit</string>
 </resources>

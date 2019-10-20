@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 Perol_Notsfsssf
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE
+ */
+
 package com.perol.asdpl.pixivez.activity
 
 import android.app.AlertDialog
@@ -8,8 +32,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,14 +39,15 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.perol.asdpl.pixivez.R
+import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.fragment_progress.*
-
+import kotlinx.android.synthetic.main.view_progress_item.*
 
 /**
  * A placeholder fragment containing a simple view.
  */
 class ProgressActivityFragment : Fragment() {
-    class ProgressAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    class ProgressAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         lateinit var mContext: Context;
         private var data = ArrayList<WorkInfo>()
@@ -39,7 +62,12 @@ class ProgressActivityFragment : Fragment() {
             notifyDataSetChanged()
         }
 
-        class ProgressViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun itemChange(position: Int, workInfo: WorkInfo) {
+            data[position] = workInfo
+            notifyItemChanged(position, workInfo)
+        }
+
+        class ProgressViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
         }
 
@@ -53,51 +81,85 @@ class ProgressActivityFragment : Fragment() {
 
         override fun getItemCount() = data.size
 
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+
+            if (payloads.isEmpty()) {
+                onBindViewHolder(holder, position)
+            } else {
+                if (holder is ProgressViewHolder) {
+                    val workinfo = data[position]
+                    val max = data[position].progress.getLong("max", 100)
+                    val now = data[position].progress.getLong("now", 0)
+                    val id = data[position].progress.getLong("id", 0)
+                    val title1 = data[position].progress.getString("title")
+                    holder.apply {
+                        progress.max = max.toInt()
+                        progress.progress = now.toInt()
+                        title.text = title1
+                        val progressText = if (workinfo.state == WorkInfo.State.SUCCEEDED) {
+                            "completed"
+                        } else {
+                            "$now/$max"
+                        }
+                        progress_num.text = progressText
+                        progress_state.text = workinfo.state.toString()
+
+                    }
+
+
+                }
+            }
+        }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
             if (holder is ProgressViewHolder) {
                 val workinfo = data[position]
                 val max = data[position].progress.getLong("max", 100)
                 val now = data[position].progress.getLong("now", 0)
-                val file = data[position].progress.getString("file")
-                holder.itemView.setOnClickListener {
-                    val bundle = Bundle()
-                    val arrayList = LongArray(1)
+                val id = data[position].progress.getLong("id", 0)
+                val title1 = data[position].progress.getString("title")
+                holder.apply {
+                    itemView.setOnClickListener {
+                        val bundle = Bundle()
+                        val arrayList = LongArray(1)
+                        arrayList[0] = id
+                        bundle.putLongArray("illustlist", arrayList)
+                        bundle.putLong("illustid", id)
+                        val intent2 = Intent(mContext, PictureActivity::class.java)
+                        intent2.putExtras(bundle)
+                        mContext.startActivity(intent2)
+                    }
+                    itemView.setOnLongClickListener {
+                        val choice = arrayOf("CANCEL")
+                        AlertDialog.Builder(mContext).setItems(choice
+                        ) { _, which ->
+                            when (which) {
+                                0 -> {
+                                    WorkManager.getInstance(mContext).cancelWorkById(workinfo.id)
+                                }
+                                else -> {
 
-                    arrayList[0] = (file!!.split(".")[0].toLong())
-                    bundle.putLongArray("illustlist", arrayList)
-                    bundle.putLong("illustid", file.split(".")[0].toLong())
-                    val intent2 = Intent(mContext, PictureActivity::class.java)
-                    intent2.putExtras(bundle)
-                    mContext.startActivity(intent2)
+                                }
+                            }
+                        }.create().show()
+                        true
+                    }
+                    Log.d("progress!", now.toString())
+                    progress.max = max.toInt()
+                    progress.progress = now.toInt()
+                    title.text = title1
+                    val progressText = if (workinfo.state == WorkInfo.State.SUCCEEDED) {
+                        "completed"
+                    } else {
+                        "$now/$max"
+                    }
+                    progress_num.text = progressText
+                    progress_state.text = workinfo.state.toString()
+
                 }
 
-                holder.itemView.setOnLongClickListener {
-                    val choice = arrayOf("RETRY", "CANCEL")
-                    AlertDialog.Builder(mContext).setItems(choice
-                    ) { _, which ->
-                        when (which) {
-                            1 -> {
-                                WorkManager.getInstance(mContext).cancelWorkById(workinfo.id)
-                            }
-                            else -> {
 
-                            }
-                        }
-                    }.create().show()
-                    true
-                }
-                val progressBar = holder.itemView.findViewById<ProgressBar>(R.id.progress)
-                val title = holder.itemView.findViewById<TextView>(R.id.title)
-                val progressNum = holder.itemView.findViewById<TextView>(R.id.progress_num)
-                val progressState = holder.itemView.findViewById<TextView>(R.id.progress_state)
-                Log.d("progress!", now.toString())
-                progressBar.max = max.toInt()
-                progressBar.progress = now.toInt()
-                title.text = file
-                val progressText = "$now/$max"
-                progressNum.text = progressText
-                progressState.text = workinfo.state.toString()
             }
         }
 
@@ -110,13 +172,16 @@ class ProgressActivityFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity!!)
             adapter = progressAdapter
         }
-        val allData = WorkManager.getInstance(activity!!).getWorkInfosByTagLiveData("image")
-
-        allData.observe(this, Observer {
-            if (it != null && it.size > 0) {
-                progressAdapter.setNewData(ArrayList(it))
+        val allData = WorkManager.getInstance(activity!!).getWorkInfosByTag("image")
+        val mutableList = allData.get()
+        if (mutableList != null && mutableList.size > 0) {
+            progressAdapter.setNewData(ArrayList(mutableList))
+            for (i in mutableList.indices) {
+                WorkManager.getInstance(activity!!).getWorkInfoByIdLiveData(mutableList[i].id).observe(this, Observer {
+                    progressAdapter.itemChange(i, it)
+                })
             }
-        })
+        }
 
     }
 

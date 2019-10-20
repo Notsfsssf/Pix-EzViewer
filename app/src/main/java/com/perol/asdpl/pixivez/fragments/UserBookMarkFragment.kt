@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 Perol_Notsfsssf
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE
+ */
+
 package com.perol.asdpl.pixivez.fragments
 
 
@@ -15,7 +39,6 @@ import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.RecommendAdapter
 import com.perol.asdpl.pixivez.dialog.TagsShowDialog
 import com.perol.asdpl.pixivez.objects.LazyV4Fragment
-import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.viewmodel.UserBookMarkViewModel
 import kotlinx.android.synthetic.main.fragment_user_book_mark.*
 
@@ -60,8 +83,13 @@ class UserBookMarkFragment : LazyV4Fragment(), TagsShowDialog.Callback {
             viewmodel!!.OnRefreshListener(param1!!, pub, null)
         }
     }
+
     override fun onClick(string: String, public: String) {
-        viewmodel!!.OnRefreshListener(param1!!, public, if(string.isNotBlank()){string}else{null})
+        viewmodel!!.OnRefreshListener(param1!!, public, if (string.isNotBlank()) {
+            string
+        } else {
+            null
+        })
     }
 
     fun lazyLoad() {
@@ -141,7 +169,7 @@ class UserBookMarkFragment : LazyV4Fragment(), TagsShowDialog.Callback {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        recommendAdapter = RecommendAdapter(R.layout.view_recommand_item, null, PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("r18on",false))
+        recommendAdapter = RecommendAdapter(R.layout.view_recommand_item, null, PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("r18on", false))
         return inflater.inflate(R.layout.fragment_user_book_mark, container, false)
     }
 

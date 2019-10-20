@@ -1,12 +1,37 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 Perol_Notsfsssf
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE
+ */
+
 package com.perol.asdpl.pixivez.viewmodel
 
+import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.databinding.ObservableField
-import android.widget.Toast
-import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.repository.RetrofitRespository
-import com.perol.asdpl.pixivez.responses.*
+import com.perol.asdpl.pixivez.responses.BookMarkDetailResponse
+import com.perol.asdpl.pixivez.responses.Illust
+import com.perol.asdpl.pixivez.responses.IllustDetailResponse
+import com.perol.asdpl.pixivez.responses.UgoiraMetadataResponse
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.services.UnzipUtil
 import com.perol.asdpl.pixivez.sql.AppDatabase
@@ -121,7 +146,7 @@ class PictureMViewModel : ViewModel() {
 //        val zippath = "${PxEZApp.instance.cacheDir.path}/${illustDetailResponse.value!!.illust.id}.zip"
         val zippath = "${PxEZApp.instance.cacheDir}/${illustDetailResponse.value!!.illust.id}.zip"
         val file = File(zippath)
-        progress.value=ProgressInfo(0,0)
+        progress.value = ProgressInfo(0, 0)
         retrofitRespository.getGIFFile(medium).subscribe({ response ->
             val inputstream = response.byteStream()
             Observable.create<Int> { ob ->
@@ -137,9 +162,9 @@ class PictureMViewModel : ViewModel() {
                     bytesCopied += bytes
                     bytes = inputstream.read(buffer)
                     progress.value!!.now = bytesCopied
-                   Observable.just(1).observeOn(AndroidSchedulers.mainThread()).subscribe {
-                       progress.value=progress.value!!
-                   }
+                    Observable.just(1).observeOn(AndroidSchedulers.mainThread()).subscribe {
+                        progress.value = progress.value!!
+                    }
                 }
                 inputstream.close()
                 output.close()

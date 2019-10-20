@@ -43,6 +43,9 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8
     }
+    androidExtensions {
+        experimental = true
+    }
 //    packagingOptions {
 //        exclude 'META-INF/library-core_release.kotlin_module'
 //    }

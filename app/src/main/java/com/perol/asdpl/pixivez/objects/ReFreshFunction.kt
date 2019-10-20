@@ -1,26 +1,47 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 Perol_Notsfsssf
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE
+ */
+
 package com.perol.asdpl.pixivez.objects
 
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-
 import com.perol.asdpl.pixivez.networks.RestClient
 import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
 import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.services.OAuthSecureService
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.sql.UserEntity
-
-import java.net.ConnectException
-import java.net.SocketTimeoutException
-import java.util.concurrent.TimeoutException
-
 import io.reactivex.Observable
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.runBlocking
 import retrofit2.HttpException
+import java.net.ConnectException
+import java.net.SocketTimeoutException
+import java.util.concurrent.TimeoutException
 
 class ReFreshFunction : io.reactivex.functions.Function<Observable<Throwable>, ObservableSource<*>> {
     private var client_id: String? = "MOBrBDS8blbauoSck0ZfDbtuzpyT"
@@ -69,12 +90,12 @@ class ReFreshFunction : io.reactivex.functions.Function<Observable<Throwable>, O
                     return@Function Observable.error<Any>(throwable)
                 }
             }
-          return@Function  Observable.error<Any>(throwable)
+            return@Function Observable.error<Any>(throwable)
         })
 
     }
 
-    private fun refreshtoken(it:UserEntity): ObservableSource<*> {
+    private fun refreshtoken(it: UserEntity): ObservableSource<*> {
         return oAuthSecureService!!.postRefreshAuthToken(client_id, client_secret, "refresh_token", it.Refresh_token,
                 it.Device_token, true)
                 .subscribeOn(Schedulers.io()).doOnNext { pixivOAuthResponse ->

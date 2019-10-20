@@ -1,17 +1,41 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 Perol_Notsfsssf
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE
+ */
+
 package com.perol.asdpl.pixivez.adapters
 
 import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
 import android.util.TypedValue
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.bumptech.glide.request.target.ImageViewTarget
 import com.bumptech.glide.request.transition.Transition
@@ -27,11 +51,6 @@ import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.services.Works
 
 
-/**
- * Created by asdpl on 2018/2/11.
- */
-
-
 class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on: Boolean) : BaseQuickAdapter<Illust, BaseViewHolder>(layoutResId, data) {
     val retrofit = RetrofitRespository.getInstance()
 
@@ -45,6 +64,7 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
                 illustlist[i] = this.data[i].id
             }
             bundle.putLongArray("illustlist", illustlist)
+//             bundle.putParcelable(this.data[position].id.toString(), this.data[position])
             val intent = Intent(mContext, PictureActivity::class.java)
             intent.putExtras(bundle)
             if (PxEZApp.animationEnable) {
@@ -53,7 +73,7 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
                         ActivityOptionsCompat.makeSceneTransitionAnimation(mContext as Activity, mainimage, "mainimage");
                 startActivity(mContext, intent, optionsCompat.toBundle())
             } else
-                startActivity(mContext,intent,null)
+                startActivity(mContext, intent, null)
         }
 
 
@@ -71,7 +91,7 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
             ContextCompat.getColor(mContext, colorPrimary)
         })
                 .setOnClickListener(R.id.save) {
-                  Works.imageDownloadAll(item)
+                    Works.imageDownloadAll(item)
                 }
                 .setOnClickListener(R.id.like) { v ->
                     val textView = v as Button

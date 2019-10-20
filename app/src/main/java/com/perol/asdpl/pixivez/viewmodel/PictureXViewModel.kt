@@ -1,10 +1,34 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 Perol_Notsfsssf
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE
+ */
+
 package com.perol.asdpl.pixivez.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.perol.asdpl.pixivez.repository.RetrofitRespository
 import com.perol.asdpl.pixivez.responses.BookMarkDetailResponse
-import com.perol.asdpl.pixivez.responses.IllustDetailResponse
 import com.perol.asdpl.pixivez.responses.Illust
+import com.perol.asdpl.pixivez.responses.IllustDetailResponse
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.services.UnzipUtil
 import com.perol.asdpl.pixivez.sql.AppDatabase
@@ -42,7 +66,7 @@ class PictureXViewModel : BaseViewModel() {
 
             }, {})
         } else {
-                reDownLoadGif(medium)
+            reDownLoadGif(medium)
         }
 
     }
@@ -77,37 +101,44 @@ class PictureXViewModel : BaseViewModel() {
                 println("+++++++++")
                 UnzipUtil.UnZipFolder(file, PxEZApp.instance.cacheDir.path + "/" + illustDetailResponse.value!!.illust.id)
                 ob.onNext(1)
-            }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe ({
+            }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe({
                 downloadGifSuccess.value = true
                 println("wwwwwwwwwwwwwwwwwwwwww")
-            },{
-it.printStackTrace()
+            }, {
+                it.printStackTrace()
             })
 
         }
     }
 
-    fun firstGet(toLong: Long) {
-        retrofitRespository.getIllust(toLong)!!.subscribe({ it ->
-            illustDetailResponse.value = it
-            likeIllust.value = it!!.illust.is_bookmarked
-            Observable.just(1).observeOn(Schedulers.io()).subscribe { ot ->
-                val ee = appDatabase.illusthistoryDao().getHistoryOne(it.illust.id)
-                if (ee.isNotEmpty()) {
-                    appDatabase.illusthistoryDao().deleteOne(ee[0])
-                    appDatabase.illusthistoryDao().insert(IllustBeanEntity(null, it.illust.image_urls.square_medium, it.illust.id))
-                } else
-                    appDatabase.illusthistoryDao().insert(IllustBeanEntity(null, it.illust.image_urls.square_medium, it.illust.id))
+    fun firstGet(toLong: Long, illust: Illust?) {
+        if (illust == null)
+            disposables.add(retrofitRespository.getIllust(toLong).subscribe({ it ->
+                illustDetailResponse.value = it
+                likeIllust.value = it!!.illust.is_bookmarked
+                Observable.just(1).observeOn(Schedulers.io()).subscribe { ot ->
+                    val ee = appDatabase.illusthistoryDao().getHistoryOne(it.illust.id)
+                    if (ee.isNotEmpty()) {
+                        appDatabase.illusthistoryDao().deleteOne(ee[0])
+                        appDatabase.illusthistoryDao().insert(IllustBeanEntity(null, it.illust.image_urls.square_medium, it.illust.id))
+                    } else
+                        appDatabase.illusthistoryDao().insert(IllustBeanEntity(null, it.illust.image_urls.square_medium, it.illust.id))
+                }
+            }, {}, {}))
+        else {
+            illustDetailResponse.value = IllustDetailResponse().also {
+                it.illust = illust
             }
-        }, {}, {})
+            likeIllust.value = illust.is_bookmarked
+        }
 
     }
 
     fun getRelative(long: Long) {
-        retrofitRespository.getIllustRecommended(long).subscribe({
+        disposables.add(retrofitRespository.getIllustRecommended(long).subscribe({
 
             aboutPics.value = it.illusts as ArrayList<Illust>?
-        }, {}, {})
+        }, {}, {}))
     }
 
     fun FabClick() {

@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 Perol_Notsfsssf
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE
+ */
+
 package com.perol.asdpl.pixivez.adapters
 
 import android.app.Activity
@@ -87,7 +111,8 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
     }
 
     init {
-        when (PreferenceManager.getDefaultSharedPreferences(mContext).getString("quality", "0")?.toInt()?:0) {
+        when (PreferenceManager.getDefaultSharedPreferences(mContext).getString("quality", "0")?.toInt()
+                ?: 0) {
             0 -> {
                 if (data.meta_pages.isEmpty()) {
                     imageUrls.add(data.image_urls.medium)
@@ -162,17 +187,17 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                     override fun getView(parent: FlowLayout, position: Int, t: Tag): View {
                         val tv = LayoutInflater.from(context).inflate(R.layout.picture_tag, parent, false)
                         val name = tv.findViewById<TextView>(R.id.name)
-                        val translatename=tv.findViewById<TextView>(R.id.translated_name)
+                        val translatename = tv.findViewById<TextView>(R.id.translated_name)
                         name.text = "#${t.name} "
 
-                        if (!t.translated_name.isNullOrBlank()){
-                            translatename.visibility=View.VISIBLE
-                            translatename.text=t.translated_name
+                        if (!t.translated_name.isNullOrBlank()) {
+                            translatename.visibility = View.VISIBLE
+                            translatename.text = t.translated_name
                         }
                         if (t.name.equals("R-18") || t.name.equals("R-18G")) {
                             name.setTextColor(Color.RED)
                         }
-                        return  tv
+                        return tv
                     }
                 }
                 setOnTagClickListener { view, position, parent ->
@@ -186,7 +211,7 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
 
             }
             imageButtonDownload.setOnClickListener {
-          Works.imageDownloadAll(s)
+                Works.imageDownloadAll(s)
             }
         }
     }
@@ -295,7 +320,7 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                     builder.setTitle(mContext.resources.getString(R.string.saveselectpic1))
                     builder.setMessage("描述: " + Html.fromHtml(data.caption))
                     builder.setPositiveButton(mContext.resources.getString(R.string.confirm)) { dialog, which ->
-                        Works.imageDownloadOne(data,position)
+                        Works.imageDownloadOne(data, position)
                     }
                     builder.setNegativeButton(mContext.resources.getString(R.string.cancel)) { dialog, which ->
 
@@ -388,7 +413,7 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     mContext.startActivity(intent)
                 }
-                if (position == 0&&PxEZApp.animationEnable) {
+                if (position == 0 && PxEZApp.animationEnable) {
                     transitionName = "mainimage"
                 }
             }
@@ -403,7 +428,7 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                         if (!isEncoding) {
                             isEncoding = true
                             val file1 = File(path2)
-                            if (!file1.parentFile.exists()){
+                            if (!file1.parentFile.exists()) {
                                 file1.parentFile.mkdirs()
                             }
                             val ob = encodingGif()
@@ -514,7 +539,6 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
 
 
     }
-
 
 
     var size = 1

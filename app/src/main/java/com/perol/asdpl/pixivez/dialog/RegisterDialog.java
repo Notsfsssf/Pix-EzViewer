@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 Perol_Notsfsssf
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE
+ */
+
 package com.perol.asdpl.pixivez.dialog;
 
 
@@ -6,14 +30,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.appcompat.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.perol.asdpl.pixivez.R;
 import com.perol.asdpl.pixivez.activity.HelloMActivity;
@@ -31,14 +56,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-/**
- * Created by Notsfsssf on 2018/3/26.
- */
 
 public class RegisterDialog extends DialogFragment {
     private android.widget.EditText edittextemail;
@@ -51,6 +74,7 @@ public class RegisterDialog extends DialogFragment {
     private SharedPreferencesServices sharedPreferencesServices;
     List<Integer> list = new ArrayList<>();
     List<Integer> x = Collections.unmodifiableList(list);
+
     public void show(FragmentManager fragmentManager) {
         show(fragmentManager, "ViewDialogFragment");
 
@@ -146,7 +170,7 @@ public class RegisterDialog extends DialogFragment {
                                         public void onComplete() {
                                             Toasty.Companion.success(context, "完善验证信息成功", Toast.LENGTH_LONG).show();
                                             Intent intent = new Intent(context, HelloMActivity.class);
-                                            sharedPreferencesServices.setBoolean("isnone",false);
+                                            sharedPreferencesServices.setBoolean("isnone", false);
                                             getActivity().finish();
                                             startActivity(intent);
 
@@ -170,7 +194,7 @@ public class RegisterDialog extends DialogFragment {
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-dialog.cancel();
+                dialog.cancel();
             }
         });
 

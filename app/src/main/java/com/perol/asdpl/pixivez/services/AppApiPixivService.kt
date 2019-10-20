@@ -1,31 +1,42 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 Perol_Notsfsssf
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE
+ */
+
 package com.perol.asdpl.pixivez.services
 
 
 import com.perol.asdpl.pixivez.responses.*
-
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Multipart
-import retrofit2.http.POST
-import retrofit2.http.Part
-import retrofit2.http.Query
-import retrofit2.http.Streaming
-import retrofit2.http.Url
+import retrofit2.http.*
 
-/**
- * Created by asdpl on 2018/2/10.
- */
 
 interface AppApiPixivService {
 
     @GET("v1/walkthrough/illusts")
-    fun  walkthroughIllusts(): Observable<IllustNext>
+    fun walkthroughIllusts(): Observable<IllustNext>
 
     //    @FormUrlEncoded
     //    @POST("/v1/mute/edit")
@@ -89,8 +100,10 @@ interface AppApiPixivService {
 
     @GET("/v1/search/illust?filter=for_android&merge_plain_keyword_results=true")
     fun getSearchIllust(@Query("word") paramString1: String, @Query("sort") paramString2: String, @Query("search_target") paramString3: String?, @Query("bookmark_num") paramInteger: Int?, @Query("duration") paramString4: String?, @Header("Authorization") paramString5: String): Observable<SearchIllustResponse>
+
     @GET("/v1/search/popular-preview/illust?filter=for_android&merge_plain_keyword_results=true")
     fun getSearchIllustPreview(@Query("word") paramString1: String, @Query("sort") paramString2: String, @Query("search_target") paramString3: String?, @Query("bookmark_num") paramInteger: Int?, @Query("duration") paramString4: String?, @Header("Authorization") paramString5: String): Observable<SearchIllustResponse>
+
     @GET("/v1/search/novel")
     fun getSearchNovel(@Header("Authorization") paramString1: String, @Query("word") paramString2: String, @Query("sort") paramString3: String, @Query("search_target") paramString4: String, @Query("bookmark_num") paramInteger: Int?, @Query("duration") paramString5: String): Call<PixivResponse>
 
@@ -99,7 +112,7 @@ interface AppApiPixivService {
 
     @GET("/v1/search/popular-preview/illust?filter=for_android")
     fun getPopularPreviewIllust(@Header("Authorization") paramString1: String, @Query("word") paramString2: String, @Query("search_target") paramString3: String, @Query("duration") paramString4: String): Call<PixivResponse>
-    
+
 
     @GET("/v1/user/follower?filter=for_android")
     fun getUserFollower(@Header("Authorization") paramString: String, @Query("user_id") paramLong: Long): Observable<SearchUserResponse>
@@ -136,7 +149,6 @@ interface AppApiPixivService {
     fun getNextHistory(@Header("Authorization") Authorization: String, @Url paramString2: String): Observable<IllustNext>
 
 
-
     @GET("/v1/illust/ranking?filter=for_android")
     fun getIllustRanking(@Header("Authorization") paramString1: String, @Query("mode") paramString2: String, @Query("date") paramString3: String?): Observable<IllustNext>
 
@@ -148,8 +160,10 @@ interface AppApiPixivService {
 
     @GET("/v1/illust/comments")
     fun getIllustComments(@Header("Authorization") paramString: String, @Query("illust_id") paramLong: Long): Observable<IllustCommentsResponse>
+
     @GET("/v1/illust/comments")
     fun getIllustNextComments(@Header("Authorization") paramString: String, @Url paramString2: String): Observable<IllustCommentsResponse>
+
     @FormUrlEncoded
     @POST("v1/illust/comment/add")
     fun postIllustComment(@Header("Authorization") paramString1: String, @Field("illust_id") illust_id: Long, @Field("comment") comment: String, @Field("parent_comment_id") parent_comment_id: Int?): Observable<ResponseBody>

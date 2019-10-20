@@ -1,21 +1,42 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 Perol_Notsfsssf
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE
+ */
+
 package com.perol.asdpl.pixivez.fragments
 
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.preference.PreferenceManager
-
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.RecommendAdapter
-import com.perol.asdpl.pixivez.dialog.TagsShowDialog
 import com.perol.asdpl.pixivez.objects.LazyV4Fragment
-import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.viewmodel.UserMillustViewModel
 import kotlinx.android.synthetic.main.fragment_user_illust.*
 
@@ -32,7 +53,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class UserIllustFragment : LazyV4Fragment() {
     override fun loadData() {
-        viewmodel!!.first(param1!!,param2!!)
+        viewmodel!!.first(param1!!, param2!!)
     }
 
     fun lazyLoad() {
@@ -40,7 +61,7 @@ class UserIllustFragment : LazyV4Fragment() {
             viewmodel!!.OnLoadMoreListener()
         }, mrecyclerview)
         mrefreshlayout.setOnRefreshListener {
-            viewmodel!!.OnRefreshListener(param1!!,param2!!)
+            viewmodel!!.OnRefreshListener(param1!!, param2!!)
         }
         mrecyclerview.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         mrecyclerview.adapter = recommendAdapter
@@ -63,9 +84,10 @@ class UserIllustFragment : LazyV4Fragment() {
         super.onViewCreated(view, savedInstanceState)
         lazyLoad()
     }
-var viewmodel:UserMillustViewModel?=null
+
+    var viewmodel: UserMillustViewModel? = null
     private fun initvoid() {
-       viewmodel = ViewModelProviders.of(this).get(UserMillustViewModel::class.java)
+        viewmodel = ViewModelProviders.of(this).get(UserMillustViewModel::class.java)
 
         viewmodel!!.nexturl.observe(this, Observer {
             if (it.isNullOrEmpty()) {
@@ -96,7 +118,7 @@ var viewmodel:UserMillustViewModel?=null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        recommendAdapter = RecommendAdapter(R.layout.view_recommand_item, null, PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("r18on",false))
+        recommendAdapter = RecommendAdapter(R.layout.view_recommand_item, null, PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("r18on", false))
 
         return inflater.inflate(R.layout.fragment_user_illust, container, false)
     }

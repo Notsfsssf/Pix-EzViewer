@@ -1,32 +1,50 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 Perol_Notsfsssf
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE
+ */
+
 package com.perol.asdpl.pixivez.networks
+
 
 import android.util.Log
 import androidx.preference.PreferenceManager
-
 import com.google.gson.GsonBuilder
 import com.perol.asdpl.pixivez.services.PxEZApp
-import okhttp3.*
-
-
-import java.io.IOException
-
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import java.security.cert.X509Certificate
-import javax.net.ssl.*
-import okhttp3.OkHttpClient
+import java.io.IOException
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
+import java.security.cert.X509Certificate
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.*
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.X509TrustManager
 
-
-/**
- * Created by asdpl on 2018/2/10.
- */
 
 class RestClient {
     private val httpsDns = RubyHttpDns()
