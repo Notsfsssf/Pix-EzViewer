@@ -43,7 +43,6 @@ import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.responses.Illust
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.viewmodel.IllustfragmentViewModel
-import com.perol.asdpl.pixivez.viewmodel.factory.illustFactory
 import kotlinx.android.synthetic.main.fragment_illust.*
 import kotlinx.coroutines.runBlocking
 
@@ -81,8 +80,10 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
                         viewModel.firstsetdata(param1!!, sort[selectSort], null, null)
 
                 }
-            } else
+            } else {
+
                 viewModel.firstsetdata(param1!!, sort[selectSort], null, null)
+            }
         }
 
 
@@ -95,18 +96,6 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
         searchtext.text = param1
         recyclerview_illust.adapter = searchIllustAdapter
         recyclerview_illust.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-//        for (i in 0 until bmbill.piecePlaceEnum.pieceNumber()) {
-//            val builder = HamButton.Builder().listener { index ->
-//                val query = param1 + " " + starnum[index].toString() + "users入り"
-//                viewModel.firstsetdata(query, sort[selectSort], null, null)
-//                recyclerview_illust.scrollToPosition(0)
-//            }
-//                    .normalImageRes(R.drawable.ic_starx)
-//                    .normalText(starnum[i].toString() + " users入り!")
-//                    .subNormalText("超过 " + starnum[i] + " 收藏！")
-//            bmbill.addBuilder(builder)
-//
-//        }
         fab.setOnClickListener {
             val builder = MaterialAlertDialogBuilder(activity)
             val arrayList = arrayOfNulls<String>(starnum.size)
@@ -181,11 +170,7 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
 
 
     fun lazyLoad() {
-
-//        val view = layoutInflater.inflate(R.layout.headerview_illust, null)
-//        val imageView = view.findViewById<ImageButton>(R.id.imagebutton_section)
-//        searchIllustAdapter.addHeaderView(view)
-        viewModel = ViewModelProviders.of(this, illustFactory()).get(IllustfragmentViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(IllustfragmentViewModel::class.java)
 
         viewModel.illusts.observe(this, Observer {
             updateillust(it)
@@ -198,6 +183,9 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
         })
         viewModel.bookmarkid.observe(this, Observer {
             changetoblue(it)
+        })
+        viewModel.isRefresh.observe(this, Observer {
+            swiperefresh.isRefreshing = it
         })
 
     }
@@ -227,7 +215,6 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
     private fun updateillust(it: ArrayList<Illust>?) {
         if (it != null) {
             searchIllustAdapter.setNewData(it)
-            swiperefresh.isRefreshing = false
         }
 
     }

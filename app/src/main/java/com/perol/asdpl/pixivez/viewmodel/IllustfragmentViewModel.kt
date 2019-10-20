@@ -25,11 +25,10 @@
 package com.perol.asdpl.pixivez.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.perol.asdpl.pixivez.repository.RetrofitRespository
 import com.perol.asdpl.pixivez.responses.Illust
 
-class IllustfragmentViewModel : ViewModel() {
+class IllustfragmentViewModel : BaseViewModel() {
 
 
     var illusts = MutableLiveData<ArrayList<Illust>>()
@@ -37,28 +36,37 @@ class IllustfragmentViewModel : ViewModel() {
     var retrofitRespository = RetrofitRespository.getInstance()
     var nexturl = MutableLiveData<String>()
     var bookmarkid = MutableLiveData<Long>()
+    var isRefresh = MutableLiveData<Boolean>(false)
     fun setPreview(word: String, sort: String, search_target: String?, duration: String?) {
+        isRefresh.value = true
         retrofitRespository.getSearchIllustPreview(word, sort, search_target, null, duration)
                 .subscribe({
-                    illusts.value = it.illusts as ArrayList<Illust>
+                    illusts.value = ArrayList<Illust>(it.illusts)
                     nexturl.value = it.next_url
-                }, {}, {})
+                    isRefresh.value = false
+                }, {
+                    it.printStackTrace()
+                }, {}).add()
     }
 
     fun firstsetdata(word: String, sort: String, search_target: String?, duration: String?) {
+        isRefresh.value = true
         retrofitRespository.getSearchIllust(word, sort, search_target, null, duration)
                 .subscribe({
-                    illusts.value = it.illusts as ArrayList<Illust>
+                    illusts.value = ArrayList<Illust>(it.illusts)
                     nexturl.value = it.next_url
-                }, {}, {})
+                    isRefresh.value = false
+                }, {
+                    it.printStackTrace()
+                }, {}).add()
     }
 
     fun onLoadMoreListen() {
         if (nexturl.value != null) {
             retrofitRespository.getNext(nexturl.value!!).subscribe({
-                addIllusts.value = it.illusts as ArrayList<Illust>
+                addIllusts.value = ArrayList<Illust>(it.illusts)
                 nexturl.value = it.next_url
-            }, {}, {})
+            }, {}, {}).add()
         }
 
     }

@@ -69,6 +69,7 @@ import com.perol.asdpl.pixivez.activity.SearchResultActivity
 import com.perol.asdpl.pixivez.activity.UserMActivity
 import com.perol.asdpl.pixivez.activity.ZoomActivity
 import com.perol.asdpl.pixivez.databinding.ViewPicturexDetailBinding
+import com.perol.asdpl.pixivez.objects.TToast
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.responses.Illust
 import com.perol.asdpl.pixivez.responses.Tag
@@ -320,6 +321,7 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                     builder.setTitle(mContext.resources.getString(R.string.saveselectpic1))
                     builder.setMessage("描述: " + Html.fromHtml(data.caption))
                     builder.setPositiveButton(mContext.resources.getString(R.string.confirm)) { dialog, which ->
+                        TToast.startDownload(PxEZApp.instance)
                         Works.imageDownloadOne(data, position)
                     }
                     builder.setNegativeButton(mContext.resources.getString(R.string.cancel)) { dialog, which ->
@@ -356,10 +358,9 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                                     }
                                     // Set the action buttons
                                     .setPositiveButton(android.R.string.ok) { dialog, id ->
-
+                                        TToast.startDownload(PxEZApp.instance)
                                         mSelectedItems.map {
                                             Works.imageDownloadOne(data, it)
-
                                         }
                                     }
                                     .setNegativeButton(android.R.string.cancel) { dialog, id -> }

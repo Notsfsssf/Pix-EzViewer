@@ -141,10 +141,11 @@ class HelloMActivity : AppCompatActivity(), Drawer.OnDrawerNavigationListener, A
 
     var exitTime = 0L
     override fun onBackPressed() {
-        if (header.isSelectionListShown) {
-            super.onBackPressed()
+        if (drawer.isDrawerOpen) {
+            drawer.onBackPressed()
             return
         }
+
         if ((System.currentTimeMillis() - exitTime) > 2000) {
             Toast.makeText(applicationContext, getString(R.string.again_to_exit), Toast.LENGTH_SHORT).show();
             exitTime = System.currentTimeMillis();
@@ -154,6 +155,7 @@ class HelloMActivity : AppCompatActivity(), Drawer.OnDrawerNavigationListener, A
     }
 
     private lateinit var header: AccountHeader
+    private lateinit var drawer: Drawer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -187,7 +189,7 @@ class HelloMActivity : AppCompatActivity(), Drawer.OnDrawerNavigationListener, A
                 .withOnAccountHeaderListener(this)
                 .build()
         AppCompatDrawableManager.get().getDrawable(this, R.drawable.ic_action_my_white)
-        val drawer = DrawerBuilder().withActivity(this)
+        drawer = DrawerBuilder().withActivity(this)
                 .withAccountHeader(header)
                 .addDrawerItems(
                         PrimaryDrawerItem()

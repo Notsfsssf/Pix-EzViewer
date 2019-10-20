@@ -59,7 +59,8 @@ private const val ARG_PARAM2 = "param2"
  */
 class HelloMRecommandFragment : LazyV4Fragment() {
     override fun loadData() {
-        viewmodel!!.firstget()
+        swiperefresh_recom.isRefreshing = true
+        viewmodel!!.firstGet()
     }
 
     lateinit var rankingAdapter: RecommendAdapter
@@ -94,7 +95,7 @@ class HelloMRecommandFragment : LazyV4Fragment() {
         })
         viewmodel!!.bookmarknum.observe(this, Observer {
             if (it != null) {
-                viewmodel!!.OnItemChildLongClick(it)
+                viewmodel!!.onItemChildLongClick(it)
             }
         })
         viewmodel!!.nexturl.observe(this, Observer {

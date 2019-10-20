@@ -27,6 +27,7 @@ package com.perol.asdpl.pixivez.viewmodel
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -44,6 +45,10 @@ open class BaseViewModel : ViewModel(), LifecycleObserver {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    fun Disposable.add() {
+        disposables.add(this)
     }
 
     override fun onCleared() {

@@ -130,7 +130,6 @@ class RetrofitRespository {
         }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).retryWhen(reFreshFunction)
 
     }
-
     fun getSearchIllust(word: String, sort: String, search_target: String?, bookmark_num: Int?, duration: String?): Observable<SearchIllustResponse> {
         return Observable.just(1).flatMap {
             resetToken()
