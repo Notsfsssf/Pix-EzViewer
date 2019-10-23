@@ -25,6 +25,9 @@
 package com.perol.asdpl.pixivez.activity
 
 import android.app.AlertDialog
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -32,7 +35,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
-import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -41,8 +44,15 @@ import com.perol.asdpl.pixivez.adapters.viewpager.UserMPagerAdapter
 import com.perol.asdpl.pixivez.databinding.ActivityUserMBinding
 import com.perol.asdpl.pixivez.fragments.UserMessageFragment
 import com.perol.asdpl.pixivez.objects.ThemeUtil
+import com.perol.asdpl.pixivez.objects.Toasty
+import com.perol.asdpl.pixivez.services.GlideApp
+import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.viewmodel.UserMViewModel
 import kotlinx.android.synthetic.main.activity_user_m.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
+import java.io.File
 
 class UserMActivity : RinkActivity() {
     var id: Long = 0
@@ -110,11 +120,28 @@ class UserMActivity : RinkActivity() {
         }
         val shareLink = "https://www.pixiv.net/member.php?id=$id";
         imageview_useruserimage.setOnClickListener {
-            AlertDialog.Builder(this).setTitle("Link").setView(layoutInflater.inflate(R.layout.dialog_user_link, null).apply {
-                findViewById<TextView>(R.id.textview_link).apply {
-                    text = shareLink
+            val array = arrayOf("Link", "User Image")
+            AlertDialog.Builder(this).setTitle("Link").setItems(array) { i, which ->
+                when (which) {
+                    0 -> {
+                        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val clip: ClipData = ClipData.newPlainText("simple text", "Hello, World!")
+                        clipboard.setPrimaryClip(clip)
+                        Toasty.info(this@UserMActivity, "copied", Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {
+                        runBlocking {
+                            withContext(Dispatchers.IO) {
+                                val f = GlideApp.with(this@UserMActivity).asFile().load(viewModel.userDetail.value!!.user.profile_image_urls.medium).submit()
+                                val file = f.get()
+                                val target = File(PxEZApp.storepath, "user_${viewModel.userDetail.value!!.user.id}.jpeg")
+                                file.copyTo(target, overwrite = true)
+                            }
+                            Toasty.info(this@UserMActivity, "Saved", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
-            }).create().show()
+            }.setTitle("Save").create().show()
 
         }
     }

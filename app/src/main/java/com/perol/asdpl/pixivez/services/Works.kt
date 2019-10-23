@@ -30,6 +30,7 @@ import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
 import androidx.preference.PreferenceManager
 import androidx.work.*
 import com.perol.asdpl.pixivez.R
@@ -139,29 +140,38 @@ class Works {
                     .setInputData(inputData)
                     .addTag("image")
                     .build()
-            WorkManager.getInstance(PxEZApp.instance).enqueueUniqueWork(url, ExistingWorkPolicy.REPLACE, oneTimeWorkRequest)
-            WorkManager.getInstance(PxEZApp.instance).getWorkInfoByIdLiveData(oneTimeWorkRequest.id)
-                    .observeForever { workInfo ->
-                        if (workInfo == null) {
-                            return@observeForever
-                        }
-                        if (workInfo.state == WorkInfo.State.SUCCEEDED) {
-                            if (workInfo.outputData.getBoolean("exist", false)) {
-                                Toasty.success(PxEZApp.instance, PxEZApp.instance.resources.getString(R.string.alreadysaved), Toast.LENGTH_SHORT).show()
-                                return@observeForever
-                            }
-                            Toasty.success(PxEZApp.instance, PxEZApp.instance.resources.getString(R.string.savesuccess), Toast.LENGTH_SHORT).show()
-                            val uri = workInfo.outputData.getString("path")
-                            if (uri != null)
-                                PxEZApp.instance.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(File(uri))))
-                        } else if (workInfo.state == WorkInfo.State.FAILED) {
+            val result = WorkManager.getInstance(PxEZApp.instance).enqueueUniqueWork(url, ExistingWorkPolicy.REPLACE, oneTimeWorkRequest).result
+            result.addListener({
+                Log.d("Listenable", "Did something 1");
+            }, {
+                it?.run()
+            })
 
-                        } else if (workInfo.state == WorkInfo.State.CANCELLED) {
-
-                            val file = File(PxEZApp.storepath, filename)
-                            file.deleteOnExit()
-                        }
+            val liveData = WorkManager.getInstance(PxEZApp.instance).getWorkInfoByIdLiveData(oneTimeWorkRequest.id)
+            liveData.observeForever(object : Observer<WorkInfo> {
+                override fun onChanged(workInfo: WorkInfo?) {
+                    if (workInfo == null) {
+                        return
                     }
+                    if (workInfo.state == WorkInfo.State.SUCCEEDED) {
+                        if (workInfo.outputData.getBoolean("exist", false)) {
+                            Toasty.success(PxEZApp.instance, PxEZApp.instance.resources.getString(R.string.alreadysaved), Toast.LENGTH_SHORT).show()
+                            return
+                        }
+                        Toasty.success(PxEZApp.instance, PxEZApp.instance.resources.getString(R.string.savesuccess), Toast.LENGTH_SHORT).show()
+                        val uri = workInfo.outputData.getString("path")
+                        if (uri != null)
+                            PxEZApp.instance.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(File(uri))))
+                    } else if (workInfo.state == WorkInfo.State.FAILED) {
+
+                    } else if (workInfo.state == WorkInfo.State.CANCELLED) {
+
+                        val file = File(PxEZApp.storepath, filename)
+                        file.deleteOnExit()
+                    }
+                    liveData.removeObserver(this)
+                }
+            })
         }
 
         fun checkUpdate(activty: Activity) {
