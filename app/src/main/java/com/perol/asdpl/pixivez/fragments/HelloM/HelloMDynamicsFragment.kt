@@ -25,10 +25,13 @@
 package com.perol.asdpl.pixivez.fragments.HelloM
 
 
+import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.perol.asdpl.pixivez.R
@@ -36,6 +39,7 @@ import com.perol.asdpl.pixivez.adapters.RankingMAdapter
 import com.perol.asdpl.pixivez.objects.LazyV4Fragment
 import com.perol.asdpl.pixivez.viewmodel.factory.RankingShareViewModel
 import kotlinx.android.synthetic.main.fragment_hello_mdynamics.*
+import java.util.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -63,7 +67,22 @@ class HelloMDynamicsFragment : LazyV4Fragment() {
         viewpage_rankingm.adapter = RankingMAdapter(context!!, childFragmentManager)
         val sharemodel = ViewModelProviders.of(activity!!).get(RankingShareViewModel::class.java)
         tablayout_rankingm.setupWithViewPager(viewpage_rankingm)
+        imageview_triangle.apply {
+            setOnClickListener {
+                val calendar = Calendar.getInstance();
+                val year = calendar.get(Calendar.YEAR);
+                val month = calendar.get(Calendar.MONTH) + 1;
+                val day = calendar.get(Calendar.DAY_OF_MONTH);
+                val dateDialog = DatePickerDialog(activity!!, DatePickerDialog.OnDateSetListener { p0, year, monthr, day ->
+                    val month = monthr + 1
+                    Log.d("date", "$year-$month-$day")
+                    sharemodel.picdateshare.value = "$year-$month-$day"
+                }, year, month, day)
+                dateDialog.datePicker.maxDate = System.currentTimeMillis()
+                dateDialog.show()
 
+            }
+        }
     }
 
 

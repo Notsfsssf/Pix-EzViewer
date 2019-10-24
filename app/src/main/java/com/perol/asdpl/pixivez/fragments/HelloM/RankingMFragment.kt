@@ -69,10 +69,7 @@ class RankingMFragment : LazyV4Fragment() {
         viewmodel!!.first(param1!!, picDate)
     }
 
-    fun onClick(data: String?) {
 
-        sharemodel?.picdateshare?.value = data
-    }
 
     fun lazyLoad() {
         viewmodel = ViewModelProviders.of(this).get(RankingMViewModel::class.java)
@@ -105,22 +102,6 @@ class RankingMFragment : LazyV4Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity!!.findViewById<ImageView>(R.id.imageview_triangle).apply {
-            setOnClickListener {
-                val calendar = Calendar.getInstance();
-                val year = calendar.get(Calendar.YEAR);
-                val month = calendar.get(Calendar.MONTH) + 1;
-                val day = calendar.get(Calendar.DAY_OF_MONTH);
-                val dateDialog = DatePickerDialog(activity!!, DatePickerDialog.OnDateSetListener { p0, year, monthr, day ->
-                    val month = monthr + 1
-                    Log.d("date", "$year-$month-$day")
-                    onClick("$year-$month-$day")
-                }, year, month, day)
-                dateDialog.datePicker.maxDate = System.currentTimeMillis()
-                dateDialog.show()
-
-            }
-        }
         swiperefresh_rankingm.setOnRefreshListener {
             viewmodel!!.OnRefresh(param1!!, picDate)
         }
