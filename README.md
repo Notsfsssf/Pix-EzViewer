@@ -1,7 +1,7 @@
 # PixEz 阅读器
 ![](https://github.com/Notsfsssf/Pix-EzViewer/raw/master/app/src/main/res/mipmap-xxhdpi/ic_launcherep.png)
 
-![当前版本](https://img.shields.io/github/v/release/Notsfsssf/Pix-EzViewer?label=%E5%BD%93%E5%89%8D%E7%89%88%E6%9C%AC) [![](https://img.shields.io/badge/Get%20it%20on-Play-green.svg)](https://play.google.com/store/apps/details?id=com.perol.asdpl.play.pixivez) [![](https://img.shields.io/badge/%E7%82%B9%E6%AD%A4%E8%8E%B7%E5%8F%96-%E5%9B%BD%E5%86%85-brightgreen)](https://tc5.us/file/21124045-404046432) 
+![当前版本](https://img.shields.io/github/v/release/Notsfsssf/Pix-EzViewer?label=%E5%BD%93%E5%89%8D%E7%89%88%E6%9C%AC) [![](https://img.shields.io/badge/Get%20it%20on-Play-green.svg)](https://play.google.com/store/apps/details?id=com.perol.asdpl.play.pixivez) [![](https://img.shields.io/badge/%E7%82%B9%E6%AD%A4%E8%8E%B7%E5%8F%96-%E5%9B%BD%E5%86%85-brightgreen)](https://tc5.us/file/21124045-404053871) 
 
 一个支持免代理直连及查看动图的第三方 Pixiv Android 客户端。
 

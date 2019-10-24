@@ -125,7 +125,7 @@ class UserMActivity : RinkActivity() {
                 when (which) {
                     0 -> {
                         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        val clip: ClipData = ClipData.newPlainText("simple text", "Hello, World!")
+                        val clip: ClipData = ClipData.newPlainText("simple text", shareLink)
                         clipboard.setPrimaryClip(clip)
                         Toasty.info(this@UserMActivity, "copied", Toast.LENGTH_SHORT).show()
                     }

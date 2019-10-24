@@ -147,8 +147,8 @@ class Works {
                 it?.run()
             })
 
-            val liveData = WorkManager.getInstance(PxEZApp.instance).getWorkInfoByIdLiveData(oneTimeWorkRequest.id)
-            liveData.observeForever(object : Observer<WorkInfo> {
+          WorkManager.getInstance(PxEZApp.instance).getWorkInfoByIdLiveData(oneTimeWorkRequest.id)
+          .observeForever(object : Observer<WorkInfo> {
                 override fun onChanged(workInfo: WorkInfo?) {
                     if (workInfo == null) {
                         return
@@ -156,6 +156,7 @@ class Works {
                     if (workInfo.state == WorkInfo.State.SUCCEEDED) {
                         if (workInfo.outputData.getBoolean("exist", false)) {
                             Toasty.success(PxEZApp.instance, PxEZApp.instance.resources.getString(R.string.alreadysaved), Toast.LENGTH_SHORT).show()
+                            WorkManager.getInstance(PxEZApp.instance).getWorkInfoByIdLiveData(oneTimeWorkRequest.id).removeObserver(this)
                             return
                         }
                         Toasty.success(PxEZApp.instance, PxEZApp.instance.resources.getString(R.string.savesuccess), Toast.LENGTH_SHORT).show()
@@ -169,7 +170,7 @@ class Works {
                         val file = File(PxEZApp.storepath, filename)
                         file.deleteOnExit()
                     }
-                    liveData.removeObserver(this)
+                    WorkManager.getInstance(PxEZApp.instance).getWorkInfoByIdLiveData(oneTimeWorkRequest.id).removeObserver(this)
                 }
             })
         }
