@@ -184,14 +184,16 @@ class RestClient {
 
                 @Throws(IOException::class)
                 override fun intercept(chain: Interceptor.Chain): Response {
-
-                    val ISO8601DATETIMEFORMAT = SimpleDateFormat("yyyy/MM/dd 'T'HH:mmZ", local)
+                    val ISO8601DATETIMEFORMAT = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ", local)
                     val isoDate = ISO8601DATETIMEFORMAT.format(Date())
                     val original = chain.request()
                     val requestBuilder = original.newBuilder()
                             .removeHeader("User-Agent")
                             .addHeader("User-Agent", "PixivAndroidApp/5.0.155 (Android ${android.os.Build.VERSION.RELEASE}; Pixel C)")
                             .addHeader("Accept-Language", local.language)
+                            .addHeader("App-OS", "Android")
+                            .addHeader("App-OS-Version", "${android.os.Build.VERSION.RELEASE}")
+                            .header("App-Version", "5.0.166")
                             .addHeader("X-Client-Time", isoDate)
                             .addHeader("X-Client-Hash", encode("$isoDate$HashSalt"))
                     val request = requestBuilder.build()

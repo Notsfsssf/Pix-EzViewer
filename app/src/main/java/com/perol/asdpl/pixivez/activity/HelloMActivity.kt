@@ -33,13 +33,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
@@ -160,10 +160,13 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
                 GlideApp.with(imageView).load(url).error(R.drawable.ai).optionalCenterCrop().into(imageView)
             }
         })
+        val typedValue = TypedValue();
+        theme.resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
         header = AccountHeaderBuilder()
                 .withActivity(this)
                 .withOnAccountHeaderListener(this)
                 .build()
+        header.headerBackgroundView.setBackgroundColor(typedValue.data)
         drawer = DrawerBuilder().withActivity(this)
                 .withAccountHeader(header)
                 .addDrawerItems(
@@ -249,14 +252,14 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
                         startActivity(intent)
                     }
                     5 -> {
-//                        val themeDialog = ThemeDialog()
-//                        themeDialog.show(supportFragmentManager, "theme")
-                        val option = if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-                            AppCompatDelegate.MODE_NIGHT_NO
-                        } else {
-                            AppCompatDelegate.MODE_NIGHT_YES
-                        }
-                        AppCompatDelegate.setDefaultNightMode(option)
+                        val intent = Intent(applicationContext, ThemeActivity::class.java)
+                        startActivity(intent)
+//                        val option = if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+//                            AppCompatDelegate.MODE_NIGHT_NO
+//                        } else {
+//                            AppCompatDelegate.MODE_NIGHT_YES
+//                        }
+//                        AppCompatDelegate.setDefaultNightMode(option)
                     }
                     6 -> {
                         val intent = Intent(applicationContext, SettingActivity::class.java)
@@ -345,6 +348,7 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
             header.clear()
             header.addProfile(profileSettingDrawerItem, header.profiles?.size ?: 0)
             Log.d("profile:", sharedPreferencesServices.getInt("usernum").toLong().toString())
+
 
 
             runBlocking {

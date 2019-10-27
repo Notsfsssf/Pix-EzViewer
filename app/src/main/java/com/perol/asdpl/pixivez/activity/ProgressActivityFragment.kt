@@ -51,7 +51,7 @@ class ProgressActivityFragment : Fragment() {
 
         lateinit var mContext: Context;
         private var data = ArrayList<WorkInfo>()
-        public fun setNewData(works: ArrayList<WorkInfo>) {
+        fun setNewData(works: ArrayList<WorkInfo>) {
             data = works
             notifyDataSetChanged()
         }
