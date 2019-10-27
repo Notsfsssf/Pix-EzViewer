@@ -32,15 +32,7 @@ import java.util.*
 
 
 abstract class RinkActivity : AppCompatActivity() {
-    //    override fun getTheme(): Theme {
-//
-//        val theme = super.getTheme()
-//
-//        theme.applyStyle(Colorful().getCustomTheme(), true)
-//
-//        return super.getTheme()
-//    }
-    override fun attachBaseContext(newBase: Context?) {
+    override fun attachBaseContext(newBase: Context) {
         val locale = when (PxEZApp.language) {
             1 -> {
                 Locale.ENGLISH
@@ -56,3 +48,6 @@ abstract class RinkActivity : AppCompatActivity() {
         super.attachBaseContext(context)
     }
 }
+
+
+

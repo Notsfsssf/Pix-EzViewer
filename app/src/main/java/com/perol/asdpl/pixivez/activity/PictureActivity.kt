@@ -88,7 +88,7 @@ class PictureActivity : RinkActivity() {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_picture, menu)
         return super.onCreateOptionsMenu(menu)
     }

@@ -85,7 +85,7 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
         mContext.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
         val colorPrimary = typedValue.resourceId;
 
-        helper.setText(R.id.title, item.title).setText(R.id.detail, item.caption).setTextColor(R.id.like, if (item.is_bookmarked) {
+        helper.setText(R.id.title, item.title).setTextColor(R.id.like, if (item.is_bookmarked) {
             ContextCompat.getColor(mContext, R.color.yellow)
         } else {
             ContextCompat.getColor(mContext, colorPrimary)

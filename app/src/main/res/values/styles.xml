@@ -1,159 +1,29 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
-    <style name="bili_primary_color">
-        <item name="android:colorPrimary">@color/pink</item>
-        <item name="colorPrimary">@color/pink</item>
-    </style>
-
-    <style name="bili_primary_dark_color">
-        <item name="android:colorPrimaryDark">@color/pink</item>
-        <item name="colorPrimaryDark">@color/pink</item>
-    </style>
-
-    <style name="blue_primary_color">
-        <item name="android:colorPrimary">@color/blue</item>
-        <item name="colorPrimary">@color/blue</item>
-    </style>
-
-    <style name="blue_primary_dark_color">
-        <item name="android:colorPrimaryDark">@color/md_blue_400</item>
-        <item name="colorPrimaryDark">@color/md_blue_400</item>
-    </style>
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppThemeBase" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:navigationBarColor">?attr/colorPrimary</item>
 
+        <!-- MaterialDrawer specific values -->
+        <item name="material_drawer_background">?android:attr/colorBackground</item>
+        <item name="material_drawer_primary_text">?android:attr/textColorPrimary</item>
+        <item name="material_drawer_primary_icon">?android:attr/textColorPrimary</item>
+        <item name="material_drawer_secondary_text">@color/material_drawer_secondary_text</item>
+        <item name="material_drawer_hint_text">@color/material_drawer_hint_text</item>
+        <item name="material_drawer_divider">?android:attr/textColorHighlight</item>
+        <item name="material_drawer_selected">@color/material_drawer_selected
+        </item> <!-- Material 2 defines 12% alpha, primary color -->
+        <item name="material_drawer_selected_legacy">@color/material_drawer_selected
+        </item> <!-- Defines the color if legacy style (Material 1, is enabled) -->
+        <item name="material_drawer_selected_text">@color/material_drawer_selected_text</item>
+        <item name="material_drawer_header_selection_text">?android:attr/textColorPrimary</item>
+        <item name="material_drawer_header_selection_subtext">?android:attr/textColorSecondary
+        </item>
     </style>
 
-    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light">
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowContentOverlay">@null</item>
+    <style name="MyToolbar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
+        <item name="android:background">?attr/colorPrimary</item>
     </style>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-
-    </style>
-
-    <style name="TabLayoutthemme" parent="android:Widget">
-        <item name="tabBackground">@drawable/tab_background</item>
-        <item name="tabIndicatorColor">#ff00ff</item>
-        <item name="tabIndicatorHeight">2dp</item>
-    </style>
-
-    <style name="TabLayoutthemrecom" parent="android:Widget">
-
-
-    </style>
-
-    <style name="AppTheme.No">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
-    </style>
-
-    <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <!--<item name="colorAccent">@color/colorPrimaryDark</item>-->
-        <!--<item name="android:textColorPrimary">@color/colorPrimary</item>-->
-        <item name="android:background">#FFFFFF</item>
-        <item name="android:windowAnimationStyle">@style/dialogAnim</item>
-    </style>
-
-    <style name="MyAnimation">
-        <item name="android:windowEnterAnimation">@anim/dialog_top_enter</item>
-        <item name="android:windowExitAnimation">@anim/dialog_top_exit</item>
-    </style>
-
-    <style name="LongHoldDialog" parent="Animation.AppCompat.Dialog">
-        <item name="android:windowFrame">@null</item>
-        <!--最后面是window background-->
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:backgroundDimEnabled">false</item>
-        <item name="android:windowNoTitle">true</item>
-        <!--这个不设置它会沾满屏幕-->
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:background">@color/white</item>
-    </style>
-
-
-    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@android:color/white</item>
-        <item name="actionBarStyle">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-        <item name="android:actionBarStyle">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-    </style>
-
-    <style name="AppTheme.Base" parent="Theme.MaterialComponents.Light">
-        <item name="android:windowFullscreen">true</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="MyListPopupWindow" parent="Base.Widget.AppCompat.ListPopupWindow">
-        <item name="android:popupBackground">@color/white</item>
-
-    </style>
-
-    <style name="ThemeLight">
-        <!--将ActionBar隐藏,这里使用ToolBar-->
-        <item name="windowActionBar">false</item>
-        <!-- 使用 API Level 22以上编译的话，要拿掉前綴字 -->
-        <item name="windowNoTitle">true</item>
-        <!--colorPrimaryDark对应状态栏的颜色-->
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <!--colorPrimary 对应ToolBar的颜色-->
-        <item name="colorPrimary">@color/white</item>
-        <!--colorAccent 对应EditText编辑时、RadioButton选中、CheckBox等选中时的颜色。-->
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="FullscreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
-        <item name="android:windowActionBarOverlay">true</item>
-        <item name="android:windowBackground">@null</item>
-        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
-        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
-    </style>
-
-
-    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">@color/black_overlay</item>
-    </style>
-
-    <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="dialogAnim">
-        <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
-        <item name="android:windowExitAnimation">@anim/dialog_out</item>
-    </style>
-
-    <style name="AppTheme.Base.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.Base.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.Base.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-
 </resources>

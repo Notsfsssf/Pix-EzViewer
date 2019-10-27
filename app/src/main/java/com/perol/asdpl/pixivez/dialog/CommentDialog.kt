@@ -35,13 +35,13 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.UserMActivity
@@ -116,7 +116,7 @@ class CommentDialog : DialogFragment() {
                         recyclerviewPicture.adapter = commentAdapter
                         recyclerviewPicture.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
                         commentAdapter!!.setOnItemClickListener { adapter, view, position ->
-                            val builder = AlertDialog.Builder(activity!!)
+                            val builder = MaterialAlertDialogBuilder(activity!!)
                             val comment = illustCommentsResponse.comments[position].comment
                             builder.setMessage(comment)
                             val dialog = builder.create()
@@ -272,7 +272,7 @@ class CommentDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val bundle = arguments
         id = bundle!!.getLong("id")
-        val builder = AlertDialog.Builder(activity!!, R.style.AlertDialogCustom)
+        val builder = MaterialAlertDialogBuilder(activity!!)
         val inflater = activity!!.layoutInflater
         val view = inflater.inflate(R.layout.dialog_comment, null)
         recyclerviewPicture = view.findViewById(R.id.recyclerview_picture)

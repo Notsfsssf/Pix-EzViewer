@@ -177,7 +177,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp" />
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp">
@@ -190,7 +190,7 @@
                 android:linksClickable="true"
                 android:text='@{html}'
                 android:textIsSelectable="true" />
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <RelativeLayout
             android:layout_width="match_parent"

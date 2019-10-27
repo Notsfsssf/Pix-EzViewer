@@ -29,10 +29,10 @@ import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.preference.PreferenceManager
 import androidx.work.*
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.SettingActivity
 import com.perol.asdpl.pixivez.objects.TToast
@@ -109,43 +109,13 @@ class Works {
                 }
             }
 
-//            Observable.create<File> {
-//                val storePath = PxEZApp.storepath
-//                val appDir = File(storePath)
-//                if (!appDir.exists()) {
-//                    appDir.mkdirs()
-//                }
-//                val file = File(appDir, filename)
-//                if (file.exists()) {
-//                    it.onComplete()
-//                    return@create
-//                }
-//                val futurefile = GlideApp.with(PxEZApp.instance).asFile().load(url).submit()
-//                val finalfile = futurefile.get()
-//                finalfile.copyTo(file)
-//                GlideApp.with(PxEZApp.instance).clear(futurefile)
-//                it.onNext(file)
-//            }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
-//                PxEZApp.instance.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(it)))
-//                Toasty.success(PxEZApp.instance, PxEZApp.instance.resources.getString(R.string.savesuccess), Toast.LENGTH_SHORT).show()
-//
-//            }, {
-//                it.printStackTrace()
-//            }, {
-//                Toasty.success(PxEZApp.instance, PxEZApp.instance.resources.getString(R.string.alreadysaved), Toast.LENGTH_SHORT).show()
-//            }, {})
-
             val inputData = workDataOf("file" to filename, "url" to url, "title" to illust.title, "id" to illust.id)
             val oneTimeWorkRequest = OneTimeWorkRequestBuilder<ImgDownLoadWorker>()
                     .setInputData(inputData)
                     .addTag("image")
                     .build()
-            val result = WorkManager.getInstance(PxEZApp.instance).enqueueUniqueWork(url, ExistingWorkPolicy.REPLACE, oneTimeWorkRequest).result
-            result.addListener({
-                Log.d("Listenable", "Did something 1");
-            }, {
-                it?.run()
-            })
+            WorkManager.getInstance(PxEZApp.instance).enqueueUniqueWork(url, ExistingWorkPolicy.REPLACE, oneTimeWorkRequest)
+
 
           WorkManager.getInstance(PxEZApp.instance).getWorkInfoByIdLiveData(oneTimeWorkRequest.id)
           .observeForever(object : Observer<WorkInfo> {
@@ -206,7 +176,7 @@ class Works {
                         } else {
                             activty.runOnUiThread {
                                 try {
-                                    val dialogs = AlertDialog.Builder(activty).setTitle("发现新版本").setMessage(versionName).setPositiveButton("前往更新") { i, j ->
+                                    val dialogs = MaterialAlertDialogBuilder(activty).setTitle("发现新版本").setMessage(versionName).setPositiveButton("前往更新") { i, j ->
                                         try {
                                             val uri = Uri.parse("https://github.com/Notsfsssf/Pix-EzViewer")
                                             val intent = Intent(Intent.ACTION_VIEW, uri)

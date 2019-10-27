@@ -28,9 +28,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.AccountChoiceAdapter
 import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
@@ -47,7 +47,7 @@ class AccountActivity : AppCompatActivity() {
                 startActivity(Intent(this, LoginActivity::class.java))
             }
             R.id.nav_logout -> {
-                AlertDialog.Builder(this).setTitle(R.string.logoutallaccount)
+                MaterialAlertDialogBuilder(this).setTitle(R.string.logoutallaccount)
                         .setPositiveButton("OK") { i, j ->
                             runBlocking {
                                 AppDataRepository.deleteAllUser()

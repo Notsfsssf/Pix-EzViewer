@@ -20,15 +20,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize">
 
-                <androidx.appcompat.widget.Toolbar
+                <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/toolbar"
                     app:title="以图搜源"
-                    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                    app:theme="@style/MyToolbar"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize" />
             </com.google.android.material.appbar.AppBarLayout>
-            <androidx.cardview.widget.CardView
+
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardView3"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
@@ -48,9 +49,9 @@
                     android:layout_marginBottom="20dp"
                     android:scaleType="fitStart"
                     android:src="@drawable/banner" />
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
 
                 android:layout_height="wrap_content"
@@ -86,8 +87,9 @@ android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dp_10"
@@ -103,7 +105,7 @@ android:visibility="gone"
                     android:layout_margin="@dimen/dp_10"
                     android:scaleType="fitStart"
                     android:src="@drawable/ai" />
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

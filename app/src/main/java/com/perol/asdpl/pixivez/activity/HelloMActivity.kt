@@ -26,7 +26,6 @@ package com.perol.asdpl.pixivez.activity
 
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
@@ -40,15 +39,14 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatDrawableManager
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.preference.PreferenceManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
@@ -63,14 +61,11 @@ import com.mikepenz.materialdrawer.util.DrawerImageLoader
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.HelloMViewPagerAdapter
 import com.perol.asdpl.pixivez.databinding.ActivityHelloMBinding
-import com.perol.asdpl.pixivez.dialog.ThemeDialog
 import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
-import com.perol.asdpl.pixivez.objects.MyContextWrapper
 import com.perol.asdpl.pixivez.objects.ThemeUtil
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.services.GlideApp
-import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.services.Works
 import com.perol.asdpl.pixivez.sql.UserEntity
 import com.perol.asdpl.pixivez.viewmodel.HelloMViewModel
@@ -78,26 +73,10 @@ import kotlinx.android.synthetic.main.app_bar_hello_m.*
 import kotlinx.android.synthetic.main.content_hello_m.*
 import kotlinx.coroutines.runBlocking
 import java.io.File
-import java.util.*
-import kotlin.collections.ArrayList
 
 
-class HelloMActivity : AppCompatActivity(), Drawer.OnDrawerNavigationListener, AccountHeader.OnAccountHeaderListener {
-    override fun attachBaseContext(newBase: Context?) {
-        val locale = when (PxEZApp.language) {
-            1 -> {
-                Locale.ENGLISH
-            }
-            2 -> {
-                Locale.TRADITIONAL_CHINESE
-            }
-            else -> {
-                Locale.SIMPLIFIED_CHINESE
-            }
-        }
-        val context = MyContextWrapper.wrap(newBase, locale)
-        super.attachBaseContext(context)
-    }
+class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, AccountHeader.OnAccountHeaderListener {
+
 
     override fun onProfileChanged(view: View?, profile: IProfile<*>, current: Boolean): Boolean {
         when (profile.identifier) {
@@ -174,10 +153,7 @@ class HelloMActivity : AppCompatActivity(), Drawer.OnDrawerNavigationListener, A
         activityHelloMBinding = DataBindingUtil.setContentView(this, R.layout.app_bar_hello_m)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
-
         DrawerImageLoader.init(object : AbstractDrawerImageLoader() {
-
-
             override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable, tag: String?) {
                 val url = "https://" + uri.host + uri.path
                 println(url)
@@ -188,7 +164,6 @@ class HelloMActivity : AppCompatActivity(), Drawer.OnDrawerNavigationListener, A
                 .withActivity(this)
                 .withOnAccountHeaderListener(this)
                 .build()
-        AppCompatDrawableManager.get().getDrawable(this, R.drawable.ic_action_my_white)
         drawer = DrawerBuilder().withActivity(this)
                 .withAccountHeader(header)
                 .addDrawerItems(
@@ -238,12 +213,12 @@ class HelloMActivity : AppCompatActivity(), Drawer.OnDrawerNavigationListener, A
                                 .withIdentifier(888L)
                 )
                 .withSelectedItem(-1)
-                .withTranslucentStatusBar(false)
+                .withTranslucentStatusBar(true)
                 .withToolbar(toolbar).build()
         val toggle = ActionBarDrawerToggle(
                 this, drawer.drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         toggle.setHomeAsUpIndicator(R.drawable.ic_action_logo)
-        toggle.isDrawerIndicatorEnabled = false
+//        toggle.isDrawerIndicatorEnabled = false
         toggle.setToolbarNavigationClickListener {
             drawer.drawerLayout.openDrawer(GravityCompat.START)
         }
@@ -274,8 +249,14 @@ class HelloMActivity : AppCompatActivity(), Drawer.OnDrawerNavigationListener, A
                         startActivity(intent)
                     }
                     5 -> {
-                        val themeDialog = ThemeDialog()
-                        themeDialog.show(supportFragmentManager, "theme")
+//                        val themeDialog = ThemeDialog()
+//                        themeDialog.show(supportFragmentManager, "theme")
+                        val option = if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+                            AppCompatDelegate.MODE_NIGHT_NO
+                        } else {
+                            AppCompatDelegate.MODE_NIGHT_YES
+                        }
+                        AppCompatDelegate.setDefaultNightMode(option)
                     }
                     6 -> {
                         val intent = Intent(applicationContext, SettingActivity::class.java)
@@ -300,7 +281,7 @@ class HelloMActivity : AppCompatActivity(), Drawer.OnDrawerNavigationListener, A
         initData()
         viewpager_hellom.currentItem = PreferenceManager.getDefaultSharedPreferences(this).getString("firstpage", "0")?.toInt()
                 ?: 0
-
+//AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         Works.checkUpdate(this)
     }
 
@@ -353,7 +334,6 @@ class HelloMActivity : AppCompatActivity(), Drawer.OnDrawerNavigationListener, A
         viewmodel.first()
     }
 
-    var longList = ArrayList<Long>()
     private fun userBean(it: List<UserEntity>) {
         if (it.isNotEmpty()) {
             val profileSettingDrawerItem = ProfileSettingDrawerItem()
@@ -410,7 +390,7 @@ class HelloMActivity : AppCompatActivity(), Drawer.OnDrawerNavigationListener, A
 
 
     private fun clearn() {
-        val normalDialog = AlertDialog.Builder(this)
+        val normalDialog = MaterialAlertDialogBuilder(this)
         normalDialog.setMessage("这将清理全部的缓存")
         normalDialog.setPositiveButton("确定"
         ) { dialog, which ->

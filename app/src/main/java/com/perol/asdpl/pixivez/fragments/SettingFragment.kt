@@ -32,8 +32,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.preference.*
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.perol.asdpl.pixivez.BuildConfig
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.PathProviderActivity
@@ -258,7 +258,7 @@ class SettingFragment : PreferenceFragmentCompat(), IconDialog.Callback {
                     val cr = File(activity?.filesDir, list[a])
                     string += cr.readText()
                 }
-                val dialogBuild = AlertDialog.Builder(activity!!)
+                val dialogBuild = MaterialAlertDialogBuilder(activity!!)
                 dialogBuild.setMessage(string).setTitle("这是崩溃报告，如果遇到个别功能闪退，请将此报告反馈给开发者")
                         .setPositiveButton(android.R.string.ok) { _, _ ->
 

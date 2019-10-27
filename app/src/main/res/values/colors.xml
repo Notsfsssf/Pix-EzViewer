@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="cyanea_primary_reference">#0288D1</color>
+    <color name="cyanea_accent_reference">#FFA000</color>
     <color name="colorPrimary">#39BAE8</color>
     <color name="colorPrimaryDark">#1c99c6</color>
     <color name="colorAccent">#066FA5</color>

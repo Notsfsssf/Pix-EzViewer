@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
 
 
             android:id="@+id/cardView"
@@ -34,9 +34,9 @@
                 android:layout_marginEnd="50dp"
                 android:layout_marginStart="50dp"
                 android:src="@drawable/pixivision" />
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardview"
 
             android:layout_width="match_parent"
@@ -63,7 +63,7 @@
                 android:longClickable="true"
                 android:text=""
                 android:textIsSelectable="true" />
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
 
         <androidx.recyclerview.widget.RecyclerView

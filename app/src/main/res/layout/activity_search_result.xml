@@ -15,8 +15,7 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
@@ -25,6 +24,7 @@
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
+                    android:theme="@style/MyToolbar"
                     android:layout_height="?attr/actionBarSize">
 
                        <com.google.android.material.tabs.TabLayout
@@ -32,7 +32,6 @@
                            android:layout_width="wrap_content"
                            app:tabIndicatorFullWidth="false"
                            app:tabIndicatorHeight="0dp"
-
                            style="@style/Widget.MaterialComponents.TabLayout.Colored"
                            app:tabMode="scrollable"
                            android:layout_height="wrap_content" />
@@ -52,33 +51,34 @@
                 android:background="?attr/colorPrimary"
                 android:layout_height="wrap_content">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/searchtext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:textColor="?attr/colorSurface"
                     android:textIsSelectable="true"
                     android:text="搜索结果"
-                    android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
                 <ImageButton
+                    android:background="@android:color/transparent"
                     android:id="@+id/imagebutton_section"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginTop="8dp"
-                    android:background="?attr/colorPrimary"
                     android:src="@drawable/ic_assignment_white_24dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.AppBarLayout>
+
         <include layout="@layout/content_search_result" />
 
 

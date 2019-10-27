@@ -25,7 +25,6 @@
 package com.perol.asdpl.pixivez.dialog
 
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -34,6 +33,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.TagsShowAdapter
@@ -73,7 +73,7 @@ class TagsShowDialog : DialogFragment() {
         val arrayList1 = bundle!!.getIntegerArrayList("counts")
         val id = bundle!!.getLong("id")
         var nexturl = bundle.getString("nexturl")
-        val builder = AlertDialog.Builder(activity)
+        val builder = MaterialAlertDialogBuilder(activity)
         val dialogView = inflater.inflate(R.layout.view_tagsshow, null)
         val recyclerView = dialogView.findViewById<RecyclerView>(R.id.recyclerview_tags)
         val all = dialogView.findViewById<ConstraintLayout>(R.id.all)

@@ -45,7 +45,6 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.preference.PreferenceManager
@@ -62,6 +61,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.dinuscxj.progressbar.CircleProgressBar
 import com.github.ybq.android.spinkit.SpinKitView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.PictureActivity
@@ -316,7 +316,7 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
             }).into(imageView)
             imageView.apply {
                 setOnLongClickListener { it ->
-                    val builder = AlertDialog.Builder(mContext as Activity, R.style.AlertDialogCustom)
+                    val builder = MaterialAlertDialogBuilder(mContext as Activity)
 
                     builder.setTitle(mContext.resources.getString(R.string.saveselectpic1))
                     builder.setMessage("描述: " + Html.fromHtml(data.caption))
@@ -335,7 +335,7 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                                 list.add(ot.image_urls.original)
                             }
                             val mSelectedItems = ArrayList<Int>()  // Where we track the selected items
-                            val builder = AlertDialog.Builder(mContext as Activity)
+                            val builder = MaterialAlertDialogBuilder(mContext as Activity)
                             val showlist = ArrayList<String>()
                             for (i in list.indices) {
                                 showlist.add(i.toString())

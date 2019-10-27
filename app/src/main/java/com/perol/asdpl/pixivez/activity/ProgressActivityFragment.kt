@@ -24,7 +24,6 @@
 
 package com.perol.asdpl.pixivez.activity
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -38,6 +37,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.perol.asdpl.pixivez.R
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.fragment_progress.*
@@ -47,13 +47,12 @@ import kotlinx.android.synthetic.main.view_progress_item.*
  * A placeholder fragment containing a simple view.
  */
 class ProgressActivityFragment : Fragment() {
-    class ProgressAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    inner class ProgressAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         lateinit var mContext: Context;
         private var data = ArrayList<WorkInfo>()
         public fun setNewData(works: ArrayList<WorkInfo>) {
-            data.clear()
-            data.addAll(works)
+            data = works
             notifyDataSetChanged()
         }
 
@@ -67,7 +66,9 @@ class ProgressActivityFragment : Fragment() {
             notifyItemChanged(position, workInfo)
         }
 
-        class ProgressViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+        inner class ProgressViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+
+
 
         }
 
@@ -132,7 +133,7 @@ class ProgressActivityFragment : Fragment() {
                     }
                     itemView.setOnLongClickListener {
                         val choice = arrayOf("CANCEL")
-                        AlertDialog.Builder(mContext).setItems(choice
+                        MaterialAlertDialogBuilder(mContext).setItems(choice
                         ) { _, which ->
                             when (which) {
                                 0 -> {
@@ -159,7 +160,9 @@ class ProgressActivityFragment : Fragment() {
 
                 }
 
-
+//                WorkManager.getInstance(mContext).getWorkInfoByIdLiveData(workinfo.id).observe(this@ProgressActivityFragment, Observer {
+//                    this.itemChange(position, it)
+//                })
             }
         }
 
@@ -172,16 +175,14 @@ class ProgressActivityFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity!!)
             adapter = progressAdapter
         }
-        val allData = WorkManager.getInstance(activity!!).getWorkInfosByTag("image")
-        val mutableList = allData.get()
-        if (mutableList != null && mutableList.size > 0) {
-            progressAdapter.setNewData(ArrayList(mutableList))
-            for (i in mutableList.indices) {
-                WorkManager.getInstance(activity!!).getWorkInfoByIdLiveData(mutableList[i].id).observe(this, Observer {
-                    progressAdapter.itemChange(i, it)
-                })
-            }
-        }
+//        val allData = WorkManager.getInstance(activity!!).getWorkInfosByTag("image")
+//        val mutableList = allData.get()
+//        if (mutableList != null && mutableList.size > 0) {
+//            progressAdapter.setNewData(ArrayList(mutableList))
+//        }
+        WorkManager.getInstance(activity!!).getWorkInfosByTagLiveData("image").observe(this, Observer {
+            progressAdapter.setNewData(ArrayList(it))
+        })
 
     }
 

@@ -25,12 +25,12 @@
 package com.perol.asdpl.pixivez.dialog
 
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil.inflate
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.databinding.DialogSearchsectionBinding
@@ -56,7 +56,7 @@ class SearchSectionDialog : DialogFragment() {
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = AlertDialog.Builder(activity)
+        val builder = MaterialAlertDialogBuilder(activity)
         val inflater = activity!!.layoutInflater
         val binding = inflate<DialogSearchsectionBinding>(inflater, R.layout.dialog_searchsection, null, false)
         val view = binding.root
@@ -64,12 +64,12 @@ class SearchSectionDialog : DialogFragment() {
         val second = view.findViewById<TabLayout>(R.id.tablayout_sort)
         val third = view.findViewById<TabLayout>(R.id.tablayout_duration)
         builder.setView(view)
-        builder.setNegativeButton("确认") { p0, p1 ->
+        builder.setNegativeButton(android.R.string.ok) { p0, p1 ->
             if (callback != null) {
                 callback!!.onClick(first.selectedTabPosition, second.selectedTabPosition, third.selectedTabPosition)
             }
         }
-        builder.setPositiveButton("取消") { p0, p1 -> }
+        builder.setPositiveButton(android.R.string.cancel) { p0, p1 -> }
 
         val dialog = builder.create()
 

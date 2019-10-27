@@ -78,14 +78,14 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                <androidx.appcompat.widget.Toolbar
+                <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:minHeight="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+                    app:theme="@style/MyToolbar" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -100,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:background="@color/white"
-             app:tabTextColor="@color/black_overlay"
+                    app:tabTextColor="@color/black_overlay"
                     app:tabSelectedTextColor="@color/black"
                     app:layout_scrollFlags="exitUntilCollapsed"
                     app:tabMode="scrollable" />

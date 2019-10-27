@@ -24,12 +24,12 @@
 
 package com.perol.asdpl.pixivez.activity
 
-import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -39,6 +39,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.viewpager.UserMPagerAdapter
 import com.perol.asdpl.pixivez.databinding.ActivityUserMBinding
@@ -121,7 +122,7 @@ class UserMActivity : RinkActivity() {
         val shareLink = "https://www.pixiv.net/member.php?id=$id";
         imageview_useruserimage.setOnClickListener {
             val array = arrayOf("Link", "User Image")
-            AlertDialog.Builder(this).setTitle("Link").setItems(array) { i, which ->
+            MaterialAlertDialogBuilder(this).setTitle("Link").setItems(array) { i, which ->
                 when (which) {
                     0 -> {
                         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -131,12 +132,14 @@ class UserMActivity : RinkActivity() {
                     }
                     else -> {
                         runBlocking {
+                            var file: File? = null
                             withContext(Dispatchers.IO) {
                                 val f = GlideApp.with(this@UserMActivity).asFile().load(viewModel.userDetail.value!!.user.profile_image_urls.medium).submit()
-                                val file = f.get()
-                                val target = File(PxEZApp.storepath, "user_${viewModel.userDetail.value!!.user.id}.jpeg")
-                                file.copyTo(target, overwrite = true)
+                                file = f.get()
+                                val target = File(PxEZApp.storepath, "user_${viewModel.userDetail.value!!.user.id}.png")
+                                file?.copyTo(target, overwrite = true)
                             }
+                            PxEZApp.instance.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)))
                             Toasty.info(this@UserMActivity, "Saved", Toast.LENGTH_SHORT).show()
                         }
                     }

@@ -9,41 +9,40 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.Base.AppBarOverlay">
+        android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
+            android:theme="@style/MyToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:title="@string/setting"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.Base.PopupOverlay" >
+            app:title="@string/setting">
+
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tablayout_setting"
                 style="@style/Widget.MaterialComponents.TabLayout.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:tabIndicatorFullWidth="true"
-                app:tabMode="scrollable"
                 app:tabIndicatorHeight="0dp"
-                >
+                app:tabMode="scrollable">
 
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="@string/setting" />
+
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="@string/supporttitle" />
+
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="@string/abouts" />
             </com.google.android.material.tabs.TabLayout>
-        </androidx.appcompat.widget.Toolbar>
-
+        </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content_setting" />

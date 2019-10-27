@@ -26,11 +26,11 @@ package com.perol.asdpl.pixivez.dialog
 
 import android.app.Dialog
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.ThanksAdapter
 
@@ -40,7 +40,7 @@ class ThanksDialog : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = AlertDialog.Builder(activity!!, R.style.AlertDialogCustom)
+        val builder = MaterialAlertDialogBuilder(activity!!)
         val inflater = activity!!.layoutInflater
         val view = inflater.inflate(R.layout.dialog_thanks, null)
         val re = view.findViewById<RecyclerView>(R.id.list)

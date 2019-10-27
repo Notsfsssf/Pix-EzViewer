@@ -10,16 +10,14 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:fitsSystemWindows="true"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.Base.AppBarOverlay">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:title="@string/download_progress"
-            app:popupTheme="@style/AppTheme.Base.PopupOverlay" />
+            android:theme="@style/MyToolbar"
+            app:title="@string/download_progress" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

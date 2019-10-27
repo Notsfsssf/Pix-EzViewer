@@ -3,38 +3,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:fitsSystemWindows="true"
+
         android:layout_height="wrap_content"
         app:elevation="0dp">
-    <com.google.android.material.appbar.CollapsingToolbarLayout
-        android:layout_width="match_parent"
-        app:layout_scrollFlags="scroll|enterAlways"
-        android:layout_height="wrap_content">
-        <androidx.appcompat.widget.Toolbar
-            android:animateLayoutChanges="true"
-            android:id="@+id/toolbar"
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:contentInsetStartWithNavigation="0dp"
-            app:contentInsetEndWithActions="0dp"
-            android:minHeight="?attr/actionBarSize"
-            app:contentInsetStart="0.0dp">
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tablayout_hellom"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                style="@style/Widget.MaterialComponents.TabLayout.Colored"
-                app:tabPadding="0dp"
-                app:tabGravity="center"
-                app:tabPaddingStart="20dp"
-                app:tabIndicatorHeight="0dp">
-            </com.google.android.material.tabs.TabLayout>
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="@style/MyToolbar"
+                app:contentInsetEndWithActions="0dp"
+                app:contentInsetStart="0.0dp"
+                app:contentInsetStartWithNavigation="0dp">
 
-        </androidx.appcompat.widget.Toolbar>
-    </com.google.android.material.appbar.CollapsingToolbarLayout>
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tablayout_hellom"
+                    android:layout_width="match_parent"
+                    style="@style/Widget.MaterialComponents.TabLayout.Colored"
+                    android:layout_height="match_parent"
+                    app:tabGravity="center"
+                    app:tabIndicatorHeight="0dp"
+                    app:tabPadding="0dp"
+                    app:tabPaddingStart="20dp" />
 
+            </com.google.android.material.appbar.MaterialToolbar>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
 
     </com.google.android.material.appbar.AppBarLayout>

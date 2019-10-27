@@ -5,7 +5,7 @@
     android:background="#09C"
     android:padding="@dimen/widget_margin">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardview_recommand"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -83,6 +83,6 @@
             <!-- Surface View End -->
         </com.daimajia.swipe.SwipeLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </RelativeLayout>

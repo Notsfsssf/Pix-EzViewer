@@ -24,7 +24,6 @@
 
 package com.perol.asdpl.pixivez.activity
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -33,6 +32,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.HistoryAdapter
 import com.perol.asdpl.pixivez.databinding.ActivityHistoryMBinding
@@ -72,7 +72,7 @@ class HistoryMActivity : RinkActivity() {
             startActivity(intent2)
         }
         historyAdapter.setOnItemLongClickListener { baseQuickAdapter, view, i ->
-            AlertDialog.Builder(this)
+            MaterialAlertDialogBuilder(this)
                     .setTitle("Delete?").setPositiveButton("OK") { _, j ->
                         historyMViewModel!!.deleteSelect(i)
                     }.show()

@@ -25,7 +25,6 @@
 package com.perol.asdpl.pixivez.fragments
 
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -39,6 +38,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.UserMActivity
@@ -168,7 +168,7 @@ class PictureXFragment : LazyV4Fragment() {
                     checkStatus[i] = false
                 }
                 val tagsAdapter = TagsAdapter(R.layout.view_tags_item, arrayList, checkStatus)
-                val alertBuilder = AlertDialog.Builder(activity!!)
+                val alertBuilder = MaterialAlertDialogBuilder(activity!!)
                 val view = LayoutInflater.from(context).inflate(R.layout.dialog_star, null)
 
                 val switch = view.findViewById<Switch>(R.id.switch_private).also {

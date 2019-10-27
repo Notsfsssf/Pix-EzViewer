@@ -25,15 +25,14 @@
 package com.perol.asdpl.pixivez.objects
 
 import androidx.appcompat.app.AppCompatActivity
-import io.multimoon.colorful.Colorful
 
 class ThemeUtil {
     companion object {
         @JvmStatic
         fun themeInit(activity: AppCompatActivity) {
 
-            Colorful().apply(activity, override = true)
-            activity.window.statusBarColor = Colorful().getPrimaryColor().getColorPack().normal().asInt()
+//            Colorful().apply(activity)
+            //  activity.window.statusBarColor = Colorful().getPrimaryColor().getColorPack().normal().asInt()
         }
     }
 }

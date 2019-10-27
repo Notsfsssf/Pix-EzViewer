@@ -111,7 +111,7 @@ class PathProviderActivity : RinkActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_path, menu)
         return true
     }

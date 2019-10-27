@@ -15,11 +15,10 @@
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.Base">
+        android:theme="@style/AppThemeBase">
         <activity
             android:name=".activity.ProgressActivity"
-            android:label="@string/title_activity_progress"
-            android:theme="@style/AppTheme.Base.NoActionBar"></activity>
+            android:label="@string/title_activity_progress" />
         <activity android:name=".activity.WebViewActivity" />
         <activity
             android:name=".activity.SettingActivity"
@@ -100,9 +99,7 @@
         <activity
             android:name=".activity.PictureActivity"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity
-            android:name=".activity.ZoomActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+        <activity android:name=".activity.ZoomActivity" />
         <activity android:name=".activity.UserFollowActivity" />
         <activity android:name=".activity.IntentActivity">
             <intent-filter>

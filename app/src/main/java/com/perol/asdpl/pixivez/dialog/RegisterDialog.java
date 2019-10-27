@@ -36,10 +36,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.perol.asdpl.pixivez.R;
 import com.perol.asdpl.pixivez.activity.HelloMActivity;
 import com.perol.asdpl.pixivez.activity.LoginActivity;
@@ -99,7 +99,7 @@ public class RegisterDialog extends DialogFragment {
         restClient = new RestClient();
         accountPixivService = restClient.getRetrofit_Account().create(AccountPixivService.class);
         Bundle bundle = getArguments();
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogCustom);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View view = inflater.inflate(R.layout.dialog_register, null);
         this.buttonregister = (Button) view.findViewById(R.id.button_register);

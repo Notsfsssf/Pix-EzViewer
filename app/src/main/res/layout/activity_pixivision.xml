@@ -11,8 +11,7 @@
         android:layout_height="wrap_content"
 
         app:elevation="5dp"
-        android:background="@color/white"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:background="@color/white">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
@@ -44,7 +43,7 @@
         android:layout_height="wrap_content" />
 </LinearLayout>
 
-            <androidx.appcompat.widget.Toolbar
+            <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toobar_pixivision"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_width="match_parent"
