@@ -27,6 +27,7 @@ package com.perol.asdpl.pixivez.services
 import android.app.Application
 import android.os.Build
 import android.os.Environment
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import androidx.work.WorkManager
 import com.perol.asdpl.pixivez.objects.CrashHandler
@@ -36,6 +37,7 @@ import java.io.File
 class PxEZApp : Application() {
     override fun onCreate() {
         super.onCreate()
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         instance = this
         val defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         animationEnable = defaultSharedPreferences.getBoolean("animation", true)

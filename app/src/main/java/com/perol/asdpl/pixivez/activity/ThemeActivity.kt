@@ -25,13 +25,24 @@
 package com.perol.asdpl.pixivez.activity
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.perol.asdpl.pixivez.R
+import kotlinx.android.synthetic.main.activity_theme.*
 
 class ThemeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_theme)
+        setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> finish()
+
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

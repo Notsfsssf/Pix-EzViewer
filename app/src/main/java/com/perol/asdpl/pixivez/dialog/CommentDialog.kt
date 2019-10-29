@@ -47,7 +47,6 @@ import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.UserMActivity
 import com.perol.asdpl.pixivez.adapters.CommentAdapter
 import com.perol.asdpl.pixivez.networks.RestClient
-import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
 import com.perol.asdpl.pixivez.objects.ReFreshFunction
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.repository.AppDataRepository
@@ -73,7 +72,6 @@ class CommentDialog : DialogFragment() {
 
     lateinit var button: Button
     private var Authorization: String? = null
-    private var sharedPreferencesServices: SharedPreferencesServices? = null
     private var commentAdapter: CommentAdapter? = null
     private var id: Long? = null
     private var Parent_comment_id = 1
@@ -241,8 +239,6 @@ class CommentDialog : DialogFragment() {
 
     override fun onStart() {
         super.onStart()
-
-
         val window = dialog!!.window
         val params = window!!.attributes
         params.gravity = Gravity.BOTTOM
@@ -261,7 +257,6 @@ class CommentDialog : DialogFragment() {
     override fun onViewCreated(view: View, @Nullable savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initbind()
-        sharedPreferencesServices = SharedPreferencesServices(context!!)
     }
 
     private fun initbind() {
@@ -279,7 +274,6 @@ class CommentDialog : DialogFragment() {
         edittextComment = view.findViewById(R.id.edittext_comment)
         button = view.findViewById(R.id.button)
         builder.setView(view)
-        sharedPreferencesServices = SharedPreferencesServices(context!!)
         getData()
         return builder.create()
     }

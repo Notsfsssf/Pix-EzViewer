@@ -49,4 +49,9 @@
         <item name="android:background">?attr/colorPrimary</item>
         <item name="colorControlNormal">?android:attr/textColorPrimaryInverse</item>
     </style>
+    <style name="AppThemeBase.w">
+        <item name="colorPrimary">@color/pink</item>
+        <item name="colorPrimaryDark">@color/pinkDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
 </resources>
