@@ -36,16 +36,28 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         app:title="Theme"
+        app:titleTextColor="?android:attr/textColorPrimaryInverse"
         android:theme="@style/MyToolbar"
         android:background="?attr/colorPrimary"
         android:layout_height="wrap_content"/>
 </com.google.android.material.appbar.AppBarLayout>
+
     <LinearLayout
+        android:orientation="vertical"
+
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-  <Spinner
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="8dp"
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:id="@+id/fragment_theme"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

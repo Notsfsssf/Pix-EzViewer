@@ -29,7 +29,6 @@ buildscript {
         classpath 'com.github.7hens:android-x2j:1.1'
     }
 }
-
 allprojects {
     repositories {
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }

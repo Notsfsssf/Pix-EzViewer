@@ -20,8 +20,10 @@
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
+                android:background="?attr/colorPrimary"
                 android:theme="@style/MyToolbar"
                 android:layout_height="?attr/actionBarSize"
+                app:titleTextColor="?android:attr/textColorPrimaryInverse"
                 app:title="历史" />
         </com.google.android.material.appbar.AppBarLayout>
 

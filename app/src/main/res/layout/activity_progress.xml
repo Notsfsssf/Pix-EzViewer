@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:theme="@style/MyToolbar"
+            app:titleTextColor="?android:attr/textColorPrimaryInverse"
             app:title="@string/download_progress" />
 
     </com.google.android.material.appbar.AppBarLayout>

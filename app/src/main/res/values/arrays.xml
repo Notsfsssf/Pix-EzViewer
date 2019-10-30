@@ -85,4 +85,18 @@
         <item>1</item>
         <item>2</item>
     </string-array>
+    <string-array name="dark_mode">
+        <item>跟随系统</item>
+        <item>自动时间</item>
+        <item>关闭</item>
+        <item>开启</item>
+        <item>跟随电池</item>
+    </string-array>
+    <string-array name="dark_mode_value">
+        <item>-1</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 </resources>

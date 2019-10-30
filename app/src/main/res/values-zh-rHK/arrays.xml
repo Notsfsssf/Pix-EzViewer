@@ -60,4 +60,5 @@
           <item>XVIII</item>
           <item>XVIII_Week</item>
     </string-array>
+    <string-array name="dark_mode" />
 </resources>

@@ -37,9 +37,9 @@ import java.io.File
 class PxEZApp : Application() {
     override fun onCreate() {
         super.onCreate()
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         instance = this
         val defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        AppCompatDelegate.setDefaultNightMode(defaultSharedPreferences.getString("dark_mode", "-1")!!.toInt())
         animationEnable = defaultSharedPreferences.getBoolean("animation", true)
         language = defaultSharedPreferences.getString("language", "0")?.toInt() ?: 0
         storepath = defaultSharedPreferences.getString("storepath1", Environment.getExternalStorageDirectory().absolutePath + File.separator + "PxEz")

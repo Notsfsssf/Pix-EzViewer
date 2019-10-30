@@ -24,6 +24,7 @@
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
+                    android:background="?attr/colorPrimary"
                     android:theme="@style/MyToolbar"
                     android:layout_height="?attr/actionBarSize">
 
@@ -71,6 +72,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
+                    android:tint="?android:attr/textColorPrimaryInverse"
                     android:layout_marginTop="8dp"
                     android:src="@drawable/ic_assignment_white_24dp"
                     app:layout_constraintBottom_toBottomOf="parent"

@@ -6,7 +6,6 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content"
         app:elevation="0dp">
 
@@ -21,6 +20,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="@style/MyToolbar"
+                android:background="?attr/colorPrimary"
                 app:contentInsetEndWithActions="0dp"
                 app:contentInsetStart="0.0dp"
                 app:contentInsetStartWithNavigation="0dp">

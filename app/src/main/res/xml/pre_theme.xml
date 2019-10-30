@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <DropDownPreference
+        android:entryValues="@array/dark_mode_value"
+        app:defaultValue="-1"
+        app:entries="@array/dark_mode"
+        app:key="dark_mode"
+        app:title="@string/dark_mode"
+        app:useSimpleSummaryProvider="true" />
+</androidx.preference.PreferenceScreen>

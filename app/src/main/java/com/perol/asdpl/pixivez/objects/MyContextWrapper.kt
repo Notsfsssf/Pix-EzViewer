@@ -22,40 +22,35 @@
  * SOFTWARE
  */
 
-package com.perol.asdpl.pixivez.objects;
+package com.perol.asdpl.pixivez.objects
 
-import android.content.Context;
-import android.content.ContextWrapper;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.os.Build;
-import android.os.LocaleList;
+import android.content.Context
+import android.content.ContextWrapper
+import android.os.Build
+import android.os.LocaleList
+import java.util.*
 
-import java.util.Locale;
+class MyContextWrapper(base: Context) : android.content.ContextWrapper(base) {
+    companion object {
+        fun wrap(context: Context, newLocale: Locale): ContextWrapper {
+            var context = context
 
-public class MyContextWrapper extends android.content.ContextWrapper {
+            val res = context.resources
+            val configuration = res.configuration
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                configuration.setLocale(newLocale)
+                val localeList = LocaleList(newLocale)
+                configuration.setLocales(localeList)
+                context = context.createConfigurationContext(configuration)
 
-    public MyContextWrapper(Context base) {
-        super(base);
-    }
+            } else {
 
-    public static ContextWrapper wrap(Context context, Locale newLocale) {
+                configuration.setLocale(newLocale)
+                context = context.createConfigurationContext(configuration)
 
-        Resources res = context.getResources();
-        Configuration configuration = res.getConfiguration();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            configuration.setLocale(newLocale);
-            LocaleList localeList = new LocaleList(newLocale);
-            configuration.setLocales(localeList);
-            context = context.createConfigurationContext(configuration);
+            }
 
-        } else {
-
-            configuration.setLocale(newLocale);
-            context = context.createConfigurationContext(configuration);
-
+            return ContextWrapper(context)
         }
-
-        return new ContextWrapper(context);
     }
 }

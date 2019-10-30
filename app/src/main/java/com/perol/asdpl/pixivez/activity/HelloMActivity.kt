@@ -216,7 +216,7 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
                                 .withIdentifier(888L)
                 )
                 .withSelectedItem(-1)
-                .withTranslucentStatusBar(true)
+                .withTranslucentStatusBar(false)
                 .withToolbar(toolbar).build()
         val toggle = ActionBarDrawerToggle(
                 this, drawer.drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)

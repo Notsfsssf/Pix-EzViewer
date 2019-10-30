@@ -37,7 +37,7 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            style="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:theme="@style/MyToolbar"
             android:background="?attr/colorPrimary"
             android:layout_height="?attr/actionBarSize">
 

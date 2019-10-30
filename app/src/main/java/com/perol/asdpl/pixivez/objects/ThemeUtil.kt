@@ -25,12 +25,17 @@
 package com.perol.asdpl.pixivez.objects
 
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
+import com.perol.asdpl.pixivez.R
 
 class ThemeUtil {
     companion object {
+        val themeArray = arrayOf(R.style.AppThemeBase_pink, R.style.AppThemeBase_miku)
         @JvmStatic
         fun themeInit(activity: AppCompatActivity) {
-
+            activity.apply {
+                setTheme(themeArray[PreferenceManager.getDefaultSharedPreferences(activity).getInt("colorint", 0)])
+            }
 //            Colorful().apply(activity)
             //  activity.window.statusBarColor = Colorful().getPrimaryColor().getColorPack().normal().asInt()
         }

@@ -7,17 +7,14 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:id="@+id/constraintLayout_toolbar"
-            android:background="@color/white"
             android:layout_height="wrap_content">
-
-
-
             <ImageView
                 android:id="@+id/imagebutton_showtags"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
+                android:tint="?android:attr/textColorPrimary"
                 android:layout_marginTop="8dp"
                 android:src="@drawable/ic_action_menu"
                 app:layout_constraintBottom_toBottomOf="parent"

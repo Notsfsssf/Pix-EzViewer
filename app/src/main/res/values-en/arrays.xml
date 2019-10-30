@@ -46,4 +46,11 @@
           <item>XVIII</item>
           <item>XVIII_Week</item>
     </string-array>
+    <string-array name="dark_mode">
+        <item>FOLLOW_SYSTEM</item>
+        <item>AUTO_TIME</item>
+        <item>NO</item>
+        <item>YES</item>
+        <item>AUTO_BATTERY</item>
+    </string-array>
 </resources>

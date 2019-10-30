@@ -29,7 +29,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:navigationBarColor">?attr/colorPrimary</item>
-
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
         <!-- MaterialDrawer specific values -->
         <item name="material_drawer_background">?android:attr/colorBackground</item>
         <item name="material_drawer_primary_text">?android:attr/textColorPrimary</item>
@@ -46,12 +46,54 @@
     </style>
 
     <style name="MyToolbar">
-        <item name="android:background">?attr/colorPrimary</item>
         <item name="colorControlNormal">?android:attr/textColorPrimaryInverse</item>
     </style>
-    <style name="AppThemeBase.w">
+
+    <style name="AppThemeBase.blue">
+        <item name="colorPrimary">@color/md_blue_300</item>
+        <item name="colorPrimaryDark">@color/md_blue_500</item>
+        <item name="colorAccent">@color/md_blue_500</item>
+    </style>
+
+    <style name="AppThemeBase.pink">
         <item name="colorPrimary">@color/pink</item>
         <item name="colorPrimaryDark">@color/pinkDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/pink</item>
+    </style>
+
+    <style name="AppThemeBase.miku">
+        <item name="colorPrimary">@color/miku</item>
+        <item name="colorPrimaryDark">@color/mikuDark</item>
+        <item name="colorAccent">@color/mikuDark</item>
+    </style>
+
+    <style name="AppThemeBase.purple">
+        <item name="colorPrimary">@color/md_purple_300</item>
+        <item name="colorPrimaryDark">@color/md_purple_500</item>
+        <item name="colorAccent">@color/md_purple_500</item>
+    </style>
+
+    <style name="AppThemeBase.cyan">
+        <item name="colorPrimary">@color/md_cyan_300</item>
+        <item name="colorPrimaryDark">@color/md_cyan_500</item>
+        <item name="colorAccent">@color/md_cyan_500</item>
+    </style>
+
+    <style name="AppThemeBase.green">
+        <item name="colorPrimary">@color/md_green_300</item>
+        <item name="colorPrimaryDark">@color/md_green_500</item>
+        <item name="colorAccent">@color/md_green_500</item>
+    </style>
+
+    <style name="AppThemeBase.indigo">
+        <item name="colorPrimary">@color/md_indigo_300</item>
+        <item name="colorPrimaryDark">@color/md_indigo_500</item>
+        <item name="colorAccent">@color/md_indigo_500</item>
+    </style>
+
+    <style name="AppThemeBase.orange">
+        <item name="colorPrimary">@color/md_red_500</item>
+        <item name="colorPrimaryDark">@color/md_red_600</item>
+        <item name="colorAccent">@color/md_red_600</item>
     </style>
 </resources>
