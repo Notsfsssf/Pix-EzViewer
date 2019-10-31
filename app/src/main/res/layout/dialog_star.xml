@@ -1,35 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-<LinearLayout
-    android:orientation="horizontal"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:padding="8dp"
-    android:layout_height="wrap_content">
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/edit"
-        android:layout_width="0dp"
-style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_alignParentTop="true"
+        android:id="@+id/top"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="3"/>
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/add"
-        android:text="ADD"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"/>
-</LinearLayout>
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/add"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ADD" />
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="400dp"/>
+        android:layout_height="300dp"
+        android:layout_below="@+id/top" />
+
     <Switch
+        android:layout_alignParentBottom="true"
         android:id="@+id/switch_private"
-        android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/privatep"/>
+        android:layout_margin="8dp"
+        android:hint="@string/privatep" />
 
-</LinearLayout>
+</RelativeLayout>

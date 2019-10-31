@@ -4,28 +4,32 @@
     <PreferenceCategory
         android:key="Support"
         android:title="Support">
-    <Preference
-        android:title="支持"
-        app:key="support"
-        app:summary="如果你觉得这个应用还不错，评分支持一下吧" />
+        <Preference
+            android:title="支持"
+            app:key="support"
+            app:summary="如果你觉得这个应用还不错，评分支持一下吧" />
+        <Preference
+            android:title="贡献"
+            app:key="support"
+            app:summary="如果你希望且有能力帮助改进这个应用，欢迎PR" />
     </PreferenceCategory>
     <Preference
         android:title="感谢"
         app:key="thanks"
         app:summary="@string/thanks" />
     <PreferenceCategory
-        app:isPreferenceVisible="false"
         android:key="huonaicai"
-        android:title="捐赠">
+        android:title="捐赠"
+        app:isPreferenceVisible="false">
         <Preference
-            app:key="alipay"
-            app:enableCopying="true"
             android:title="支付宝"
+            app:enableCopying="true"
+            app:key="alipay"
             app:selectable="true"
             app:summary="@string/support" />
         <Preference
-            app:key="wepay"
             android:title="微信"
+            app:key="wepay"
             app:selectable="true"
             app:summary="click" />
     </PreferenceCategory>
