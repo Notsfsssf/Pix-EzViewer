@@ -199,7 +199,7 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
     private fun changetoblue(it: Long?) {
         if (it != null) {
             val item = searchIllustAdapter.getViewByPosition(recyclerview_illust, position!!, R.id.linearlayout_isbookmark) as LinearLayout
-            item.setBackgroundColor(resources.getColor(R.color.yellow))
+            item.setBackgroundColor(resources.getColor(R.color.md_yellow_500))
             Toasty.success(activity!!.applicationContext, "收藏成功", Toast.LENGTH_SHORT).show()
         }
     }

@@ -24,21 +24,18 @@
 
 package com.perol.asdpl.pixivez.adapters
 
-import android.graphics.Color
-import android.widget.ImageView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
+import com.perol.asdpl.pixivez.R
 import java.util.*
 
+data class ColorData(var color: Int, var name: String)
 
-class ColorfulAdapter(layoutResId: Int, data: ArrayList<Int>) : BaseQuickAdapter<Int, BaseViewHolder>(layoutResId, data) {
-    override fun convert(helper: BaseViewHolder, item: Int) {
-        val imageView = helper.getView<ImageView>(com.perol.asdpl.pixivez.R.id.imagevew_colorful)
-        val attrs = intArrayOf(android.R.attr.colorPrimary)
-        val ta = helper.itemView.context.obtainStyledAttributes(item, attrs)
-        val color = ta.getColor(0, Color.BLACK)
-        imageView.setBackgroundColor(color)
-        ta.recycle()
+class ColorfulAdapter(layoutResId: Int, data: ArrayList<ColorData>) : BaseQuickAdapter<ColorData, BaseViewHolder>(layoutResId, data) {
+    override fun convert(helper: BaseViewHolder, item: ColorData) {
+        helper.setBackgroundColor(R.id.imagevew_colorful, item.color)
+                .setText(R.id.name, item.name)
+
     }
 
 }

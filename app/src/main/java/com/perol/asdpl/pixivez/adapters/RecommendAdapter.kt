@@ -86,7 +86,7 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
         val colorPrimary = typedValue.resourceId;
 
         helper.setText(R.id.title, item.title).setTextColor(R.id.like, if (item.is_bookmarked) {
-            ContextCompat.getColor(mContext, R.color.yellow)
+            ContextCompat.getColor(mContext, R.color.md_yellow_500)
         } else {
             ContextCompat.getColor(mContext, colorPrimary)
         })
@@ -103,7 +103,7 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
                     } else {
                         retrofit.postLikeIllust(item.id)!!.subscribe({
 
-                            textView.setTextColor(ContextCompat.getColor(mContext, R.color.yellow))
+                            textView.setTextColor(ContextCompat.getColor(mContext, R.color.md_yellow_500))
                             item.is_bookmarked = true
                         }, {}, {})
                     }

@@ -26,6 +26,7 @@ package com.perol.asdpl.pixivez.activity
 
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
@@ -77,6 +78,14 @@ import java.io.File
 
 class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, AccountHeader.OnAccountHeaderListener {
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == 789) {
+                recreate()
+            }
+        }
+    }
 
     override fun onProfileChanged(view: View?, profile: IProfile<*>, current: Boolean): Boolean {
         when (profile.identifier) {
@@ -253,7 +262,7 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
                     }
                     5 -> {
                         val intent = Intent(applicationContext, ThemeActivity::class.java)
-                        startActivity(intent)
+                        startActivityForResult(intent, 789)
 //                        val option = if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
 //                            AppCompatDelegate.MODE_NIGHT_NO
 //                        } else {

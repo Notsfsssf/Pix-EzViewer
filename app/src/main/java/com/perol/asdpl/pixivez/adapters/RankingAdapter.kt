@@ -120,7 +120,7 @@ class RankingAdapter(layoutResId: Int, data: List<Illust>?, private val R18on: B
         helper.setText(R.id.textview_title, item.title).setTextColor(R.id.textview_context, ContextCompat.getColor(mContext, colorPrimary))
         helper.setText(R.id.textview_context, item.user.name)
         helper.setTextColor(R.id.like, if (item.is_bookmarked) {
-            ContextCompat.getColor(mContext, R.color.yellow)
+            ContextCompat.getColor(mContext, R.color.md_yellow_500)
         } else {
             ContextCompat.getColor(mContext, colorPrimary)
         })
@@ -142,7 +142,7 @@ class RankingAdapter(layoutResId: Int, data: List<Illust>?, private val R18on: B
                     } else {
                         retrofit.postLikeIllust(item.id)!!.subscribe({
 
-                            textView.setTextColor(ContextCompat.getColor(mContext, R.color.yellow))
+                            textView.setTextColor(ContextCompat.getColor(mContext, R.color.md_yellow_500))
                             item.is_bookmarked = true
                         }, {}, {})
                     }

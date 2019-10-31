@@ -24,16 +24,19 @@
 
 package com.perol.asdpl.pixivez.activity
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.preference.DropDownPreference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.perol.asdpl.pixivez.R
+import com.perol.asdpl.pixivez.adapters.ColorData
 import com.perol.asdpl.pixivez.adapters.ColorfulAdapter
 import com.perol.asdpl.pixivez.objects.ThemeUtil
 import com.perol.asdpl.pixivez.services.PxEZApp
@@ -51,6 +54,7 @@ class ThemeActivity : AppCompatActivity() {
         }
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ThemeUtil.themeInit(this)
@@ -58,14 +62,27 @@ class ThemeActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportFragmentManager.beginTransaction().replace(R.id.fragment_theme, ThemeFragment()).commit()
+        val list = arrayListOf(
+                ColorData(ContextCompat.getColor(this, R.color.colorPrimary), "Primary"),
+                ColorData(ContextCompat.getColor(this, R.color.md_blue_300), "Blue"),
+                ColorData(ContextCompat.getColor(this, R.color.pink), "Pink"),
+                ColorData(ContextCompat.getColor(this, R.color.miku), "Miku"),
+                ColorData(ContextCompat.getColor(this, R.color.md_deep_purple_300), "Purple"),
+                ColorData(ContextCompat.getColor(this, R.color.md_cyan_300), "Cyan"),
+                ColorData(ContextCompat.getColor(this, R.color.md_green_300), "Green"),
+                ColorData(ContextCompat.getColor(this, R.color.md_indigo_300), "Indigo"),
+                ColorData(ContextCompat.getColor(this, R.color.md_red_500), "Red"),
+                ColorData(ContextCompat.getColor(this, R.color.now), "Pale green"))
         recyclerview.apply {
-            layoutManager = GridLayoutManager(this@ThemeActivity, 4)
-            adapter = ColorfulAdapter(R.layout.view_colorfulitem, ArrayList(ThemeUtil.themeArray.toList())).apply {
+            layoutManager = LinearLayoutManager(this@ThemeActivity)
+            adapter = ColorfulAdapter(R.layout.view_colorfulitem, list).apply {
                 onItemClickListener = BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
                     PreferenceManager.getDefaultSharedPreferences(this@ThemeActivity).edit().putInt("colorint", position).apply()
-                    recreate()
+                    setResult(Activity.RESULT_OK)
+                    finish()
                 }
             }
+            isNestedScrollingEnabled = false
         }
     }
 

@@ -49,10 +49,15 @@
         <item name="colorControlNormal">?android:attr/textColorPrimaryInverse</item>
     </style>
 
+    <style name="AppThemeBase.Primary">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
     <style name="AppThemeBase.blue">
         <item name="colorPrimary">@color/md_blue_300</item>
-        <item name="colorPrimaryDark">@color/md_blue_500</item>
-        <item name="colorAccent">@color/md_blue_500</item>
+        <item name="colorPrimaryDark">@color/md_blue_400</item>
+        <item name="colorAccent">@color/md_blue_400</item>
     </style>
 
     <style name="AppThemeBase.pink">
@@ -91,9 +96,15 @@
         <item name="colorAccent">@color/md_indigo_500</item>
     </style>
 
-    <style name="AppThemeBase.orange">
+    <style name="AppThemeBase.red">
         <item name="colorPrimary">@color/md_red_500</item>
         <item name="colorPrimaryDark">@color/md_red_600</item>
         <item name="colorAccent">@color/md_red_600</item>
+    </style>
+
+    <style name="AppThemeBase.now">
+        <item name="colorPrimary">@color/now</item>
+        <item name="colorPrimaryDark">@color/nowDark</item>
+        <item name="colorAccent">@color/nowDark</item>
     </style>
 </resources>

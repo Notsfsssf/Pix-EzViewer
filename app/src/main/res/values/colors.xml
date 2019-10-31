@@ -9,20 +9,20 @@
     <color name="grayx">#f4f4f4e5</color>
     <color name="bg">#F0F0F0</color>
     <color name="white">#FFFFFF</color>
-    <color name="yellow">#F6D600</color>
-    <color name="yellowDark">#f1c40f</color>
     <color name="orange">#ff503c</color>
     <color name="orangeDark">#e63a27</color>
     <color name="black_overlay">#66000000</color>
     <color name="halftrans">#9a9a9a</color>
     <color name="pink">#fb739a</color>
     <color name="pinkDark">#e4688c</color>
-<color name="dark">#000000</color>
-    <color name="tag" >#0099CC</color>
+    <color name="dark">#000000</color>
+    <color name="tag">#0099CC</color>
     <color name="miku">#20c5a7</color>
     <color name="mikuDark">#06c19f</color>
-    <color name="black" >#000000</color>
+    <color name="black">#000000</color>
     <color name="transparent">#00000000</color>
     <color name="blue">#84B1ED</color>
     <color name="splash">#1895EF</color>
+    <color name="now">#81C0BB</color>
+    <color name="nowDark">#47BEB5</color>
 </resources>

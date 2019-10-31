@@ -163,7 +163,7 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
             else
                 imageButtonDownload.setColorFilter(ContextCompat.getColor(mContext, colorPrimary))
             if (s.user.is_followed)
-                imageView.setBorderColor(ContextCompat.getColor(mContext, R.color.yellow))
+                imageView.setBorderColor(ContextCompat.getColor(mContext, R.color.md_yellow_500))
             else
                 imageView.setBorderColor(ContextCompat.getColor(mContext, colorPrimary))
             imageView.setOnLongClickListener {
