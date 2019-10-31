@@ -10,13 +10,15 @@
             app:summary="如果你觉得这个应用还不错，评分支持一下吧" />
         <Preference
             android:title="贡献"
-            app:key="support"
+            app:key="pr"
             app:summary="如果你希望且有能力帮助改进这个应用，欢迎PR" />
+        <Preference
+            android:title="感谢"
+            app:key="thanks"
+            app:summary="@string/thanks" />
+
     </PreferenceCategory>
-    <Preference
-        android:title="感谢"
-        app:key="thanks"
-        app:summary="@string/thanks" />
+
     <PreferenceCategory
         android:key="huonaicai"
         android:title="捐赠"
