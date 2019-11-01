@@ -60,5 +60,11 @@
           <item>XVIII</item>
           <item>XVIII_Week</item>
     </string-array>
-    <string-array name="dark_mode" />
+    <string-array name="dark_mode">
+        <item>跟隨系統</item>
+        <item>自動時間</item>
+        <item>關閉</item>
+        <item>開啟</item>
+        <item>跟隨電池</item>
+    </string-array>
 </resources>

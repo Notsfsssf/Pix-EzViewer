@@ -182,6 +182,3 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
 
 }
-repositories {
-    mavenCentral()
-}
