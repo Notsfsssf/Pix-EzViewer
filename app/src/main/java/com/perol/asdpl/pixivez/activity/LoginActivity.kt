@@ -26,6 +26,8 @@ package com.perol.asdpl.pixivez.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -56,7 +58,6 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 import java.util.*
-
 
 class LoginActivity : RinkActivity() {
     private var username: String? = null
@@ -93,7 +94,7 @@ class LoginActivity : RinkActivity() {
         super.onCreate(savedInstanceState)
         ThemeUtil.themeInit(this)
         setContentView(R.layout.activity_login)
-        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS or WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
         initbind()
@@ -159,14 +160,50 @@ class LoginActivity : RinkActivity() {
             builder.setView(view)
             builder.create().show()
         }
+
+        edit_username.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                // Ignore.
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Ignore.
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                accountTextInputLayout.isErrorEnabled = false
+            }
+        })
+        edit_password.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                // Ignore.
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Ignore.
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                passwordTextInputLayout.isErrorEnabled = false
+            }
+        })
+
         loginBtn!!.setOnClickListener {
-            loginBtn.isClickable = false
+//            loginBtn.isClickable = false
+
             username = edit_username!!.text.toString()
             password = edit_password!!.text.toString()
 
-            if (username == null || password == null) {
+            if (username.isNullOrBlank()) accountTextInputLayout.error = getString(R.string.error_blank_account)
+
+            if (password.isNullOrBlank()) passwordTextInputLayout.error = getString(R.string.error_blank_account)
+
+            if (username.isNullOrBlank() || password.isNullOrBlank()) {
                 return@setOnClickListener
             }
+
+            loginBtn.isEnabled = false
+
             sharedPreferencesServices!!.setString("username", username)
             sharedPreferencesServices!!.setString("password", password)
             val map = HashMap<String, Any>()
@@ -181,11 +218,11 @@ class LoginActivity : RinkActivity() {
 
             map["get_secure_url"] = true
             map["include_policy"] = true
-            Toast.makeText(applicationContext, this.getString(R.string.try_to_login), Toast.LENGTH_SHORT).show()
+
             oAuthSecureService.postAuthToken(map).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread()).subscribe(object : Observer<PixivOAuthResponse> {
                         override fun onSubscribe(d: Disposable) {
-
+                            Toast.makeText(applicationContext, getString(R.string.try_to_login), Toast.LENGTH_SHORT).show()
                         }
 
                         override fun onNext(pixivOAuthResponse: PixivOAuthResponse) {
@@ -201,11 +238,12 @@ class LoginActivity : RinkActivity() {
                                 sharedPreferencesServices!!.setString("password", password)
 
                             }
-
                         }
 
                         override fun onError(e: Throwable) {
-                            loginBtn.isClickable = true
+//                            loginBtn.isClickable = true
+                            loginBtn.isEnabled = true
+
                             textview_help.visibility = View.VISIBLE
                             if (e is HttpException) {
                                 try {
@@ -213,7 +251,13 @@ class LoginActivity : RinkActivity() {
                                     val gson = Gson()
                                     val errorResponse = gson.fromJson<ErrorResponse>(errorBody, ErrorResponse::class.java)
 
-                                    Toast.makeText(applicationContext, "${e.message}\n${errorResponse.errors.system.message}", Toast.LENGTH_LONG).show()
+                                    var errMsg = "${e.message}\n${errorResponse.errors.system.message}"
+
+                                    if (errorResponse.has_error && errorResponse.errors.system.message.contains(Regex("103:.*"))) {
+                                        errMsg = getString(R.string.error_invalid_account_password)
+                                    }
+
+                                    Toast.makeText(applicationContext, errMsg, Toast.LENGTH_LONG).show()
                                 } catch (e1: IOException) {
                                     Toast.makeText(applicationContext, "${e.message}", Toast.LENGTH_LONG).show()
                                 }
@@ -223,11 +267,12 @@ class LoginActivity : RinkActivity() {
                             } else {
                                 Toast.makeText(applicationContext, "${e.message}", Toast.LENGTH_LONG).show()
                             }
-
                         }
 
                         override fun onComplete() {
-                            loginBtn.isClickable = true
+//                            loginBtn.isClickable = true
+                            loginBtn.isEnabled = true
+
                             Toast.makeText(applicationContext, "登录成功", Toast.LENGTH_LONG).show()
                             val intent = Intent(this@LoginActivity, HelloMActivity::class.java)
                             startActivity(intent)
@@ -238,8 +283,7 @@ class LoginActivity : RinkActivity() {
         Works.checkUpdate(this)
     }
 
-
-    fun s(view: View) {
+    fun showHelp(view: View) {
 //        val intent = Intent(this@LoginActivity, NewUserActivity::class.java)
 //        startActivity(intent)
         Toasty.info(this, this.resources.getString(R.string.registerclose), Toast.LENGTH_LONG).show()
