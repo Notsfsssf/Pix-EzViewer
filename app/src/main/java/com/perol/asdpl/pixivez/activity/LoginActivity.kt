@@ -25,6 +25,8 @@
 package com.perol.asdpl.pixivez.activity
 
 import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -94,7 +96,21 @@ class LoginActivity : RinkActivity() {
         super.onCreate(savedInstanceState)
         ThemeUtil.themeInit(this)
         setContentView(R.layout.activity_login)
-        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS or WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS or WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+        window.decorView.setBackgroundColor(Color.parseColor("#FAFAFA")) // MD_Color_Grey_50
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            window.statusBarColor = Color.parseColor("#E0E0E0") // MD_Color_Grey_300
+            window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            window.navigationBarColor = Color.WHITE
+            window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+        }
+
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
         initbind()
@@ -253,7 +269,7 @@ class LoginActivity : RinkActivity() {
 
                                     var errMsg = "${e.message}\n${errorResponse.errors.system.message}"
 
-                                    if (errorResponse.has_error && errorResponse.errors.system.message.contains(Regex("103:.*"))) {
+                                    if (errorResponse.has_error && errorResponse.errors.system.message.contains(Regex(""".*103:.*"""))) {
                                         errMsg = getString(R.string.error_invalid_account_password)
                                     }
 
@@ -271,7 +287,7 @@ class LoginActivity : RinkActivity() {
 
                         override fun onComplete() {
 //                            loginBtn.isClickable = true
-                            loginBtn.isEnabled = true
+//                            loginBtn.isEnabled = true // Avoid double logins.
 
                             Toast.makeText(applicationContext, "登录成功", Toast.LENGTH_LONG).show()
                             val intent = Intent(this@LoginActivity, HelloMActivity::class.java)

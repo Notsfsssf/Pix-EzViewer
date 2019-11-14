@@ -27,6 +27,3 @@
 # 代码混淆压缩比，在0~7之间，默认为5，一般不做修改
 -optimizationpasses 5
 -keep class com.perol.asdpl.pixivez.** {*;}
-
-
-
