@@ -150,10 +150,15 @@
     <string name="appsetting">App setting</string>
     <string name="completemessage">Complete Message</string>
     <string name="logout">Log Out</string>
-    <string name="email">Email</string>
+    <string name="account">Account</string>
+    <string name="account_helper">Pixiv ID or email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
+    <string name="login_help">Login help</string>
     <string name="donthaveaccount">Dont have?</string>
+    <string name="error_blank_account">Account cannot be blank</string>
+    <string name="error_blank_password">Password cannot be blank</string>
+    <string name="error_invalid_account_password">Incorrect account or password</string>
     <string name="saveformat">Save format</string>
     <string name="savepath">Save path</string>
     <string name="secondpath">Second path</string>
