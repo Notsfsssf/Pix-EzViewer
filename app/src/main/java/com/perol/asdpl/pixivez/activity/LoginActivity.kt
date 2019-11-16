@@ -25,8 +25,6 @@
 package com.perol.asdpl.pixivez.activity
 
 import android.content.Intent
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -96,20 +94,20 @@ class LoginActivity : RinkActivity() {
         super.onCreate(savedInstanceState)
         ThemeUtil.themeInit(this)
         setContentView(R.layout.activity_login)
-//        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS or WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS or WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-        window.decorView.setBackgroundColor(Color.parseColor("#FAFAFA")) // MD_Color_Grey_50
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            window.statusBarColor = Color.parseColor("#E0E0E0") // MD_Color_Grey_300
-            window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            window.navigationBarColor = Color.WHITE
-            window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-        }
+//        window.decorView.setBackgroundColor(Color.parseColor("#FAFAFA")) // MD_Color_Grey_50
+//        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            window.statusBarColor = Color.parseColor("#E0E0E0") // MD_Color_Grey_300
+//            window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+//        }
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            window.navigationBarColor = Color.WHITE
+//            window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+//        }
 
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
@@ -159,8 +157,8 @@ class LoginActivity : RinkActivity() {
         val oAuthSecureService = restClient.getretrofit_OAuthSecure().create(OAuthSecureService::class.java)
         textview_help.setOnClickListener {
             val builder = MaterialAlertDialogBuilder(this)
-            val view = layoutInflater.inflate(com.perol.asdpl.pixivez.R.layout.new_dialog_user_help, null)
-            val webView = view.findViewById(com.perol.asdpl.pixivez.R.id.web_user_help) as TextView
+            val view = layoutInflater.inflate(R.layout.new_dialog_user_help, null)
+            val webView = view.findViewById(R.id.web_user_help) as TextView
             // obtain an instance of Markwon
             val markwon = Markwon.create(this);
 

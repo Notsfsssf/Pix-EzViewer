@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_save"
+        app:iconTint="?android:textColorPrimaryInverse"
         android:title="Save"
         android:icon="@drawable/ic_action_save"
         app:showAsAction="always" />
