@@ -136,7 +136,7 @@
     </string>
     <string name="dali">代理設定</string>
     <string name="checkupdate">檢查更新</string>
-    <string name="icon">圖標</string>
+    <string name="icon">圖示</string>
     <string name="checktochang">點擊更換</string>
     <string name="limit">限制</string>
     <string name="_18">開啟即表示您已年滿18周歲</string>
@@ -147,7 +147,7 @@
     <string name="searchsource">以圖搜源</string>
     <string name="cleancatche">清除緩存</string>
     <string name="historyrecord">歷史記錄</string>
-    <string name="appsetting">應用設定</string>
+    <string name="appsetting">程式設定</string>
     <string name="completemessage">完善信息</string>
     <string name="logout">登出</string>
     <string name="account">賬號</string>
@@ -248,7 +248,7 @@
     <string name="feed_back">反饋</string>
     <string name="needstatusbar">熒幕凹口</string>
     <string name="changeicons">更換圖標</string>
-    <string name="supporttitle">支持</string>
+    <string name="supporttitle">支援</string>
     <string name="viewreport">查看回報</string>
     <string name="needtorestart">重啟應用生效</string>
     <string name="animation">動畫</string>
