@@ -11,22 +11,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".activity.SaucenaoActivity">
+
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize">
 
                 <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/toolbar"
-                    app:title="以图搜源"
-                    app:theme="@style/MyToolbar"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize" />
+                    android:layout_height="?attr/actionBarSize"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:theme="@style/MyToolbar"
+                    app:title="以图搜源"
+                    app:titleTextColor="?android:attr/textColorPrimaryInverse" />
             </com.google.android.material.appbar.AppBarLayout>
 
             <com.google.android.material.card.MaterialCardView
@@ -34,18 +37,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
                 android:layout_margin="@dimen/dp_10"
-               app:cardBackgroundColor="?attr/colorPrimary"
-
-                >
+                app:cardBackgroundColor="?attr/colorPrimary">
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-             android:layout_marginStart="20dp"
+                    android:layout_marginStart="20dp"
 
-                    android:layout_marginEnd="20dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
                     android:layout_marginBottom="20dp"
                     android:scaleType="fitStart"
                     android:src="@drawable/banner" />
@@ -57,35 +58,36 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dp_10"
                 android:background="?attr/colorPrimary">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-android:visibility="gone"
-    android:layout_height="wrap_content">
 
-    <TextView
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
 
-        android:id="@+id/hint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/dp_10"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="使用SSL"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+                    <TextView
 
-    <Switch
-        android:id="@+id/ssl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+                        android:id="@+id/hint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/dp_10"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="使用SSL"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Switch
+                        android:id="@+id/ssl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -113,8 +115,8 @@ android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
-            app:layout_anchor="@+id/linearLayout"
             android:src="@drawable/ic_action_search"
+            app:layout_anchor="@+id/linearLayout"
             app:layout_anchorGravity="right|bottom" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

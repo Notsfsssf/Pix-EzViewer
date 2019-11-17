@@ -27,37 +27,35 @@ package com.perol.asdpl.pixivez.networks
 import com.perol.asdpl.pixivez.services.CloudflareService
 import okhttp3.Dns
 import okhttp3.HttpUrl.Companion.toHttpUrl
-import retrofit2.HttpException
-import java.io.IOException
 import java.net.InetAddress
-import java.util.*
 
 class RubyHttpDns : Dns {
-
-    @Throws(IOException::class)
+    val addressList = mutableListOf<InetAddress>()
     override fun lookup(hostname: String): List<InetAddress> {
-        val addressList = mutableListOf<InetAddress>()
-        val defaultList = listOf("210.140.131.219", "210.140.131.222", "210.140.131.224").map { InetAddress.getByName(it) }
-
-        val service = ServiceFactory.create<CloudflareService>(CloudflareService.URL_DNS_RESOLVER.toHttpUrl())
+        if (addressList.isNotEmpty()) return addressList
+        val defaultList = listOf(
+            "210.140.131.219",
+            "210.140.131.222",
+            "210.140.131.224"
+        ).map { InetAddress.getByName(it) }
+        val service =
+            ServiceFactory.create<CloudflareService>(CloudflareService.URL_DNS_RESOLVER.toHttpUrl())
 
         try {
             val response = service.queryDns(name = hostname).blockingSingle()
-
             response.answer.flatMap { InetAddress.getAllByName(it.data).toList() }.also {
                 addressList.addAll(it)
             }
-        } catch (e: NoSuchElementException) {
-            // Catch and ignore.
-        } catch (e: HttpException) {
-            // Catch and ignore.
-        } catch (e: IOException) {
-            // Logging and rethrow.
-//            throw e // Should be handled by the use, rethrow.
+        } catch (e: Exception) {
+
         }
 
-        // Dns.SYSTEM.lookup(hostname)
+        return if (addressList.isNotEmpty())
+            addressList
+        else {
+            addressList.addAll(defaultList)
+            addressList
+        }
 
-        return if (addressList.isNotEmpty()) addressList else defaultList
     }
 }

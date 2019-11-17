@@ -46,18 +46,23 @@ import com.perol.asdpl.pixivez.services.SaucenaoService
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_saucenao.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import okhttp3.*
+import kotlinx.coroutines.withContext
+import okhttp3.Dns
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.logging.HttpLoggingInterceptor
-import okio.BufferedSink
 import org.jsoup.Jsoup
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.net.InetAddress
+import java.util.*
+import kotlin.collections.ArrayList
 
 class SaucenaoActivity : RinkActivity() {
 
@@ -65,16 +70,21 @@ class SaucenaoActivity : RinkActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ThemeUtil.themeInit(this)
-        val binding = DataBindingUtil.setContentView<ActivitySaucenaoBinding>(this, R.layout.activity_saucenao)
+        val binding = DataBindingUtil.setContentView<ActivitySaucenaoBinding>(
+            this,
+            R.layout.activity_saucenao
+        )
         fab.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK,
-                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            val intent = Intent(
+                Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            )
             startActivityForResult(intent, IMAGE)
 
         }
         val httpLoggingInterceptor = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
             override fun log(message: String) {
-                Log.d("aaa", "$message")
+                Log.d("aaa", "a:$message")
             }
         })
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -97,11 +107,12 @@ class SaucenaoActivity : RinkActivity() {
         })
         val client = builder1.build()
         val service: Retrofit = Retrofit.Builder()
-                .baseUrl(
-                        "https://saucenao.com")
-                .client(client)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
+            .baseUrl(
+                "https://saucenao.com"
+            )
+            .client(client)
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build();
         ssl.isChecked = false
         api = service.create(SaucenaoService::class.java)
 
@@ -110,33 +121,69 @@ class SaucenaoActivity : RinkActivity() {
             val type = intent.type;
             if (action != null && type != null)
                 if (action == Intent.ACTION_SEND && type.startsWith("image/")) {
-                    val uri = intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM);
+                    val uri = intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM)
+
                     if (uri != null) {
+                        val parcelFileDescriptor =
+                            contentResolver.openFileDescriptor(uri, "r");
+                        val fileDescriptor = parcelFileDescriptor!!.fileDescriptor;
+                        val image = BitmapFactory.decodeFileDescriptor(fileDescriptor)
+                        parcelFileDescriptor.close()
+                        val file = File(cacheDir, Date().time.toString() + ".jpg")
+                        val out = file.outputStream()
+                        runBlocking {
+                            withContext(Dispatchers.IO) {
+                                image.compress(Bitmap.CompressFormat.JPEG, 100, out)
+                            }
+                            out.flush()
+                            out.close()
+                        }
                         Toasty.success(this, "解析成功正在上传", Toast.LENGTH_SHORT).show()
-                        val baos = ByteArrayOutputStream();
-                        val file = File(uri.path!!)
                         val builder = MultipartBody.Builder()
                         builder.setType(MultipartBody.FORM)
-                        if (file.length() > 10000000L) {
-                            val options = BitmapFactory.Options();
-                            options.inSampleSize = 4
-                            val decodeFile = BitmapFactory.decodeFile(file.path, options)
-                            builder.addFormDataPart("file", file.name, object : RequestBody() {
-                                override fun contentType(): MediaType? = "image/jpeg".toMediaTypeOrNull()
-
-                                override fun writeTo(sink: BufferedSink) {
-                                    decodeFile.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                                }
-
-                            })
-                            Log.d("bitmap", "large file")
-                        } else
-                            builder.addFormDataPart("file", file.name, file.asRequestBody("image/jpeg".toMediaTypeOrNull()))
-                        api.searchpicforresult(builder.build().part(0)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
-                            Toasty.success(PxEZApp.instance, "上传成功，正在进行匹配", Toast.LENGTH_SHORT).show()
-                            tryToParseHtml(it.string())
-                        }, { Toasty.error(PxEZApp.instance, "服务器或本地发生错误" + it.message).show() }, {
-                        })
+//                        val baos = ByteArrayOutputStream();
+//                        if (file.length() > 10000000L) {
+//                            val options = BitmapFactory.Options()
+//                            options.inSampleSize = 4
+//                            val decodeFile = BitmapFactory.decodeFile(path, options)
+//                            builder.addFormDataPart("file", file.name, object : RequestBody() {
+//                                override fun contentType(): MediaType? =
+//                                    "image/jpeg".toMediaTypeOrNull()
+//
+//                                override fun writeTo(sink: BufferedSink) {
+//                                    decodeFile.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+//                                }
+//
+//                            })
+//                            Log.d("bitmap", "large file")
+//                        } else
+                        builder.addFormDataPart(
+                            "file",
+                            file.name,
+                            file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                        )
+                        api.searchpicforresult(builder.build().part(0)).subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread()).subscribe(
+                                {
+                                    Toasty.success(
+                                        PxEZApp.instance,
+                                        "上传成功，正在进行匹配",
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
+                                    if (file.exists()) {
+                                        file.delete()
+                                    }
+                                    tryToParseHtml(it.string())
+                                },
+                                {
+                                    Toasty.error(PxEZApp.instance, "服务器或本地发生错误" + it.message).show()
+                                    if (file.exists()) {
+                                        file.delete()
+                                    }
+                                },
+                                {
+                                })
 
 
                     }
@@ -153,11 +200,12 @@ class SaucenaoActivity : RinkActivity() {
         builder.setType(MultipartBody.FORM)
         val body = RequestBody.create("image/jpeg".toMediaTypeOrNull(), file)
         builder.addFormDataPart("file", file.name, body)
-        api.searchpicforresult(builder.build().part(0)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe({
-            Toasty.success(this, "上传成功，正在进行匹配", Toast.LENGTH_SHORT).show()
-            tryToParseHtml(it.string())
-        }, { Toasty.error(this, "服务器或本地发生错误" + it.message).show() }, {
-        })
+        api.searchpicforresult(builder.build().part(0)).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe({
+                Toasty.success(this, "上传成功，正在进行匹配", Toast.LENGTH_SHORT).show()
+                tryToParseHtml(it.string())
+            }, { Toasty.error(this, "服务器或本地发生错误" + it.message).show() }, {
+            })
     }
 
     private fun tryToParseHtml(string: String) {
@@ -169,7 +217,10 @@ class SaucenaoActivity : RinkActivity() {
                 val string = el[i].attr("href")
                 Log.d("w", string)
                 if (string.startsWith("https://www.pixiv.net/member_illust.php?mode=medium&illust_id=")) {
-                    val id = string.replace("https://www.pixiv.net/member_illust.php?mode=medium&illust_id=", "").toLong()
+                    val id = string.replace(
+                        "https://www.pixiv.net/member_illust.php?mode=medium&illust_id=",
+                        ""
+                    ).toLong()
                     arrayList.add(id)
                 }
 
@@ -184,7 +235,12 @@ class SaucenaoActivity : RinkActivity() {
             val intent2 = Intent(applicationContext, PictureActivity::class.java)
             intent2.putExtras(bundle)
             startActivity(intent2)
-        } else GlideApp.with(this).load(ContextCompat.getDrawable(this, R.drawable.buzhisuocuo)).into(imageview)
+        } else GlideApp.with(this).load(
+            ContextCompat.getDrawable(
+                this,
+                R.drawable.buzhisuocuo
+            )
+        ).into(imageview)
 
     }
 

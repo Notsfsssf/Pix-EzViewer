@@ -37,8 +37,23 @@ import com.perol.asdpl.pixivez.BuildConfig
 import com.perol.asdpl.pixivez.objects.CrashHandler
 import java.io.File
 
-class PxEZApp : Application() {
 
+class PxEZApp : Application() {
+    //    override fun attachBaseContext(base: Context) {
+//        val locale = when (PxEZApp.language) {
+//            1 -> {
+//                Locale.ENGLISH
+//            }
+//            2 -> {
+//                Locale.TRADITIONAL_CHINESE
+//            }
+//            else -> {
+//                Locale.SIMPLIFIED_CHINESE
+//            }
+//        }
+//        val context = MyContextWrapper.wrap(base, locale)
+//        super.attachBaseContext(context)
+//    }
     override fun onCreate() {
         super.onCreate()
         instance = this
