@@ -25,6 +25,7 @@
 package com.perol.asdpl.pixivez.activity
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -94,8 +95,12 @@ class LoginActivity : RinkActivity() {
         super.onCreate(savedInstanceState)
         ThemeUtil.themeInit(this)
         setContentView(R.layout.activity_login)
-        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS or WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-
+        val window = window
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.decorView.systemUiVisibility =
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = Color.TRANSPARENT
 //        window.decorView.setBackgroundColor(Color.parseColor("#FAFAFA")) // MD_Color_Grey_50
 //        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
 //
@@ -210,7 +215,8 @@ class LoginActivity : RinkActivity() {
 
             if (username.isNullOrBlank()) accountTextInputLayout.error = getString(R.string.error_blank_account)
 
-            if (password.isNullOrBlank()) passwordTextInputLayout.error = getString(R.string.error_blank_account)
+            if (password.isNullOrBlank()) passwordTextInputLayout.error =
+                getString(R.string.error_blank_password)
 
             if (username.isNullOrBlank() || password.isNullOrBlank()) {
                 return@setOnClickListener
