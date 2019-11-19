@@ -26,22 +26,27 @@ package com.perol.asdpl.pixivez.activity
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
+import androidx.work.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.perol.asdpl.pixivez.R
+import com.perol.asdpl.pixivez.objects.Toasty
+import com.perol.asdpl.pixivez.services.PxEZApp
+import com.perol.asdpl.pixivez.works.ImgDownLoadWorker
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.fragment_progress.*
 import kotlinx.android.synthetic.main.view_progress_item.*
+import java.io.File
 
 /**
  * A placeholder fragment containing a simple view.
@@ -61,13 +66,9 @@ class ProgressActivityFragment : Fragment() {
             notifyDataSetChanged()
         }
 
-        fun itemChange(position: Int, workInfo: WorkInfo) {
-            data[position] = workInfo
-            notifyItemChanged(position, workInfo)
-        }
 
-        inner class ProgressViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
-
+        inner class ProgressViewHolder(override val containerView: View) :
+            RecyclerView.ViewHolder(containerView), LayoutContainer {
 
 
         }
@@ -75,14 +76,18 @@ class ProgressActivityFragment : Fragment() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             mContext = parent.context;
             val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.view_progress_item, parent, false)
+                .inflate(R.layout.view_progress_item, parent, false)
 
             return ProgressViewHolder(view)
         }
 
         override fun getItemCount() = data.size
 
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
+        override fun onBindViewHolder(
+            holder: RecyclerView.ViewHolder,
+            position: Int,
+            payloads: MutableList<Any>
+        ) {
 
             if (payloads.isEmpty()) {
                 onBindViewHolder(holder, position)
@@ -120,6 +125,8 @@ class ProgressActivityFragment : Fragment() {
                 val now = data[position].progress.getLong("now", 0)
                 val id = data[position].progress.getLong("id", 0)
                 val title1 = data[position].progress.getString("title")
+                val url = data[position].progress.getString("url")
+                val fileName = data[position].progress.getString("file")
                 holder.apply {
                     itemView.setOnClickListener {
                         val bundle = Bundle()
@@ -132,15 +139,84 @@ class ProgressActivityFragment : Fragment() {
                         mContext.startActivity(intent2)
                     }
                     itemView.setOnLongClickListener {
-                        val choice = arrayOf("CANCEL")
-                        MaterialAlertDialogBuilder(mContext).setItems(choice
+                        val choice = arrayOf("RETRY", "CANCEL")
+                        MaterialAlertDialogBuilder(mContext).setItems(
+                            choice
                         ) { _, which ->
                             when (which) {
-                                0 -> {
+                                1 -> {
                                     WorkManager.getInstance(mContext).cancelWorkById(workinfo.id)
                                 }
                                 else -> {
+                                    val inputData = workDataOf(
+                                        "file" to fileName,
+                                        "url" to url,
+                                        "title" to title1,
+                                        "id" to id
+                                    )
+                                    val oneTimeWorkRequest =
+                                        OneTimeWorkRequestBuilder<ImgDownLoadWorker>()
+                                            .setInputData(inputData)
+                                            .addTag("image")
+                                            .build()
+                                    WorkManager.getInstance(PxEZApp.instance).enqueueUniqueWork(
+                                        url!!,
+                                        ExistingWorkPolicy.REPLACE,
+                                        oneTimeWorkRequest
+                                    )
 
+
+                                    WorkManager.getInstance(PxEZApp.instance)
+                                        .getWorkInfoByIdLiveData(oneTimeWorkRequest.id)
+                                        .observeForever(object : Observer<WorkInfo> {
+                                            override fun onChanged(workInfo: WorkInfo?) {
+                                                if (workInfo == null) {
+                                                    return
+                                                }
+                                                if (workInfo.state == WorkInfo.State.SUCCEEDED) {
+                                                    if (workInfo.outputData.getBoolean(
+                                                            "exist",
+                                                            false
+                                                        )
+                                                    ) {
+                                                        Toasty.success(
+                                                            PxEZApp.instance,
+                                                            PxEZApp.instance.resources.getString(R.string.alreadysaved),
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                        WorkManager.getInstance(PxEZApp.instance)
+                                                            .getWorkInfoByIdLiveData(
+                                                                oneTimeWorkRequest.id
+                                                            ).removeObserver(this)
+                                                        return
+                                                    }
+                                                    Toasty.success(
+                                                        PxEZApp.instance,
+                                                        PxEZApp.instance.resources.getString(R.string.savesuccess),
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                    val uri = workInfo.outputData.getString("path")
+                                                    if (uri != null)
+                                                        PxEZApp.instance.sendBroadcast(
+                                                            Intent(
+                                                                Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                                                                Uri.fromFile(
+                                                                    File(uri)
+                                                                )
+                                                            )
+                                                        )
+                                                } else if (workInfo.state == WorkInfo.State.FAILED) {
+
+                                                } else if (workInfo.state == WorkInfo.State.CANCELLED) {
+
+                                                    val file = File(PxEZApp.storepath, fileName)
+                                                    file.deleteOnExit()
+                                                }
+                                                WorkManager.getInstance(PxEZApp.instance)
+                                                    .getWorkInfoByIdLiveData(oneTimeWorkRequest.id)
+                                                    .removeObserver(this)
+                                            }
+                                        })
                                 }
                             }
                         }.create().show()
@@ -180,20 +256,34 @@ class ProgressActivityFragment : Fragment() {
 //        if (mutableList != null && mutableList.size > 0) {
 //            progressAdapter.setNewData(ArrayList(mutableList))
 //        }
-        WorkManager.getInstance(activity!!).getWorkInfosByTagLiveData("image").observe(this, Observer {
-            progressAdapter.setNewData(ArrayList(it))
-        })
+        WorkManager.getInstance(activity!!).getWorkInfosByTagLiveData("image")
+            .observe(this, Observer {
+                it.sortByDescending {
+                    it.progress.getString("title")
+                }
+                progressAdapter.setNewData(ArrayList(it))
+            })
+        fab.setOnClickListener {
+            val builder = MaterialAlertDialogBuilder(activity)
+            builder.setTitle("Clean all?")
+                .setPositiveButton(android.R.string.ok) { i, v ->
+                    WorkManager.getInstance(PxEZApp.instance).pruneWork()
+                }
+                .setNegativeButton(android.R.string.cancel) { i, v ->
+
+                }
+            val dialog = builder.create()
+            dialog.show()
+
+        }
 
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
-
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_progress, container, false)
     }
 

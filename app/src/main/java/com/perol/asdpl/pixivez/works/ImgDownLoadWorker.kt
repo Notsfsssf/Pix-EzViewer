@@ -36,8 +36,8 @@ import okhttp3.Request
 import okhttp3.internal.headersContentLength
 import java.io.File
 
-class ImgDownLoadWorker(var appContext: Context, workerParams: WorkerParameters)
-    : CoroutineWorker(appContext, workerParams) {
+class ImgDownLoadWorker(var appContext: Context, workerParams: WorkerParameters) :
+    CoroutineWorker(appContext, workerParams) {
     companion object {
         const val Progress = "Progress"
         private const val delayDuration = 1L
@@ -50,7 +50,14 @@ class ImgDownLoadWorker(var appContext: Context, workerParams: WorkerParameters)
         val title = inputData.getString("title")!!
         val id = inputData.getLong("id", 0L)
         val appDir = File(PxEZApp.storepath)
-        val lastUpdate = workDataOf("max" to 100, "now" to 1, "url" to url, "file" to fileName, "title" to title, "id" to id)
+        val lastUpdate = workDataOf(
+            "max" to 100,
+            "now" to 1,
+            "url" to url,
+            "file" to fileName,
+            "title" to title,
+            "id" to id
+        )
         setProgress(lastUpdate)
         if (!appDir.exists()) {
             appDir.mkdirs()
@@ -63,11 +70,14 @@ class ImgDownLoadWorker(var appContext: Context, workerParams: WorkerParameters)
         val builder = OkHttpClient.Builder();
         val client = builder.build()
         val request = Request.Builder()
-                .addHeader("User-Agent", "PixivAndroidApp/5.0.155 (Android ${android.os.Build.VERSION.RELEASE}; Pixel C)")
-                .addHeader("referer", "https://app-api.pixiv.net/")
-                .get()
-                .url(url)
-                .build()
+            .addHeader(
+                "User-Agent",
+                "PixivAndroidApp/5.0.155 (Android ${android.os.Build.VERSION.RELEASE}; Pixel C)"
+            )
+            .addHeader("referer", "https://app-api.pixiv.net/")
+            .get()
+            .url(url)
+            .build()
         val response = client.newCall(request).execute()
         try {
             withContext(Dispatchers.IO) {
@@ -82,11 +92,18 @@ class ImgDownLoadWorker(var appContext: Context, workerParams: WorkerParameters)
                     out.write(buffer, 0, bytes)
                     bytesCopied += bytes
                     bytes = inputstream.read(buffer)
-                    val lastUpdate1 = workDataOf("max" to lenght, "now" to bytesCopied, "url" to url, "file" to fileName, "title" to title, "id" to id)
+                    val lastUpdate1 = workDataOf(
+                        "max" to lenght,
+                        "now" to bytesCopied,
+                        "url" to url,
+                        "file" to fileName,
+                        "title" to title,
+                        "id" to id
+                    )
                     setProgress(lastUpdate1)
                 }
                 cacheFile.inputStream().copyTo(file.outputStream())
-    cacheFile.deleteOnExit()
+                cacheFile.deleteOnExit()
             }
             val outputData = workDataOf("path" to file.absolutePath)
             return Result.success(outputData)
