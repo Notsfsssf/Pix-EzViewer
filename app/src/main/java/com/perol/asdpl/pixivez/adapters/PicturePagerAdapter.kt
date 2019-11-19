@@ -27,11 +27,12 @@ package com.perol.asdpl.pixivez.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.PagerAdapter
 import com.perol.asdpl.pixivez.fragments.PictureXFragment
 
-class PicturePagerAdapter(fm: FragmentManager, private val fragments: LongArray) : FragmentStatePagerAdapter(fm, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class PicturePagerAdapter(fm: FragmentManager, private val fragments: LongArray) : FragmentPagerAdapter(fm, FragmentPagerAdapter.BEHAVIOR_SET_USER_VISIBLE_HINT) {
 
     override fun getItemPosition(`object`: Any): Int {
         return PagerAdapter.POSITION_NONE

@@ -52,12 +52,8 @@ class AccountActivity : AppCompatActivity() {
                             runBlocking {
                                 AppDataRepository.deleteAllUser()
                             }
-                            startActivity(
-                                Intent(this@AccountActivity, LoginActivity::class.java)
-                                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK) // Clear task stack.
-                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            )
-//                            finish()
+                            startActivity(Intent(this@AccountActivity, LoginActivity::class.java))
+                            finish()
                         }.setNeutralButton("CANCEL") { i, j ->
 
                         }.create().show()

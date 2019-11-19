@@ -27,6 +27,7 @@ package com.perol.asdpl.pixivez.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,6 +49,7 @@ import com.perol.asdpl.pixivez.databinding.FragmentPictureXBinding
 import com.perol.asdpl.pixivez.dialog.CommentDialog
 import com.perol.asdpl.pixivez.objects.LazyV4Fragment
 import com.perol.asdpl.pixivez.objects.Toasty
+import com.perol.asdpl.pixivez.responses.Illust
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.viewmodel.PictureXViewModel
 import kotlinx.android.synthetic.main.fragment_picture_x.*
@@ -106,6 +108,7 @@ class PictureXFragment : LazyV4Fragment() {
                         }
                         pictureXViewModel.getRelative(param1!!)
 
+
                     }
                     it.setViewCommentListen {
                         val commentDialog = CommentDialog.newInstance(pictureXViewModel.illustDetailResponse.value!!.illust.id)
@@ -126,6 +129,25 @@ class PictureXFragment : LazyV4Fragment() {
                     startActivity(intent)
                 }
                 fab.show()
+
+
+                //add more recommended pics to the illusts
+//                var scrollListener = object : RecyclerView.OnScrollListener() {
+//                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//                        super.onScrollStateChanged(recyclerView, newState)
+//                        if (!recyclerView.canScrollVertically(1)){
+//                            disposables.add(retrofitRespository.getIllustRecommendedNext(long).subscribe({ nextIt ->
+//
+//                                val oldRec = aboutPics.value
+//                                val newRec = arrayListOf<Illust>()
+//                                newRec.addAll(oldRec!!)
+//                                newRec.addAll(nextIt.illusts as ArrayList<Illust>)
+//                                aboutPics.value = newRec
+//                            }, {}, {}))
+//                        }
+//                    }
+//                }
+//                recyclerview.addOnScrollListener(scrollListener)
 
             }
         })

@@ -24,6 +24,7 @@
 
 package com.perol.asdpl.pixivez.fragments
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.TypedValue
@@ -63,6 +64,7 @@ class TrendTagFragment : Fragment() {
         }
     }
 
+    @SuppressLint("CheckResult")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(TrendTagViewModel::class.java)
@@ -120,7 +122,12 @@ class TrendTagFragment : Fragment() {
 
     private fun upToPage(query: String) {
         val bundle = Bundle()
-        bundle.putString("searchword", query)
+        var nameQuery = query
+        if (query.contains('-')){
+            val splits = query.split('-')
+            nameQuery = splits[0]
+        }
+        bundle.putString("searchword", nameQuery)
         val intent = Intent(activity!!, SearchResultActivity::class.java)
         intent.putExtras(bundle)
         startActivityForResult(intent, 775)

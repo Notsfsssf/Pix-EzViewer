@@ -130,6 +130,12 @@
     <string name="nav_header_subtitle">PxEzFeedBack@outlook.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="title_activity_illust_recom">IllustRecomActivity</string>
+    <string name="thanksother">
+        Leajen,欣殿,风间仓平,张孟航,给,傲天,折翼天使,不见,freecloud,炫酷的云宝,不会系鞋带的柴犬,得年,猫铳,Cyue,张维杰,清月,黑色阳光,DJMonet,怡桧,Fluency,轻风拂水光,千岛之间,夏,妄二郎,繁华—落幕,二十面体,手抖了?,VIP,通梓,大为,帅千,蕉迟但到,槿,桃花煮雨,毛巾,洋,吾姓朱,昕,他说他是,tra,雨嘉,○+●,浅梦灬深海,mxd,劲,龙战八荒,长歌行,墨黑,晨凯,空想
+,superstarcar,懿,鹏飞,六焰飞鱼,QAQ,夏天,Ag,野,小威,Mercis,LIMBO,VIG曦遥,撸猫,z7ui,*焯森,林,幽魂小瑾,Vincentzyx,WJM,奈,Artorius,moreki,布鲁斯赧,一只贱贱的熊,moreki,翱,DYCxhn,圈,indigle,m*6,*了,*蛙,NATSU,SunREVEN,Keter,程岚,略略略,志毅,墨烯,清DU欢,f*i,*永健,*恒,*泽,玄冰封月,*念,*宇,*外,*魔,*熙,*恒,*迹,路过的你,皮皮弛,*萍,?,韦涛涛,?,*文亮,不可思议的世界,*,l*c,D*h,
+        *柄,s*r,o*n(lightinkqian),天辰,青楼自管弦,不可思议的世界,*文亮,?,怎么就没电了,*色,*e,*喵,不屈意志,alchimie,なつき,灏,猛犸牙,404,横竖都是二,平 安,zwk,*,*子,*机,*环,浪*a,M*Q,智聪,6TBWhite,
+        Stardust,哈哈,晏子敬,君不知,avileng,那你可zun棒哦,小杸,恩文,X*N,*吧,*弦,I*,*月,C*n,*军,*糕,*坑,*白,*梦,*罗,*格,*.,*蒂,S*H,*喵,*l,*莲,Nero,*琦公,明杰,*志强,勒紧裤腰,*泽鸿,bilibili村长,*承
+    </string>
     <string name="title_activity_fling">FlingActivity</string>
     <string name="copyright">
     </string>
@@ -149,20 +155,15 @@
     <string name="appsetting">应用设置</string>
     <string name="completemessage">完善信息</string>
     <string name="logout">登出</string>
-    <string name="account">账号</string>
-    <string name="account_helper">Pixiv ID或邮箱</string>
+    <string name="email">Pixiv邮箱or账号</string>
     <string name="password">密码</string>
     <string name="login">登录</string>
-    <string name="login_help">登录帮助</string>
     <string name="donthaveaccount">没有帐号？</string>
-    <string name="error_blank_account">账号不能为空</string>
-    <string name="error_blank_password">密码不能为空</string>
-    <string name="error_invalid_account_password">账号或密码错误</string>
     <string name="saveformat">保存格式</string>
     <string name="savepath">保存路径</string>
     <string name="secondpath">第二路径</string>
     <string name="startpage">初始页面</string>
-    <string name="try_to_login">尝试登录中</string>
+    <string name="try_to_login">尝试登录</string>
     <string name="pixel">分辨率</string>
     <string name="view">查看</string>
     <string name="bookmark">收藏</string>
@@ -248,7 +249,6 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="errorgif">动图文件似乎出现了损坏，请清除缓存后重试</string>
     <string name="add">添加</string>
     <string name="logoutallaccount">登出所有账户？</string>
     <string name="mypage">我的主页</string>

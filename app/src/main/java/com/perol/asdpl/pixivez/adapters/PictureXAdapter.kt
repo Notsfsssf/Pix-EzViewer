@@ -48,7 +48,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.preference.PreferenceManager
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -76,6 +76,8 @@ import com.perol.asdpl.pixivez.responses.Tag
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.services.Works
+import com.perol.asdpl.pixivez.sql.AppDatabase
+import com.perol.asdpl.pixivez.sql.SearchHistoryEntity
 import com.perol.asdpl.pixivez.viewmodel.PictureXViewModel
 import com.perol.asdpl.pixivez.viewmodel.ProgressInfo
 import com.shehuan.niv.NiceImageView
@@ -204,6 +206,20 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                 setOnTagClickListener { view, position, parent ->
                     val bundle = Bundle()
                     bundle.putString("searchword", s.tags[position].name)
+
+                    /* when clicked tag add it on the search history*/
+                    var appDatabase = AppDatabase.getInstance(PxEZApp.instance)
+                    Observable.create<Int> {
+                        appDatabase.searchhistoryDao()
+                                .insert(SearchHistoryEntity(s.tags[position].name + "-" + s.tags[position].translated_name))
+                        it.onNext(1)
+                    }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).doOnError {
+
+                    }.subscribe {
+
+
+                    }
+
                     val intent = Intent(context, SearchResultActivity::class.java)
                     intent.putExtras(bundle)
                     context.startActivity(intent)
@@ -219,7 +235,7 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
 
     class RelativeHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun updateWithPage(s: AboutPictureAdapter, mContext: Context) {
-            recyclerView.layoutManager = GridLayoutManager(mContext, 3)
+            recyclerView.layoutManager = LinearLayoutManager(mContext)
             recyclerView.adapter = s
 
         }
@@ -548,13 +564,14 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
     var progressBar: CircleProgressBar? = null
     var imageViewGif: ImageView? = null
     val aboutPictureAdapter = AboutPictureAdapter(R.layout.view_aboutpic_item)
+
     fun setRelativeNow(it: ArrayList<Illust>) {
         if (it.isEmpty()) {
             return
         }
         val list = ArrayList<String>()
         it.forEach {
-            list.add(it.image_urls.square_medium)
+            list.add(it.image_urls.medium)
         }
 
         aboutPictureAdapter.setNewData(list)

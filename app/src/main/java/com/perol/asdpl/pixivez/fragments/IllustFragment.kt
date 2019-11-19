@@ -100,12 +100,20 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
             val builder = MaterialAlertDialogBuilder(activity)
             val arrayList = arrayOfNulls<String>(starnum.size)
             for (i in starnum.indices) {
-                arrayList[i] = (param1 + " " + starnum[i].toString() + "users入り")
+                if (starnum[i] == 0)
+                    arrayList[i] = ("$param1 users入り")
+                else
+                    arrayList[i] = (param1 + " " + starnum[i].toString() + "users入り")
             }
+
             builder.setTitle("users入り")
                     .setItems(arrayList
                     ) { dialog, which ->
-                        val query = param1 + " " + starnum[which].toString() + "users入り"
+
+                        val query = if (starnum[which] == 0)
+                            "$param1 users入り"
+                        else
+                            param1 + " " + starnum[which].toString() + "users入り"
                         viewModel.firstsetdata(query, sort[selectSort], null, null)
                         recyclerview_illust.scrollToPosition(0)
                     }
@@ -143,7 +151,7 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
         spinner.onItemSelectedListener = this
     }
 
-    private val starnum = intArrayOf(50000, 30000, 20000, 10000, 5000, 1000, 500, 250, 100)
+    private val starnum = intArrayOf(50000, 30000, 20000, 10000, 5000, 1000, 500, 250, 100,0)
     private var param1: String? = null
     lateinit var searchIllustAdapter: RecommendAdapter
     var sort = arrayOf("date_desc", "date_asc", "popular_desc")
@@ -173,10 +181,10 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
         viewModel = ViewModelProviders.of(this).get(IllustfragmentViewModel::class.java)
 
         viewModel.illusts.observe(this, Observer {
-            updateillust(it)
+            updateillust(filterIllust(it))
         })
         viewModel.addIllusts.observe(this, Observer {
-            addIllust(it)
+            addIllust(filterIllust(it))
         })
         viewModel.nexturl.observe(this, Observer {
             nexturl(it)
@@ -188,6 +196,25 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
             swiperefresh.isRefreshing = it
         })
 
+    }
+
+    private fun filterIllust(it:java.util.ArrayList<Illust>): ArrayList<Illust> {
+        val filteredIllusts  = it
+                .filter {it.tags.all { tag -> tag.name != "shota" }}
+                .filter {it.tags.all { tag -> tag.name != "yaoi" }}
+                .filter {it.tags.all { tag -> tag.name != "BL" }}
+                .filter {it.tags.all { tag -> tag.name != "腐向け" }}
+                .filter {it.tags.all { tag -> tag.name != "やおい" }}
+                .filter {it.tags.all { tag -> tag.name != "腐" }}
+                .filter {it.tags.all { tag -> tag.name != "ホモ" }}
+                .filter {it.tags.all { tag -> tag.name != "ふたなり" }}
+                .filter {it.tags.all { tag -> tag.name != "futanari" }}
+                .filter {it.tags.all { tag -> tag.name != "gay" }}
+                .filter {it.tags.all { tag -> tag.name != "ゲイ" }}
+
+        val illust = arrayListOf<Illust>()
+        illust.addAll(filteredIllusts)
+        return illust
     }
 
     private fun addIllust(it: java.util.ArrayList<Illust>) {

@@ -7,6 +7,8 @@
 <ImageView
     android:id="@+id/imageview_aboutpic"
     android:adjustViewBounds="true"
+    android:scaleType="fitXY"
+    android:padding="2dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="wrap_content" />
 </RelativeLayout>

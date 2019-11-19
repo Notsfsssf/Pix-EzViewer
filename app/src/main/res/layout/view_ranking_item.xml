@@ -22,6 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
+                android:scaleType="fitXY"
                 android:maxHeight="450dp"
                 android:src="?attr/colorOnSurface"
                 />

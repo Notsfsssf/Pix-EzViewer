@@ -24,38 +24,51 @@
 
 package com.perol.asdpl.pixivez.networks
 
-import com.perol.asdpl.pixivez.services.CloudflareService
+import com.perol.asdpl.pixivez.services.OneZeroService
 import okhttp3.Dns
-import okhttp3.HttpUrl.Companion.toHttpUrl
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.net.InetAddress
 
+
 class RubyHttpDns : Dns {
-    val addressList = mutableListOf<InetAddress>()
+
+    val list = ArrayList<InetAddress>()
+
+
     override fun lookup(hostname: String): List<InetAddress> {
-        if (addressList.isNotEmpty()) return addressList
-        val defaultList = listOf(
-            "210.140.131.219",
-            "210.140.131.222",
-            "210.140.131.224"
-        ).map { InetAddress.getByName(it) }
-        val service =
-            ServiceFactory.create<CloudflareService>(CloudflareService.URL_DNS_RESOLVER.toHttpUrl())
-
+        if (list.isNotEmpty()) {
+            return list
+        }
         try {
-            val response = service.queryDns(name = hostname).blockingSingle()
-            response.answer.flatMap { InetAddress.getAllByName(it.data).toList() }.also {
-                addressList.addAll(it)
+            val retrofit: Retrofit = Retrofit.Builder()
+                    .baseUrl("https://1.0.0.1/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+            val response = retrofit.create(OneZeroService::class.java).getItem("application/dns-json", hostname, "A", "false", "false").execute()
+            val oneZeroResponse = response.body()
+            if (oneZeroResponse != null) {
+                if (oneZeroResponse.answer != null) {
+                    if (oneZeroResponse.answer.isNotEmpty())
+                        for (i in oneZeroResponse.answer) {
+                            list.addAll(InetAddress.getAllByName(i.data))
+                        }
+                } else {
+                    list.add(InetAddress.getByName("210.140.131.222"))
+                    list.add(InetAddress.getByName("210.140.131.219"))
+                    list.add(InetAddress.getByName("210.140.131.224"))
+                    return list
+                }
+
             }
+            return list
         } catch (e: Exception) {
-
+            e.printStackTrace()
         }
-
-        return if (addressList.isNotEmpty())
-            addressList
-        else {
-            addressList.addAll(defaultList)
-            addressList
-        }
-
+        list.add(InetAddress.getByName("210.140.131.222"))
+        list.add(InetAddress.getByName("210.140.131.219"))
+        list.add(InetAddress.getByName("210.140.131.224"))
+        return list
     }
+
 }

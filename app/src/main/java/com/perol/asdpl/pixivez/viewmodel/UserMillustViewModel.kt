@@ -29,10 +29,11 @@ import androidx.lifecycle.ViewModel
 import com.perol.asdpl.pixivez.repository.RetrofitRespository
 import com.perol.asdpl.pixivez.responses.Illust
 
-class UserMillustViewModel : ViewModel() {
+class UserMillustViewModel : BaseViewModel() {
     val retrofit = RetrofitRespository.getInstance()
     val data = MutableLiveData<List<Illust>>()
     val adddata = MutableLiveData<List<Illust>>()
+    val shareData = MutableLiveData<List<Illust>>()
     val nexturl = MutableLiveData<String>()
     fun OnLoadMoreListener() {
         if (nexturl.value != null) {

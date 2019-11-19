@@ -69,6 +69,7 @@ class PictureActivity : RinkActivity() {
         val picturePagerAdapter = PicturePagerAdapter(supportFragmentManager, x!!)
         viewpage_picture!!.adapter = picturePagerAdapter
         viewpage_picture!!.currentItem = nowpostion
+        viewpage_picture.offscreenPageLimit = 5
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
@@ -86,6 +87,14 @@ class PictureActivity : RinkActivity() {
             }
         })
 
+        prevBtn.setOnClickListener {
+            if (nowpostion != 0)
+                viewpage_picture.setCurrentItem(nowpostion - 1)
+        }
+        nextBtn.setOnClickListener {
+            if (nowpostion < x?.size!!)
+                viewpage_picture.setCurrentItem(nowpostion + 1)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

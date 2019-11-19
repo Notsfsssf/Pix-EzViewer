@@ -24,6 +24,7 @@
 
 package com.perol.asdpl.pixivez.fragments
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.perol.asdpl.pixivez.repository.RetrofitRespository
@@ -43,6 +44,7 @@ class TrendTagViewModel : ViewModel() {
         resethistory()
     }
 
+    @SuppressLint("CheckResult")
     fun addhistory(searchword: String) {
         Observable.create<Int> {
             appDatabase.searchhistoryDao().insert(SearchHistoryEntity(searchword))

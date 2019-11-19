@@ -24,6 +24,7 @@
 
 package com.perol.asdpl.pixivez.repository
 
+import android.util.Log
 import com.perol.asdpl.pixivez.networks.RestClient
 import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
 import com.perol.asdpl.pixivez.objects.ReFreshFunction
@@ -88,6 +89,13 @@ class RetrofitRespository {
     fun getIllustRecommended(id: Long) = Observable.just(1).flatMap {
         resetToken()
         appApiPixivService.getIllustRecommended(Authorization, id)
+
+    }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).retryWhen(reFreshFunction)
+
+    fun getIllustRecommendedNext(id: Long, offset:Int) = Observable.just(1).flatMap {
+        resetToken()
+        Log.i("auth",Authorization)
+        appApiPixivService.getIllustRecommendedNext(Authorization, id,id,offset)
     }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).retryWhen(reFreshFunction)
 
     fun getIllustRanking(mode: String, pickdata: String?) = Observable.just(1).flatMap {

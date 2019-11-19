@@ -24,6 +24,7 @@
 
 package com.perol.asdpl.pixivez.viewmodel
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import com.perol.asdpl.pixivez.repository.RetrofitRespository
 import com.perol.asdpl.pixivez.responses.BookMarkDetailResponse
@@ -39,6 +40,7 @@ import io.reactivex.schedulers.Schedulers
 import java.io.File
 
 class PictureXViewModel : BaseViewModel() {
+    val newRec = arrayListOf<Illust>()
     val illustDetailResponse = MutableLiveData<IllustDetailResponse?>()
     val retrofitRespository: RetrofitRespository = RetrofitRespository.getInstance()
     val aboutPics = MutableLiveData<ArrayList<Illust>>()
@@ -73,6 +75,7 @@ class PictureXViewModel : BaseViewModel() {
 
     fun loadgif(id: Long) = retrofitRespository.getUgoiraMetadata(id)
 
+    @SuppressLint("CheckResult")
     fun reDownLoadGif(medium: String) {
         val zippath = "${PxEZApp.instance.cacheDir}/${illustDetailResponse.value!!.illust.id}.zip"
         val file = File(zippath)
@@ -137,10 +140,23 @@ class PictureXViewModel : BaseViewModel() {
     fun getRelative(long: Long) {
         disposables.add(retrofitRespository.getIllustRecommended(long).subscribe({
 
-            aboutPics.value = it.illusts as ArrayList<Illust>?
+//            aboutPics.value = it.illusts as ArrayList<Illust>?
+            newRec.addAll(it.illusts as ArrayList<Illust>)
+            disposables.add(retrofitRespository.getIllustRecommendedNext(long,30).subscribe({ nextIt ->
+                newRec.addAll(nextIt.illusts as ArrayList<Illust>)
+                disposables.add(retrofitRespository.getIllustRecommendedNext(long,60).subscribe({ nextIt2 ->
+                    newRec.addAll(nextIt2.illusts as ArrayList<Illust>)
+                    aboutPics.value = newRec
+                }, {}, {}))
+
+            }, {}, {}))
+
         }, {}, {}))
     }
 
+
+
+    @SuppressLint("CheckResult")
     fun FabClick() {
         val id = illustDetailResponse.value!!.illust.id
         val postUnlikeIllust = retrofitRespository.postUnlikeIllust(id)

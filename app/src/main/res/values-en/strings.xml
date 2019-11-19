@@ -150,15 +150,10 @@
     <string name="appsetting">App setting</string>
     <string name="completemessage">Complete Message</string>
     <string name="logout">Log Out</string>
-    <string name="account">Account</string>
-    <string name="account_helper">Pixiv ID or email</string>
+    <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
-    <string name="login_help">Login help</string>
     <string name="donthaveaccount">Dont have?</string>
-    <string name="error_blank_account">Account cannot be blank</string>
-    <string name="error_blank_password">Password cannot be blank</string>
-    <string name="error_invalid_account_password">Incorrect account or password</string>
     <string name="saveformat">Save format</string>
     <string name="savepath">Save path</string>
     <string name="secondpath">Second path</string>
@@ -206,7 +201,7 @@
     <string name="encodinggif">Encoding ugoria</string>
     <string name="privatep">private</string>
     <string name="fetchtags" >fetch tags....</string>
-    <string name="publics">公开</string>
+    <string name="publics">public</string>
     <string name="privates">非公开</string>
     <string name="onlysupportinternalstorage">Only Support Internal Storage</string>
     <string name="pickapath">Select a folder</string>
@@ -222,7 +217,7 @@
     <string name="cancel">cancel</string>
     <string name="mutichoicesave">Multiple selection</string>
     <string name="choice">Choice</string>
-    <string name="errorgif">动图文件似乎出现了损坏，请清除缓存后重试</string>
+    <string name="errorgif">The image file seems to be corrupted. Please clear the cache and try again.</string>
     <string name="add">Add</string>
     <string name="logoutallaccount">Log out of all accounts？</string>
     <string name="mypage">My Page</string>

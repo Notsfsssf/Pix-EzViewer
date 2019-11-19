@@ -24,36 +24,17 @@
 
 package com.perol.asdpl.pixivez.services
 
-import android.app.Activity
 import android.app.Application
 import android.os.Build
-import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import androidx.work.WorkManager
-import com.perol.asdpl.pixivez.BuildConfig
 import com.perol.asdpl.pixivez.objects.CrashHandler
 import java.io.File
 
 
 class PxEZApp : Application() {
-    //    override fun attachBaseContext(base: Context) {
-//        val locale = when (PxEZApp.language) {
-//            1 -> {
-//                Locale.ENGLISH
-//            }
-//            2 -> {
-//                Locale.TRADITIONAL_CHINESE
-//            }
-//            else -> {
-//                Locale.SIMPLIFIED_CHINESE
-//            }
-//        }
-//        val context = MyContextWrapper.wrap(base, locale)
-//        super.attachBaseContext(context)
-//    }
     override fun onCreate() {
         super.onCreate()
         instance = this
@@ -72,55 +53,25 @@ class PxEZApp : Application() {
             resources.configuration.locale.language;
         }
 
+
+
         WorkManager.getInstance(this).pruneWork()
-
-        if (BuildConfig.DEBUG) {
-            registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
-                override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-                    Log.v(TAG, "${activity.simpleName}: onActivityCreated.")
-                }
-
-                override fun onActivityStarted(activity: Activity) {
-                    Log.v(TAG, "${activity.simpleName}: onActivityStarted.")
-                }
-
-                override fun onActivityResumed(activity: Activity) {
-                    Log.v(TAG, "${activity.simpleName}: onActivityResumed.")
-                }
-
-                override fun onActivityPaused(activity: Activity) {
-                    Log.v(TAG, "${activity.simpleName}: onActivityPaused.")
-                }
-
-                override fun onActivityStopped(activity: Activity) {
-                    Log.v(TAG, "${activity.simpleName}: onActivityStopped.")
-                }
-
-                override fun onActivityDestroyed(activity: Activity) {
-                    Log.v(TAG, "${activity.simpleName}: onActivityDestroyed.")
-                }
-
-                override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
-                    //
-                }
-            })
-        }
     }
 
-    private val Activity.simpleName get() = javaClass.simpleName
 
     companion object {
         @JvmStatic
         var storepath = Environment.getExternalStorageDirectory().absolutePath + File.separator + "PxEz"
         @JvmStatic
-        var locale = "zh"
+        var locale = "en"
         @JvmStatic
-        var language: Int = 0
+        var language: Int = 1
         @JvmStatic
         var animationEnable: Boolean = false
         lateinit var instance: PxEZApp
         var autochecked = false
 
-        private const val TAG = "PxEZApp"
     }
+
+
 }

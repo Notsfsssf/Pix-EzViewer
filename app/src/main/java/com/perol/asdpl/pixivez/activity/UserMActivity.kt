@@ -116,11 +116,10 @@ class UserMActivity : RinkActivity() {
             viewModel.onFabclick(id.toLong())
         }
         fab.setOnLongClickListener {
-            Toasty.info(applicationContext, "Private....", Toast.LENGTH_SHORT).show()
             viewModel.onFabLongClick(id.toLong())
             true
         }
-        val shareLink = "https://www.pixiv.net/member.php?id=$id"
+        val shareLink = "https://www.pixiv.net/member.php?id=$id";
         imageview_useruserimage.setOnClickListener {
             val array = arrayOf("Link", "User Image")
             MaterialAlertDialogBuilder(this).setTitle("Link").setItems(array) { i, which ->

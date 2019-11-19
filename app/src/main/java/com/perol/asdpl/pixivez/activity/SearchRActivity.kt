@@ -40,7 +40,22 @@ import com.perol.asdpl.pixivez.objects.ThemeUtil
 import com.perol.asdpl.pixivez.viewmodel.TagsTextViewModel
 import kotlinx.android.synthetic.main.activity_search_r.*
 
-class SearchRActivity : RinkActivity() {
+class SearchRActivity : RinkActivity(), SearchRActivityFragment.OnFragmentInteractionListener {
+    var lastSearchQuery: String = ""
+    override fun onFragmentInteraction(search: String) {
+
+        if (tablayout_searchm.selectedTabPosition == 0){
+            if (lastSearchQuery == "")
+                lastSearchQuery = "$search "
+            else
+                lastSearchQuery += "$search "
+            searchview_searchm.setQuery(lastSearchQuery,false)
+        }else{
+            searchview_searchm.setQuery(search,false)
+        }
+
+    }
+
     lateinit var searchRActivityFragment: SearchRActivityFragment
     lateinit var trendTagFragment: TrendTagFragment
     lateinit var tagsTextViewModel: TagsTextViewModel
@@ -63,6 +78,7 @@ class SearchRActivity : RinkActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && data != null) {
             val word = data.getStringExtra("word")
+//            word += " R-18"
             searchview_searchm.setQuery(word, false)
         }
     }
@@ -113,8 +129,9 @@ class SearchRActivity : RinkActivity() {
                     when (tablayout_searchm.selectedTabPosition) {
                         0 -> {
 
-                            trendTagViewModel.addhistory(query)
-                            uptopage(query)
+                            var trimmedQuery = query.substring(0,query.length -1)
+                            trendTagViewModel.addhistory(trimmedQuery)
+                            uptopage(trimmedQuery)
                         }
                         1 -> {
                             for (i in query) {
@@ -150,8 +167,12 @@ class SearchRActivity : RinkActivity() {
                 if (tablayout_searchm.selectedTabPosition != 0) {
                     return true
                 }
-                if (!newText.isNullOrBlank())
-                    tagsTextViewModel.onQueryTextChange(newText)
+                if (!newText.isNullOrBlank()){
+                    var searchText = newText.replace(lastSearchQuery, "")
+                    tagsTextViewModel.onQueryTextChange(searchText)
+                }
+                    //find previous query and remove to search for new query
+
                 supportFragmentManager.beginTransaction().hide(trendTagFragment).show(searchRActivityFragment).commit()
                 return true
             }
@@ -169,3 +190,4 @@ class SearchRActivity : RinkActivity() {
 
     }
 }
+

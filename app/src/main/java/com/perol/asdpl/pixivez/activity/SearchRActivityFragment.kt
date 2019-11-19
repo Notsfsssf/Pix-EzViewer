@@ -24,6 +24,7 @@
 
 package com.perol.asdpl.pixivez.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -57,12 +58,13 @@ class SearchRActivityFragment : Fragment() {
         recyclerview.layoutManager = LinearLayoutManager(activity)
         recyclerview.adapter = tagsTextAdapter
         tagsTextAdapter.setOnItemClickListener { adapter, view, position ->
-            tagsTextViewModel.addhistory(tags[position].name)
-            val bundle = Bundle()
-            bundle.putString("searchword", tags[position].name)
-            val intent = Intent(activity!!, SearchResultActivity::class.java)
-            intent.putExtras(bundle)
-            startActivityForResult(intent, 775)
+            tagsTextViewModel.addhistory(tags[position].name+"-"+tags[position].translated_name)
+            this.mListener!!.onFragmentInteraction(tags[position].name)
+//            val bundle = Bundle()
+//            bundle.putString("searchword", tags[position].name)
+//            val intent = Intent(activity!!, SearchResultActivity::class.java)
+//            intent.putExtras(bundle)
+//            startActivityForResult(intent, 775)
         }
     }
 
@@ -76,5 +78,27 @@ class SearchRActivityFragment : Fragment() {
             tags.addAll(it)
         })
 
+    }
+    private var mListener: OnFragmentInteractionListener? = null
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnFragmentInteractionListener) {
+            mListener = context
+        } else {
+            throw RuntimeException(context!!.toString() + " must implement OnFragmentInteractionListener")
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        mListener = null
+    }
+    /**
+     * Here we define the methods that we can fire off
+     * in our parent Activity once something has changed
+     * within the fragment.
+     */
+    interface OnFragmentInteractionListener {
+        fun onFragmentInteraction(search: String)
     }
 }

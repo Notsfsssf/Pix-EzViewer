@@ -132,6 +132,9 @@ interface AppApiPixivService {
     @GET("/v2/illust/related?filter=for_android")
     fun getIllustRecommended(@Header("Authorization") paramString: String, @Query("illust_id") paramLong: Long): Observable<RecommendResponse>
 
+    @GET("/v2/illust/related?filter=for_android")
+    fun getIllustRecommendedNext(@Header("Authorization") paramString: String, @Query("illust_id") paramLong: Long, @Query("seed_illust_ids%5B0%5D") longIdSame: Long, @Query("offset") offset:Int): Observable<RecommendResponse>
+
     @GET("/v1/manga/recommended?filter=for_android")
     fun getRecommendedMangaList(@Header("Authorization") paramString1: String, @Query("include_ranking_illusts") paramBoolean: Boolean, @Query("bookmark_illust_ids") paramString2: String): Observable<RecommendResponse>
 

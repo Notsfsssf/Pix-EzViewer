@@ -24,42 +24,56 @@
 
 package com.perol.asdpl.pixivez.networks
 
-import com.perol.asdpl.pixivez.services.CloudflareService
+import com.perol.asdpl.pixivez.services.OneZeroService
 import okhttp3.Dns
-import okhttp3.HttpUrl.Companion.toHttpUrl
-import retrofit2.HttpException
-import java.io.IOException
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.net.InetAddress
-import java.util.*
 
 class ImageHttpDns : Dns {
 
-    @Throws(IOException::class)
+    val list = ArrayList<InetAddress>()
+
+
     override fun lookup(hostname: String): List<InetAddress> {
-        val addressList = mutableListOf<InetAddress>()
-        val defaultList = listOf("210.140.92.139", "210.140.92.141", "210.140.92.144").map { InetAddress.getByName(it) }
-
-        val service = ServiceFactory.create<CloudflareService>(CloudflareService.URL_DNS_RESOLVER.toHttpUrl())
-
-        try {
-            val response = service.queryDns(name = hostname).blockingSingle()
-
-            response.answer.flatMap { InetAddress.getAllByName(it.data).toList() }.also {
-                addressList.addAll(it)
-            }
-        } catch (e: NoSuchElementException) {
-            // Catch and ignore.
-        } catch (e: HttpException) {
-            // Catch and ignore.
-        } catch (e: IOException) {
-            // Logging and rethrow.
-//            throw e // Should be handled by the use, rethrow.
+        if (list.isNotEmpty()) {
+            return list
         }
+        try {
+            val retrofit: Retrofit = Retrofit.Builder()
+                    .baseUrl("https://1.0.0.1/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+            val response = retrofit.create(OneZeroService::class.java).getItem("application/dns-json", hostname, "A", "false", "false").execute()
+            val oneZeroResponse = response.body()
+            if (oneZeroResponse != null) {
+                if (oneZeroResponse.answer != null) {
+                    if (oneZeroResponse.answer.isNotEmpty())
+                        for (i in oneZeroResponse.answer) {
+                            list.addAll(InetAddress.getAllByName(i.data))
+                        }
+                } else {
+                    list.addAll(Dns.SYSTEM.lookup(hostname))
+                    if (list.isEmpty()) {
+                        list.add(InetAddress.getByName("210.140.92.139"))
+                        list.add(InetAddress.getByName("210.140.92.141"))
+                        list.add(InetAddress.getByName("210.140.92.144"))
+                    }
+                    return list
+                }
 
-        if (addressList.isEmpty()) addressList.addAll(Dns.SYSTEM.lookup(hostname))
-
-        if (addressList.isEmpty()) addressList.addAll(defaultList)
-
-        return addressList
+            }
+            return list
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        list.addAll(Dns.SYSTEM.lookup(hostname))
+        if (list.isEmpty()) {
+            list.add(InetAddress.getByName("210.140.92.139"))
+            list.add(InetAddress.getByName("210.140.92.141"))
+            list.add(InetAddress.getByName("210.140.92.144"))
+        }
+        return list
     }
+
 }
