@@ -75,13 +75,13 @@ data class ImageUrls(
 
 @Parcelize
 data class MetaSinglePage(
-        val original_image_url: String
+    val original_image_url: String?
 ) : Parcelable
 
 @Parcelize
 data class Tag(
-        val name: String,
-        val translated_name: String
+    val name: String,
+    val translated_name: String? = null
 ) : Parcelable
 
 @Parcelize

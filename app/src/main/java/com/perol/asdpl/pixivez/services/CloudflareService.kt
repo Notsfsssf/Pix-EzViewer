@@ -30,6 +30,6 @@ interface CloudflareService {
 
     companion object {
         const val URL = "https://api.cloudflare.com/"
-        const val URL_DNS_RESOLVER = "https://cloudflare-dns.com/" // Or https://1.0.0.1/.
+        const val URL_DNS_RESOLVER = "https://1.0.0.1/" // Or https://1.0.0.1/.
     }
 }

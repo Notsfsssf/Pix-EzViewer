@@ -47,7 +47,8 @@ class PictureXViewModel : BaseViewModel() {
     var tags = MutableLiveData<BookMarkDetailResponse.BookmarkDetailBean>()
     val progress = MutableLiveData<ProgressInfo>()
     val downloadGifSuccess = MutableLiveData<Boolean>()
-    val appDatabase = AppDatabase.getInstance(PxEZApp.instance)
+    val startPostPone = MutableLiveData<Boolean>()
+    private val appDatabase = AppDatabase.getInstance(PxEZApp.instance)
     @Throws(Exception::class)
     fun downloadzip(medium: String) {
 
@@ -112,7 +113,8 @@ class PictureXViewModel : BaseViewModel() {
     }
 
     fun firstGet(toLong: Long, illust: Illust?) {
-        if (illust == null)
+        if (illust == null) {
+            startPostPone.value = true
             disposables.add(retrofitRespository.getIllust(toLong).subscribe({ it ->
                 illustDetailResponse.value = it
                 likeIllust.value = it!!.illust.is_bookmarked
@@ -125,11 +127,28 @@ class PictureXViewModel : BaseViewModel() {
                         appDatabase.illusthistoryDao().insert(IllustBeanEntity(null, it.illust.image_urls.square_medium, it.illust.id))
                 }
             }, {}, {}))
+        }
         else {
+
             illustDetailResponse.value = IllustDetailResponse().also {
                 it.illust = illust
             }
             likeIllust.value = illust.is_bookmarked
+            Observable.just(1).observeOn(Schedulers.io()).subscribe { ot ->
+                val ee = appDatabase.illusthistoryDao().getHistoryOne(illust.id)
+                if (ee.isNotEmpty()) {
+                    appDatabase.illusthistoryDao().deleteOne(ee[0])
+                    appDatabase.illusthistoryDao()
+                        .insert(IllustBeanEntity(null, illust.image_urls.square_medium, illust.id))
+                } else
+                    appDatabase.illusthistoryDao().insert(
+                        IllustBeanEntity(
+                            null,
+                            illust.image_urls.square_medium,
+                            illust.id
+                        )
+                    )
+            }.add()
         }
 
     }

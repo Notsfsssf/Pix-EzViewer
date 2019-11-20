@@ -25,15 +25,16 @@
 package com.perol.asdpl.pixivez.adapters
 
 import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Pair
 import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.bumptech.glide.request.target.ImageViewTarget
@@ -69,9 +70,20 @@ class RankingAdapter(layoutResId: Int, data: List<Illust>?, private val R18on: B
         // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         if (PxEZApp.animationEnable) {
             val mainimage = view!!.findViewById<View>(R.id.item_img)
-            val option = ActivityOptionsCompat
-                    .makeSceneTransitionAnimation(mContext as Activity, mainimage, "mainimage")
-            ContextCompat.startActivity(mContext, intent, option.toBundle())
+            val title = view.findViewById<View>(R.id.textview_title)
+            val userImage = view.findViewById<View>(R.id.imageview_user)
+
+            val options = ActivityOptions.makeSceneTransitionAnimation(
+                mContext as Activity,
+                Pair.create(
+                    mainimage,
+                    "mainimage"
+                ),
+                Pair.create(title, "title"),
+                Pair.create(userImage, "userimage")
+            )
+
+            ContextCompat.startActivity(mContext, intent, options.toBundle())
         } else ContextCompat.startActivity(mContext, intent, null)
     }
 

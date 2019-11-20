@@ -60,7 +60,6 @@ import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.dinuscxj.progressbar.CircleProgressBar
-import com.github.ybq.android.spinkit.SpinKitView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.perol.asdpl.pixivez.R
@@ -296,7 +295,6 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
         if (holder is PictureViewHolder) {
 
             val imageView = holder.itemView.findViewById<ImageView>(R.id.imageview_pic)
-            val progressBar = holder.itemView.findViewById<SpinKitView>(R.id.progressbar_loadingx)
             GlideApp.with(imageView).load(imageUrls[position]).placeholder(R.color.white).transition(withCrossFade()).listener(object : RequestListener<Drawable> {
 
                 override fun onLoadFailed(e: GlideException?, model: Any, target: Target<Drawable>, isFirstResource: Boolean): Boolean {
@@ -305,8 +303,6 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                 }
 
                 override fun onResourceReady(resource: Drawable, model: Any, target: Target<Drawable>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
-
-                    progressBar.visibility = View.GONE
                     if (position == 0) {
                         mListen.invoke()
                     }
@@ -364,7 +360,7 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                                         }
                                     }
                                     .setNegativeButton(android.R.string.cancel) { dialog, id -> }
-                                    .setNeutralButton("全选") { dialog, id ->
+                                .setNeutralButton("全选") { _, id ->
                                         for (i in boolean.indices) {
                                             boolean[i] = true
                                         }
@@ -374,7 +370,7 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                                             mSelectedItems.add(i)
                                         }
                                         builder.setMultiChoiceItems(showlist.toTypedArray(), boolean
-                                        ) { dialog, which, isChecked ->
+                                        ) { _, which, isChecked ->
                                             if (isChecked) {
                                                 // If the user checked the item, add it to the selected items
 
@@ -403,7 +399,7 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                     bundle.putInt("num", position)
                     val arrayList = ArrayList<String>()
                     if (data.meta_pages.isEmpty()) {
-                        arrayList.add(data.meta_single_page.original_image_url)
+                        arrayList.add(data.meta_single_page.original_image_url!!)
                     } else {
                         data.meta_pages.map {
                             arrayList.add(it.image_urls.original)

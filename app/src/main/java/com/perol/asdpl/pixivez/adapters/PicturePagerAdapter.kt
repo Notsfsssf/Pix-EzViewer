@@ -30,8 +30,14 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.PagerAdapter
 import com.perol.asdpl.pixivez.fragments.PictureXFragment
+import com.perol.asdpl.pixivez.responses.Illust
 
-class PicturePagerAdapter(fm: FragmentManager, private val fragments: LongArray) : FragmentStatePagerAdapter(fm, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class PicturePagerAdapter(
+    fm: FragmentManager,
+    private val fragments: LongArray,
+    val illust: Illust?,
+    val nowpostion: Int
+) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItemPosition(`object`: Any): Int {
         return PagerAdapter.POSITION_NONE
@@ -39,7 +45,11 @@ class PicturePagerAdapter(fm: FragmentManager, private val fragments: LongArray)
 
     override fun getItem(position: Int): Fragment {
 
-        return PictureXFragment.newInstance(fragments[position])
+        return PictureXFragment.newInstance(
+            fragments[position], if (position == nowpostion) {
+                illust
+            } else null
+        )
     }
 
     override fun getCount(): Int {

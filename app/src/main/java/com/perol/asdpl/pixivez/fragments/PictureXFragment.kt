@@ -48,6 +48,7 @@ import com.perol.asdpl.pixivez.databinding.FragmentPictureXBinding
 import com.perol.asdpl.pixivez.dialog.CommentDialog
 import com.perol.asdpl.pixivez.objects.LazyV4Fragment
 import com.perol.asdpl.pixivez.objects.Toasty
+import com.perol.asdpl.pixivez.responses.Illust
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.viewmodel.PictureXViewModel
 import kotlinx.android.synthetic.main.fragment_picture_x.*
@@ -67,11 +68,12 @@ private const val ARG_PARAM1 = "param1"
 class PictureXFragment : LazyV4Fragment() {
 
     private var param1: Long? = null
-    lateinit var pictureXViewModel: PictureXViewModel
+    private var param2: Illust? = null
+    private lateinit var pictureXViewModel: PictureXViewModel
     override fun loadData() {
 //        val item = activity?.intent?.extras
 //        val illust = item?.getParcelable<Illust>(param1.toString())
-        pictureXViewModel.firstGet(param1!!, null)
+        pictureXViewModel.firstGet(param1!!, param2)
 
 
     }
@@ -86,20 +88,22 @@ class PictureXFragment : LazyV4Fragment() {
 
     }
 
-    var pictureXAdapter: PictureXAdapter? = null
+    private var pictureXAdapter: PictureXAdapter? = null
     private fun initViewModel() {
 
         pictureXViewModel = ViewModelProviders.of(this).get(PictureXViewModel::class.java)
+        pictureXViewModel.startPostPone.observe(this, Observer {
+            activity?.supportStartPostponedEnterTransition()
+        })
         pictureXViewModel.illustDetailResponse.observe(this, Observer {
             if (it != null) {
                 rootBinding.illust = it.illust
                 if (it.illust.meta_pages.isNotEmpty())
                     position = it.illust.meta_pages.size
                 else position = 1
-
                 pictureXAdapter = PictureXAdapter(pictureXViewModel, it.illust, activity!!).also {
                     it.setListener {
-                        //  startPostponedEnterTransition()
+                        activity?.supportStartPostponedEnterTransition()
                         if (!hasMoved) {
                             recyclerview.scrollToPosition(0)
                             (recyclerview.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(0, 0)
@@ -247,6 +251,7 @@ class PictureXFragment : LazyV4Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getLong(ARG_PARAM1)
+            param2 = it.getParcelable("illust")
         }
         initViewModel()
     }
@@ -281,10 +286,11 @@ class PictureXFragment : LazyV4Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: Long) =
+        fun newInstance(param1: Long, illust: Illust?) =
                 PictureXFragment().apply {
                     arguments = Bundle().apply {
                         putLong(ARG_PARAM1, param1)
+                        putParcelable("illust", illust)
                     }
                 }
     }

@@ -25,12 +25,13 @@
 package com.perol.asdpl.pixivez.adapters
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
-import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
@@ -56,9 +57,18 @@ class ZoomPagerAdapter(private val context: Context, private val arrayList: Arra
         val view = layoutInflater.inflate(R.layout.view_pager_zoom, container, false)
         val photoView = view.findViewById<SubsamplingScaleImageView>(R.id.photoview_zoom)
         photoView.isEnabled = true
-        GlideApp.with(context).asFile().load(arrayList[position]).skipMemoryCache(true).into(object : SimpleTarget<File>() {
+        GlideApp.with(context).asFile().load(arrayList[position]).skipMemoryCache(true)
+            .into(object : CustomTarget<File>() {
+                override fun onLoadCleared(placeholder: Drawable?) {
+
+                }
+
             override fun onResourceReady(resource: File, transition: Transition<in File>?) {
                 photoView.setImage(ImageSource.uri(Uri.fromFile(resource)))
+                photoView.setOnLongClickListener {
+
+                    true
+                }
             }
         })
         container.addView(view)

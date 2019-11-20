@@ -89,7 +89,7 @@ class Works {
                     }
                 }
             } else {
-                url = illust.meta_single_page.original_image_url
+                url = illust.meta_single_page.original_image_url!!
                 type = if (url.contains("png")) {
                     ".png"
                 } else ".jpg"

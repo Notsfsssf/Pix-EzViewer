@@ -34,6 +34,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_margin="8dp"
                 app:border_color='?attr/colorPrimary'
+                android:transitionName="userimage"
                 app:border_width="4dp"
                 app:is_circle="true" />
 
@@ -46,6 +47,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_toEndOf="@id/imageView5"
                 android:text="@{illust.title}"
+                android:transitionName="title"
                 android:textColor="?attr/colorPrimary"
                 android:textIsSelectable="true"
                 android:textSize="14sp" />
