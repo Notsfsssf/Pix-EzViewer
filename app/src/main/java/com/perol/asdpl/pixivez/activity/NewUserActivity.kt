@@ -96,7 +96,6 @@ class NewUserActivity : RinkActivity() {
                                                 sharedPreferencesServices!!.setString("Refresh_token", pixivOAuthResponse.response.refresh_token)
                                                 sharedPreferencesServices!!.setString("Authorization", "Bearer " + pixivOAuthResponse.response.access_token)
                                                 sharedPreferencesServices!!.setString("userid", pixivOAuthResponse.response.user.id.toString())
-                                                sharedPreferencesServices!!.setBoolean("islogin", true)
                                             }
 
                                             override fun onError(e: Throwable) {

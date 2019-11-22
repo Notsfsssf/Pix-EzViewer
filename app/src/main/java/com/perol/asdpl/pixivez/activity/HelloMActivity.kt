@@ -32,34 +32,31 @@ import android.os.Bundle
 import android.os.Environment
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProviders
 import androidx.preference.PreferenceManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.HelloMViewPagerAdapter
-import com.perol.asdpl.pixivez.databinding.ActivityHelloMBinding
 import com.perol.asdpl.pixivez.objects.ThemeUtil
-import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.Works
 import com.perol.asdpl.pixivez.sql.UserEntity
-import com.perol.asdpl.pixivez.viewmodel.HelloMViewModel
 import kotlinx.android.synthetic.main.app_bar_hello_m.*
 import kotlinx.android.synthetic.main.content_hello_m.*
-import kotlinx.android.synthetic.main.nav_header_hello_m.*
 import kotlinx.coroutines.runBlocking
 import java.io.File
 
 
 class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedListener {
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
@@ -68,33 +65,8 @@ class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedLi
             }
         }
     }
-/*    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == 789) {
-                recreate()
-            }
-        }
-    }
 
-    override fun onProfileChanged(view: View?, profile: IProfile<*>, current: Boolean): Boolean {
-        when (profile.identifier) {
-            -100L -> {
-                startActivity(Intent(this, AccountActivity::class.java))
-            }
-            else -> {
-                sharedPreferencesServices.setInt("usernum", profile.identifier.toInt())
-                recreate()
-            }
-        }
-        return true
-    }
 
-    override fun onNavigationClickListener(clickedView: View): Boolean {
-        return false
-    }*/
-
-    private var activityHelloMBinding: ActivityHelloMBinding? = null
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -103,15 +75,13 @@ class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedLi
         when (requestCode) {
             3000 -> {
                 val length = grantResults.size
-                var re_request = false
+                var reRequest = false
                 for (i in 0 until length) {
-                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-
-                    } else {
-                        re_request = true
+                    if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                        reRequest = true
                     }
                 }
-                if (re_request) {
+                if (reRequest) {
                     Toast.makeText(this, "未获得授权，请自行到系统设置进行授权", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -127,7 +97,7 @@ class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedLi
                 startActivity(Intent(applicationContext, SaucenaoActivity::class.java))
             }
             R.id.nav_slideshow -> {
-                clearn()
+                clean()
             }
             R.id.nav_manage -> {
                 val intent = Intent(applicationContext, SettingActivity::class.java)
@@ -167,7 +137,7 @@ class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedLi
                 getString(R.string.again_to_exit),
                 Toast.LENGTH_SHORT
             ).show();
-            exitTime = System.currentTimeMillis();
+            exitTime = System.currentTimeMillis()
         } else {
             finish()
         }
@@ -179,135 +149,18 @@ class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedLi
 
         var allUser = ArrayList<UserEntity>()
         runBlocking {
-            allUser = ArrayList<UserEntity>(AppDataRepository.getAllUser())
+            allUser = ArrayList(AppDataRepository.getAllUser())
 
         }
-        if (allUser.isEmpty() || allUser[0].username == "olduser") {
+        if (allUser.isEmpty()) {
             startActivity(Intent(this@HelloMActivity, LoginActivity::class.java))
             finish()
             return
         }
         ThemeUtil.themeInit(this)
-        activityHelloMBinding = DataBindingUtil.setContentView(this, R.layout.app_bar_hello_m)
+        setContentView(R.layout.app_bar_hello_m)
         setSupportActionBar(toolbar)
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
-/*        DrawerImageLoader.init(object : AbstractDrawerImageLoader() {
-            override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable, tag: String?) {
-                val url = "https://" + uri.host + uri.path
-                println(url)
-                GlideApp.with(imageView).load(url).error(R.drawable.ai).optionalCenterCrop().into(imageView)
-            }
-        })
-        val typedValue = TypedValue();
-        theme.resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
-        header = AccountHeaderBuilder()
-                .withActivity(this)
-                .withOnAccountHeaderListener(this)
-                .build()
-        header.headerBackgroundView.setBackgroundColor(typedValue.data)
-        drawer = DrawerBuilder().withActivity(this)
-                .withAccountHeader(header)
-                .addDrawerItems(
-                        PrimaryDrawerItem()
-                                .withIdentifier(6)
-                                .withName(R.string.mypage)
-                                .withSelectable(false)
-                                .withIcon(ContextCompat.getDrawable(this, R.drawable.ic_action_my_white))
-                                .withIconTintingEnabled(true),
-                        PrimaryDrawerItem()
-                                .withIdentifier(0)
-                                .withName(R.string.searchsource)
-                                .withSelectable(false)
-                                .withIcon(ContextCompat.getDrawable(this, R.drawable.ic_action_logo))
-                                .withIconTintingEnabled(true),
-                        PrimaryDrawerItem()
-                                .withIdentifier(2)
-                                .withName(R.string.cleancatche)
-                                .withSelectable(false)
-                                .withIcon(ContextCompat.getDrawable(this, R.drawable.ic_action_lajitong))
-                                .withIconTintingEnabled(true),
-                        PrimaryDrawerItem()
-                                .withIdentifier(3)
-                                .withName(R.string.historyrecord)
-                                .withSelectable(false)
-                                .withIcon(ContextCompat.getDrawable(this, R.drawable.ic_action_shijian))
-                                .withIconTintingEnabled(true),
-                        PrimaryDrawerItem()
-                                .withIdentifier(4)
-                                .withName(R.string.themecoloful)
-                                .withSelectable(false)
-                                .withIcon(ContextCompat.getDrawable(this, R.drawable.ic_action_theme))
-                                .withIconTintingEnabled(true),
-                        PrimaryDrawerItem()
-                                .withIdentifier(5)
-                                .withName(R.string.appsetting)
-                                .withSelectable(false)
-                                .withIcon(ContextCompat.getDrawable(this, R.drawable.ic_action_share_setting))
-                                .withIconTintingEnabled(true)
-                )
-                .addStickyDrawerItems(
-                        PrimaryDrawerItem()
-                                .withIcon(ContextCompat.getDrawable(this, R.drawable.ic_action_download))
-                                .withName(R.string.download_progress)
-                                .withSelectable(false)
-                                .withIconTintingEnabled(true)
-                                .withIdentifier(888L)
-                )
-                .withSelectedItem(-1)
-                .withTranslucentStatusBar(false)
-                .withToolbar(toolbar).build()
-        val toggle = ActionBarDrawerToggle(
-                this, drawer.drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        toggle.setHomeAsUpIndicator(R.drawable.ic_action_logo)
-//        toggle.isDrawerIndicatorEnabled = false
-        toggle.setToolbarNavigationClickListener {
-            drawer.drawerLayout.openDrawer(GravityCompat.START)
-        }
-        drawer.drawerLayout.addDrawerListener(toggle)
-        drawer.onDrawerNavigationListener = this
-        drawer.onDrawerItemClickListener = object : Drawer.OnDrawerItemClickListener {
-            override fun onItemClick(view: View?, position: Int, drawerItem: IDrawerItem<*>): Boolean {
-                Log.d("position", position.toString())
-
-                when (position) {
-                    1 -> {
-                        runBlocking {
-                            val intent = Intent(this@HelloMActivity, UserMActivity::class.java)
-                            intent.putExtra("data", AppDataRepository.getUser().userid)
-                            startActivity(intent)
-
-                        }
-                        return true
-                    }
-                    2 -> {
-                        startActivity(Intent(applicationContext, SaucenaoActivity::class.java))
-                    }
-                    3 -> {
-                        clearn()
-                    }
-                    4 -> {
-                        val intent = Intent(applicationContext, HistoryMActivity::class.java)
-                        startActivity(intent)
-                    }
-                    5 -> {
-                        val intent = Intent(applicationContext, ThemeActivity::class.java)
-                        startActivityForResult(intent, 789)
-                    }
-                    6 -> {
-                        val intent = Intent(applicationContext, SettingActivity::class.java)
-                        startActivity(intent)
-                    }
-
-
-                }
-                if (drawerItem.identifier == 888L) {
-                    startActivity(Intent(this@HelloMActivity, ProgressActivity::class.java))
-                }
-                return true
-            }
-
-        }
-        toggle.syncState()*/
+        supportActionBar?.setDisplayShowTitleEnabled(false)
         val toggle = ActionBarDrawerToggle(
             this,
             drawer_layout,
@@ -315,7 +168,7 @@ class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedLi
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )
-        toggle.setHomeAsUpIndicator(ContextCompat.getDrawable(this, R.drawable.ic_action_logo))
+        toggle.setHomeAsUpIndicator(R.drawable.ic_action_logo)
         toggle.isDrawerIndicatorEnabled = true
         toggle.setToolbarNavigationClickListener {
             drawer_layout.openDrawer(GravityCompat.START)
@@ -328,10 +181,32 @@ class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedLi
         permissionList.add(Manifest.permission.READ_EXTERNAL_STORAGE)
         checkAndRequestPermissions(permissionList)
         initView()
-        initData()
         viewpager_hellom.currentItem =
             PreferenceManager.getDefaultSharedPreferences(this).getString("firstpage", "0")?.toInt()
                 ?: 0
+
+
+        val view = nav_view.inflateHeaderView(R.layout.nav_header_hello_m)
+        val imageview = view.findViewById<ImageView>(R.id.imageView)
+        val headtext = view.findViewById<TextView>(R.id.headtext)
+        val textView = view.findViewById<TextView>(R.id.textView)
+        var nowNum = PreferenceManager.getDefaultSharedPreferences(this).getInt("usernum", 0)
+        if (nowNum >= allUser.size) {
+            nowNum = 0
+        }
+        GlideApp.with(imageview.context)
+            .load(allUser[nowNum].userimage)
+            .circleCrop().into(imageview)
+        imageview.setOnClickListener {
+            runBlocking {
+                val intent = Intent(this@HelloMActivity, UserMActivity::class.java)
+                intent.putExtra("data", AppDataRepository.getUser().userid)
+                startActivity(intent)
+            }
+        }
+
+        headtext.text = allUser[nowNum].username
+        textView.text = allUser[nowNum].useremail
 
         Works.checkUpdate(this)
     }
@@ -378,69 +253,13 @@ class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedLi
         }
     }
 
-    private fun initData() {
-        val viewmodel = ViewModelProviders.of(this).get(HelloMViewModel::class.java)
-        viewmodel.userBean.observe(this, androidx.lifecycle.Observer {
-            userBean(it)
-        })
-        viewmodel.first()
-    }
-
-    private fun userBean(it: List<UserEntity>) {
-        if (it.isNotEmpty()) {
-
-/*            val profileSettingDrawerItem = ProfileSettingDrawerItem()
-                    .withName(R.string.setting)
-                    .withIdentifier(-100L)
-                    .withIcon(ContextCompat.getDrawable(this, R.drawable.ic_action_share_setting))
-                    .withIconTinted(true)
-
-            header.clear()
-            header.addProfile(profileSettingDrawerItem, header.profiles?.size ?: 0)
-
-
-
-
-            runBlocking {
-                for (i in it.indices) {
-                    header.addProfile(
-                            ProfileDrawerItem()
-                                    .withName(it[i].username)
-                                    .withIcon(it[i].userimage)
-                                    .withEmail(it[i].useremail)
-                                    .withIdentifier(i.toLong()), i)
-                }
-                header.setActiveProfile(sharedPreferencesServices.getInt("usernum").toLong())
-            }*/
-            if (imageView == null) {
-                return //>>> ????
-            }
-            GlideApp.with(imageView.context)
-                .load(it[0].userimage)
-                .circleCrop().into(imageView)
-            imageView.setOnClickListener {
-                runBlocking {
-                    val intent = Intent(this@HelloMActivity, UserMActivity::class.java)
-                    intent.putExtra("data", AppDataRepository.getUser().userid)
-                    startActivity(intent)
-                }
-            }
-            headtext.text = it[0].username
-            textView.text = it[0].useremail
-        } else {
-            Toasty.error(this, resources.getString(R.string.conflict)).show()
-        }
-    }
+//    private fun initData() {
+//        val viewModel = ViewModelProviders.of(this).get(HelloMViewModel::class.java)
+//    }
 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.hello_m, menu)
-
-//        if (sharedPreferencesServices.getBoolean("isnone")) {
-//            val menuItem = nav_view.menu.findItem(R.id.nav_regist)
-//            menuItem.isVisible = true
-//
-//        }
         return true
     }
 
@@ -457,12 +276,12 @@ class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedLi
     }
 
 
-    private fun clearn() {
+    private fun clean() {
         val normalDialog = MaterialAlertDialogBuilder(this)
         normalDialog.setMessage("这将清理全部的缓存")
         normalDialog.setPositiveButton(
             "确定"
-        ) { dialog, which ->
+        ) { _, _ ->
             Thread(Runnable {
                 GlideApp.get(applicationContext).clearDiskCache()
                 deleteDir(applicationContext.cacheDir)

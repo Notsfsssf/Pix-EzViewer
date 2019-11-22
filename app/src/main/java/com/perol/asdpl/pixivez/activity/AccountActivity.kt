@@ -29,13 +29,14 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.AccountChoiceAdapter
-import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
 import com.perol.asdpl.pixivez.objects.ThemeUtil
 import com.perol.asdpl.pixivez.repository.AppDataRepository
+import com.perol.asdpl.pixivez.services.PxEZApp
 import kotlinx.android.synthetic.main.activity_account.*
 import kotlinx.coroutines.runBlocking
 
@@ -48,19 +49,18 @@ class AccountActivity : AppCompatActivity() {
             }
             R.id.nav_logout -> {
                 MaterialAlertDialogBuilder(this).setTitle(R.string.logoutallaccount)
-                        .setPositiveButton("OK") { i, j ->
-                            runBlocking {
-                                AppDataRepository.deleteAllUser()
-                            }
-                            startActivity(
-                                Intent(this@AccountActivity, LoginActivity::class.java)
-                                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK) // Clear task stack.
-                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            )
-//                            finish()
-                        }.setNeutralButton("CANCEL") { i, j ->
+                    .setPositiveButton(android.R.string.ok) { i, j ->
+                        runBlocking {
+                            AppDataRepository.deleteAllUser()
+                        }
+                        startActivity(
+                            Intent(this@AccountActivity, LoginActivity::class.java)
+                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK) // Clear task stack.
+                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        )
+                    }.setNeutralButton(android.R.string.cancel) { i, j ->
 
-                        }.create().show()
+                    }.create().show()
 
             }
         }
@@ -76,8 +76,17 @@ class AccountActivity : AppCompatActivity() {
         recyclerview_account.layoutManager = LinearLayoutManager(this)
         runBlocking {
             val users = AppDataRepository.getAllUser()
-            recyclerview_account.adapter = AccountChoiceAdapter(R.layout.view_account_item, users,
-                    SharedPreferencesServices.getInstance().getInt("usernum"))
+            recyclerview_account.adapter = AccountChoiceAdapter(
+                R.layout.view_account_item, users
+
+            ).apply {
+                setOnItemClickListener { adapter, view, position ->
+                    PreferenceManager.getDefaultSharedPreferences(this@AccountActivity).edit()
+                        .putInt("usernum", position).apply()
+                    this.notifyDataSetChanged()
+                    PxEZApp.ActivityCollector.recreate()
+                }
+            }
 
         }
 

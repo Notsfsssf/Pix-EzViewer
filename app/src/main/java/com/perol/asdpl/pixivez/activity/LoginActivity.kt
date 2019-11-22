@@ -237,11 +237,16 @@ class LoginActivity : RinkActivity() {
                         override fun onNext(pixivOAuthResponse: PixivOAuthResponse) {
                             val user = pixivOAuthResponse.response.user
                             GlobalScope.launch {
-                                AppDataRepository.InsertUser(UserEntity(user.profile_image_urls.px_170x170, user.id.toLong(), user.name, user.mail_address, user.isIs_premium,
+                                AppDataRepository.insertUser(
+                                    UserEntity(
+                                        user.profile_image_urls.px_170x170,
+                                        user.id.toLong(),
+                                        user.name,
+                                        user.mail_address,
+                                        user.isIs_premium,
                                         pixivOAuthResponse.response.device_token, pixivOAuthResponse.response.refresh_token, "Bearer " + pixivOAuthResponse.response.access_token
                                 ))
 
-                                sharedPreferencesServices!!.setBoolean("islogin", true)
                                 sharedPreferencesServices!!.setBoolean("isnone", false)
                                 sharedPreferencesServices!!.setString("username", username)
                                 sharedPreferencesServices!!.setString("password", password)

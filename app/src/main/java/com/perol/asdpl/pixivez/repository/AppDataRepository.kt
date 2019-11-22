@@ -24,7 +24,7 @@
 
 package com.perol.asdpl.pixivez.repository
 
-import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
+import androidx.preference.PreferenceManager
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.sql.AppDatabase
 import com.perol.asdpl.pixivez.sql.UserEntity
@@ -33,31 +33,24 @@ import kotlinx.coroutines.withContext
 
 class AppDataRepository {
     companion object {
-        val appDatabase = AppDatabase.getInstance(PxEZApp.instance)
-        val pre = SharedPreferencesServices.getInstance()
+        private val appDatabase = AppDatabase.getInstance(PxEZApp.instance)
+        val pre = PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance)
         suspend fun getUser(): UserEntity {
             val result = withContext(Dispatchers.IO) {
                 appDatabase.userDao().getUsers()
             }
-            val num = pre.getInt("usernum")
-            if (result.size > num)
-                return result[num]
-            else if (result.isNotEmpty()) {
-                pre.setInt("usernum", 0)
-                return result[0]
-            } else {
-
-                val refresh = pre.getString("Refresh_token")
-                val device = pre.getString("Device_token")
-                return UserEntity("olduser", 0, "", "", false, device, refresh, "")
+            val num = pre.getInt("usernum", 0)
+            return if (result.size <= num)
+                result[0]
+            else {
+                result[num]
             }
         }
 
         suspend fun getAllUser(): List<UserEntity> {
-            val result = withContext(Dispatchers.IO) {
+            return withContext(Dispatchers.IO) {
                 appDatabase.userDao().getUsers()
             }
-            return result
         }
 
         suspend fun deleteAllUser() {
@@ -67,13 +60,13 @@ class AppDataRepository {
 
         }
 
-        suspend fun UpdateUser(query: UserEntity) {
+        suspend fun updateUser(query: UserEntity) {
             return withContext(Dispatchers.IO) {
                 appDatabase.userDao().updateUser(query)
             }
         }
 
-        suspend fun InsertUser(query: UserEntity) {
+        suspend fun insertUser(query: UserEntity) {
             return withContext(Dispatchers.IO) {
                 appDatabase.userDao().insert(query)
             }

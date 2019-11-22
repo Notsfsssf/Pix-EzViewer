@@ -30,6 +30,7 @@ import com.perol.asdpl.pixivez.sql.UserEntity
 
 class HelloMViewModel : BaseViewModel() {
     var userBean = MutableLiveData<List<UserEntity>>()
+
     fun first() {
         launchUI {
             val it = AppDataRepository.getAllUser()

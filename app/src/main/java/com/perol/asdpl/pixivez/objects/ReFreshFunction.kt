@@ -28,7 +28,6 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.perol.asdpl.pixivez.networks.RestClient
-import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
 import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.services.OAuthSecureService
 import com.perol.asdpl.pixivez.services.PxEZApp
@@ -46,19 +45,16 @@ import java.util.concurrent.TimeoutException
 class ReFreshFunction : io.reactivex.functions.Function<Observable<Throwable>, ObservableSource<*>> {
     private var client_id: String? = "MOBrBDS8blbauoSck0ZfDbtuzpyT"
     private var client_secret: String? = "lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj"
-    private var sharedPreferencesServices: SharedPreferencesServices? = null
     private var oAuthSecureService: OAuthSecureService? = null
     private var i = 0
     private val maxRetries = 3
     private var retryCount = 0
 
     constructor(context: Context) : super() {
-        sharedPreferencesServices = SharedPreferencesServices.getInstance()
         this.oAuthSecureService = RestClient().getretrofit_OAuthSecure().create(OAuthSecureService::class.java)
     }
 
     private constructor() {
-        sharedPreferencesServices = SharedPreferencesServices.getInstance()
         this.oAuthSecureService = RestClient().getretrofit_OAuthSecure().create(OAuthSecureService::class.java)
     }
 
@@ -99,13 +95,12 @@ class ReFreshFunction : io.reactivex.functions.Function<Observable<Throwable>, O
         return oAuthSecureService!!.postRefreshAuthToken(client_id, client_secret, "refresh_token", it.Refresh_token,
                 it.Device_token, true)
                 .subscribeOn(Schedulers.io()).doOnNext { pixivOAuthResponse ->
-                    sharedPreferencesServices!!.setBoolean("islogin", true)
                     val user = pixivOAuthResponse.response.user
                     val userEntity = UserEntity(user.profile_image_urls.px_170x170, java.lang.Long.parseLong(user.id), user.name, user.mail_address, user.isIs_premium,
                             pixivOAuthResponse.response.device_token, pixivOAuthResponse.response.refresh_token, "Bearer " + pixivOAuthResponse.response.access_token)
                     userEntity.Id = it.Id
                     runBlocking {
-                        AppDataRepository.UpdateUser(userEntity)
+                        AppDataRepository.updateUser(userEntity)
                     }
                 }
 

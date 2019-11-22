@@ -26,11 +26,18 @@ package com.perol.asdpl.pixivez.viewmodel.factory
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import java.util.*
 
 class RankingShareViewModel : ViewModel() {
-    var picdateshare = MutableLiveData<String>()
+    var picDateShare = MutableLiveData<String>()
+    var year = MutableLiveData<Int>()
+    var month = MutableLiveData<Int>()
+    var day = MutableLiveData<Int>()
 
     init {
-
+        val calendar = Calendar.getInstance()
+        year.value = calendar.get(Calendar.YEAR)
+        month.value = calendar.get(Calendar.MONTH) + 1
+        day.value = calendar.get(Calendar.DAY_OF_MONTH)
     }
 }

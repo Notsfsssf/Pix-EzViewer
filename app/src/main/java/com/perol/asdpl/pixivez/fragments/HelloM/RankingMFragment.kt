@@ -25,13 +25,10 @@
 package com.perol.asdpl.pixivez.fragments.HelloM
 
 
-import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -44,7 +41,6 @@ import com.perol.asdpl.pixivez.objects.LazyV4Fragment
 import com.perol.asdpl.pixivez.viewmodel.RankingMViewModel
 import com.perol.asdpl.pixivez.viewmodel.factory.RankingShareViewModel
 import kotlinx.android.synthetic.main.fragment_ranking_m.*
-import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -74,7 +70,7 @@ class RankingMFragment : LazyV4Fragment() {
     fun lazyLoad() {
         viewmodel = ViewModelProviders.of(this).get(RankingMViewModel::class.java)
         sharemodel = ViewModelProviders.of(activity!!).get(RankingShareViewModel::class.java)
-        sharemodel!!.picdateshare.observe(this, Observer {
+        sharemodel!!.picDateShare.observe(this, Observer {
             viewmodel!!.datapick(param1!!, it)
         })
         viewmodel!!.addillusts.observe(this, Observer {
