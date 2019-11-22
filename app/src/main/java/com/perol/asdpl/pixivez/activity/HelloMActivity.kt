@@ -49,7 +49,6 @@ import com.perol.asdpl.pixivez.objects.ThemeUtil
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.services.GlideApp
-import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.services.Works
 import com.perol.asdpl.pixivez.sql.UserEntity
 import com.perol.asdpl.pixivez.viewmodel.HelloMViewModel
@@ -333,6 +332,7 @@ class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedLi
         viewpager_hellom.currentItem =
             PreferenceManager.getDefaultSharedPreferences(this).getString("firstpage", "0")?.toInt()
                 ?: 0
+
         Works.checkUpdate(this)
     }
 
@@ -412,7 +412,12 @@ class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedLi
                 }
                 header.setActiveProfile(sharedPreferencesServices.getInt("usernum").toLong())
             }*/
-            GlideApp.with(this).load(it[0].userimage).circleCrop().into(imageView)
+            if (imageView == null) {
+                return //>>> ????
+            }
+            GlideApp.with(imageView.context)
+                .load(it[0].userimage)
+                .circleCrop().into(imageView)
             imageView.setOnClickListener {
                 runBlocking {
                     val intent = Intent(this@HelloMActivity, UserMActivity::class.java)
@@ -425,12 +430,6 @@ class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedLi
         } else {
             Toasty.error(this, resources.getString(R.string.conflict)).show()
         }
-        Toasty.info(this, resources.getString(R.string.aboutpic), Toast.LENGTH_SHORT).show()
-        Toasty.info(
-            this,
-            PxEZApp.instance.resources.getString(R.string.aboutpic),
-            Toast.LENGTH_SHORT
-        ).show()
     }
 
 

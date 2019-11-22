@@ -25,9 +25,10 @@
 package com.perol.asdpl.pixivez.networks
 
 
-import android.util.Log
 import androidx.preference.PreferenceManager
 import com.google.gson.GsonBuilder
+import com.orhanobut.logger.Logger
+import com.perol.asdpl.pixivez.BuildConfig
 import com.perol.asdpl.pixivez.services.PxEZApp
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -115,35 +116,32 @@ class RestClient {
             .create()
     val retrofit_AppAPI: Retrofit
         get() {
-            val retrofit_OAuthSecure = Retrofit.Builder()
+            return Retrofit.Builder()
                     .baseUrl("https://app-api.pixiv.net")
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build()
-            return retrofit_OAuthSecure
         }
 
     val pixiviSion_AppAPI: Retrofit
         get() {
-            val retrofit_AppAPI = Retrofit.Builder()
+            return Retrofit.Builder()
                     .baseUrl("https://app-api.pixiv.net/")
                     .client(pixivOkHttpClient)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build()
-            return retrofit_AppAPI
         }
 
     val retrofit_Account: Retrofit
         get() {
-            val retrofit_AppAPI = Retrofit.Builder()
+            return Retrofit.Builder()
                     .baseUrl("https://accounts.pixiv.net/")
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build()
-            return retrofit_AppAPI
         }
     private val HashSalt =
             "28c1fdd170a5204386cb1313c7077b34f83e4aaf4aa829ce78c231e05b0bae2c"
@@ -172,12 +170,11 @@ class RestClient {
     private val okHttpClient: OkHttpClient
         get() {
             val httpLoggingInterceptor = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
-                override fun log(message: String) {
-                    Log.i("aaa", "message====$message")
-                }
-            })
-
-            httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+                override fun log(message: String) = Logger.t("HttpLoggingInterceptor").d(message)
+            }).apply {
+                level =
+                    if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+            }
             val builder = OkHttpClient.Builder()
 
             builder.addInterceptor(object : Interceptor {

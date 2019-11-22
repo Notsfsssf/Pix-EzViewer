@@ -27,6 +27,7 @@ package com.perol.asdpl.pixivez.adapters
 import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.TypedValue
@@ -96,7 +97,7 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
 
         helper.setText(R.id.title, item.title).setTextColor(
             R.id.like, if (item.is_bookmarked) {
-                ContextCompat.getColor(mContext, R.color.md_yellow_500)
+                Color.YELLOW
             } else {
                 ContextCompat.getColor(mContext, colorPrimary)
             }
@@ -115,10 +116,7 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
                     retrofit.postLikeIllust(item.id)!!.subscribe({
 
                         textView.setTextColor(
-                            ContextCompat.getColor(
-                                mContext,
-                                R.color.md_yellow_500
-                            )
+                            Color.YELLOW
                         )
                         item.is_bookmarked = true
                     }, {}, {})

@@ -1,6 +1,6 @@
 package com.perol.asdpl.pixivez.networks
 
-import android.util.Log
+import com.orhanobut.logger.Logger
 import com.perol.asdpl.pixivez.BuildConfig
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -50,9 +50,7 @@ object ServiceFactory {
 
         private val httpLoggingInterceptor by lazy {
             HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
-                override fun log(message: String) {
-                    Log.d("HttpLoggingInterceptor", message)
-                }
+                override fun log(message: String) = Logger.t("HttpLoggingInterceptor").d(message)
             }).apply {
                 level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
             }

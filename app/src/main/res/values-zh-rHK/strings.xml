@@ -255,4 +255,5 @@
     <string name="download_progress">下載進度</string>
     <string name="join_download_queue">加入下載隊列</string>
     <string name="again_to_exit">再按壹次返回鍵退出</string>
+    <string name="restart_now">立即重启</string>
 </resources>

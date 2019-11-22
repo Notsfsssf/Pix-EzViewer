@@ -30,19 +30,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:navigationBarColor">?attr/colorPrimary</item>
         <item name="android:statusBarColor">?attr/colorPrimary</item>
-        <!-- MaterialDrawer specific values -->
-        <item name="material_drawer_background">?android:attr/colorBackground</item>
-        <item name="material_drawer_primary_text">?android:attr/textColorPrimary</item>
-        <item name="material_drawer_primary_icon">?android:attr/textColorPrimary</item>
-        <item name="material_drawer_secondary_text">@color/material_drawer_secondary_text</item>
-        <item name="material_drawer_hint_text">@color/material_drawer_hint_text</item>
-        <item name="material_drawer_divider">?android:attr/textColorHighlight</item>
-        <item name="material_drawer_selected">@color/material_drawer_selected
-        </item> <!-- Material 2 defines 12% alpha, primary color -->
-        <item name="material_drawer_selected_text">@color/material_drawer_selected_text</item>
-        <item name="material_drawer_header_selection_text">?android:attr/textColorPrimary</item>
-        <item name="material_drawer_header_selection_subtext">?android:attr/textColorSecondary
-        </item>
+
     </style>
 
     <style name="MyToolbar">
@@ -107,4 +95,6 @@
         <item name="colorPrimaryDark">@color/nowDark</item>
         <item name="colorAccent">@color/nowDark</item>
     </style>
+
+
 </resources>

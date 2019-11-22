@@ -67,7 +67,7 @@ class ThemeActivity : AppCompatActivity() {
                 ColorData(ContextCompat.getColor(this, R.color.md_blue_300), "Blue"),
                 ColorData(ContextCompat.getColor(this, R.color.pink), "Pink"),
                 ColorData(ContextCompat.getColor(this, R.color.miku), "Miku"),
-                ColorData(ContextCompat.getColor(this, R.color.md_deep_purple_300), "Purple"),
+            ColorData(ContextCompat.getColor(this, R.color.md_purple_500), "Purple"),
                 ColorData(ContextCompat.getColor(this, R.color.md_cyan_300), "Cyan"),
                 ColorData(ContextCompat.getColor(this, R.color.md_green_300), "Green"),
                 ColorData(ContextCompat.getColor(this, R.color.md_indigo_300), "Indigo"),

@@ -33,30 +33,18 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import androidx.work.WorkManager
-import com.perol.asdpl.pixivez.BuildConfig
+import com.orhanobut.logger.AndroidLogAdapter
+import com.orhanobut.logger.Logger
 import com.perol.asdpl.pixivez.objects.CrashHandler
 import java.io.File
 
+
 class PxEZApp : Application() {
-//     override fun attachBaseContext(base: Context) {
-//         val locale = when (language) {
-//             1 -> {
-//                 Locale.ENGLISH
-//             }
-//             2 -> {
-//                 Locale.TRADITIONAL_CHINESE
-//             }
-//             else -> {
-//                 Locale.SIMPLIFIED_CHINESE
-//             }
-//         }
-//
-//         super.attachBaseContext(MyContextWrapper.wrap(base, locale))
-//     }
 
     override fun onCreate() {
         super.onCreate()
         instance = this
+        Logger.addLogAdapter(AndroidLogAdapter())
         val defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         AppCompatDelegate.setDefaultNightMode(defaultSharedPreferences.getString("dark_mode", "-1")!!.toInt())
         animationEnable = defaultSharedPreferences.getBoolean("animation", true)
@@ -73,41 +61,62 @@ class PxEZApp : Application() {
         }
 
         WorkManager.getInstance(this).pruneWork()
-        if (BuildConfig.DEBUG) {
-            registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
-                override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-                    Log.v(TAG, "${activity.simpleName}: onActivityCreated.")
-                }
 
-                override fun onActivityStarted(activity: Activity) {
-                    Log.v(TAG, "${activity.simpleName}: onActivityStarted.")
-                }
+        registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
+            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+                Log.v(TAG, "${activity.simpleName}: onActivityCreated.")
 
-                override fun onActivityResumed(activity: Activity) {
-                    Log.v(TAG, "${activity.simpleName}: onActivityResumed.")
-                }
+                ActivityCollector.collect(activity)
+            }
 
-                override fun onActivityPaused(activity: Activity) {
-                    Log.v(TAG, "${activity.simpleName}: onActivityPaused.")
-                }
+            override fun onActivityStarted(activity: Activity) {
+                Log.v(TAG, "${activity.simpleName}: onActivityStarted.")
+            }
 
-                override fun onActivityStopped(activity: Activity) {
-                    Log.v(TAG, "${activity.simpleName}: onActivityStopped.")
-                }
+            override fun onActivityResumed(activity: Activity) {
+                Log.v(TAG, "${activity.simpleName}: onActivityResumed.")
+            }
 
-                override fun onActivityDestroyed(activity: Activity) {
-                    Log.v(TAG, "${activity.simpleName}: onActivityDestroyed.")
-                }
+            override fun onActivityPaused(activity: Activity) {
+                Log.v(TAG, "${activity.simpleName}: onActivityPaused.")
+            }
 
-                override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
-                    //
-                }
-            })
-        }
+            override fun onActivityStopped(activity: Activity) {
+                Log.v(TAG, "${activity.simpleName}: onActivityStopped.")
+            }
+
+            override fun onActivityDestroyed(activity: Activity) {
+                Log.v(TAG, "${activity.simpleName}: onActivityDestroyed.")
+
+                ActivityCollector.discard(activity)
+            }
+
+            override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
+                //
+            }
+        })
     }
 
     private val Activity.simpleName get() = javaClass.simpleName
 
+    object ActivityCollector {
+        @JvmStatic
+        private val activityList = mutableListOf<Activity>()
+
+        fun collect(activity: Activity) {
+            activityList.add(activity)
+        }
+
+        fun discard(activity: Activity) {
+            activityList.remove(activity)
+        }
+
+        fun recreate() {
+            for (i in activityList.size - 1 downTo 0) {
+                activityList[i].recreate()
+            }
+        }
+    }
     companion object {
         @JvmStatic
         var storepath = Environment.getExternalStorageDirectory().absolutePath + File.separator + "PxEz"

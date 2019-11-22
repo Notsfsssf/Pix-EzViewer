@@ -17,7 +17,7 @@
         app:progress_stroke_width="3dp"
         android:layout_height="50dp" />
     <ImageView
-        android:tint="@color/md_white_1000"
+        android:tint="@color/white"
         android:src="@drawable/ic_action_play"
         android:id="@+id/imageview_play"
         android:layout_gravity="center"

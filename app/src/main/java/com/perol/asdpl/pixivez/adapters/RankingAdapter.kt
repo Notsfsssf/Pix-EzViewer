@@ -27,6 +27,7 @@ package com.perol.asdpl.pixivez.adapters
 import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Pair
@@ -132,7 +133,7 @@ class RankingAdapter(layoutResId: Int, data: List<Illust>?, private val R18on: B
         helper.setText(R.id.textview_title, item.title).setTextColor(R.id.textview_context, ContextCompat.getColor(mContext, colorPrimary))
         helper.setText(R.id.textview_context, item.user.name)
         helper.setTextColor(R.id.like, if (item.is_bookmarked) {
-            ContextCompat.getColor(mContext, R.color.md_yellow_500)
+            Color.YELLOW
         } else {
             ContextCompat.getColor(mContext, colorPrimary)
         })
@@ -154,7 +155,7 @@ class RankingAdapter(layoutResId: Int, data: List<Illust>?, private val R18on: B
                     } else {
                         retrofit.postLikeIllust(item.id)!!.subscribe({
 
-                            textView.setTextColor(ContextCompat.getColor(mContext, R.color.md_yellow_500))
+                            textView.setTextColor(Color.YELLOW)
                             item.is_bookmarked = true
                         }, {}, {})
                     }

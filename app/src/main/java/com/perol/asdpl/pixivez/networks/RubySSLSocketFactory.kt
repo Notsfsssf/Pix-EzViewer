@@ -24,7 +24,7 @@
 
 package com.perol.asdpl.pixivez.networks
 
-import android.util.Log
+import com.orhanobut.logger.Logger
 import java.net.InetAddress
 import java.net.Socket
 import javax.net.ssl.SSLSocket
@@ -44,8 +44,9 @@ class RubySSLSocketFactory : SSLSocketFactory() {
         val sslSocket = (getDefault().createSocket(address, port) as SSLSocket).apply { enabledProtocols = supportedProtocols }
         val sslSession = sslSocket.session
 
-        Log.i("!", "Address: ${address.hostAddress}, Protocol: ${sslSession.protocol}, PeerHost: ${sslSession.peerHost}, CipherSuite: ${sslSession.cipherSuite}.")
-
+//        Log.i("!", "Address: ${address.hostAddress}, Protocol: ${sslSession.protocol}, PeerHost: ${sslSession.peerHost}, CipherSuite: ${sslSession.cipherSuite}.")
+        Logger.t("SSLSocketFactory")
+            .i("Address: ${address.hostAddress}, Protocol: ${sslSession.protocol}, PeerHost: ${sslSession.peerHost}, CipherSuite: ${sslSession.cipherSuite}.")
         return sslSocket
     }
 

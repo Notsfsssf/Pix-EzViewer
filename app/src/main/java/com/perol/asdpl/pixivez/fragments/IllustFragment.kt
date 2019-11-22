@@ -24,6 +24,7 @@
 
 package com.perol.asdpl.pixivez.fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -199,7 +200,7 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
     private fun changetoblue(it: Long?) {
         if (it != null) {
             val item = searchIllustAdapter.getViewByPosition(recyclerview_illust, position!!, R.id.linearlayout_isbookmark) as LinearLayout
-            item.setBackgroundColor(resources.getColor(R.color.md_yellow_500))
+            item.setBackgroundColor(Color.YELLOW)
             Toasty.success(activity!!.applicationContext, "收藏成功", Toast.LENGTH_SHORT).show()
         }
     }

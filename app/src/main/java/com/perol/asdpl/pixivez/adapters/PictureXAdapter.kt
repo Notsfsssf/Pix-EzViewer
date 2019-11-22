@@ -46,7 +46,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -162,7 +161,7 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
             else
                 imageButtonDownload.setColorFilter(ContextCompat.getColor(mContext, colorPrimary))
             if (s.user.is_followed)
-                imageView.setBorderColor(ContextCompat.getColor(mContext, R.color.md_yellow_500))
+                imageView.setBorderColor(Color.YELLOW)
             else
                 imageView.setBorderColor(ContextCompat.getColor(mContext, colorPrimary))
             imageView.setOnLongClickListener {
@@ -424,7 +423,7 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
             val play = holder.itemView.findViewById<ImageView>(R.id.imageview_play)
             imageViewGif = holder.itemView.findViewById(R.id.imageview_gif)
             imageViewGif!!.setOnLongClickListener {
-                if (!progressBar!!.isVisible) {
+                if (progressBar?.visibility != View.VISIBLE) {
                     Snackbar.make(imageViewGif!!, mContext.getString(R.string.encodegif), Snackbar.LENGTH_LONG).setAction(android.R.string.ok) { view ->
                         if (!isEncoding) {
                             isEncoding = true

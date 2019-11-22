@@ -25,4 +25,17 @@
     <color name="splash">#1895EF</color>
     <color name="now">#81C0BB</color>
     <color name="nowDark">#47BEB5</color>
+
+    <color name="md_purple_300">#BA68C8</color>
+    <color name="md_purple_500">#9C27B0</color>
+    <color name="md_cyan_300">#4DD0E1</color>
+    <color name="md_cyan_500">#00BCD4</color>
+    <color name="md_green_300">#81C784</color>
+    <color name="md_green_500">#4CAF50</color>
+    <color name="md_indigo_300">#7986CB</color>
+    <color name="md_indigo_500">#3F51B5</color>
+    <color name="md_red_500">#F44336</color>
+    <color name="md_red_600">#E53935</color>
+    <color name="md_blue_300">#64B5F6</color>
+    <color name="md_blue_400">#42A5F5</color>
 </resources>
