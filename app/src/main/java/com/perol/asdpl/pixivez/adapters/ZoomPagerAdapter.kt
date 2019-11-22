@@ -36,12 +36,18 @@ import com.bumptech.glide.request.transition.Transition
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.perol.asdpl.pixivez.R
+import com.perol.asdpl.pixivez.responses.Illust
 import com.perol.asdpl.pixivez.services.GlideApp
+import com.perol.asdpl.pixivez.services.Works
 import java.io.File
 import java.util.*
 
 
-class ZoomPagerAdapter(private val context: Context, private val arrayList: ArrayList<String>) : PagerAdapter() {
+class ZoomPagerAdapter(
+    private val context: Context,
+    private val arrayList: ArrayList<String>,
+    val illust: Illust?
+) : PagerAdapter() {
 
     override fun getCount(): Int {
         return arrayList.size
@@ -63,14 +69,17 @@ class ZoomPagerAdapter(private val context: Context, private val arrayList: Arra
 
                 }
 
-            override fun onResourceReady(resource: File, transition: Transition<in File>?) {
-                photoView.setImage(ImageSource.uri(Uri.fromFile(resource)))
-                photoView.setOnLongClickListener {
-
-                    true
+                override fun onResourceReady(resource: File, transition: Transition<in File>?) {
+                    photoView.setImage(ImageSource.uri(Uri.fromFile(resource)))
+                    if (illust != null)
+                        photoView.setOnLongClickListener {
+                            if (!illust.meta_pages.isNullOrEmpty()) {
+                                Works.imageDownloadWithFile(illust, resource, position)
+                            } else Works.imageDownloadWithFile(illust, resource, null)
+                            true
+                        }
                 }
-            }
-        })
+            })
         container.addView(view)
         return view
     }

@@ -93,7 +93,7 @@ class PictureXFragment : LazyV4Fragment() {
 
         pictureXViewModel = ViewModelProviders.of(this).get(PictureXViewModel::class.java)
         pictureXViewModel.startPostPone.observe(this, Observer {
-            activity?.supportStartPostponedEnterTransition()
+            //            activity?.supportStartPostponedEnterTransition()
         })
         pictureXViewModel.illustDetailResponse.observe(this, Observer {
             if (it != null) {
@@ -103,16 +103,20 @@ class PictureXFragment : LazyV4Fragment() {
                 else position = 1
                 pictureXAdapter = PictureXAdapter(pictureXViewModel, it.illust, activity!!).also {
                     it.setListener {
-                        activity?.supportStartPostponedEnterTransition()
+                        //                        activity?.supportStartPostponedEnterTransition()
                         if (!hasMoved) {
                             recyclerview.scrollToPosition(0)
-                            (recyclerview.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(0, 0)
+                            (recyclerview.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
+                                0,
+                                0
+                            )
                         }
                         pictureXViewModel.getRelative(param1!!)
 
                     }
                     it.setViewCommentListen {
-                        val commentDialog = CommentDialog.newInstance(pictureXViewModel.illustDetailResponse.value!!.illust.id)
+                        val commentDialog =
+                            CommentDialog.newInstance(pictureXViewModel.illustDetailResponse.value!!.illust.id)
                         commentDialog.show(childFragmentManager)
                     }
                     it.setUserPicLongClick {
@@ -122,7 +126,6 @@ class PictureXFragment : LazyV4Fragment() {
                 }
 
                 recyclerview.adapter = pictureXAdapter
-
 
                 imageView5.setOnClickListener { ot ->
                     val intent = Intent(context, UserMActivity::class.java)
@@ -203,7 +206,11 @@ class PictureXFragment : LazyV4Fragment() {
                             }
                         }
                     println(taglist)
-                    pictureXViewModel.onDialogClick(taglist, switch!!.isChecked, pictureXViewModel.illustDetailResponse.value!!.illust.id);
+                    pictureXViewModel.onDialogClick(
+                        taglist,
+                        switch!!.isChecked,
+                        pictureXViewModel.illustDetailResponse.value!!.illust.id
+                    );
                     a.dismiss()
                 }
                 alertBuilder.create().show()
@@ -219,7 +226,8 @@ class PictureXFragment : LazyV4Fragment() {
             pictureXViewModel.FabClick()
         }
         fab.setOnLongClickListener {
-            Toasty.info(activity!!, resources.getString(R.string.fetchtags), Toast.LENGTH_SHORT).show()
+            Toasty.info(activity!!, resources.getString(R.string.fetchtags), Toast.LENGTH_SHORT)
+                .show()
             pictureXViewModel.fabOnLongClick()
             true
         }
@@ -257,8 +265,10 @@ class PictureXFragment : LazyV4Fragment() {
     }
 
     lateinit var rootBinding: FragmentPictureXBinding
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
         rootBinding = FragmentPictureXBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = this@PictureXFragment
@@ -287,11 +297,11 @@ class PictureXFragment : LazyV4Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: Long, illust: Illust?) =
-                PictureXFragment().apply {
-                    arguments = Bundle().apply {
-                        putLong(ARG_PARAM1, param1)
-                        putParcelable("illust", illust)
-                    }
+            PictureXFragment().apply {
+                arguments = Bundle().apply {
+                    putLong(ARG_PARAM1, param1)
+                    putParcelable("illust", illust)
                 }
+            }
     }
 }

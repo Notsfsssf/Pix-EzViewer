@@ -32,24 +32,19 @@ import java.util.*
 
 class MyContextWrapper(base: Context) : android.content.ContextWrapper(base) {
     companion object {
-        fun wrap(context: Context, newLocale: Locale): ContextWrapper {
-            var context = context
-
-            val res = context.resources
-            val configuration = res.configuration
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        fun wrap(context1: Context, newLocale: Locale): ContextWrapper {
+            var context = context1
+            val configuration = context.resources.configuration
+            context = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 configuration.setLocale(newLocale)
                 val localeList = LocaleList(newLocale)
+                LocaleList.setDefault(localeList)
                 configuration.setLocales(localeList)
-                context = context.createConfigurationContext(configuration)
-
+                context.createConfigurationContext(configuration)
             } else {
-
                 configuration.setLocale(newLocale)
-                context = context.createConfigurationContext(configuration)
-
+                context.createConfigurationContext(configuration)
             }
-
             return ContextWrapper(context)
         }
     }

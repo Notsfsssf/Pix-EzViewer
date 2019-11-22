@@ -24,21 +24,14 @@
 
 package com.perol.asdpl.pixivez.activity
 
-
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
-import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.app.ActivityCompat
@@ -48,37 +41,35 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.preference.PreferenceManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.mikepenz.materialdrawer.AccountHeader
-import com.mikepenz.materialdrawer.AccountHeaderBuilder
-import com.mikepenz.materialdrawer.Drawer
-import com.mikepenz.materialdrawer.DrawerBuilder
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem
-import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
-import com.mikepenz.materialdrawer.model.interfaces.IProfile
-import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
-import com.mikepenz.materialdrawer.util.DrawerImageLoader
+import com.google.android.material.navigation.NavigationView
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.HelloMViewPagerAdapter
 import com.perol.asdpl.pixivez.databinding.ActivityHelloMBinding
-import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
 import com.perol.asdpl.pixivez.objects.ThemeUtil
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.services.GlideApp
+import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.services.Works
 import com.perol.asdpl.pixivez.sql.UserEntity
 import com.perol.asdpl.pixivez.viewmodel.HelloMViewModel
 import kotlinx.android.synthetic.main.app_bar_hello_m.*
 import kotlinx.android.synthetic.main.content_hello_m.*
+import kotlinx.android.synthetic.main.nav_header_hello_m.*
 import kotlinx.coroutines.runBlocking
 import java.io.File
 
 
-class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, AccountHeader.OnAccountHeaderListener {
-
+class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == 789) {
+                recreate()
+            }
+        }
+    }
+/*    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == 789) {
@@ -102,11 +93,14 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
 
     override fun onNavigationClickListener(clickedView: View): Boolean {
         return false
-    }
+    }*/
 
     private var activityHelloMBinding: ActivityHelloMBinding? = null
-    lateinit var sharedPreferencesServices: SharedPreferencesServices
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         when (requestCode) {
             3000 -> {
                 val length = grantResults.size
@@ -127,23 +121,60 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
         }
     }
 
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        // Handle navigation view item clicks here.
+        when (item.itemId) {
+            R.id.nav_gallery -> {
+                startActivity(Intent(applicationContext, SaucenaoActivity::class.java))
+            }
+            R.id.nav_slideshow -> {
+                clearn()
+            }
+            R.id.nav_manage -> {
+                val intent = Intent(applicationContext, SettingActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.nav_theme -> {
+                val intent = Intent(applicationContext, ThemeActivity::class.java)
+                startActivityForResult(intent, 789)
+            }
+            R.id.nav_history -> {
+                val intent = Intent(applicationContext, HistoryMActivity::class.java)
+                startActivity(intent)
+            }
+
+            R.id.nav_progress -> {
+                startActivity(Intent(this@HelloMActivity, ProgressActivity::class.java))
+            }
+            R.id.nav_account -> {
+                startActivity(Intent(this, AccountActivity::class.java))
+            }
+        }
+
+        drawer_layout.closeDrawer(GravityCompat.START)
+        return true
+    }
+
     var exitTime = 0L
     override fun onBackPressed() {
-        if (drawer.isDrawerOpen) {
-            drawer.onBackPressed()
+        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+            drawer_layout.closeDrawer(GravityCompat.START)
             return
         }
 
         if ((System.currentTimeMillis() - exitTime) > 2000) {
-            Toast.makeText(applicationContext, getString(R.string.again_to_exit), Toast.LENGTH_SHORT).show();
+            Toast.makeText(
+                applicationContext,
+                getString(R.string.again_to_exit),
+                Toast.LENGTH_SHORT
+            ).show();
             exitTime = System.currentTimeMillis();
         } else {
             finish()
         }
     }
 
-    private lateinit var header: AccountHeader
-    private lateinit var drawer: Drawer
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -157,12 +188,11 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
             finish()
             return
         }
-        sharedPreferencesServices = SharedPreferencesServices.getInstance()
         ThemeUtil.themeInit(this)
         activityHelloMBinding = DataBindingUtil.setContentView(this, R.layout.app_bar_hello_m)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
-        DrawerImageLoader.init(object : AbstractDrawerImageLoader() {
+/*        DrawerImageLoader.init(object : AbstractDrawerImageLoader() {
             override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable, tag: String?) {
                 val url = "https://" + uri.host + uri.path
                 println(url)
@@ -263,12 +293,6 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
                     5 -> {
                         val intent = Intent(applicationContext, ThemeActivity::class.java)
                         startActivityForResult(intent, 789)
-//                        val option = if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-//                            AppCompatDelegate.MODE_NIGHT_NO
-//                        } else {
-//                            AppCompatDelegate.MODE_NIGHT_YES
-//                        }
-//                        AppCompatDelegate.setDefaultNightMode(option)
                     }
                     6 -> {
                         val intent = Intent(applicationContext, SettingActivity::class.java)
@@ -284,16 +308,31 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
             }
 
         }
+        toggle.syncState()*/
+        val toggle = ActionBarDrawerToggle(
+            this,
+            drawer_layout,
+            toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        )
+        toggle.setHomeAsUpIndicator(ContextCompat.getDrawable(this, R.drawable.ic_action_logo))
+        toggle.isDrawerIndicatorEnabled = true
+        toggle.setToolbarNavigationClickListener {
+            drawer_layout.openDrawer(GravityCompat.START)
+        }
+        drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
+        nav_view.setNavigationItemSelectedListener(this)
         val permissionList = ArrayList<String>()
         permissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         permissionList.add(Manifest.permission.READ_EXTERNAL_STORAGE)
         checkAndRequestPermissions(permissionList)
         initView()
         initData()
-        viewpager_hellom.currentItem = PreferenceManager.getDefaultSharedPreferences(this).getString("firstpage", "0")?.toInt()
+        viewpager_hellom.currentItem =
+            PreferenceManager.getDefaultSharedPreferences(this).getString("firstpage", "0")?.toInt()
                 ?: 0
-//AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         Works.checkUpdate(this)
     }
 
@@ -328,7 +367,8 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
                     tabitem.icon = ContextCompat.getDrawable(this, R.drawable.ic_action_home_white)
                 }
                 1 -> {
-                    tabitem.icon = ContextCompat.getDrawable(this, R.drawable.ic_action_ranking_white)
+                    tabitem.icon =
+                        ContextCompat.getDrawable(this, R.drawable.ic_action_ranking_white)
                 }
                 2 -> {
                     tabitem.icon = ContextCompat.getDrawable(this, R.drawable.ic_action_my_white)
@@ -348,7 +388,8 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
 
     private fun userBean(it: List<UserEntity>) {
         if (it.isNotEmpty()) {
-            val profileSettingDrawerItem = ProfileSettingDrawerItem()
+
+/*            val profileSettingDrawerItem = ProfileSettingDrawerItem()
                     .withName(R.string.setting)
                     .withIdentifier(-100L)
                     .withIcon(ContextCompat.getDrawable(this, R.drawable.ic_action_share_setting))
@@ -356,7 +397,7 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
 
             header.clear()
             header.addProfile(profileSettingDrawerItem, header.profiles?.size ?: 0)
-            Log.d("profile:", sharedPreferencesServices.getInt("usernum").toLong().toString())
+
 
 
 
@@ -370,11 +411,26 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
                                     .withIdentifier(i.toLong()), i)
                 }
                 header.setActiveProfile(sharedPreferencesServices.getInt("usernum").toLong())
+            }*/
+            GlideApp.with(this).load(it[0].userimage).circleCrop().into(imageView)
+            imageView.setOnClickListener {
+                runBlocking {
+                    val intent = Intent(this@HelloMActivity, UserMActivity::class.java)
+                    intent.putExtra("data", AppDataRepository.getUser().userid)
+                    startActivity(intent)
+                }
             }
+            headtext.text = it[0].username
+            textView.text = it[0].useremail
         } else {
             Toasty.error(this, resources.getString(R.string.conflict)).show()
         }
-
+        Toasty.info(this, resources.getString(R.string.aboutpic), Toast.LENGTH_SHORT).show()
+        Toasty.info(
+            this,
+            PxEZApp.instance.resources.getString(R.string.aboutpic),
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
 
@@ -405,7 +461,8 @@ class HelloMActivity : RinkActivity(), Drawer.OnDrawerNavigationListener, Accoun
     private fun clearn() {
         val normalDialog = MaterialAlertDialogBuilder(this)
         normalDialog.setMessage("这将清理全部的缓存")
-        normalDialog.setPositiveButton("确定"
+        normalDialog.setPositiveButton(
+            "确定"
         ) { dialog, which ->
             Thread(Runnable {
                 GlideApp.get(applicationContext).clearDiskCache()

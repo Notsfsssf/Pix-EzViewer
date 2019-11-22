@@ -101,22 +101,11 @@ class LoginActivity : RinkActivity() {
             View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = Color.TRANSPARENT
-//        window.decorView.setBackgroundColor(Color.parseColor("#FAFAFA")) // MD_Color_Grey_50
-//        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            window.statusBarColor = Color.parseColor("#E0E0E0") // MD_Color_Grey_300
-//            window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-//        }
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            window.navigationBarColor = Color.WHITE
-//            window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-//        }
 
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
         initbind()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

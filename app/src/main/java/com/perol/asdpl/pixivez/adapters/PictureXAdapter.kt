@@ -293,7 +293,6 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is PictureViewHolder) {
-
             val imageView = holder.itemView.findViewById<ImageView>(R.id.imageview_pic)
             GlideApp.with(imageView).load(imageUrls[position]).placeholder(R.color.white).transition(withCrossFade()).listener(object : RequestListener<Drawable> {
 
@@ -394,6 +393,7 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                     true
                 }
                 setOnClickListener {
+
                     val intent = Intent(mContext, ZoomActivity::class.java)
                     val bundle = Bundle()
                     bundle.putInt("num", position)
@@ -406,6 +406,10 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                         }
                     }
                     bundle.putStringArrayList("url", arrayList)
+                    bundle.putParcelable(
+                        "illust",
+                        pictureXViewModel.illustDetailResponse.value?.illust
+                    )
                     intent.putExtras(bundle)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     mContext.startActivity(intent)
@@ -414,7 +418,7 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                     transitionName = "mainimage"
                 }
             }
-
+//            (mContext as FragmentActivity).supportStartPostponedEnterTransition()
         } else if (holder is GifViewHolder) {
             progressBar = holder.itemView.findViewById<CircleProgressBar>(R.id.progressbar_gif)
             val play = holder.itemView.findViewById<ImageView>(R.id.imageview_play)
@@ -481,12 +485,14 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                 }, {})
             }
             GlideApp.with(imageViewGif!!).load(data.image_urls.medium).placeholder(R.color.white).transition(DrawableTransitionOptions.withCrossFade()).into(object : DrawableImageViewTarget(imageViewGif) {
+
                 override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
                     super.onResourceReady(resource, transition)
                     mListen.invoke()
                 }
             })
         } else if (holder is DetailViewHolder) {
+
             holder.updateWithPage(mContext, data, mViewCommentListen, mUserPicLongClick)
         } else if (holder is RelativeHolder) {
             aboutPictureAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN)

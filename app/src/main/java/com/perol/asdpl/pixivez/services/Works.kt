@@ -46,18 +46,7 @@ import java.util.*
 
 class Works {
     companion object {
-        fun imageDownloadAll(illust: Illust) {
-            TToast.startDownload(PxEZApp.instance)
-            if (illust.meta_pages.isEmpty()) {
-                imageDownloadOne(illust, null)
-            } else {
-                for (i in illust.meta_pages.indices) {
-                    imageDownloadOne(illust, i)
-                }
-            }
-        }
-
-        fun imageDownloadOne(illust: Illust, part: Int?) {
+        fun imageDownloadWithFile(illust: Illust, file: File, part: Int?) {
             var url = ""
             var title = illust.title
             title = title.replace("/", "")
@@ -65,8 +54,11 @@ class Works {
             title = title.replace(":", "")
             val user = illust.user.id
             val name = illust.id
-            val format = PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance).getString("saveformat", "0")?.toInt()
-                    ?: 0
+            val format = PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance).getString(
+                "saveformat",
+                "0"
+            )?.toInt()
+                ?: 0
             var type = ".png"
             var filename = "${name}_p$part$type"
             if (part != null && illust.meta_pages.isNotEmpty()) {
@@ -109,52 +101,165 @@ class Works {
                 }
             }
 
-            val inputData = workDataOf("file" to filename, "url" to url, "title" to illust.title, "id" to illust.id)
-            val oneTimeWorkRequest = OneTimeWorkRequestBuilder<ImgDownLoadWorker>()
-                    .setInputData(inputData)
-                    .addTag("image")
-                    .build()
-            WorkManager.getInstance(PxEZApp.instance).enqueueUniqueWork(url, ExistingWorkPolicy.REPLACE, oneTimeWorkRequest)
+            val targetFile = File(PxEZApp.storepath, filename)
+            try {
+                file.copyTo(targetFile, overwrite = true)
+                Toasty.success(
+                    PxEZApp.instance,
+                    PxEZApp.instance.resources.getString(R.string.savesuccess),
+                    Toast.LENGTH_SHORT
+                ).show()
+                PxEZApp.instance.sendBroadcast(
+                    Intent(
+                        Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                        Uri.fromFile(targetFile)
+                    )
+                )
+            } catch (e: Exception) {
 
+            }
 
-          WorkManager.getInstance(PxEZApp.instance).getWorkInfoByIdLiveData(oneTimeWorkRequest.id)
-          .observeForever(object : Observer<WorkInfo> {
-                override fun onChanged(workInfo: WorkInfo?) {
-                    if (workInfo == null) {
-                        return
+        }
+
+        fun imageDownloadAll(illust: Illust) {
+            TToast.startDownload(PxEZApp.instance)
+            if (illust.meta_pages.isEmpty()) {
+                imageDownloadOne(illust, null)
+            } else {
+                for (i in illust.meta_pages.indices) {
+                    imageDownloadOne(illust, i)
+                }
+            }
+        }
+
+        fun imageDownloadOne(illust: Illust, part: Int?) {
+            var url = ""
+            var title = illust.title
+            title = title.replace("/", "")
+            title = title.replace("\\", "")
+            title = title.replace(":", "")
+            val user = illust.user.id
+            val name = illust.id
+            val format = PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance).getString(
+                "saveformat",
+                "0"
+            )?.toInt()
+                ?: 0
+            var type = ".png"
+            var filename = "${name}_p$part$type"
+            if (part != null && illust.meta_pages.isNotEmpty()) {
+                url = illust.meta_pages[part].image_urls.original
+                type = if (url.contains("png")) {
+                    ".png"
+                } else ".jpg"
+                when (format) {
+                    0 -> {
+                        filename = "${name}_$part$type"
                     }
-                    if (workInfo.state == WorkInfo.State.SUCCEEDED) {
-                        if (workInfo.outputData.getBoolean("exist", false)) {
-                            Toasty.success(PxEZApp.instance, PxEZApp.instance.resources.getString(R.string.alreadysaved), Toast.LENGTH_SHORT).show()
-                            WorkManager.getInstance(PxEZApp.instance).getWorkInfoByIdLiveData(oneTimeWorkRequest.id).removeObserver(this)
+                    1 -> {
+                        filename = "${name}_p$part$type"
+                    }
+                    2 -> {
+                        filename = "${user}_${name}_$part$type"
+                    }
+                    3 -> {
+                        filename = "${name}_${title}_$part$type"
+                    }
+                }
+            } else {
+                url = illust.meta_single_page.original_image_url!!
+                type = if (url.contains("png")) {
+                    ".png"
+                } else ".jpg"
+                when (format) {
+                    0 -> {
+                        filename = "$name$type"
+                    }
+                    1 -> {
+                        filename = "$name$type"
+                    }
+                    2 -> {
+                        filename = "${user}_$name$type"
+                    }
+                    3 -> {
+                        filename = "${name}_${title}$type"
+                    }
+                }
+            }
+
+            val inputData = workDataOf(
+                "file" to filename,
+                "url" to url,
+                "title" to illust.title,
+                "id" to illust.id
+            )
+            val oneTimeWorkRequest = OneTimeWorkRequestBuilder<ImgDownLoadWorker>()
+                .setInputData(inputData)
+                .addTag("image")
+                .build()
+            WorkManager.getInstance(PxEZApp.instance)
+                .enqueueUniqueWork(url, ExistingWorkPolicy.REPLACE, oneTimeWorkRequest)
+
+
+            WorkManager.getInstance(PxEZApp.instance).getWorkInfoByIdLiveData(oneTimeWorkRequest.id)
+                .observeForever(object : Observer<WorkInfo> {
+                    override fun onChanged(workInfo: WorkInfo?) {
+                        if (workInfo == null) {
                             return
                         }
-                        Toasty.success(PxEZApp.instance, PxEZApp.instance.resources.getString(R.string.savesuccess), Toast.LENGTH_SHORT).show()
-                        val uri = workInfo.outputData.getString("path")
-                        if (uri != null)
-                            PxEZApp.instance.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(File(uri))))
-                    } else if (workInfo.state == WorkInfo.State.FAILED) {
+                        if (workInfo.state == WorkInfo.State.SUCCEEDED) {
+                            if (workInfo.outputData.getBoolean("exist", false)) {
+                                Toasty.success(
+                                    PxEZApp.instance,
+                                    PxEZApp.instance.resources.getString(R.string.alreadysaved),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                WorkManager.getInstance(PxEZApp.instance)
+                                    .getWorkInfoByIdLiveData(oneTimeWorkRequest.id)
+                                    .removeObserver(this)
+                                return
+                            }
+                            Toasty.success(
+                                PxEZApp.instance,
+                                PxEZApp.instance.resources.getString(R.string.savesuccess),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            val uri = workInfo.outputData.getString("path")
+                            if (uri != null)
+                                PxEZApp.instance.sendBroadcast(
+                                    Intent(
+                                        Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                                        Uri.fromFile(File(uri))
+                                    )
+                                )
+                        } else if (workInfo.state == WorkInfo.State.FAILED) {
 
-                    } else if (workInfo.state == WorkInfo.State.CANCELLED) {
+                        } else if (workInfo.state == WorkInfo.State.CANCELLED) {
 
-                        val file = File(PxEZApp.storepath, filename)
-                        file.deleteOnExit()
+                            val file = File(PxEZApp.storepath, filename)
+                            file.deleteOnExit()
+                        }
+                        WorkManager.getInstance(PxEZApp.instance)
+                            .getWorkInfoByIdLiveData(oneTimeWorkRequest.id).removeObserver(this)
                     }
-                    WorkManager.getInstance(PxEZApp.instance).getWorkInfoByIdLiveData(oneTimeWorkRequest.id).removeObserver(this)
-                }
-            })
+                })
         }
 
         fun checkUpdate(activty: Activity) {
             val defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(activty)
-            if (com.perol.asdpl.pixivez.BuildConfig.ISGOOGLEPLAY || PxEZApp.autochecked || !defaultSharedPreferences.getBoolean("autocheck", true)) {
+            if (com.perol.asdpl.pixivez.BuildConfig.ISGOOGLEPLAY || PxEZApp.autochecked || !defaultSharedPreferences.getBoolean(
+                    "autocheck",
+                    true
+                )
+            ) {
                 return
             }
             PxEZApp.autochecked = true
-            val checkurl = "https://raw.githubusercontent.com/Notsfsssf/Pix-EzViewer/master/gradle.properties";
+            val checkurl =
+                "https://raw.githubusercontent.com/Notsfsssf/Pix-EzViewer/master/gradle.properties";
             val okHttpClient = OkHttpClient.Builder().build()
             val requests = Request.Builder()
-                    .url(checkurl).get().build();
+                .url(checkurl).get().build();
             okHttpClient.newCall(request = requests).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     e.printStackTrace()
@@ -171,25 +276,39 @@ class Works {
                         val packageInfo = pm.getPackageInfo(activty.packageName, 0);
                         val versioncodeP = packageInfo.versionCode
                         Log.d("CODE", versioncode + versioncodeP)
-                        if (versioncodeP >= versioncode.toInt() || defaultSharedPreferences.getString("ignoreversion", "") == versioncode) {
+                        if (versioncodeP >= versioncode.toInt() || defaultSharedPreferences.getString(
+                                "ignoreversion",
+                                ""
+                            ) == versioncode
+                        ) {
 
                         } else {
                             activty.runOnUiThread {
                                 try {
-                                    val dialogs = MaterialAlertDialogBuilder(activty).setTitle("发现新版本").setMessage(versionName).setPositiveButton("前往更新") { i, j ->
-                                        try {
-                                            val uri = Uri.parse("https://github.com/Notsfsssf/Pix-EzViewer")
-                                            val intent = Intent(Intent.ACTION_VIEW, uri)
-                                            activty.startActivity(intent)
-                                        } catch (e: Exception) {
-                                            Toasty.info(PxEZApp.instance, "no browser found", Toast.LENGTH_SHORT).show()
-                                        }
-                                    }.setNegativeButton("提醒设置") { i, j ->
-                                        val intent = Intent(activty, SettingActivity::class.java)
-                                        activty.startActivity(intent)
-                                    }.setNeutralButton("此版不提示") { i, j ->
-                                        defaultSharedPreferences.edit().putString("ignoreversion", versioncode).apply()
-                                    }
+                                    val dialogs =
+                                        MaterialAlertDialogBuilder(activty).setTitle("发现新版本")
+                                            .setMessage(versionName)
+                                            .setPositiveButton("前往更新") { i, j ->
+                                                try {
+                                                    val uri =
+                                                        Uri.parse("https://github.com/Notsfsssf/Pix-EzViewer")
+                                                    val intent = Intent(Intent.ACTION_VIEW, uri)
+                                                    activty.startActivity(intent)
+                                                } catch (e: Exception) {
+                                                    Toasty.info(
+                                                        PxEZApp.instance,
+                                                        "no browser found",
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                }
+                                            }.setNegativeButton("提醒设置") { i, j ->
+                                                val intent =
+                                                    Intent(activty, SettingActivity::class.java)
+                                                activty.startActivity(intent)
+                                            }.setNeutralButton("此版不提示") { i, j ->
+                                                defaultSharedPreferences.edit()
+                                                    .putString("ignoreversion", versioncode).apply()
+                                            }
                                     dialogs.show()
                                 } catch (e: Exception) {
                                     e.printStackTrace()

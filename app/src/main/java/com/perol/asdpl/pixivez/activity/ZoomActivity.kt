@@ -29,6 +29,7 @@ import android.view.MenuItem
 import androidx.viewpager.widget.ViewPager
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.ZoomPagerAdapter
+import com.perol.asdpl.pixivez.responses.Illust
 import kotlinx.android.synthetic.main.activity_zoom.*
 import java.util.*
 
@@ -41,8 +42,9 @@ class ZoomActivity : RinkActivity() {
         val intent = intent
         val bundle = intent.extras
         str = bundle!!.getStringArrayList("url")
+        val illust = bundle!!.getParcelable<Illust>("illust")
         val num = bundle.getInt("num", 0)
-        val zoomPagerAdapter = ZoomPagerAdapter(this, str!!)
+        val zoomPagerAdapter = ZoomPagerAdapter(this, str!!, illust)
         textview_zoom.text = 1.toString() + "/" + str!!.size
         viewpage_zoom.adapter = zoomPagerAdapter
         viewpage_zoom.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {

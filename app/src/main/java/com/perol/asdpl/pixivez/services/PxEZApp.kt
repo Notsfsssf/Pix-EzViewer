@@ -37,23 +37,23 @@ import com.perol.asdpl.pixivez.BuildConfig
 import com.perol.asdpl.pixivez.objects.CrashHandler
 import java.io.File
 
-
 class PxEZApp : Application() {
-    //    override fun attachBaseContext(base: Context) {
-//        val locale = when (PxEZApp.language) {
-//            1 -> {
-//                Locale.ENGLISH
-//            }
-//            2 -> {
-//                Locale.TRADITIONAL_CHINESE
-//            }
-//            else -> {
-//                Locale.SIMPLIFIED_CHINESE
-//            }
-//        }
-//        val context = MyContextWrapper.wrap(base, locale)
-//        super.attachBaseContext(context)
-//    }
+//     override fun attachBaseContext(base: Context) {
+//         val locale = when (language) {
+//             1 -> {
+//                 Locale.ENGLISH
+//             }
+//             2 -> {
+//                 Locale.TRADITIONAL_CHINESE
+//             }
+//             else -> {
+//                 Locale.SIMPLIFIED_CHINESE
+//             }
+//         }
+//
+//         super.attachBaseContext(MyContextWrapper.wrap(base, locale))
+//     }
+
     override fun onCreate() {
         super.onCreate()
         instance = this
@@ -67,13 +67,12 @@ class PxEZApp : Application() {
             CrashHandler.getInstance().init(this)
         }
         locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            resources.configuration.locales.get(0).language;
+            resources.configuration.locales.get(0).language
         } else {
-            resources.configuration.locale.language;
+            resources.configuration.locale.language
         }
 
         WorkManager.getInstance(this).pruneWork()
-
         if (BuildConfig.DEBUG) {
             registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
                 override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {

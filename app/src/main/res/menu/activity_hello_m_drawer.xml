@@ -5,6 +5,10 @@
 
     <group android:checkableBehavior="none">
         <item
+            android:id="@+id/nav_account"
+            android:icon="@drawable/ic_action_my_white"
+            android:title="@string/account" />
+        <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_action_logo"
             android:title="@string/searchsource" />
@@ -24,23 +28,15 @@
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_action_share_setting"
             android:title="@string/appsetting" />
-
-        <item
-            android:id="@+id/nav_regist"
-            android:title="@string/completemessage"
-            android:visible="false" />
     </group>
 
     <item android:title="Communicate">
         <menu>
+
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_action_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_close_black_24dp"
-                android:title="@string/logout" />
+                android:id="@+id/nav_progress"
+                android:icon="@drawable/ic_action_download"
+                android:title="@string/download_progress" />
         </menu>
     </item>
 

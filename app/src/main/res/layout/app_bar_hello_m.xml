@@ -1,47 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:openDrawer="start"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:elevation="0dp">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|enterAlways">
+            app:elevation="0dp">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
+            <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="?attr/actionBarSize"
-                android:theme="@style/MyToolbar"
-                android:background="?attr/colorPrimary"
-                app:contentInsetEndWithActions="0dp"
-                app:contentInsetStart="0.0dp"
-                app:contentInsetStartWithNavigation="0dp">
+                app:layout_scrollFlags="scroll|enterAlways">
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tablayout_hellom"
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    style="@style/Widget.MaterialComponents.TabLayout.Colored"
-                    android:layout_height="match_parent"
-                    app:tabGravity="center"
-                    app:tabIndicatorHeight="0dp"
-                    app:tabPadding="0dp"
-                    app:tabPaddingStart="20dp" />
+                    android:layout_height="wrap_content"
+                    android:background="?attr/colorPrimary"
+                    android:minHeight="?attr/actionBarSize"
+                    android:theme="@style/MyToolbar"
+                    app:contentInsetEndWithActions="0dp"
+                    app:contentInsetStart="0.0dp"
+                    app:contentInsetStartWithNavigation="0dp">
 
-            </com.google.android.material.appbar.MaterialToolbar>
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tablayout_hellom"
+                        style="@style/Widget.MaterialComponents.TabLayout.Colored"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:tabGravity="center"
+                        app:tabIndicatorHeight="0dp"
+                        app:tabPadding="0dp"
+                        app:tabPaddingStart="20dp" />
+
+                </com.google.android.material.appbar.MaterialToolbar>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
 
 
-    </com.google.android.material.appbar.AppBarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_hello_m" />
+        <include layout="@layout/content_hello_m" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/nav_header_hello_m"
+        app:menu="@menu/activity_hello_m_drawer" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

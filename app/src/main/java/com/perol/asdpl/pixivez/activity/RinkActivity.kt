@@ -44,8 +44,7 @@ abstract class RinkActivity : AppCompatActivity() {
                 Locale.SIMPLIFIED_CHINESE
             }
         }
-        val context = MyContextWrapper.wrap(newBase, locale)
-        super.attachBaseContext(context)
+        super.attachBaseContext(MyContextWrapper.wrap(newBase, locale))
     }
 }
 
