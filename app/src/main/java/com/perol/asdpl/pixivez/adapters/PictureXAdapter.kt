@@ -608,7 +608,7 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
     }
 
     fun setProgressComplete(it: Boolean) {
-        progressBar!!.visibility = View.GONE
+        progressBar?.visibility = View.GONE
         createAnimationFrame(data, imageViewGif!!, duration)
     }
 }

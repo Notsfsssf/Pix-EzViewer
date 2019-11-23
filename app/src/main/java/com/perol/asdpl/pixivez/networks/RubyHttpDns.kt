@@ -30,7 +30,7 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 import java.net.InetAddress
 
 class RubyHttpDns : Dns {
-    val addressList = mutableListOf<InetAddress>()
+    private val addressList = mutableListOf<InetAddress>()
     override fun lookup(hostname: String): List<InetAddress> {
         if (addressList.isNotEmpty()) return addressList
         val defaultList = listOf(

@@ -74,10 +74,13 @@ class HelloMDynamicsFragment : LazyV4Fragment() {
 
                             picDateShare.value = "$year1-$monthR-$day1"
                             year.value = year1
-                            month.value = monthR
+                            month.value = month1
                             day.value = day1
-
-
+                            com.orhanobut.logger.Logger.i(
+                                year.value!!.toString(),
+                                month.value!!,
+                                day.value!!
+                            )
                         },
                         year.value!!,
                         month.value!!,
