@@ -191,7 +191,17 @@
                 android:text='@{html}'
                 android:textIsSelectable="true" />
         </com.google.android.material.card.MaterialCardView>
-
+        <TextView
+            android:id="@+id/btn_translate"
+            android:layout_width="match_parent"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:linksClickable="true"
+            android:padding="4dp"
+            android:text='Translate'
+            android:textIsSelectable="true" />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

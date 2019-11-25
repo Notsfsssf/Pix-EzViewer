@@ -25,14 +25,17 @@
 package com.perol.asdpl.pixivez.adapters
 
 import android.app.Activity
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ResolveInfo
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.text.util.Linkify
@@ -149,6 +152,7 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
     class DetailViewHolder(var binding: ViewPicturexDetailBinding) : RecyclerView.ViewHolder(binding.root) {
         private val tagFlowLayout = itemView.findViewById<TagFlowLayout>(R.id.tagflowlayout)
         private val captionTextView = itemView.findViewById<TextView>(R.id.textview_caption)
+        private val btnTranslate = itemView.findViewById<TextView>(R.id.btn_translate)
         private val viewCommentTextView = itemView.findViewById<TextView>(R.id.textview_viewcomment)
         private val imageView = itemView.findViewById<NiceImageView>(R.id.imageView5)
         private val imageButtonDownload = itemView.findViewById<ImageButton>(R.id.imagebutton_download)
@@ -182,6 +186,34 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
             viewCommentTextView.setOnClickListener {
                 mViewCommentListen.invoke()
             }
+
+            //google translate app btn click listener
+            btnTranslate.setOnClickListener {
+                val intent = Intent()
+                    .setType("text/plain")
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    intent.setAction(Intent.ACTION_PROCESS_TEXT)
+                    intent.putExtra(Intent.EXTRA_PROCESS_TEXT, s.caption)
+                } else {
+                    intent.setAction(Intent.ACTION_SEND)
+                    intent.putExtra(Intent.EXTRA_TEXT, s.caption)
+                }
+
+                for (resolveInfo: ResolveInfo in mContext.getPackageManager().queryIntentActivities(
+                    intent,
+                    0
+                )) {
+                    if (resolveInfo.activityInfo.packageName.contains("com.google.android.apps.translate")) {
+                        intent.component = ComponentName(
+                            resolveInfo.activityInfo.packageName,
+                            resolveInfo.activityInfo.name
+                        )
+                        mContext.startActivity(intent)
+                    }
+
+                }
+            }
+
             tagFlowLayout.apply {
 
                 adapter = object : TagAdapter<Tag>(s.tags) {
