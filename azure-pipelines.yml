@@ -27,12 +27,12 @@ steps:
     apksignerKeystorePassword: $(keystore.password)
     apksignerKeystoreAlias: $(key.alias)
     apksignerKeyPassword: $(key.password)
-    apksignerArguments: --out $(Build.SourcesDirectory)/app/build/outputs/apk/release/PixEz.release.apk
+    apksignerArguments: --out $(Build.SourcesDirectory)/app/build/outputs/apk/release/PixEz.nightly.apk
     zipalign: true
 - task: CopyFiles@2
   inputs:
     SourceFolder: $(Build.SourcesDirectory)
-    contents: '**/*.release.apk'
+    contents: '**/*.nightly.apk'
     targetFolder: '$(build.artifactStagingDirectory)'
     overWrite: true
 - task: PublishBuildArtifacts@1
@@ -40,3 +40,11 @@ steps:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)/app/build/outputs/apk/release/'
     artifactName: 'apk'
     publishLocation: 'container'
+- task: GithubRelease@0
+  displayName: 'Create GitHub Release'
+  inputs:
+    gitHubConnection: Notsfsssf
+    repositoryName: Notsfsssf/Pix-EzViewer
+    tagSource: manual
+    tag: $(Build.BuildNumber)
+    assets: $(Build.ArtifactStagingDirectory)/app/build/outputs/apk/release/*.nightly.apk
