@@ -243,4 +243,5 @@
     <string name="dark_mode">Dark Mode</string>
     <string name="restart_now">Restart Now</string>
     <string name="account_management">Account MGT</string>
+    <string name="auto_check_update">Auto check update</string>
 </resources>

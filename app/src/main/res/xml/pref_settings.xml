@@ -59,7 +59,7 @@
             app:defaultValue="true"
             app:summary="play版本不生效"
             app:key="autocheck"
-            app:title="自动检查更新" />
+            app:title="@string/auto_check_update" />
         <SwitchPreference
             android:key="crashreport"
             app:defaultValue="true"

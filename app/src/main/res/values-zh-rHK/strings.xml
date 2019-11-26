@@ -145,7 +145,7 @@
     <string name="tababout">關於</string>
     <string name="tabthanks">感謝</string>
     <string name="searchsource">以圖搜源</string>
-    <string name="cleancatche">清除緩存</string>
+    <string name="cleancatche">清除快取</string>
     <string name="historyrecord">歷史記錄</string>
     <string name="appsetting">程式設定</string>
     <string name="completemessage">完善信息</string>
@@ -244,8 +244,8 @@
     <string name="savegifsuccess">成功儲存動圖</string>
     <string name="savegifsuccesserr">儲存動圖失敗</string>
     <string name="encodegif">Encode ugoria?</string>
-    <string name="crash_report">crash report</string>
-    <string name="feed_back">反饋</string>
+    <string name="crash_report">問題回報</string>
+    <string name="feed_back">問題回報</string>
     <string name="needstatusbar">熒幕凹口</string>
     <string name="changeicons">更換圖標</string>
     <string name="supporttitle">支援</string>
@@ -257,4 +257,5 @@
     <string name="again_to_exit">再按壹次返回鍵退出</string>
     <string name="restart_now">立即重啟</string>
     <string name="account_management">賬號管理</string>
+    <string name="auto_check_update">自動檢查更新</string>
 </resources>
