@@ -23,10 +23,10 @@
  */
 
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-platform-android'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 apply plugin: 'android-x2j'
 android {
@@ -87,7 +87,7 @@ android {
 }
 
 dependencies {
-    def work_version = "2.3.0-beta01"
+    def work_version = "2.3.0-alpha01"
     // (Java only)
     implementation "androidx.work:work-runtime:$work_version"
 
@@ -117,7 +117,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0'
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
 
-    def room_version = "2.2.2"
+    def room_version = "2.2.0-rc01"
 
     implementation "androidx.room:room-runtime:$room_version"
     implementation 'androidx.preference:preference:1.1.0'
