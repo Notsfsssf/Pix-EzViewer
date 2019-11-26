@@ -2,7 +2,8 @@
 # Build your Android project with Gradle.
 # Add steps that test, sign, and distribute the APK, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/android
-
+variables:
+  - group: android-build-variables
 trigger:
 - master
 
@@ -17,15 +18,25 @@ steps:
     gradleOptions: '-Xmx3072m'
     publishJUnitResults: false
     testResultsFiles: '**/TEST-*.xml'
-    tasks: 'assembleDebug'
+    tasks: 'assembleRelease'
+- task: AndroidSigning@3
+  inputs:
+    apkFiles: '**/*.apk'
+    apksign: true
+    apksignerKeystoreFile: 'production.keystore'
+    apksignerKeystorePassword: $(keystore.password)
+    apksignerKeystoreAlias: $(key.alias)
+    apksignerKeyPassword: $(key.password)
+    apksignerArguments: --out $(outputDirectory)/app.release.apk
+    zipalign: true
 - task: CopyFiles@2
   inputs:
-    contents: '**/*.apk'
+    SourceFolder: $(Build.SourcesDirectory)
+    contents: '**/*.release.apk'
     targetFolder: '$(build.artifactStagingDirectory)'
-  displayName: Copy .apk files to artifact staging directory
+    overWrite: true
 - task: PublishBuildArtifacts@1
   inputs:
-    pathToPublish: '$(build.artifactStagingDirectory)'
-    artifactName: 'drop'
-    artifactType: 'container'
-  displayName: Publish artifacts
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)/app/build/outputs/apk/release/'
+    artifactName: 'apks'
+    publishLocation: 'container'
