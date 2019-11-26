@@ -27,7 +27,7 @@ steps:
     apksignerKeystorePassword: $(keystore.password)
     apksignerKeystoreAlias: $(key.alias)
     apksignerKeyPassword: $(key.password)
-    apksignerArguments: --out $(Build.SourcesDirectory)/app/build/outputs/apk/release/PixEz.nightly.apk
+    apksignerArguments: --out $(Build.SourcesDirectory)/app/build/outputs/apk/release/
     zipalign: true
 - task: CopyFiles@2
   inputs:
@@ -40,4 +40,14 @@ steps:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)/app/build/outputs/apk/release/'
     artifactName: 'apk'
     publishLocation: 'container'
+- task: GitHubRelease@1
+  inputs:
+    gitHubConnection: 'github.com_Notsfsssf'
+    repositoryName: '$(Build.Repository.Name)'
+    action: 'create'
+    target: '$(Build.SourceVersion)'
+    tagSource: 'gitTag'
+    assets: '$(Build.ArtifactStagingDirectory)/app/build/outputs/apk/release/PixEz.nightly.apk'
+    changeLogCompareToRelease: 'lastFullRelease'
+    changeLogType: 'commitBased'
 
