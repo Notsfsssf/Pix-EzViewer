@@ -205,6 +205,7 @@ class PictureXFragment : Fragment() {
 //              no more anko
             }
         })
+        loadData()
 
     }
 
