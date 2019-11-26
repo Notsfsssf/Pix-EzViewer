@@ -40,11 +40,4 @@ steps:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)/app/build/outputs/apk/release/'
     artifactName: 'apk'
     publishLocation: 'container'
-- task: GithubRelease@0
-  displayName: 'Create GitHub Release'
-  inputs:
-    gitHubConnection: Notsfsssf
-    repositoryName: Notsfsssf/Pix-EzViewer
-    tagSource: manual
-    tag: $(Build.BuildNumber)
-    assets: $(Build.ArtifactStagingDirectory)/app/build/outputs/apk/release/*.nightly.apk
+
