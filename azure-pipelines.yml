@@ -27,7 +27,7 @@ steps:
     apksignerKeystorePassword: $(keystore.password)
     apksignerKeystoreAlias: $(key.alias)
     apksignerKeyPassword: $(key.password)
-    apksignerArguments: --out $(Build.SourcesDirectory)/app/build/outputs/apk/release/
+    apksignerArguments: --out $(Build.SourcesDirectory)/app/build/outputs/apk/release/PixEz.nightly.apk
     zipalign: true
 - task: CopyFiles@2
   inputs:
