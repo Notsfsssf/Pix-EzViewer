@@ -35,18 +35,14 @@ steps:
     contents: '**/*.nightly.apk'
     targetFolder: '$(build.artifactStagingDirectory)'
     overWrite: true
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)/app/build/outputs/apk/release/'
-    artifactName: 'apk'
-    publishLocation: 'container'
 - task: GitHubRelease@1
   inputs:
     gitHubConnection: 'github.com_Notsfsssf'
-    repositoryName: '$(Build.Repository.Name)'
+    repositoryName: 'Notsfsssf/Pix-EzViewer'
     action: 'create'
     target: '$(Build.SourceVersion)'
     tagSource: 'gitTag'
+    tagPattern: '1.*.**'
     assets: '$(Build.ArtifactStagingDirectory)/app/build/outputs/apk/release/PixEz.nightly.apk'
     changeLogCompareToRelease: 'lastFullRelease'
     changeLogType: 'commitBased'
