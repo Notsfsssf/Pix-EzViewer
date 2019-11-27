@@ -37,6 +37,7 @@ import com.perol.asdpl.pixivez.adapters.RankingMAdapter
 import com.perol.asdpl.pixivez.objects.LazyV4Fragment
 import com.perol.asdpl.pixivez.viewmodel.factory.RankingShareViewModel
 import kotlinx.android.synthetic.main.fragment_hello_mdynamics.*
+import java.util.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -64,6 +65,11 @@ class HelloMDynamicsFragment : LazyV4Fragment() {
         viewpage_rankingm.adapter = RankingMAdapter(context!!, childFragmentManager)
         val shareModel = ViewModelProviders.of(activity!!).get(RankingShareViewModel::class.java)
         tablayout_rankingm.setupWithViewPager(viewpage_rankingm)
+        val calendar = Calendar.getInstance()
+        val yearNow = calendar.get(Calendar.YEAR)
+        val monthNow = calendar.get(Calendar.MONTH) + 1
+        val dayNow = calendar.get(Calendar.DAY_OF_MONTH)
+        val dateNow = "$yearNow-$monthNow-$dayNow"
         imageview_triangle.apply {
             setOnClickListener {
                 shareModel.apply {
@@ -72,7 +78,11 @@ class HelloMDynamicsFragment : LazyV4Fragment() {
                         DatePickerDialog.OnDateSetListener { p0, year1, month1, day1 ->
                             val monthR = month1 + 1
 
-                            picDateShare.value = "$year1-$monthR-$day1"
+                            picDateShare.value = if ("$year1-$monthR-$day1" == dateNow) {
+                                null
+                            } else {
+                                "$year1-$monthR-$day1"
+                            }
                             year.value = year1
                             month.value = month1
                             day.value = day1

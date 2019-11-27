@@ -26,7 +26,6 @@ package com.perol.asdpl.pixivez.viewmodel
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.perol.asdpl.pixivez.repository.RetrofitRespository
 import com.perol.asdpl.pixivez.responses.BookMarkDetailResponse
 import com.perol.asdpl.pixivez.responses.Illust
@@ -42,7 +41,7 @@ import io.reactivex.schedulers.Schedulers
 import java.io.File
 
 data class ProgressInfo(var all: Long, var now: Long)
-class PictureMViewModel : ViewModel() {
+class PictureMViewModel : BaseViewModel() {
     val illustDetailResponse = MutableLiveData<IllustDetailResponse>()
     val retrofitRespository: RetrofitRespository = RetrofitRespository.getInstance()
     val likeillust = MutableLiveData<Boolean>()
@@ -68,7 +67,7 @@ class PictureMViewModel : ViewModel() {
                 } else
                     appDatabase.illusthistoryDao().insert(IllustBeanEntity(null, it.illust.image_urls.square_medium, it.illust.id))
             }
-        }, {}, { ready.set(true) })
+        }, {}, { ready.set(true) }).add()
 
 
     }
@@ -86,12 +85,12 @@ class PictureMViewModel : ViewModel() {
                 illustDetailResponse.value!!.illust.is_bookmarked = false
             }, {
 
-            }, {}, {})
+            }, {}, {}).add()
         } else {
             postLikeIllust!!.subscribe({
                 likeillust.value = true
                 illustDetailResponse.value!!.illust.is_bookmarked = true
-            }, {}, {})
+            }, {}, {}).add()
         }
     }
 
@@ -100,13 +99,13 @@ class PictureMViewModel : ViewModel() {
             retrofitRespository.postfollowUser(id, "public").subscribe({
                 followuser.value = true
                 illustDetailResponse.value!!.illust.user.is_followed = true
-            }, {}, {})
+            }, {}, {}).add()
         } else {
             retrofitRespository.postunfollowUser(id).subscribe({
                 followuser.value = false
                 illustDetailResponse.value!!.illust.user.is_followed = false
             }, {}, {}
-            )
+            ).add()
         }
     }
 
@@ -116,7 +115,7 @@ class PictureMViewModel : ViewModel() {
                 { ugoiraMetadataResponse.value = it }
                 , {
             it.printStackTrace()
-        }, {})
+            }, {}).add()
 
     }
 
@@ -186,14 +185,14 @@ class PictureMViewModel : ViewModel() {
     }
 
     fun fabsetOnLongClick() {
-        val c = retrofitRespository.getBookmarkDetail(illustDetailResponse.value!!.illust.id.toLong())
-        c!!.subscribe(
+        retrofitRespository.getBookmarkDetail(illustDetailResponse.value!!.illust.id.toLong())
+            .subscribe(
                 {
 
                     tags.value = it.bookmark_detail
 
                 }
-                , {}, {})
+                , {}, {}).add()
     }
 
     fun onDialogclick(arrayList: ArrayList<String>, boolean: Boolean, toLong: Long) {
@@ -208,14 +207,14 @@ class PictureMViewModel : ViewModel() {
             postbookmark!!.subscribe({
                 likeillust.value = true
                 illustDetailResponse.value!!.illust.is_bookmarked = true
-            }, {}, {})
+            }, {}, {}).add()
 
         } else {
             val postbookmark = retrofitRespository.postUnlikeIllust(toLong.toLong())
             postbookmark!!.subscribe({
                 likeillust.value = false
                 illustDetailResponse.value!!.illust.is_bookmarked = false
-            }, {}, {})
+            }, {}, {}).add()
         }
 
     }
@@ -224,6 +223,6 @@ class PictureMViewModel : ViewModel() {
         retrofitRespository.getIllustRecommended(long).subscribe({
 
             aboutpics.value = it.illusts as ArrayList<Illust>?
-        }, {}, {})
+        }, {}, {}).add()
     }
 }

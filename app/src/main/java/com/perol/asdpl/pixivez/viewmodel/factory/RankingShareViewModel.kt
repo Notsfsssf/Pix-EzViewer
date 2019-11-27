@@ -29,7 +29,7 @@ import androidx.lifecycle.ViewModel
 import java.util.*
 
 class RankingShareViewModel : ViewModel() {
-    var picDateShare = MutableLiveData<String>()
+    var picDateShare = MutableLiveData<String?>()
     var year = MutableLiveData<Int>()
     var month = MutableLiveData<Int>()
     var day = MutableLiveData<Int>()

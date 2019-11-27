@@ -25,6 +25,7 @@
 package com.perol.asdpl.pixivez.adapters
 
 import android.content.Context
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.perol.asdpl.pixivez.R
@@ -35,8 +36,10 @@ class RankingMAdapter(var context: Context, fm: FragmentManager) : FragmentState
     //    private val modelistcn= arrayOf("每日","男性","女性","原创","新人","每周","每月","XVIII","XVIII_Week")
     override fun getCount(): Int = modelist.size
 
-    override fun getItem(position: Int) =
-            RankingMFragment.newInstance(modelist[position])
+    override fun getItem(position: Int): Fragment {
+        return RankingMFragment.newInstance(modelist[position])
+    }
+
 
     override fun getPageTitle(position: Int): CharSequence? = context.resources.getStringArray(R.array.modellist)[position]
 

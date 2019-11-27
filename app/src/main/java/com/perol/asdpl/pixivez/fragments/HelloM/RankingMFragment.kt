@@ -36,11 +36,11 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.RankingAdapter
-import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
 import com.perol.asdpl.pixivez.objects.LazyV4Fragment
 import com.perol.asdpl.pixivez.viewmodel.RankingMViewModel
 import com.perol.asdpl.pixivez.viewmodel.factory.RankingShareViewModel
 import kotlinx.android.synthetic.main.fragment_ranking_m.*
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,18 +59,27 @@ class RankingMFragment : LazyV4Fragment() {
     var viewmodel: RankingMViewModel? = null
     var sharemodel: RankingShareViewModel? = null
     lateinit var rankingAdapter: RankingAdapter
-    lateinit var sharedPreferencesServices: SharedPreferencesServices
     private var param1: String? = null
     override fun loadData() {
+
         viewmodel!!.first(param1!!, picDate)
     }
-
 
 
     fun lazyLoad() {
         viewmodel = ViewModelProviders.of(this).get(RankingMViewModel::class.java)
         sharemodel = ViewModelProviders.of(activity!!).get(RankingShareViewModel::class.java)
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH) + 1
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        picDate = if (sharemodel!!.picDateShare.value == "$year-$month-$day") {
+            null
+        } else {
+            sharemodel!!.picDateShare.value
+        }
         sharemodel!!.picDateShare.observe(this, Observer {
+
             viewmodel!!.datapick(param1!!, it)
         })
         viewmodel!!.addillusts.observe(this, Observer {
@@ -115,13 +124,18 @@ class RankingMFragment : LazyV4Fragment() {
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
         }
-
         lazyLoad()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        rankingAdapter = RankingAdapter(R.layout.view_ranking_item, null, PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("r18on", false))
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        rankingAdapter = RankingAdapter(
+            R.layout.view_ranking_item,
+            null,
+            PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("r18on", false)
+        )
         return inflater.inflate(R.layout.fragment_ranking_m, container, false)
     }
 
@@ -137,11 +151,11 @@ class RankingMFragment : LazyV4Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String) =
-                RankingMFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
+            RankingMFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_PARAM1, param1)
 
-                    }
                 }
+            }
     }
 }
