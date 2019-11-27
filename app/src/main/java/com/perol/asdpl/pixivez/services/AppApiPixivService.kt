@@ -132,9 +132,6 @@ interface AppApiPixivService {
     @GET("/v2/illust/related?filter=for_android")
     fun getIllustRecommended(@Header("Authorization") paramString: String, @Query("illust_id") paramLong: Long): Observable<RecommendResponse>
 
-    @GET("/v1/manga/recommended?filter=for_android")
-    fun getRecommendedMangaList(@Header("Authorization") paramString1: String, @Query("include_ranking_illusts") paramBoolean: Boolean, @Query("bookmark_illust_ids") paramString2: String): Observable<RecommendResponse>
-
     @GET
     fun getNext(@Header("Authorization") paramString1: String, @Url paramString2: String): Observable<RecommendResponse>
 
@@ -142,11 +139,7 @@ interface AppApiPixivService {
     @POST("/v2/user/browsing-history/illust/add")
     fun postAddIllustBrowsingHistory(@Header("Authorization") paramString: String, @Field("illust_ids[]") paramList: List<Long>): Observable<ResponseBody>
 
-    @GET
-    fun getNextUserFollowing(@Url paramString2: String): Observable<SearchUserResponse>
 
-    @GET
-    fun getNextHistory(@Header("Authorization") Authorization: String, @Url paramString2: String): Observable<IllustNext>
 
 
     @GET("/v1/illust/ranking?filter=for_android")
@@ -161,42 +154,27 @@ interface AppApiPixivService {
     @GET("/v1/illust/comments")
     fun getIllustComments(@Header("Authorization") paramString: String, @Query("illust_id") paramLong: Long): Observable<IllustCommentsResponse>
 
-    @GET("/v1/illust/comments")
-    fun getIllustNextComments(@Header("Authorization") paramString: String, @Url paramString2: String): Observable<IllustCommentsResponse>
 
     @FormUrlEncoded
     @POST("v1/illust/comment/add")
     fun postIllustComment(@Header("Authorization") paramString1: String, @Field("illust_id") illust_id: Long, @Field("comment") comment: String, @Field("parent_comment_id") parent_comment_id: Int?): Observable<ResponseBody>
 
-    @FormUrlEncoded
-    @POST("/v1/mute/edit")
-    fun postMuteSetting(@Header("Authorization") paramString: String, @Field("add_user_ids[]") paramList1: List<Long>, @Field("delete_user_ids[]") paramList2: List<Long>, @Field("add_tags[]") paramList3: List<String>, @Field("delete_tags[]") paramList4: List<String>): Observable<PixivResponse>
 
     @GET("/v1/user/detail?filter=for_android")
     fun getUserDetail(@Header("Authorization") paramString: String, @Query("user_id") id: Long): Observable<UserDetailResponse>
 
-    @GET("/v1/user/detail?filter=for_android")
-    fun getUserDetailBody(@Header("Authorization") paramString: String, @Query("user_id") id: Long): Observable<ResponseBody>
 
     @GET("/v1/user/illusts?filter=for_android")
     fun getUserIllusts(@Header("Authorization") paramString1: String, @Query("user_id") paramLong: Long, @Query("type") paramString2: String): Observable<IllustNext>
 
-    @GET("/v1/user/illusts?filter=for_android")
-    suspend fun getUserIllustsCor(@Header("Authorization") paramString1: String, @Query("user_id") paramLong: Long, @Query("type") paramString2: String): IllustNext
 
     @GET
     fun getNextUserIllusts(@Header("Authorization") paramString1: String, @Url paramString2: String): Observable<IllustNext>
 
-    @GET
-    suspend fun getNextUserIllustsCor(@Header("Authorization") paramString1: String, @Url paramString2: String): IllustNext
 
-    @GET
-    fun getNextUserIllustsBlock(@Header("Authorization") paramString1: String, @Url paramString2: String): Call<IllustNext>
 
     @GET
     fun getNextUser(@Header("Authorization") paramString1: String, @Url paramString2: String): Observable<SearchUserResponse>
 
-    @GET
-    fun getImageBitmap(@Url paramString2: String): Observable<ResponseBody>
 
 }
