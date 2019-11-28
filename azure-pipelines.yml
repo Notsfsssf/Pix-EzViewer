@@ -42,7 +42,7 @@ steps:
     action: 'create'
     target: '$(Build.SourceVersion)'
     tagSource: 'gitTag'
-    tagPattern: '1.*.**'
+    tagPattern: '.*\s*'
     assets: '$(Build.ArtifactStagingDirectory)/app/build/outputs/apk/release/PixEz.nightly.apk'
     changeLogCompareToRelease: 'lastFullRelease'
     changeLogType: 'commitBased'
