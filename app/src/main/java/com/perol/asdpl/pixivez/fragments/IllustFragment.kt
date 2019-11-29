@@ -101,15 +101,22 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
             val builder = MaterialAlertDialogBuilder(activity)
             val arrayList = arrayOfNulls<String>(starnum.size)
             for (i in starnum.indices) {
-                arrayList[i] = (param1 + " " + starnum[i].toString() + "users入り")
+                if (starnum[i] == 0)
+                    arrayList[i] = ("$param1 users入り")
+                else
+                    arrayList[i] = (param1 + " " + starnum[i].toString() + "users入り")
             }
             builder.setTitle("users入り")
-                    .setItems(arrayList
-                    ) { dialog, which ->
-                        val query = param1 + " " + starnum[which].toString() + "users入り"
-                        viewModel.firstsetdata(query, sort[selectSort], null, null)
-                        recyclerview_illust.scrollToPosition(0)
-                    }
+                .setItems(arrayList
+                ) { _, which ->
+
+                    val query = if (starnum[which] == 0)
+                        "$param1 users入り"
+                    else
+                        param1 + " " + starnum[which].toString() + "users入り"
+                    viewModel.firstsetdata(query, sort[selectSort], null, null)
+                    recyclerview_illust.scrollToPosition(0)
+                }
             builder.create().show()
         }
         val imageButton = activity!!.findViewById<ImageButton>(R.id.imagebutton_section)
@@ -144,7 +151,7 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
         spinner.onItemSelectedListener = this
     }
 
-    private val starnum = intArrayOf(50000, 30000, 20000, 10000, 5000, 1000, 500, 250, 100)
+    private val starnum = intArrayOf(50000, 30000, 20000, 10000, 5000, 1000, 500, 250, 100,0)
     private var param1: String? = null
     lateinit var searchIllustAdapter: RecommendAdapter
     var sort = arrayOf("date_desc", "date_asc", "popular_desc")
