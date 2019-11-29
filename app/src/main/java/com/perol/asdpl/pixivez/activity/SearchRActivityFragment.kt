@@ -57,7 +57,10 @@ class SearchRActivityFragment : Fragment() {
         recyclerview.layoutManager = LinearLayoutManager(activity)
         recyclerview.adapter = tagsTextAdapter
         tagsTextAdapter.setOnItemClickListener { adapter, view, position ->
-            tagsTextViewModel.addhistory(tags[position].name)
+            val s_tag = tags[position]
+            if (s_tag.translated_name.isNotEmpty())
+                tagsTextViewModel.addhistory(s_tag.name + "|" + s_tag.translated_name)
+            else tagsTextViewModel.addhistory(s_tag.name)
             val bundle = Bundle()
             bundle.putString("searchword", tags[position].name)
             val intent = Intent(activity!!, SearchResultActivity::class.java)

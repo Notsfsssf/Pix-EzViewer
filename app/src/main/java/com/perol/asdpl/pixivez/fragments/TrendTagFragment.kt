@@ -120,7 +120,12 @@ class TrendTagFragment : Fragment() {
 
     private fun upToPage(query: String) {
         val bundle = Bundle()
-        bundle.putString("searchword", query)
+        var nameQuery = query
+        if (query.contains('|')) {
+            val splits = query.split('|')
+            nameQuery = splits[0]
+        }
+        bundle.putString("searchword", nameQuery)
         val intent = Intent(activity!!, SearchResultActivity::class.java)
         intent.putExtras(bundle)
         startActivityForResult(intent, 775)
