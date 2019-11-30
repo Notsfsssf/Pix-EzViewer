@@ -6,17 +6,17 @@ buildscript {
 
     repositories {
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
-        maven {
-            url "https://maven.aliyun.com/repository/google"
-        }
-        maven {
-            url "https://maven.aliyun.com/repository/jcenter"
-        }
-        maven {
-            url "https://maven.aliyun.com/repository/central"
-        }
+//        maven {
+//            url "https://maven.aliyun.com/repository/google"
+//        }
+//        maven {
+//            url "https://maven.aliyun.com/repository/jcenter"
+//        }
+//        maven {
+//            url "https://maven.aliyun.com/repository/central"
+//        }
         maven { url 'https://jitpack.io' }
-
+        jcenter()
         google()
 
     }
@@ -30,18 +30,18 @@ buildscript {
 allprojects {
     repositories {
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
-        maven {
-            url "https://maven.aliyun.com/repository/google"
-        }
-        maven {
-            url "https://maven.aliyun.com/repository/jcenter"
-        }
-        maven {
-            url "https://maven.aliyun.com/repository/central"
-        }
-
-
+//        maven {
+//            url "https://maven.aliyun.com/repository/google"
+//        }
+//        maven {
+//            url "https://maven.aliyun.com/repository/jcenter"
+//        }
+//        maven {
+//            url "https://maven.aliyun.com/repository/central"
+//        }
         maven { url 'https://jitpack.io' }
+        jcenter()
+        google()
     }
 }
 
