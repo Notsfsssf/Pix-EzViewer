@@ -35,9 +35,13 @@ steps:
     contents: '**/*.nightly.apk'
     targetFolder: '$(build.artifactStagingDirectory)'
     overWrite: true
-- task: GithubRelease@0
-  displayName: 'Create GitHub Release'
+- task: GitHubRelease@1
   inputs:
     gitHubConnection: 'github.com_Notsfsssf'
-    isPreRelease: true
+    repositoryName: '$(Build.Repository.Name)'
+    action: 'create'
+    target: '$(Build.SourceVersion)'
+    tagSource: 'gitTag'
     assets: '$(Build.ArtifactStagingDirectory)/app/build/outputs/apk/release/PixEz.nightly.apk'
+    changeLogCompareToRelease: 'lastFullRelease'
+    changeLogType: 'commitBased'
