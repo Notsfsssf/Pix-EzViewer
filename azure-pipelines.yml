@@ -39,8 +39,5 @@ steps:
   displayName: 'Create GitHub Release'
   inputs:
     gitHubConnection: 'github.com_Notsfsssf'
-    repositoryName: 'Notsfsssf/Pix-EzViewer'
-    tagSource: manual
-    tag: $(Build.BuildNumber)
+    isPreRelease: true
     assets: '$(Build.ArtifactStagingDirectory)/app/build/outputs/apk/release/PixEz.nightly.apk'
-
