@@ -25,11 +25,10 @@
 package com.perol.asdpl.pixivez.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.perol.asdpl.pixivez.repository.RetrofitRespository
 import com.perol.asdpl.pixivez.responses.Illust
 
-class HelloMMyViewModel : ViewModel() {
+class HelloMMyViewModel : BaseViewModel() {
     var retrofitRespository = RetrofitRespository.getInstance()
     val illusts = MutableLiveData<ArrayList<Illust>>()
     val addillusts = MutableLiveData<ArrayList<Illust>>()
@@ -40,32 +39,32 @@ class HelloMMyViewModel : ViewModel() {
         retrofitRespository.getFollowIllusts("public").subscribe({
             nexturl.value = it.next_url
             illusts.value = it.illusts as ArrayList<Illust>?
-        }, {}, {})
+        }, {}, {}).add()
     }
 
     fun onLoadMoreRequested() {
         retrofitRespository.getNext(nexturl.value!!).subscribe({
             nexturl.value = it.next_url
             addillusts.value = it.illusts as ArrayList<Illust>?
-        }, {}, {})
+        }, {}, {}).add()
     }
 
     fun OnRefreshListener(restrict: String) {
         retrofitRespository.getFollowIllusts(restrict).subscribe({
             nexturl.value = it.next_url
             illusts.value = it.illusts as ArrayList<Illust>?
-        }, {}, {})
+        }, {}, {}).add()
     }
 
     fun OnItemChildLongClick(id: Illust) {
         if (id.is_bookmarked) {
             retrofitRespository.postUnlikeIllust(id.id.toLong())!!.subscribe({
                 bookmarknum.value = id
-            }, {}, {})
+            }, {}, {}).add()
         } else {
             retrofitRespository.postLikeIllust(id.id)!!.subscribe({
                 bookmarknum.value = id
-            }, {}, {})
+            }, {}, {}).add()
         }
     }
 }

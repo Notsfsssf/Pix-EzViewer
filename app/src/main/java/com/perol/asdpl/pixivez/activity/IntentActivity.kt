@@ -89,8 +89,8 @@ class IntentActivity : RinkActivity() {
 
             }
             var id = uri.getQueryParameter("id")
-            if (uri.encodedSchemeSpecificPart.contains("//www.pixiv.net/fanbox/creator/")) {
-                id = uri.encodedSchemeSpecificPart.replace("//www.pixiv.net/fanbox/creator/", "")
+            if (uri.encodedSchemeSpecificPart.contains("/fanbox/creator/")) {
+                id = uri.pathSegments[uri.pathSegments.size - 1]
             }
             if (id != null) {
 

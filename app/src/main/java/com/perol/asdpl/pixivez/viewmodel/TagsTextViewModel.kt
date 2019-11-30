@@ -25,7 +25,6 @@
 package com.perol.asdpl.pixivez.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.perol.asdpl.pixivez.repository.RetrofitRespository
 import com.perol.asdpl.pixivez.responses.Tags
 import com.perol.asdpl.pixivez.services.PxEZApp
@@ -35,14 +34,14 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class TagsTextViewModel : ViewModel() {
+class TagsTextViewModel : BaseViewModel() {
     val retrofitRespository = RetrofitRespository.getInstance()
     var appDatabase = AppDatabase.getInstance(PxEZApp.instance)
     val tags = MutableLiveData<List<Tags>>()
     fun onQueryTextChange(newText: String) {
         retrofitRespository.getSearchAutoCompleteKeywords(newText).subscribe({
             tags.value = it.tags
-        }, {})
+        }, {}).add()
     }
 
     fun addhistory(searchword: String) {
@@ -55,7 +54,7 @@ class TagsTextViewModel : ViewModel() {
         }.subscribe {
 
 
-        }
+        }.add()
 
     }
 }
