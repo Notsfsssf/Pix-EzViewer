@@ -258,4 +258,7 @@
     <string name="restart_now">立即重啟</string>
     <string name="account_management">賬號管理</string>
     <string name="auto_check_update">自動檢查更新</string>
+    <string name="half_year">半年</string>
+    <string name="a_year">一年</string>
+    <string name="unlimit">不限</string>
 </resources>

@@ -78,12 +78,12 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
                         Toasty.error(PxEZApp.instance, "not premium!").show()
                         viewModel.setPreview(param1!!, sort[position], null, null)
                     } else
-                        viewModel.firstsetdata(param1!!, sort[selectSort], null, null)
+                        viewModel.firstSetData(param1!!, sort[selectSort], null, null)
 
                 }
             } else {
 
-                viewModel.firstsetdata(param1!!, sort[selectSort], null, null)
+                viewModel.firstSetData(param1!!, sort[selectSort], null, null)
             }
         }
 
@@ -114,7 +114,7 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
                         "$param1 users入り"
                     else
                         param1 + " " + starnum[which].toString() + "users入り"
-                    viewModel.firstsetdata(query, sort[selectSort], null, null)
+                    viewModel.firstSetData(query, sort[selectSort], null, null)
                     recyclerview_illust.scrollToPosition(0)
                 }
             builder.create().show()
@@ -127,7 +127,10 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
                     selectSort = sort
                     selectTarget = search_target
                     selectDuration = duration
-                    viewModel.firstsetdata(param1!!, this@IllustFragment.sort[sort], this@IllustFragment.search_target[search_target],
+                    viewModel.firstSetData(
+                        param1!!,
+                        this@IllustFragment.sort[sort],
+                        this@IllustFragment.search_target[search_target],
                             this@IllustFragment.duration[duration])
                 }
 
@@ -144,7 +147,12 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
                     Toasty.error(PxEZApp.instance, "not premium!").show()
                     viewModel.setPreview(param1!!, sort[selectSort], search_target[selectTarget], duration[selectDuration])
                 } else
-                    viewModel.firstsetdata(param1!!, sort[selectSort], search_target[selectTarget], duration[selectDuration])
+                    viewModel.firstSetData(
+                        param1!!,
+                        sort[selectSort],
+                        search_target[selectTarget],
+                        duration[selectDuration]
+                    )
             }
         }
         val spinner: Spinner = activity!!.findViewById<Spinner>(R.id.spinner_result)
@@ -156,7 +164,14 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
     lateinit var searchIllustAdapter: RecommendAdapter
     var sort = arrayOf("date_desc", "date_asc", "popular_desc")
     var search_target = arrayOf("partial_match_for_tags", "exact_match_for_tags", "title_and_caption")
-    var duration = arrayOf("within_last_day", "within_last_week", "within_last_month")
+    var duration = arrayOf(
+        "custom_duration",
+        "within_last_day",
+        "within_last_week",
+        "within_last_month",
+        "within_half_year",
+        "within_year"
+    )
     var selectSort: Int = 0
     var selectTarget: Int = 0
     var selectDuration: Int = 0

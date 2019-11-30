@@ -107,7 +107,10 @@
             android:layout_marginTop="8dp"
 >
 
-
+            <com.google.android.material.tabs.TabItem
+                android:text="@string/unlimit"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
 
             <com.google.android.material.tabs.TabItem
                 android:text="@string/aday"
@@ -121,6 +124,15 @@
 
             <com.google.android.material.tabs.TabItem
                 android:text="@string/amonth"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+            <com.google.android.material.tabs.TabItem
+                android:text="@string/half_year"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+            <com.google.android.material.tabs.TabItem
+                android:text="@string/a_year"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
         </com.google.android.material.tabs.TabLayout>

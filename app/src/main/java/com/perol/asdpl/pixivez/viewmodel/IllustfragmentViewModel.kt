@@ -49,7 +49,7 @@ class IllustfragmentViewModel : BaseViewModel() {
                 }, {}).add()
     }
 
-    fun firstsetdata(word: String, sort: String, search_target: String?, duration: String?) {
+    fun firstSetData(word: String, sort: String, search_target: String?, duration: String?) {
         isRefresh.value = true
         retrofitRespository.getSearchIllust(word, sort, search_target, null, duration)
                 .subscribe({
