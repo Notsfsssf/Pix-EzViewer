@@ -35,15 +35,12 @@ steps:
     contents: '**/*.nightly.apk'
     targetFolder: '$(build.artifactStagingDirectory)'
     overWrite: true
-- task: GitHubRelease@1
+- task: GithubRelease@0
+  displayName: 'Create GitHub Release'
   inputs:
     gitHubConnection: 'github.com_Notsfsssf'
     repositoryName: 'Notsfsssf/Pix-EzViewer'
-    action: 'create'
-    target: '$(Build.SourceVersion)'
-    tagSource: 'gitTag'
-    tagPattern: '.*'
+    tagSource: manual
+    tag: $(Build.BuildNumber)
     assets: '$(Build.ArtifactStagingDirectory)/app/build/outputs/apk/release/PixEz.nightly.apk'
-    changeLogCompareToRelease: 'lastFullRelease'
-    changeLogType: 'commitBased'
 
