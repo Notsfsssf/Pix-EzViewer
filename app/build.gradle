@@ -64,9 +64,7 @@ android {
     dataBinding {
         enabled = true
     }
-    kapt {
-        generateStubs = true
-    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -88,6 +86,8 @@ android {
 }
 
 dependencies {
+    implementation 'com.afollestad.material-dialogs:datetime:3.1.1'
+
     implementation 'com.orhanobut:logger:2.2.0'
     def work_version = "2.3.0-alpha01"
     // (Java only)

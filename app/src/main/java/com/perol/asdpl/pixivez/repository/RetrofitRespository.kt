@@ -130,10 +130,26 @@ class RetrofitRespository {
         }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).retryWhen(reFreshFunction)
 
     }
-    fun getSearchIllust(word: String, sort: String, search_target: String?, bookmark_num: Int?, duration: String?): Observable<SearchIllustResponse> {
+
+    fun getSearchIllust(
+        word: String,
+        sort: String,
+        search_target: String?,
+        start_date: String?,
+        end_date: String?,
+        bookmark_num: Int?
+    ): Observable<SearchIllustResponse> {
         return Observable.just(1).flatMap {
             resetToken()
-            appApiPixivService.getSearchIllust(word, sort, search_target, bookmark_num, duration, Authorization)
+            appApiPixivService.getSearchIllust(
+                word,
+                sort,
+                search_target,
+                start_date,
+                end_date,
+                bookmark_num,
+                Authorization
+            )
         }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).retryWhen(reFreshFunction)
 
     }
@@ -195,7 +211,11 @@ class RetrofitRespository {
         }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).retryWhen(reFreshFunction)
     }
 
-    fun postLikeIllustWithTags(int: Long, string: String, arrayList: ArrayList<String>): Observable<ResponseBody>? =
+    fun postLikeIllustWithTags(
+        int: Long,
+        string: String,
+        arrayList: ArrayList<String>
+    ): Observable<ResponseBody> =
             Observable.just(1).flatMap {
                 resetToken()
                 appApiPixivService.postLikeIllust(Authorization, int.toLong(), string, arrayList)

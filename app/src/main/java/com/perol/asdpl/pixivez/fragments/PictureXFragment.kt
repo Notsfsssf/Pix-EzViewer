@@ -25,25 +25,21 @@
 package com.perol.asdpl.pixivez.fragments
 
 
+import TagsBookMarkDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Switch
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputEditText
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.UserMActivity
 import com.perol.asdpl.pixivez.adapters.PictureXAdapter
-import com.perol.asdpl.pixivez.adapters.TagsAdapter
 import com.perol.asdpl.pixivez.databinding.FragmentPictureXBinding
 import com.perol.asdpl.pixivez.dialog.CommentDialog
 import com.perol.asdpl.pixivez.objects.LazyV4Fragment
@@ -52,7 +48,6 @@ import com.perol.asdpl.pixivez.responses.Illust
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.viewmodel.PictureXViewModel
 import kotlinx.android.synthetic.main.fragment_picture_x.*
-import kotlin.collections.set
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -163,60 +158,7 @@ class PictureXFragment : LazyV4Fragment() {
             if (pictureXAdapter != null)
                 pictureXAdapter?.setProgressComplete(it)
         })
-        pictureXViewModel.tags.observe(this, Observer { itRaw ->
-            val it = itRaw.tags
-            val arrayList = ArrayList<String>()
-            if (it != null && !pictureXViewModel.likeIllust.value!!) {
-                it.map {
-                    arrayList.add(it.name)
-                }
-                val checkStatus = HashMap<Int, Boolean>()
-                for (i in it.indices) {
-                    checkStatus[i] = false
-                }
-                val tagsAdapter = TagsAdapter(R.layout.view_tags_item, arrayList, checkStatus)
-                val alertBuilder = MaterialAlertDialogBuilder(activity!!)
-                val view = LayoutInflater.from(context).inflate(R.layout.dialog_star, null)
 
-                val switch = view.findViewById<Switch>(R.id.switch_private).also {
-                    it.isChecked = itRaw.restrict != "public"
-                }
-                val edit = view.findViewById<TextInputEditText>(R.id.edit)
-
-                val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerview).also {
-                    it.layoutManager = LinearLayoutManager(activity)
-                    it.adapter = tagsAdapter
-                }
-                val add = view.findViewById<Button>(R.id.add).also {
-                    it.setOnClickListener {
-                        if (!edit.text.isNullOrBlank()) {
-                            tagsAdapter.addData(0, edit.text.toString())
-                            checkStatus[checkStatus.count()] = false
-                            recyclerView.smoothScrollToPosition(0)
-                        }
-                    }
-                }
-                alertBuilder.setView(view)
-                alertBuilder.setPositiveButton("LIKE!") { a, b ->
-                    val taglist = ArrayList<String>()
-                    if (tagsAdapter.checkStatus.isNotEmpty())
-                        for (i in 0 until tagsAdapter.checkStatus.size) {
-                            if (tagsAdapter.checkStatus[i]!!) {
-                                taglist.add(arrayList[i])
-                            }
-                        }
-                    println(taglist)
-                    pictureXViewModel.onDialogClick(
-                        taglist,
-                        switch!!.isChecked,
-                        pictureXViewModel.illustDetailResponse.value!!.illust.id
-                    );
-                    a.dismiss()
-                }
-                alertBuilder.create().show()
-//              no more anko
-            }
-        })
 
     }
 
@@ -226,9 +168,13 @@ class PictureXFragment : LazyV4Fragment() {
             pictureXViewModel.FabClick()
         }
         fab.setOnLongClickListener {
+            if (pictureXViewModel.illustDetailResponse.value!!.illust.is_bookmarked) {
+                return@setOnLongClickListener true
+            }
             Toasty.info(activity!!, resources.getString(R.string.fetchtags), Toast.LENGTH_SHORT)
                 .show()
-            pictureXViewModel.fabOnLongClick()
+            val tagsBookMarkDialog = TagsBookMarkDialog();
+            tagsBookMarkDialog.show(childFragmentManager, TagsBookMarkDialog::class.java.name)
             true
         }
         imageButton.setOnClickListener {

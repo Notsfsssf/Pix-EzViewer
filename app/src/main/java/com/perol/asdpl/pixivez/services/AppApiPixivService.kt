@@ -98,8 +98,16 @@ interface AppApiPixivService {
     @GET("/v1/trending-tags/illust?filter=for_android")
     fun getIllustTrendTags(@Header("Authorization") paramString: String): Observable<TrendingtagResponse>
 
+    //    &start_date=2019-11-24&end_date=2019-12-01
     @GET("/v1/search/illust?filter=for_android&merge_plain_keyword_results=true")
-    fun getSearchIllust(@Query("word") paramString1: String, @Query("sort") paramString2: String, @Query("search_target") paramString3: String?, @Query("bookmark_num") paramInteger: Int?, @Query("duration") paramString4: String?, @Header("Authorization") paramString5: String): Observable<SearchIllustResponse>
+    fun getSearchIllust(
+        @Query("word") paramString1: String,
+        @Query("sort") sort: String,
+        @Query("search_target") search_target: String?,
+        @Query("start_date") start_date: String?,
+        @Query("end_date") end_date: String?,
+        @Query("bookmark_num") paramInteger: Int?, @Header("Authorization") paramString5: String
+    ): Observable<SearchIllustResponse>
 
     @GET("/v1/search/popular-preview/illust?filter=for_android&merge_plain_keyword_results=true")
     fun getSearchIllustPreview(@Query("word") paramString1: String, @Query("sort") paramString2: String, @Query("search_target") paramString3: String?, @Query("bookmark_num") paramInteger: Int?, @Query("duration") paramString4: String?, @Header("Authorization") paramString5: String): Observable<SearchIllustResponse>

@@ -277,4 +277,6 @@
     <string name="half_year">半年</string>
     <string name="a_year">一年</string>
     <string name="unlimit">不限</string>
+    <string name="bookmark_private">悄悄收藏</string>
+    <string name="bookmark_public">公开收藏</string>
 </resources>

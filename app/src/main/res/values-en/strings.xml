@@ -247,4 +247,6 @@
     <string name="half_year">Half_Year</string>
     <string name="a_year">A Year</string>
     <string name="unlimit">UnLimit</string>
+    <string name="bookmark_private">private</string>
+    <string name="bookmark_public">public</string>
 </resources>

@@ -4,23 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="50dp">
 
-        <TextView
-            android:id="@+id/textview_tag1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-     android:layout_alignParentStart="true"
-            android:layout_centerInParent="true"
-            android:layout_margin="8dp"
-            android:text="111111111111111111111111111"
-    />
+    <TextView
+        android:id="@+id/textview_tag1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerInParent="true"
+        android:layout_margin="8dp"
+        android:maxLines="1"
+        android:text="111111111111111111111111111" />
 
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-    android:layout_alignParentEnd="true"/>
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_centerInParent="true" />
 
 
 </RelativeLayout>

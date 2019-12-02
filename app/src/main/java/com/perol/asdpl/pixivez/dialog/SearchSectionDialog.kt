@@ -27,49 +27,103 @@ package com.perol.asdpl.pixivez.dialog
 
 import android.app.Dialog
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil.inflate
+import android.widget.Button
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.perol.asdpl.pixivez.R
-import com.perol.asdpl.pixivez.databinding.DialogSearchsectionBinding
+import com.perol.asdpl.pixivez.viewmodel.IllustfragmentViewModel
+import java.util.*
 
 class SearchSectionDialog : DialogFragment() {
     fun show(fragmentManager: FragmentManager) {
         show(fragmentManager, "LongHoldDialogFragment")
     }
 
-    var callback: Callback? = null
-    override fun onDestroy() {
-        if (dialog != null && dialog!!.isShowing) {
-            dialog!!.dismiss();
-        }
-        super.onDestroy()
-        callback = null
-    }
-
-    interface Callback {
-        fun onClick(search_target: Int, sort: Int, duration: Int)
-
-    }
-
+    val tms = Calendar.getInstance()
+    val thisMonth01 = "${tms.get(Calendar.YEAR)}-${tms.get(Calendar.MONTH) + 1}-01"
+    val halfYear01 = "${tms.get(Calendar.YEAR)}-${tms.get(Calendar.MONTH) + 1}-01"
+    var sort = arrayOf("date_desc", "date_asc", "popular_desc")
+    var search_target =
+        arrayOf("partial_match_for_tags", "exact_match_for_tags", "title_and_caption")
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val word = arguments?.getString("word", "")
         val builder = MaterialAlertDialogBuilder(activity)
-        val inflater = activity!!.layoutInflater
-        val binding = inflate<DialogSearchsectionBinding>(inflater, R.layout.dialog_searchsection, null, false)
-        val view = binding.root
-        val first = view.findViewById<TabLayout>(R.id.tablayout_search_target)
+        val inflater = requireActivity().layoutInflater
+        val view = inflater.inflate(
+            R.layout.dialog_searchsection,
+            null
+        )
+        val viewModel =
+            ViewModelProviders.of(requireParentFragment()).get(IllustfragmentViewModel::class.java)
+        val first = view.findViewById<TabLayout>(R.id.tablayout_search_target).apply {
+            clearOnTabSelectedListeners()
+            addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+                }
+
+                override fun onTabSelected(tab: TabLayout.Tab) {
+                    viewModel.searchTarget.value = search_target[tab.position]
+                }
+            })
+        }
         val second = view.findViewById<TabLayout>(R.id.tablayout_sort)
+            .apply {
+                clearOnTabSelectedListeners()
+                addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                    override fun onTabReselected(tab: TabLayout.Tab?) {
+
+                    }
+
+                    override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+                    }
+
+                    override fun onTabSelected(tab: TabLayout.Tab) {
+                        viewModel.sort.value = sort[tab.position]
+                    }
+                })
+            }
         val third = view.findViewById<TabLayout>(R.id.tablayout_duration)
-        builder.setView(view)
-        builder.setNegativeButton(android.R.string.ok) { p0, p1 ->
-            if (callback != null) {
-                callback!!.onClick(first.selectedTabPosition, second.selectedTabPosition, third.selectedTabPosition)
+            .apply {
+                clearOnTabSelectedListeners()
+                addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                    override fun onTabReselected(tab: TabLayout.Tab?) {
+
+                    }
+
+                    override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+                    }
+
+                    override fun onTabSelected(tab: TabLayout.Tab?) {
+
+                    }
+                })
+            }
+        val button = view.findViewById<Button>(R.id.pick_button).apply {
+            setOnClickListener {
+
             }
         }
-        builder.setPositiveButton(android.R.string.cancel) { p0, p1 -> }
+
+
+        builder.setView(view)
+        builder.setNegativeButton(android.R.string.cancel) { p0, p1 ->
+
+        }
+        builder.setPositiveButton(android.R.string.ok) { p0, p1 ->
+            if (word != null)
+                viewModel.firstSetData(word)
+        }
 
         val dialog = builder.create()
 
