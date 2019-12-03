@@ -87,6 +87,51 @@
             android:text="@string/oldwork" />
     </com.google.android.material.tabs.TabLayout>
 
+    <!--   <TextView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_gravity="center"
+           android:layout_marginStart="8dp"
+           android:layout_marginTop="5dp"
+           android:layout_marginEnd="8dp"
+           android:text="@string/recent"
+           android:textSize="16sp" />
+
+       <com.google.android.material.tabs.TabLayout
+           android:id="@+id/tablayout_duration"
+           android:layout_width="match_parent"
+           android:layout_height="30dp"
+           android:layout_gravity="center"
+           android:layout_marginStart="8dp"
+           android:layout_marginTop="8dp"
+           android:layout_marginEnd="8dp"
+           app:tabIndicatorColor="?attr/colorPrimaryDark">
+
+           <com.google.android.material.tabs.TabItem
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent"
+               android:text="@string/unlimit" />
+
+           <com.google.android.material.tabs.TabItem
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent"
+               android:text="@string/aday" />
+
+           <com.google.android.material.tabs.TabItem
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent"
+               android:text="@string/aweek" />
+
+           <com.google.android.material.tabs.TabItem
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent"
+               android:text="@string/amonth" />
+
+           <com.google.android.material.tabs.TabItem
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent"
+               android:text="@string/a_year" />
+       </com.google.android.material.tabs.TabLayout>-->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -94,51 +139,47 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/recent"
+        android:text="@string/choice_date"
         android:textSize="16sp" />
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tablayout_duration"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_gravity="center"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:tabIndicatorColor="?attr/colorPrimaryDark">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/unlimit" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/aday" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/aweek" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/amonth" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/a_year" />
-    </com.google.android.material.tabs.TabLayout>
-
-    <Button
-        android:id="@+id/pick_button"
+    <ToggleButton
+        android:id="@+id/toggle"
+        android:layout_margin="8dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:contentDescription="@string/choice"
+        android:checked="false"
+        android:text="@string/choice_date"
+        android:layout_height="wrap_content" />
 
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="8dp" />
+    <LinearLayout
+        android:id="@+id/pick_date_layout"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:id="@+id/pick_button"
+            android:layout_width="0dp"
+            android:text="@string/start_date"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="~" />
+
+        <Button
+            android:id="@+id/pick_end_button"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/end_date"
+            android:layout_margin="8dp"
+            android:layout_weight="1" />
+    </LinearLayout>
 </LinearLayout>

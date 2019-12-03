@@ -25,9 +25,13 @@
 package com.perol.asdpl.pixivez.dialog
 
 
+import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.ToggleButton
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProviders
@@ -92,29 +96,59 @@ class SearchSectionDialog : DialogFragment() {
                     }
                 })
             }
-        val third = view.findViewById<TabLayout>(R.id.tablayout_duration)
-            .apply {
-                clearOnTabSelectedListeners()
-                addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-                    override fun onTabReselected(tab: TabLayout.Tab?) {
 
-                    }
-
-                    override fun onTabUnselected(tab: TabLayout.Tab?) {
-
-                    }
-
-                    override fun onTabSelected(tab: TabLayout.Tab?) {
-
-                    }
-                })
+        val toggleButton = view.findViewById<ToggleButton>(R.id.toggle).apply {
+            setOnCheckedChangeListener { buttonView, isChecked ->
+                view.findViewById<LinearLayout>(R.id.pick_date_layout).visibility = if (isChecked) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
             }
+        }
         val button = view.findViewById<Button>(R.id.pick_button).apply {
             setOnClickListener {
+                val calendar = Calendar.getInstance()
+                val year = calendar.get(Calendar.YEAR)
+                val month = calendar.get(Calendar.MONTH) + 1
+                val day = calendar.get(Calendar.DAY_OF_MONTH)
+                val dateDialog = DatePickerDialog(
+                    requireActivity(),
+                    DatePickerDialog.OnDateSetListener { p0, year1, month1, day1 ->
+                        val monthR = month1 + 1
+                        text = "${year1}-${monthR}-${day1}"
+                        viewModel.startDate.value = "${year1}-${monthR}-${day1}"
+                    },
+                    year,
+                    month,
+                    day
+                )
+                dateDialog.datePicker.maxDate = System.currentTimeMillis()
+                dateDialog.show()
 
             }
         }
-
+        view.findViewById<Button>(R.id.pick_end_button).apply {
+            setOnClickListener {
+                val calendar = Calendar.getInstance()
+                val year = calendar.get(Calendar.YEAR)
+                val month = calendar.get(Calendar.MONTH) + 1
+                val day = calendar.get(Calendar.DAY_OF_MONTH)
+                val dateDialog = DatePickerDialog(
+                    requireActivity(),
+                    DatePickerDialog.OnDateSetListener { p0, year1, month1, day1 ->
+                        val monthR = month1 + 1
+                        text = "${year1}-${monthR}-${day1}"
+                        viewModel.endDate.value = "${year1}-${monthR}-${day1}"
+                    },
+                    year,
+                    month,
+                    day
+                )
+                dateDialog.datePicker.maxDate = System.currentTimeMillis()
+                dateDialog.show()
+            }
+        }
 
         builder.setView(view)
         builder.setNegativeButton(android.R.string.cancel) { p0, p1 ->

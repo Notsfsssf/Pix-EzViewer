@@ -298,9 +298,6 @@ class LoginActivity : RinkActivity() {
                                 ).show()
                             }
 
-                        } else if (e.message!!.contains("400") && !e.message!!.contains("oauth")) {
-                            Toast.makeText(applicationContext, "${e.message}", Toast.LENGTH_LONG)
-                                .show()
                         } else {
                             Toast.makeText(applicationContext, "${e.message}", Toast.LENGTH_LONG)
                                 .show()
