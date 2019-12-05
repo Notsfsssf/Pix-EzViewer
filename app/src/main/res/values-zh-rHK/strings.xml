@@ -261,9 +261,9 @@
     <string name="half_year">半年</string>
     <string name="a_year">一年</string>
     <string name="unlimit">不限</string>
-    <string name="bookmark_private">private</string>
-    <string name="bookmark_public">public</string>
+    <string name="bookmark_private">悄悄收藏</string>
+    <string name="bookmark_public">公開收藏</string>
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
-    <string name="choice_date">Choic Date</string>
+    <string name="choice_date">Choice Date</string>
 </resources>

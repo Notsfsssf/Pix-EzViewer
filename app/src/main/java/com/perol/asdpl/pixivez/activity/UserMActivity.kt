@@ -73,7 +73,7 @@ class UserMActivity : RinkActivity() {
 
         id = intent.getLongExtra("data", 1)
         val viewModel = ViewModelProviders.of(this).get(UserMViewModel::class.java)
-        viewModel.getdata(id)
+        viewModel.getData(id)
 
         viewModel.userDetail.observe(this, Observer {
             if (it != null) {

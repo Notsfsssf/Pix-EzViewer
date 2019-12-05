@@ -39,6 +39,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.viewmodel.IllustfragmentViewModel
+import com.perol.asdpl.pixivez.viewmodel.generateDateString
 import java.util.*
 
 class SearchSectionDialog : DialogFragment() {
@@ -105,19 +106,27 @@ class SearchSectionDialog : DialogFragment() {
                     View.GONE
                 }
             }
+            isChecked = viewModel.endDate.value != null && viewModel.startDate.value != null
+
         }
         val button = view.findViewById<Button>(R.id.pick_button).apply {
+            var calendar = Calendar.getInstance()
+            if (viewModel.endDate.value != null) {
+                calendar = viewModel.startDate.value
+                this.text = viewModel.startDate.value.generateDateString()
+            }
             setOnClickListener {
-                val calendar = Calendar.getInstance()
                 val year = calendar.get(Calendar.YEAR)
-                val month = calendar.get(Calendar.MONTH) + 1
+                val month = calendar.get(Calendar.MONTH)
                 val day = calendar.get(Calendar.DAY_OF_MONTH)
                 val dateDialog = DatePickerDialog(
                     requireActivity(),
                     DatePickerDialog.OnDateSetListener { p0, year1, month1, day1 ->
                         val monthR = month1 + 1
                         text = "${year1}-${monthR}-${day1}"
-                        viewModel.startDate.value = "${year1}-${monthR}-${day1}"
+                        val calendar1 = Calendar.getInstance()
+                        calendar1.set(year1, month1, day1)
+                        viewModel.startDate.value = calendar1
                     },
                     year,
                     month,
@@ -129,17 +138,26 @@ class SearchSectionDialog : DialogFragment() {
             }
         }
         view.findViewById<Button>(R.id.pick_end_button).apply {
+            var calendar = Calendar.getInstance()
+            if (viewModel.endDate.value != null) {
+                calendar = viewModel.endDate.value
+                this.text = viewModel.endDate.value.generateDateString()
+            }
             setOnClickListener {
-                val calendar = Calendar.getInstance()
+
+
                 val year = calendar.get(Calendar.YEAR)
-                val month = calendar.get(Calendar.MONTH) + 1
+                val month = calendar.get(Calendar.MONTH)
                 val day = calendar.get(Calendar.DAY_OF_MONTH)
+
                 val dateDialog = DatePickerDialog(
                     requireActivity(),
                     DatePickerDialog.OnDateSetListener { p0, year1, month1, day1 ->
                         val monthR = month1 + 1
+                        val calendar1 = Calendar.getInstance()
+                        calendar1.set(year1, month1, day1)
                         text = "${year1}-${monthR}-${day1}"
-                        viewModel.endDate.value = "${year1}-${monthR}-${day1}"
+                        viewModel.endDate.value = calendar1
                     },
                     year,
                     month,

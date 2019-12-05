@@ -27,6 +27,15 @@ package com.perol.asdpl.pixivez.viewmodel
 import androidx.lifecycle.MutableLiveData
 import com.perol.asdpl.pixivez.repository.RetrofitRespository
 import com.perol.asdpl.pixivez.responses.Illust
+import java.util.*
+import kotlin.collections.ArrayList
+
+fun Calendar?.generateDateString(): String? {
+    if (this == null) {
+        return this;
+    }
+    return "${this.get(Calendar.YEAR)}-${this.get(Calendar.MONTH) + 1}-${this.get(Calendar.DATE)}"
+}
 
 class IllustfragmentViewModel : BaseViewModel() {
     var sortT = arrayOf("date_desc", "date_asc", "popular_desc")
@@ -41,8 +50,8 @@ class IllustfragmentViewModel : BaseViewModel() {
     var isRefresh = MutableLiveData<Boolean>(false)
     val sort = MutableLiveData<String>(sortT[0])
     val searchTarget = MutableLiveData<String>(search_targetT[0])
-    val startDate = MutableLiveData<String>()
-    val endDate = MutableLiveData<String>()
+    val startDate = MutableLiveData<Calendar>()
+    val endDate = MutableLiveData<Calendar>()
     fun setPreview(word: String, sort: String, search_target: String?, duration: String?) {
         isRefresh.value = true
         retrofitRespository.getSearchIllustPreview(word, sort, search_target, null, duration)
@@ -55,14 +64,20 @@ class IllustfragmentViewModel : BaseViewModel() {
             }, {}).add()
     }
 
+
     fun firstSetData(word: String) {
         isRefresh.value = true
+        if ((startDate.value != null || endDate.value != null) && (startDate.value != null && endDate.value != null) && startDate.value!!.timeInMillis >= endDate.value!!.timeInMillis) {
+            startDate.value = null
+            endDate.value = null
+        }
+
         retrofitRespository.getSearchIllust(
             word,
             sort.value!!,
             searchTarget.value!!,
-            startDate.value,
-            endDate.value,
+            startDate.value.generateDateString(),
+            endDate.value.generateDateString(),
             null
         )
             .subscribe({

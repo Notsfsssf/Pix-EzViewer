@@ -41,21 +41,21 @@ class RankingMViewModel : BaseViewModel() {
         }, { it.printStackTrace() }, {}).add()
     }
 
-    fun OnRefresh(mode: String, picdata: String?) {
+    fun onRefresh(mode: String, picdata: String?) {
         retrofitRespository.getIllustRanking(mode, picdata).subscribe({
             nexturl.value = it.next_url
             illusts.value = it.illusts as ArrayList<Illust>?
         }, {}, {}).add()
     }
 
-    fun OnLoadMore() {
+    fun onLoadMore() {
         retrofitRespository.getNext(nexturl.value!!).subscribe({
             nexturl.value = it.next_url
             addillusts.value = it.illusts as ArrayList<Illust>?
         }, {}, {}).add()
     }
 
-    fun OnItemChildLongClick(id: Illust) {
+    fun onItemChildLongClick(id: Illust) {
         if (id.is_bookmarked) {
             retrofitRespository.postUnlikeIllust(id.id)!!.subscribe({
                 bookmarknum.value = id
@@ -67,8 +67,8 @@ class RankingMViewModel : BaseViewModel() {
         }
     }
 
-    fun datapick(mode: String, picdata: String?) {
-        retrofitRespository.getIllustRanking(mode, picdata).subscribe({
+    fun datePick(mode: String, pickDate: String?) {
+        retrofitRespository.getIllustRanking(mode, pickDate).subscribe({
             nexturl.value = it.next_url
             illusts.value = ArrayList<Illust>(it.illusts)
         }, {}, {}).add()

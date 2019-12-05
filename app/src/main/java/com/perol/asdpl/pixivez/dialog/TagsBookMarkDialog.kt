@@ -31,23 +31,30 @@ class TagsBookMarkDialog : DialogFragment() {
             val builder = MaterialAlertDialogBuilder(it)
             val inflater = requireActivity().layoutInflater
             val view = inflater.inflate(R.layout.dialog_bookmark, null)
-            recyclerView = view.findViewById(R.id.recyclerView)
+            val tagsAdapter = TagsAdapter(R.layout.view_tags_item, null)
+            recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView).apply {
+                layoutManager = LinearLayoutManager(activity)
+                adapter = tagsAdapter
+            }
             editText = view.findViewById(R.id.edittext)
             imageButton = view.findViewById(R.id.add)
+
             imageButton.setOnClickListener {
-                if (editText.text.isNotBlank() && pictureXViewModel.tags.value != null)
-                    pictureXViewModel.tags.value!!.tags.add(BookMarkDetailResponse.BookmarkDetailBean.TagsBean().apply {
+                if (editText.text.isNotBlank() && pictureXViewModel.tags.value != null) {
+                    tagsAdapter.addData(
+                        0,
+                        BookMarkDetailResponse.BookmarkDetailBean.TagsBean().apply {
                         isIs_registered = true
                         name = editText.text.toString()
+                            editText.text.clear()
                     })
+                    recyclerView.smoothScrollToPosition(0)
+                }
             }
             pictureXViewModel =
                 ViewModelProviders.of(requireParentFragment()).get(PictureXViewModel::class.java)
             pictureXViewModel.tags.observe(this, Observer {
-                recyclerView.apply {
-                    layoutManager = LinearLayoutManager(activity)
-                    adapter = TagsAdapter(R.layout.view_tags_item, it.tags)
-                }
+                tagsAdapter.setNewData(it.tags)
             })
             pictureXViewModel.fabOnLongClick()
             builder

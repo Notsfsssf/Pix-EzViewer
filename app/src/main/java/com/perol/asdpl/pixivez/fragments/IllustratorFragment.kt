@@ -65,12 +65,12 @@ class IllustratorFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener
         when (p2) {
             0 -> {
                 restrict = "public"
-                viewModel!!.OnRefresh(param1!!, restrict, param2!!)
+                viewModel!!.onRefresh(param1!!, restrict, param2!!)
 
             }
             1 -> {
                 restrict = "private"
-                viewModel!!.OnRefresh(param1!!, restrict, param2!!)
+                viewModel!!.onRefresh(param1!!, restrict, param2!!)
             }
         }
         if (!firststart) {
@@ -93,10 +93,10 @@ class IllustratorFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener
         recyclerview_illustrator.layoutManager = LinearLayoutManager(activity!!.applicationContext, RecyclerView.VERTICAL, false)
         spinner_illustrator.onItemSelectedListener = this
         userShowAdapter.setOnLoadMoreListener({
-            viewModel!!.OnLoadMore(viewModel!!.nexturl.value!!)
+            viewModel!!.onLoadMore(viewModel!!.nexturl.value!!)
         }, recyclerview_illustrator)
         swiperefresh_illustrator.setOnRefreshListener {
-            viewModel!!.OnRefresh(param1!!, restrict, param2!!)
+            viewModel!!.onRefresh(param1!!, restrict, param2!!)
         }
         userShowAdapter.setOnItemClickListener { adapter, view, position ->
             val intent = Intent(activity!!.applicationContext, UserMActivity::class.java)

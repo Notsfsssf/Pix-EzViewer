@@ -127,8 +127,11 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
         }
         val imageButton = activity!!.findViewById<ImageButton>(R.id.imagebutton_section)
         imageButton.setOnClickListener {
-            val searchSectionDialog = SearchSectionDialog()
-            searchSectionDialog.show(childFragmentManager)
+            SearchSectionDialog().apply {
+                arguments = Bundle().apply {
+                    putString("word", param1!!)
+                }
+            }.show(childFragmentManager)
         }
         searchIllustAdapter.setOnLoadMoreListener({
             viewModel.onLoadMoreListen()

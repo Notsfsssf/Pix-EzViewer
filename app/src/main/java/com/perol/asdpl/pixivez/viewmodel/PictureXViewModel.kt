@@ -84,7 +84,6 @@ class PictureXViewModel : BaseViewModel() {
         retrofitRespository.getGIFFile(medium).subscribe { response ->
             val inputStream = response.byteStream()
             Observable.create<Int> { ob ->
-
                 val output = file.outputStream()
                 println("----------")
                 progress.value!!.all = response.contentLength()
@@ -256,3 +255,5 @@ class PictureXViewModel : BaseViewModel() {
     }
 
 }
+
+data class ProgressInfo(var now: Long, var all: Long)

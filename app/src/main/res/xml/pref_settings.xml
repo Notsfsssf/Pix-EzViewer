@@ -21,11 +21,6 @@
             android:summary="主界面,主Icon设计;一般社员,征婚ing"
             />
         <Preference
-            app:key="contributor"
-            app:title="XueMo"
-            app:icon="@drawable/xuemo"
-            android:summary="代码贡献者" />
-        <Preference
             app:key="icons"
             app:icon="@drawable/nizhuren"
             app:title="@string/changeicons"

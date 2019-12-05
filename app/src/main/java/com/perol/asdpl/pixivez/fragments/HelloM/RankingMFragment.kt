@@ -80,7 +80,7 @@ class RankingMFragment : LazyV4Fragment() {
         }
         sharemodel!!.picDateShare.observe(this, Observer {
 
-            viewmodel!!.datapick(param1!!, it)
+            viewmodel!!.datePick(param1!!, it)
         })
         viewmodel!!.addillusts.observe(this, Observer {
             if (it != null) {
@@ -93,7 +93,7 @@ class RankingMFragment : LazyV4Fragment() {
         })
         viewmodel!!.bookmarknum.observe(this, Observer {
             if (it != null) {
-                viewmodel!!.OnItemChildLongClick(it)
+                viewmodel!!.onItemChildLongClick(it)
             }
         })
         viewmodel!!.nexturl.observe(this, Observer {
@@ -108,10 +108,10 @@ class RankingMFragment : LazyV4Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         swiperefresh_rankingm.setOnRefreshListener {
-            viewmodel!!.OnRefresh(param1!!, picDate)
+            viewmodel!!.onRefresh(param1!!, picDate)
         }
         rankingAdapter.setOnLoadMoreListener({
-            viewmodel!!.OnLoadMore()
+            viewmodel!!.onLoadMore()
         }, recyclerview_rankingm)
         recyclerview_rankingm.apply {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)

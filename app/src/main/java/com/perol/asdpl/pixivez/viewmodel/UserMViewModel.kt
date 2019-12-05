@@ -35,7 +35,7 @@ class UserMViewModel : BaseViewModel() {
     var userDetail = MutableLiveData<UserDetailResponse>()
     var isfollow = MutableLiveData<Boolean>()
 
-    fun getdata(userid: Long) {
+    fun getData(userid: Long) {
         val result = retrofitRespository.getUserDetail(userid).subscribe({
             userDetail.value = it
             isfollow.value = it.user.isIs_followed

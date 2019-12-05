@@ -76,16 +76,17 @@ class UserBookMarkFragment : LazyV4Fragment(), TagsShowDialog.Callback {
         mrecyclerview.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         mrecyclerview.adapter = recommendAdapter
         recommendAdapter.setOnLoadMoreListener({
-            viewmodel!!.OnLoadMoreListener()
+            viewmodel!!.onLoadMoreListener()
         }, mrecyclerview)
 
         mrefreshlayout.setOnRefreshListener {
-            viewmodel!!.OnRefreshListener(param1!!, pub, null)
+            viewmodel!!.onRefreshListener(param1!!, pub, null)
         }
     }
 
     override fun onClick(string: String, public: String) {
-        viewmodel!!.OnRefreshListener(param1!!, public, if (string.isNotBlank()) {
+        viewmodel!!.onRefreshListener(
+            param1!!, public, if (string.isNotBlank()) {
             string
         } else {
             null

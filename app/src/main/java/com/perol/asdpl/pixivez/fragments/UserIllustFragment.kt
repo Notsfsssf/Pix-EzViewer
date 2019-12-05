@@ -58,10 +58,10 @@ class UserIllustFragment : LazyV4Fragment() {
 
     fun lazyLoad() {
         recommendAdapter.setOnLoadMoreListener({
-            viewmodel!!.OnLoadMoreListener()
+            viewmodel!!.onLoadMoreListener()
         }, mrecyclerview)
         mrefreshlayout.setOnRefreshListener {
-            viewmodel!!.OnRefreshListener(param1!!, param2!!)
+            viewmodel!!.onRefreshListener(param1!!, param2!!)
         }
         mrecyclerview.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         mrecyclerview.adapter = recommendAdapter

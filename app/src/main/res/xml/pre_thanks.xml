@@ -18,7 +18,23 @@
             app:summary="@string/thanks" />
 
     </PreferenceCategory>
-
+    <PreferenceCategory app:title="Contributors">
+        <Preference
+            app:key="xuemo"
+            app:icon="@drawable/xuemo"
+            app:title="LuckXuemo"
+            android:summary="💻" />
+        <Preference
+            app:key="hunterx9"
+            app:icon="@drawable/hunterx9"
+            app:title="hunterx9"
+            android:summary="💻" />
+        <Preference
+            app:key="Skimige"
+            app:title="Skimige"
+            app:icon="@drawable/skimige"
+            android:summary="📖" />
+    </PreferenceCategory>
     <PreferenceCategory
         android:key="huonaicai"
         android:title="捐赠"

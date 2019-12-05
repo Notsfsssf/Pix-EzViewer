@@ -39,7 +39,7 @@ class UserBookMarkViewModel : BaseViewModel() {
     val nexturl = MutableLiveData<String>()
     val tags = MutableLiveData<BookMarkTagsResponse>()
     val preference = SharedPreferencesServices.getInstance()
-    fun OnLoadMoreListener() {
+    fun onLoadMoreListener() {
         if (nexturl.value != null)
             retrofit.getNextUserIllusts(nexturl.value!!).subscribe({
                 adddata.value = it.illusts
@@ -47,7 +47,7 @@ class UserBookMarkViewModel : BaseViewModel() {
             }, {}, {})
     }
 
-    fun isUser(id: Long) = Single.create<Boolean> { it ->
+    private fun isUser(id: Long) = Single.create<Boolean> { it ->
         launchUI {
             val pt = AppDataRepository.getUser()
             val isuser = id == pt.userid
@@ -55,23 +55,22 @@ class UserBookMarkViewModel : BaseViewModel() {
         }
     }
 
-    fun OnRefreshListener(id: Long, string: String, tag: String?) {
+    fun onRefreshListener(id: Long, string: String, tag: String?) {
         retrofit.getLikeIllust(id, string, tag).subscribe({
             data.value = it.illusts
             nexturl.value = it.next_url
-        }, {}, {})
+        }, {}, {}).add()
     }
 
     fun first(id: Long, string: String): Single<Boolean> {
-
         retrofit.getLikeIllust(id, string, null).subscribe({
             data.value = it.illusts
             nexturl.value = it.next_url
-        }, {}, {})
+        }, {}, {}).add()
         retrofit.getIllustBookmarkTags(id, string).subscribe({
             tags.value = it
 
-        }, {}, {})
+        }, {}, {}).add()
         return isUser(id)
     }
 }
