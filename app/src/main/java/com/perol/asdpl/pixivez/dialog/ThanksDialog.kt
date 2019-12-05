@@ -216,7 +216,23 @@ class ThanksDialog : DialogFragment() {
         "勒紧裤腰",
         "*泽鸿",
         "bilibili村长",
-        "*承"
+        "*承",
+        "*",
+        "*雷",
+        "d*t",
+        "*喵",
+        ":*|",
+        "辰",
+        "*子予",
+        "志鹏",
+        "2az",
+        "Myth",
+        "Namelost",
+        "韵秋",
+        "卷柏泡茶",
+        "闪耀的shining",
+        "相信自己",
+        "钰"
     )
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
