@@ -236,11 +236,13 @@ class ThanksDialog : DialogFragment() {
     )
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = MaterialAlertDialogBuilder(activity!!)
-        val inflater = activity!!.layoutInflater
+        val builder = MaterialAlertDialogBuilder(requireActivity())
+        val inflater = requireActivity().layoutInflater
         val view = inflater.inflate(R.layout.dialog_thanks, null)
         val re = view.findViewById<RecyclerView>(R.id.list)
-        re.adapter = ThanksAdapter(R.layout.simple_list_item, array)
+        re.adapter = ThanksAdapter(R.layout.simple_list_item, array).apply {
+            setHeaderView(inflater.inflate(R.layout.dialog_thanks_header, null))
+        }
         re.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         builder.setView(view)
         return builder.create()

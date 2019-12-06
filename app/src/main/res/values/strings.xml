@@ -282,4 +282,5 @@
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
     <string name="choice_date">Choice Date</string>
+    <string name="summary">在刚接触JAVA的时候边学官方文档边做,摸索着完成了这个客户端,因为个人能力的问题,出过不少丢人的BUG,优化问题,在完善这个应用的过程中，我获得了很多的开发经验与比较深刻的教训，也得到了很多人的帮助和支持</string>
 </resources>

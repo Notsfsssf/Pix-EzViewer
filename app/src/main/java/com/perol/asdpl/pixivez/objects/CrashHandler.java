@@ -30,6 +30,7 @@ import android.os.Looper;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.InflateException;
 import android.widget.Toast;
 
 import java.io.File;
@@ -159,8 +160,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             @Override
             public void run() {
                 Looper.prepare();
-                if (ex instanceof Resources.NotFoundException) {
-                    Toast toast = Toast.makeText(mContext, "你使用的是二次打包的应用,请清除数据,前往google play或者设置中的项目地址进行安装更新:\r\n" + ex.getMessage(),
+                if (ex instanceof Resources.NotFoundException || ex instanceof InflateException) {
+                    Toast toast = Toast.makeText(mContext, "你使用的是二次打包的应用,请清除数据,前往google play或者设置中的github项目地址进行安装更新:\r\n" + ex.getMessage(),
                             Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
@@ -211,7 +212,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     }
 
     private void postReport(File file) {
-        // TODO 发送错误报告到服务器
+
     }
 
     /**
