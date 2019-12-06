@@ -69,6 +69,23 @@ class IntentActivity : RinkActivity() {
                         Toasty.error(this, "wrong id")
                     }
                 }
+                if (segment[segment.size - 2] == "i") {
+                    val id = segment[segment.size - 1].toLong()
+                    val bundle = Bundle()
+                    val arrayList = LongArray(1)
+                    try {
+                        arrayList[0] = id
+                        bundle.putLongArray("illustlist", arrayList)
+                        bundle.putLong("illustid", id)
+                        val intent2 = Intent(this, PictureActivity::class.java)
+                        intent2.putExtras(bundle)
+                        startActivity(intent2)
+                        finish()
+                        return
+                    } catch (e: Exception) {
+                        Toasty.error(this, "wrong id")
+                    }
+                }
             }
             val test1 = uri.getQueryParameter("illust_id")
 
