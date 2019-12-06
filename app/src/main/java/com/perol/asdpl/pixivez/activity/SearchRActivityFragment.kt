@@ -58,12 +58,12 @@ class SearchRActivityFragment : Fragment() {
         recyclerview.adapter = tagsTextAdapter
         tagsTextAdapter.setOnItemClickListener { adapter, view, position ->
             val s_tag = tags[position]
-            if (s_tag.translated_name.isNotEmpty())
+            if (s_tag.translated_name != null && s_tag.translated_name.isNotEmpty())
                 tagsTextViewModel.addhistory(s_tag.name + "|" + s_tag.translated_name)
             else tagsTextViewModel.addhistory(s_tag.name)
             val bundle = Bundle()
             bundle.putString("searchword", tags[position].name)
-            val intent = Intent(activity!!, SearchResultActivity::class.java)
+            val intent = Intent(requireActivity(), SearchResultActivity::class.java)
             intent.putExtras(bundle)
             startActivityForResult(intent, 775)
         }
