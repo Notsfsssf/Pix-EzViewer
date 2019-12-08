@@ -202,7 +202,7 @@ class LoginActivity : RinkActivity() {
         loginBtn!!.setOnClickListener {
             //            loginBtn.isClickable = false
 
-            username = edit_username!!.text.toString()
+            username = edit_username!!.text.toString().trim()
             password = edit_password!!.text.toString()
 
             if (username.isNullOrBlank()) accountTextInputLayout.error =

@@ -77,12 +77,14 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
                     if (!user.ispro) {
                         Toasty.error(PxEZApp.instance, "not premium!").show()
                         viewModel.setPreview(param1!!, sort[position], null, null)
-                    } else
+                    } else {
+                        viewModel.sort.value = sort[position]
                         viewModel.firstSetData(param1!!)
+                    }
 
                 }
             } else {
-
+                viewModel.sort.value = sort[position]
                 viewModel.firstSetData(param1!!)
             }
         }

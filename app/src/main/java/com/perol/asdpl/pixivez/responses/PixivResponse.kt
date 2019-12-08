@@ -33,7 +33,6 @@ data class PixivResponse(
 )
 
 data class Tags(
-
         @SerializedName("name") val name: String,
         @SerializedName("translated_name") val translated_name: String
 )

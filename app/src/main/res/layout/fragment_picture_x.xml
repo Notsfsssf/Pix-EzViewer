@@ -105,9 +105,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
-            app:backgroundTint="@color/white"
-            android:visibility="gone"
+            app:backgroundTint="@android:color/white"
             app:layout_anchor="@+id/frameLayout"
+            android:visibility="gone"
             app:layout_anchorGravity="end|bottom"
             app:tint="@null" />
 

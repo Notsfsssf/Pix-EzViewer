@@ -114,7 +114,6 @@ class ThanksDialog : DialogFragment() {
         "moreki",
         "布鲁斯赧",
         "一只贱贱的熊",
-        "moreki",
         "翱",
         "DYCxhn",
         "圈",
