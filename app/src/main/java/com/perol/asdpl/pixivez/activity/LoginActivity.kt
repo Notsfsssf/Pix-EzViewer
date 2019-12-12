@@ -96,11 +96,11 @@ class LoginActivity : RinkActivity() {
         ThemeUtil.themeInit(this)
         setContentView(R.layout.activity_login)
         val window = window
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        window.decorView.systemUiVisibility =
-            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.statusBarColor = Color.TRANSPARENT
+//        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+//        window.decorView.systemUiVisibility =
+//            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS or WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+//        window.statusBarColor = Color.TRANSPARENT
 
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
@@ -309,9 +309,12 @@ class LoginActivity : RinkActivity() {
 //                            loginBtn.isEnabled = true // Avoid double logins.
 
                         Toast.makeText(applicationContext, "登录成功", Toast.LENGTH_LONG).show()
-                        val intent = Intent(this@LoginActivity, HelloMActivity::class.java)
+                        val intent = Intent(this@LoginActivity, HelloMActivity::class.java).apply {
+                            // 避免循环添加账号导致相同页面嵌套。或者在添加账号（登录）成功时回到账号列表页面而不是导航至新的主页
+                            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK // Or launchMode = "singleTop|singleTask"
+                        }
                         startActivity(intent)
-                        finish()
+//                        finish()
                     }
                 })
         }

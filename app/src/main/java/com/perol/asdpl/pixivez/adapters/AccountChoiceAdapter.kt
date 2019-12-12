@@ -24,8 +24,7 @@
 
 package com.perol.asdpl.pixivez.adapters
 
-import android.graphics.Color
-import android.graphics.LightingColorFilter
+import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.preference.PreferenceManager
 import com.bumptech.glide.Glide
@@ -46,14 +45,6 @@ class AccountChoiceAdapter(layoutResId: Int, data: List<UserEntity>) :
                 .setText(R.id.textView4, item.username)
                 .setText(R.id.textview_email, item.useremail)
         val delete = helper.getView<ImageView>(R.id.imageview_delete)
-        if (helper.layoutPosition == PreferenceManager.getDefaultSharedPreferences(mContext).getInt(
-                "usernum",
-                0
-            )
-        ) {
-            helper.setImageResource(R.id.imageview_delete, R.drawable.ic_check_black_24dp)
-        }
-        delete.colorFilter = LightingColorFilter(Color.BLACK, Color.BLACK)
         delete.setOnClickListener {
             runBlocking {
                 AppDataRepository.deleteUser(item)
@@ -61,5 +52,19 @@ class AccountChoiceAdapter(layoutResId: Int, data: List<UserEntity>) :
                 this@AccountChoiceAdapter.setNewData(data)
             }
         }
+        if (helper.layoutPosition == PreferenceManager.getDefaultSharedPreferences(mContext).getInt(
+                "usernum",
+                0
+            )
+        ) {
+            (delete.parent as ViewGroup).isClickable = false
+            delete.isClickable = false
+            helper.setImageResource(R.id.imageview_delete, R.drawable.ic_check_black_24dp)
+        } else {
+            (delete.parent as ViewGroup).isClickable = true
+            delete.isClickable = true
+            helper.setImageResource(R.id.imageview_delete, R.drawable.ic_close_black_24dp)
+        }
+//        delete.colorFilter = LightingColorFilter(Color.BLACK, Color.BLACK)
     }
 }
