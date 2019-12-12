@@ -67,21 +67,21 @@
         <Preference
             app:key="storepath1"
             app:title="@string/savepath" />
-        <DropDownPreference
+        <ListPreference
             android:entries="@array/format"
             android:entryValues="@array/format_value"
             app:defaultValue="0"
             app:key="saveformat"
             app:title="@string/saveformat"
             app:useSimpleSummaryProvider="true" />
-        <DropDownPreference
+        <ListPreference
             android:entries="@array/firstpage"
             android:entryValues="@array/firstpage_value"
             app:defaultValue="0"
             app:key="firstpage"
             app:title="@string/startpage"
             app:useSimpleSummaryProvider="true" />
-        <DropDownPreference
+        <ListPreference
             android:entryValues="@array/quality_value"
             app:defaultValue="0"
             app:entries="@array/quality"
@@ -93,7 +93,7 @@
             android:entryValues="@array/language_values"
             app:defaultValue="0"
             app:key="language"
-            app:title="Language" />
+            app:title="@string/pref_language" />
     </PreferenceCategory>
 
 

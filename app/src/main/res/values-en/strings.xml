@@ -194,6 +194,7 @@
     <string name="taziliao">information</string>
     <string name="internal">internal</string>
     <string name="language">language</string>
+    <string name="pref_language">Language</string>
     <string name="themecoloful">Theme Colorful</string>
     <string name="setting">Setting</string>
     <string name="savesuccess">saved!</string>

@@ -24,20 +24,30 @@
 
 package com.perol.asdpl.pixivez.fragments
 
-import android.app.Activity
+import android.Manifest
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.preference.*
+import com.afollestad.materialdialogs.LayoutMode
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.bottomsheets.BasicGridItem
+import com.afollestad.materialdialogs.bottomsheets.BottomSheet
+import com.afollestad.materialdialogs.bottomsheets.gridItems
+import com.afollestad.materialdialogs.files.folderChooser
+import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.perol.asdpl.pixivez.BuildConfig
 import com.perol.asdpl.pixivez.R
-import com.perol.asdpl.pixivez.activity.PathProviderActivity
 import com.perol.asdpl.pixivez.dialog.IconDialog
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.services.PxEZApp
@@ -47,14 +57,17 @@ import java.io.FilenameFilter
 import java.io.IOException
 import java.util.*
 
-
 class SettingFragment : PreferenceFragmentCompat(), IconDialog.Callback {
+    private val storagePermissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        defaultComponent = ComponentName("com.perol.asdpl.play.pixivez", "com.perol.asdpl.pixivez.normal")  //拿到默认的组件
-        testComponent = ComponentName("com.perol.asdpl.play.pixivez", "com.perol.asdpl.pixivez.triangle")
-        mdComponent = ComponentName("com.perol.asdpl.play.pixivez", "com.perol.asdpl.pixivez.md")
 
+        defaultComponent =
+            ComponentName(requireContext().packageName, "com.perol.asdpl.pixivez.normal")  //拿到默认的组件
+        testComponent =
+            ComponentName(requireContext().packageName, "com.perol.asdpl.pixivez.triangle")
+        mdComponent = ComponentName(requireContext().packageName, "com.perol.asdpl.pixivez.md")
     }
 
     private var defaultComponent: ComponentName? = null
@@ -149,23 +162,43 @@ class SettingFragment : PreferenceFragmentCompat(), IconDialog.Callback {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (resultCode == Activity.RESULT_OK) {
+//
+//            if (requestCode == 887) {
+//                val path = data!!.getStringExtra("path")
+//                PxEZApp.storepath = path
+//                PreferenceManager.getDefaultSharedPreferences(activity).edit().putString("storepath1", PxEZApp.storepath).apply()
+//                findPreference<Preference>("storepath1")!!.apply {
+//                    summary = path
+//                }
+//
+//            }
+//
+//
+//        }
+//
+//    }
 
-            if (requestCode == 887) {
-                val path = data!!.getStringExtra("path")
-                PxEZApp.storepath = path
-                PreferenceManager.getDefaultSharedPreferences(activity).edit().putString("storepath1", PxEZApp.storepath).apply()
-                findPreference<Preference>("storepath1")!!.apply {
-                    summary = path
-                }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            if (requireContext().allPermissionsGranted(storagePermissions)) {
+                showDirectorySelectionDialog()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Permissions not granted by the user",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-
-
         }
-
     }
 
     private fun checkUpdate() {
@@ -238,7 +271,17 @@ class SettingFragment : PreferenceFragmentCompat(), IconDialog.Callback {
                     checkUpdate()
             }
             "storepath1" -> {
-                startActivityForResult(Intent(activity, PathProviderActivity::class.java), 887)
+//                startActivityForResult(Intent(activity, PathProviderActivity::class.java), 887)
+
+                if (requireContext().allPermissionsGranted(storagePermissions)) {
+                    showDirectorySelectionDialog()
+                } else {
+                    ActivityCompat.requestPermissions(
+                        requireActivity(),
+                        storagePermissions,
+                        REQUEST_CODE_PERMISSIONS
+                    )
+                }
             }
             "version" -> {
                 try {
@@ -250,9 +293,11 @@ class SettingFragment : PreferenceFragmentCompat(), IconDialog.Callback {
                 }
             }
             "icons" -> {
-                val iconDialog = IconDialog()
-                iconDialog.callback = this
-                iconDialog.show(childFragmentManager)
+//                val iconDialog = IconDialog()
+//                iconDialog.callback = this
+//                iconDialog.show(childFragmentManager)
+
+                showApplicationIconReplacementDialog()
             }
             "viewreport" -> {
                 val list = getCrashReportFiles()
@@ -275,5 +320,58 @@ class SettingFragment : PreferenceFragmentCompat(), IconDialog.Callback {
         }
 
         return super.onPreferenceTreeClick(preference)
+    }
+
+    private fun showDirectorySelectionDialog() {
+        MaterialDialog(requireContext()).show {
+            title(R.string.title_save_path)
+            folderChooser(allowFolderCreation = true) { _, folder ->
+                with(folder.absolutePath) {
+                    PxEZApp.storepath = this
+                    PreferenceManager.getDefaultSharedPreferences(activity).apply {
+                        putString("storepath1", PxEZApp.storepath)
+                    }
+                    findPreference<Preference>("storepath1")!!.apply {
+                        summary = this@with
+                    }
+                }
+            }
+            cornerRadius(2.0F)
+            negativeButton(android.R.string.cancel)
+            positiveButton(R.string.action_select)
+            lifecycleOwner(this@SettingFragment)
+        }
+    }
+
+    private fun showApplicationIconReplacementDialog() {
+        val items = listOf(
+            BasicGridItem(R.mipmap.ic_launcher, "Normal"),
+            BasicGridItem(R.mipmap.ic_launcherep, "Triangle"),
+            BasicGridItem(R.mipmap.ic_launchermd, "MD")
+        )
+
+        MaterialDialog(requireContext(), BottomSheet(LayoutMode.WRAP_CONTENT)).show {
+            title(R.string.title_change_icon)
+            gridItems(items) { _, index, _ ->
+                onClick(index)
+            }
+            cornerRadius(16.0F)
+            negativeButton(android.R.string.cancel)
+            positiveButton(R.string.action_change)
+            lifecycleOwner(this@SettingFragment)
+        }
+    }
+
+    private fun Context.allPermissionsGranted(permissions: Array<String>): Boolean =
+        permissions.all {
+            ContextCompat.checkSelfPermission(this, it) == PackageManager.PERMISSION_GRANTED
+        }
+
+    private inline fun SharedPreferences.apply(modifier: SharedPreferences.Editor.() -> Unit) {
+        edit().apply { modifier() }.run { apply() }
+    }
+
+    companion object {
+        private const val REQUEST_CODE_PERMISSIONS = 1
     }
 }

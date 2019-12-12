@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground">
 
     <ImageView
-    android:layout_margin="@dimen/dp_4"
-    android:id="@+id/imagevew_colorful"
+        android:layout_margin="16dp"
+        android:id="@+id/imagevew_colorful"
         android:layout_alignParentStart="true"
         android:layout_width="40dp"
         android:layout_height="40dp" />
 
     <TextView
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="0dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/name"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/imagevew_colorful"
-        android:text="1111111111111" />
+        tools:text="1111111111111" />
 </RelativeLayout>
