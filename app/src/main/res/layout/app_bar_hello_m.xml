@@ -16,10 +16,10 @@
             android:layout_height="wrap_content"
             app:elevation="0dp">
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|enterAlways">
+<!--            <com.google.android.material.appbar.CollapsingToolbarLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:layout_scrollFlags="scroll|enterAlways">-->
 
                 <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/toolbar"
@@ -28,6 +28,7 @@
                     android:background="?attr/colorPrimary"
                     android:minHeight="?attr/actionBarSize"
                     android:theme="@style/MyToolbar"
+                    app:layout_scrollFlags="scroll|snap|enterAlways"
                     app:contentInsetEndWithActions="0dp"
                     app:contentInsetStart="0.0dp"
                     app:contentInsetStartWithNavigation="0dp">
@@ -43,7 +44,7 @@
                         app:tabPaddingStart="20dp" />
 
                 </com.google.android.material.appbar.MaterialToolbar>
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
+<!--            </com.google.android.material.appbar.CollapsingToolbarLayout>-->
 
 
         </com.google.android.material.appbar.AppBarLayout>

@@ -194,6 +194,7 @@
     <string name="taziliao">ta的资料</string>
     <string name="internal">内置</string>
     <string name="language">语言</string>
+    <string name="pref_language">语言</string>
     <string name="themecoloful">主题样式</string>
     <string name="setting">设置</string>
     <string name="savesuccess">保存图片成功!</string>
@@ -270,7 +271,7 @@
     <string name="download_progress">下载进度</string>
     <string name="join_download_queue">加入下载队列</string>
     <string name="again_to_exit">再按一次返回键退出</string>
-    <string name="dark_mode">Dark Mode</string>
+    <string name="dark_mode">深色主题</string>
     <string name="restart_now">立即重启</string>
     <string name="account_management">账号管理</string>
     <string name="auto_check_update">自动检查更新</string>
@@ -283,4 +284,11 @@
     <string name="end_date">End Date</string>
     <string name="choice_date">Choice Date</string>
     <string name="summary">在刚接触JAVA的时候边学官方文档边做,摸索着完成了这个客户端,因为个人能力的问题,出过不少丢人的BUG,优化问题,在完善这个应用的过程中，我获得了很多的开发经验与比较深刻的教训，也得到了很多人的帮助和支持</string>
+    <string name="title_change_theme">更换主题</string>
+    <string name="title_save_path">保存路径</string>
+    <string name="title_change_icon">更换图标</string>
+    <string name="title_theme_color">主题颜色</string>
+    <string name="action_apply">应用</string>
+    <string name="action_select">选择</string>
+    <string name="action_change">更换</string>
 </resources>

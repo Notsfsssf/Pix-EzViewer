@@ -194,6 +194,7 @@
     <string name="taziliao">ta的資料</string>
     <string name="internal">內置</string>
     <string name="language">語言</string>
+    <string name="pref_language">語言</string>
     <string name="themecoloful">主題樣式</string>
     <string name="setting">設定</string>
     <string name="savesuccess">儲存圖像成功!</string>
@@ -254,6 +255,7 @@
     <string name="download_progress">下載進度</string>
     <string name="join_download_queue">加入下載隊列</string>
     <string name="again_to_exit">再按壹次返回鍵退出</string>
+    <string name="dark_mode">深色主題</string>
     <string name="restart_now">立即重啟</string>
     <string name="account_management">賬號管理</string>
     <string name="auto_check_update">自動檢查更新</string>

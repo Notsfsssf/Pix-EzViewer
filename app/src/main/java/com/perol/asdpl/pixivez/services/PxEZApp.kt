@@ -29,7 +29,6 @@ import android.app.Application
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import androidx.work.WorkManager
@@ -37,7 +36,6 @@ import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.perol.asdpl.pixivez.objects.CrashHandler
 import java.io.File
-
 
 class PxEZApp : Application() {
 
@@ -64,29 +62,29 @@ class PxEZApp : Application() {
 
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-                Log.v(TAG, "${activity.simpleName}: onActivityCreated.")
+                Logger.t(TAG).v("${activity.simpleName}: onActivityCreated")
 
                 ActivityCollector.collect(activity)
             }
 
             override fun onActivityStarted(activity: Activity) {
-                Log.v(TAG, "${activity.simpleName}: onActivityStarted.")
+                Logger.t(TAG).v("${activity.simpleName}: onActivityStarted")
             }
 
             override fun onActivityResumed(activity: Activity) {
-                Log.v(TAG, "${activity.simpleName}: onActivityResumed.")
+                Logger.t(TAG).v("${activity.simpleName}: onActivityResumed")
             }
 
             override fun onActivityPaused(activity: Activity) {
-                Log.v(TAG, "${activity.simpleName}: onActivityPaused.")
+                Logger.t(TAG).v("${activity.simpleName}: onActivityPaused")
             }
 
             override fun onActivityStopped(activity: Activity) {
-                Log.v(TAG, "${activity.simpleName}: onActivityStopped.")
+                Logger.t(TAG).v("${activity.simpleName}: onActivityStopped")
             }
 
             override fun onActivityDestroyed(activity: Activity) {
-                Log.v(TAG, "${activity.simpleName}: onActivityDestroyed.")
+                Logger.t(TAG).v("${activity.simpleName}: onActivityDestroyed")
 
                 ActivityCollector.discard(activity)
             }
@@ -103,20 +101,24 @@ class PxEZApp : Application() {
         @JvmStatic
         private val activityList = mutableListOf<Activity>()
 
+        @JvmStatic
         fun collect(activity: Activity) {
             activityList.add(activity)
         }
 
+        @JvmStatic
         fun discard(activity: Activity) {
             activityList.remove(activity)
         }
 
+        @JvmStatic
         fun recreate() {
             for (i in activityList.size - 1 downTo 0) {
                 activityList[i].recreate()
             }
         }
     }
+
     companion object {
         @JvmStatic
         var storepath = Environment.getExternalStorageDirectory().absolutePath + File.separator + "PxEz"
