@@ -44,7 +44,7 @@ class TagsAdapter(
         helper.setText(R.id.textview_tag1, item.name)
             .setChecked(R.id.checkBox, item.isIs_registered)
             .setOnCheckedChangeListener(R.id.checkBox) { buttonView, isChecked ->
-                item.isIs_registered = isChecked
+                this.data[helper.layoutPosition].isIs_registered = isChecked
             }
     }
 

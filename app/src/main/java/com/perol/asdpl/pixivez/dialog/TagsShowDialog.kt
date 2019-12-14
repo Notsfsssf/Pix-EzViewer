@@ -70,8 +70,8 @@ class TagsShowDialog : DialogFragment() {
         val bundle = arguments
         val inflater = LayoutInflater.from(activity)
         val arrayList = bundle!!.getStringArrayList("tags")
-        val arrayList1 = bundle!!.getIntegerArrayList("counts")
-        val id = bundle!!.getLong("id")
+        val arrayList1 = bundle.getIntegerArrayList("counts")
+        val id = bundle.getLong("id")
         var nexturl = bundle.getString("nexturl")
         val builder = MaterialAlertDialogBuilder(activity)
         val dialogView = inflater.inflate(R.layout.view_tagsshow, null)

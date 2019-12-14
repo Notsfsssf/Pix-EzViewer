@@ -48,7 +48,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.perol.asdpl.pixivez.BuildConfig
 import com.perol.asdpl.pixivez.R
-import com.perol.asdpl.pixivez.dialog.IconDialog
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.services.PxEZApp
 import okhttp3.*
@@ -57,7 +56,7 @@ import java.io.FilenameFilter
 import java.io.IOException
 import java.util.*
 
-class SettingFragment : PreferenceFragmentCompat(), IconDialog.Callback {
+class SettingFragment : PreferenceFragmentCompat() {
     private val storagePermissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,18 +69,20 @@ class SettingFragment : PreferenceFragmentCompat(), IconDialog.Callback {
         mdComponent = ComponentName(requireContext().packageName, "com.perol.asdpl.pixivez.md")
     }
 
-    private var defaultComponent: ComponentName? = null
-    private var testComponent: ComponentName? = null
-    private var mdComponent: ComponentName? = null
+    lateinit var defaultComponent: ComponentName
+    lateinit var testComponent: ComponentName
+    lateinit var mdComponent: ComponentName
     private fun enableComponent(componentName: ComponentName) {
         Log.d("compon", componentName.packageName)
         val state = activity?.packageManager!!.getComponentEnabledSetting(componentName)
         if (state == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
             return
         }
-        activity?.packageManager!!.setComponentEnabledSetting(componentName,
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                PackageManager.DONT_KILL_APP)
+        activity?.packageManager!!.setComponentEnabledSetting(
+            componentName,
+            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+            PackageManager.DONT_KILL_APP
+        )
     }
 
     private fun disableComponent(componentName: ComponentName) {
@@ -89,9 +90,11 @@ class SettingFragment : PreferenceFragmentCompat(), IconDialog.Callback {
         if (state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED) {
             return
         }
-        activity?.packageManager!!.setComponentEnabledSetting(componentName,
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP)
+        activity?.packageManager!!.setComponentEnabledSetting(
+            componentName,
+            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+            PackageManager.DONT_KILL_APP
+        )
     }
 
     private fun getCrashReportFiles(): Array<String>? {
@@ -100,23 +103,23 @@ class SettingFragment : PreferenceFragmentCompat(), IconDialog.Callback {
         return filesDir?.list(filter)
     }
 
-    override fun onClick(position: Int) {
+    fun onClick(position: Int) {
         Toast.makeText(PxEZApp.instance, "正在尝试更换，等待启动器刷新", Toast.LENGTH_SHORT).show()
         when (position) {
             0 -> {
-                enableComponent(defaultComponent!!)
-                disableComponent(testComponent!!)
-                disableComponent(mdComponent!!)
+                enableComponent(defaultComponent)
+                disableComponent(testComponent)
+                disableComponent(mdComponent)
             }
             1 -> {
-                enableComponent(testComponent!!)
-                disableComponent(defaultComponent!!)
-                disableComponent(mdComponent!!)
+                enableComponent(testComponent)
+                disableComponent(defaultComponent)
+                disableComponent(mdComponent)
             }
             2 -> {
-                enableComponent(mdComponent!!)
-                disableComponent(defaultComponent!!)
-                disableComponent(testComponent!!)
+                enableComponent(mdComponent)
+                disableComponent(defaultComponent)
+                disableComponent(testComponent)
             }
         }
     }
@@ -124,7 +127,8 @@ class SettingFragment : PreferenceFragmentCompat(), IconDialog.Callback {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.pref_settings)
         findPreference<SwitchPreference>("disableproxy")!!.setOnPreferenceChangeListener { preference, newValue ->
-            Toasty.normal(PxEZApp.instance, getString(R.string.needtorestart), Toast.LENGTH_SHORT).show()
+            Toasty.normal(PxEZApp.instance, getString(R.string.needtorestart), Toast.LENGTH_SHORT)
+                .show()
             true
         }
 
@@ -153,7 +157,8 @@ class SettingFragment : PreferenceFragmentCompat(), IconDialog.Callback {
         }
 
         findPreference<SwitchPreference>("r18on")!!.setOnPreferenceChangeListener { preference, newValue ->
-            Toasty.normal(PxEZApp.instance, getString(R.string.needtorestart), Toast.LENGTH_SHORT).show()
+            Toasty.normal(PxEZApp.instance, getString(R.string.needtorestart), Toast.LENGTH_SHORT)
+                .show()
             true
         }
         findPreference<SwitchPreference>("animation")!!.setOnPreferenceChangeListener { preference, newValue ->
@@ -202,10 +207,11 @@ class SettingFragment : PreferenceFragmentCompat(), IconDialog.Callback {
     }
 
     private fun checkUpdate() {
-        val checkurl = "https://raw.githubusercontent.com/Notsfsssf/Pix-EzViewer/master/gradle.properties";
+        val checkurl =
+            "https://raw.githubusercontent.com/Notsfsssf/Pix-EzViewer/master/gradle.properties";
         val okHttpClient = OkHttpClient.Builder().build()
         val requests = Request.Builder()
-                .url(checkurl).get().build();
+            .url(checkurl).get().build();
         okHttpClient.newCall(request = requests).enqueue(object : Callback {
 
             override fun onFailure(call: Call, e: IOException) {
@@ -236,7 +242,8 @@ class SettingFragment : PreferenceFragmentCompat(), IconDialog.Callback {
                             val intent = Intent(Intent.ACTION_VIEW, uri)
                             startActivity(intent)
                         } catch (e: Exception) {
-                            Toasty.info(PxEZApp.instance, "no browser found", Toast.LENGTH_SHORT).show()
+                            Toasty.info(PxEZApp.instance, "no browser found", Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                 }
@@ -261,7 +268,8 @@ class SettingFragment : PreferenceFragmentCompat(), IconDialog.Callback {
             "check" -> {
                 if (BuildConfig.ISGOOGLEPLAY) {
                     try {
-                        val uri = Uri.parse("https://play.google.com/store/apps/details?id=com.perol.asdpl.play.pixivez")
+                        val uri =
+                            Uri.parse("https://play.google.com/store/apps/details?id=com.perol.asdpl.play.pixivez")
                         val intent = Intent(Intent.ACTION_VIEW, uri)
                         startActivity(intent)
                     } catch (e: Exception) {
@@ -285,7 +293,8 @@ class SettingFragment : PreferenceFragmentCompat(), IconDialog.Callback {
             }
             "version" -> {
                 try {
-                    val uri = Uri.parse("https://play.google.com/store/apps/details?id=com.perol.asdpl.play.pixivez")
+                    val uri =
+                        Uri.parse("https://play.google.com/store/apps/details?id=com.perol.asdpl.play.pixivez")
                     val intent = Intent(Intent.ACTION_VIEW, uri)
                     startActivity(intent)
                 } catch (e: Exception) {
@@ -293,10 +302,6 @@ class SettingFragment : PreferenceFragmentCompat(), IconDialog.Callback {
                 }
             }
             "icons" -> {
-//                val iconDialog = IconDialog()
-//                iconDialog.callback = this
-//                iconDialog.show(childFragmentManager)
-
                 showApplicationIconReplacementDialog()
             }
             "viewreport" -> {
@@ -311,10 +316,10 @@ class SettingFragment : PreferenceFragmentCompat(), IconDialog.Callback {
                 }
                 val dialogBuild = MaterialAlertDialogBuilder(activity!!)
                 dialogBuild.setMessage(string).setTitle("这是崩溃报告，如果遇到个别功能闪退，请将此报告反馈给开发者")
-                        .setPositiveButton(android.R.string.ok) { _, _ ->
+                    .setPositiveButton(android.R.string.ok) { _, _ ->
 
-                        }
-                        .create().show()
+                    }
+                    .create().show()
 
             }
         }
@@ -345,10 +350,10 @@ class SettingFragment : PreferenceFragmentCompat(), IconDialog.Callback {
 
     private fun showApplicationIconReplacementDialog() {
         val items = listOf(
-            BasicGridItem(R.mipmap.ic_launcher, "Normal"),
+            BasicGridItem(R.mipmap.ic_launcher, "MD"),
             BasicGridItem(R.mipmap.ic_launcherep, "Triangle"),
-            BasicGridItem(R.mipmap.ic_launchermd, "MD")
-        )
+            BasicGridItem(R.mipmap.ic_launchermd, "Probe")
+        )//my bad
 
         MaterialDialog(requireContext(), BottomSheet(LayoutMode.WRAP_CONTENT)).show {
             title(R.string.title_change_icon)

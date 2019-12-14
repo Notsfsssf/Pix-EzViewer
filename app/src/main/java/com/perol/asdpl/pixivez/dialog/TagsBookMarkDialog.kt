@@ -24,9 +24,6 @@ class TagsBookMarkDialog : DialogFragment() {
     lateinit var imageButton: ImageButton
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        // Where we track the selected items
-
-
         return activity?.let {
             val builder = MaterialAlertDialogBuilder(it)
             val inflater = requireActivity().layoutInflater
