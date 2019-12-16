@@ -2,49 +2,52 @@
 <resources>
     <string-array name="week">
         <item>All</item>
-        <item >Public</item>
-        <item >Private</item>
-      </string-array>
+        <item>Public</item>
+        <item>Private</item>
+    </string-array>
     <string-array name="user">
-        <item >Public</item>
-        <item >Private</item>
+        <item>Public</item>
+        <item>Private</item>
     </string-array>
     <string-array name="search">
-        <item >word</item>
-        <item >illust id</item>
-        <item >painter id</item>
+        <item>word</item>
+        <item>illust id</item>
+        <item>painter id</item>
 
     </string-array>
     <string-array name="sort">
-        <item >default</item>
+        <item>default</item>
         <item>default asc</item>
-        <item >hot</item>
+        <item>hot</item>
     </string-array>
     <string-array name="firstpage">
-    <item>recommend</item>
-    <item>ranking</item>
-    <item>myself</item>
-</string-array>
+        <item>recommend</item>
+        <item>ranking</item>
+        <item>myself</item>
+    </string-array>
     <string-array name="format">
-    <item>default:id_+part</item>
-    <item>P default:id_p+part</item>
-    <item>血书:userid_id_part</item>
+        <item>default:id_+part</item>
+        <item>P default:id_p+part</item>
+        <item>血书:userid_id_part</item>
         <item>特殊:id_title_part</item>
-</string-array>
+    </string-array>
     <string-array name="quality">
         <item>meduim（fast）</item>
         <item>high（low）</item>
     </string-array>
-    <string-array name="modellist" >
-          <item>day</item>
-          <item>day_male</item>
-          <item>day_female</item>
-          <item>week_original</item>
-          <item>week_rookie</item>
-          <item>week</item>
-          <item>month</item>
-          <item>XVIII</item>
-          <item>XVIII_Week</item>
+    <string-array name="modellist">
+        <item>day</item>
+        <item>day_male</item>
+        <item>day_female</item>
+        <item>week_original</item>
+        <item>week_rookie</item>
+        <item>week</item>
+        <item>month</item>
+        <item>XVIII</item>
+        <item>XVIII_Male</item>
+        <item>XVIII_FeMale</item>
+        <item>XVIII_Week</item>
+        <item>XVIII_WeekG</item>
     </string-array>
     <string-array name="dark_mode">
         <item>FOLLOW_SYSTEM</item>

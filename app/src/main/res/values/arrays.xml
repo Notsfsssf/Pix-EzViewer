@@ -73,7 +73,10 @@
           <item>每周</item>
           <item>每月</item>
           <item>XVIII</item>
+        <item>XVIII_Male</item>
+        <item>XVIII_FeMale</item>
           <item>XVIII_Week</item>
+        <item>XVIII_WeekG</item>
     </string-array>
     <string-array name="language" >
         <item>zh</item>

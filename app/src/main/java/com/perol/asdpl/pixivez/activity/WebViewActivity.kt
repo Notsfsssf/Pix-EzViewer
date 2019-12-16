@@ -34,7 +34,6 @@ import com.perol.asdpl.pixivez.objects.ThemeUtil
 import kotlinx.android.synthetic.main.activity_web_view.*
 
 class WebViewActivity : RinkActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ThemeUtil.themeInit(this)
@@ -43,7 +42,10 @@ class WebViewActivity : RinkActivity() {
         webview.settings.blockNetworkImage = false
         webview.settings.javaScriptEnabled = true
         webview.webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+            override fun shouldOverrideUrlLoading(
+                view: WebView,
+                request: WebResourceRequest
+            ): Boolean {
                 val segment = request.url.pathSegments
                 if (segment.size == 2) {
                     if (segment[0] == "artworks") {
