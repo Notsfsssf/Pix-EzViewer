@@ -24,6 +24,7 @@
 
 package com.perol.asdpl.pixivez.activity
 
+import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -31,6 +32,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -49,6 +51,7 @@ import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.viewmodel.UserMViewModel
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_user_m.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -57,33 +60,62 @@ import java.io.File
 
 class UserMActivity : RinkActivity() {
     var id: Long = 0
+    private val SELECT_IMAGE = 2
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == SELECT_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
+            val selectedImage = data.data;
+            val filePathColumns = arrayOf(MediaStore.Images.Media.DATA);
+            val c = contentResolver.query(selectedImage!!, filePathColumns, null, null, null);
+            c!!.moveToFirst();
+            val columnIndex = c.getColumnIndex(filePathColumns[0]);
+            val imagePath = c.getString(columnIndex);
+            Toasty.info(this, "Uploading", Toast.LENGTH_SHORT).show()
+            disposables.add(viewModel.tryToChangeProfile(imagePath).subscribe({
+                Toasty.info(this, "Upload Success,Plz re-enter this page", Toast.LENGTH_SHORT)
+                    .show()
+            }, {
+                it.printStackTrace()
+            }, {}))
+            c.close();
+        }
+    }
 
+    val disposables = CompositeDisposable()
+    override fun onDestroy() {
+        disposables.clear()
+        super.onDestroy()
+    }
+
+    lateinit var viewModel: UserMViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         ThemeUtil.themeInit(this)
         super.onCreate(savedInstanceState)
-        val binding = DataBindingUtil.setContentView<ActivityUserMBinding>(this, R.layout.activity_user_m).apply {
-            lifecycleOwner = this@UserMActivity
-        }
+        val binding =
+            DataBindingUtil.setContentView<ActivityUserMBinding>(this, R.layout.activity_user_m)
+                .apply {
+                    lifecycleOwner = this@UserMActivity
+                }
 
 
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        window.decorView.systemUiVisibility =
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = Color.TRANSPARENT
 
         id = intent.getLongExtra("data", 1)
-        val viewModel = ViewModelProviders.of(this).get(UserMViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(UserMViewModel::class.java)
         viewModel.getData(id)
-
         viewModel.userDetail.observe(this, Observer {
             if (it != null) {
                 fab.show()
-                viewModel.isuser(id).subscribe({
+                disposables.add(viewModel.isuser(id).subscribe({
                     if (it) {
                         fab.hide()
                         mviewpager.currentItem = 2
                     }
-                }, {})
+                }, {}))
 
                 binding.user = it
                 /*     GlideApp.with(this).asDrawable().load(viewmodel.userDetail.value!!.profile.background_image_url).into(object : SimpleTarget<Drawable>() {
@@ -91,7 +123,10 @@ class UserMActivity : RinkActivity() {
                              app_bar.background=resource
                          }
                      })*/
-                val userMPagerAdapter = UserMPagerAdapter(this, supportFragmentManager, id.toLong(), UserMessageFragment.newInstance(it))
+                val userMPagerAdapter = UserMPagerAdapter(
+                    this, supportFragmentManager,
+                    id, UserMessageFragment.newInstance(it)
+                )
                 mviewpager.adapter = userMPagerAdapter
                 mtablayout.setupWithViewPager(mviewpager)
             }
@@ -113,39 +148,103 @@ class UserMActivity : RinkActivity() {
         }
 
         fab.setOnClickListener {
-            viewModel.onFabclick(id.toLong())
+            viewModel.onFabclick(id)
         }
         fab.setOnLongClickListener {
             Toasty.info(applicationContext, "Private....", Toast.LENGTH_SHORT).show()
-            viewModel.onFabLongClick(id.toLong())
+            viewModel.onFabLongClick(id)
             true
         }
         val shareLink = "https://www.pixiv.net/member.php?id=$id"
         imageview_useruserimage.setOnClickListener {
-            val array = arrayOf("Link", "User Image")
-            MaterialAlertDialogBuilder(this).setTitle("Link").setItems(array) { i, which ->
-                when (which) {
-                    0 -> {
-                        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        val clip: ClipData = ClipData.newPlainText("simple text", shareLink)
-                        clipboard.setPrimaryClip(clip)
-                        Toasty.info(this@UserMActivity, "copied", Toast.LENGTH_SHORT).show()
-                    }
-                    else -> {
-                        runBlocking {
-                            var file: File? = null
-                            withContext(Dispatchers.IO) {
-                                val f = GlideApp.with(this@UserMActivity).asFile().load(viewModel.userDetail.value!!.user.profile_image_urls.medium).submit()
-                                file = f.get()
-                                val target = File(PxEZApp.storepath, "user_${viewModel.userDetail.value!!.user.id}.png")
-                                file?.copyTo(target, overwrite = true)
+            disposables.add(viewModel.isuser(id).subscribe({
+                if (it) {
+                    fab.hide()
+                    mviewpager.currentItem = 2
+                    val array = arrayOf("Link", "User Image", "User Profile Image")
+                    MaterialAlertDialogBuilder(this).setTitle("Link").setItems(array) { i, which ->
+                        when (which) {
+                            0 -> {
+                                val clipboard =
+                                    getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                                val clip: ClipData = ClipData.newPlainText("simple text", shareLink)
+                                clipboard.setPrimaryClip(clip)
+                                Toasty.info(this@UserMActivity, "copied", Toast.LENGTH_SHORT).show()
                             }
-                            PxEZApp.instance.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)))
-                            Toasty.info(this@UserMActivity, "Saved", Toast.LENGTH_SHORT).show()
+                            1 -> {
+                                runBlocking {
+                                    var file: File? = null
+                                    withContext(Dispatchers.IO) {
+                                        val f = GlideApp.with(this@UserMActivity).asFile()
+                                            .load(viewModel.userDetail.value!!.user.profile_image_urls.medium)
+                                            .submit()
+                                        file = f.get()
+                                        val target = File(
+                                            PxEZApp.storepath,
+                                            "user_${viewModel.userDetail.value!!.user.id}.png"
+                                        )
+                                        file?.copyTo(target, overwrite = true)
+                                    }
+                                    PxEZApp.instance.sendBroadcast(
+                                        Intent(
+                                            Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                                            Uri.fromFile(file)
+                                        )
+                                    )
+                                    Toasty.info(this@UserMActivity, "Saved", Toast.LENGTH_SHORT)
+                                        .show()
+                                }
+                            }
+                            else -> {
+                                val intent = Intent(
+                                    Intent.ACTION_PICK,
+                                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                                )
+                                startActivityForResult(intent, SELECT_IMAGE)
+                            }
                         }
-                    }
+                    }.setTitle("Save").create().show()
+                } else {
+                    val array = arrayOf("Link", "User Image")
+                    MaterialAlertDialogBuilder(this).setTitle("Link").setItems(array) { i, which ->
+                        when (which) {
+                            0 -> {
+                                val clipboard =
+                                    getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                                val clip: ClipData = ClipData.newPlainText("simple text", shareLink)
+                                clipboard.setPrimaryClip(clip)
+                                Toasty.info(this@UserMActivity, "copied", Toast.LENGTH_SHORT).show()
+                            }
+                            1 -> {
+                                runBlocking {
+                                    var file: File? = null
+                                    withContext(Dispatchers.IO) {
+                                        val f = GlideApp.with(this@UserMActivity).asFile()
+                                            .load(viewModel.userDetail.value!!.user.profile_image_urls.medium)
+                                            .submit()
+                                        file = f.get()
+                                        val target = File(
+                                            PxEZApp.storepath,
+                                            "user_${viewModel.userDetail.value!!.user.id}.png"
+                                        )
+                                        file?.copyTo(target, overwrite = true)
+                                    }
+                                    PxEZApp.instance.sendBroadcast(
+                                        Intent(
+                                            Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                                            Uri.fromFile(file)
+                                        )
+                                    )
+                                    Toasty.info(this@UserMActivity, "Saved", Toast.LENGTH_SHORT)
+                                        .show()
+                                }
+                            }
+                        }
+                    }.setTitle("Save").create().show()
                 }
-            }.setTitle("Save").create().show()
+            }, {}))
+
+
 
         }
     }

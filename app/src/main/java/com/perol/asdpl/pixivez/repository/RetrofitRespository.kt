@@ -33,6 +33,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.runBlocking
+import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.HttpException
 
@@ -152,6 +153,14 @@ class RetrofitRespository {
             )
         }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).retryWhen(reFreshFunction)
 
+    }
+
+    fun postUserProfileEdit(part: MultipartBody.Part): Observable<ResponseBody> {
+        return Observable.just(1).flatMap {
+            resetToken()
+            appApiPixivService.postUserProfileEdit(Authorization, part)
+        }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+            .retryWhen(reFreshFunction)
     }
 
     fun getUserFollower(long: Long): Observable<SearchUserResponse> {
