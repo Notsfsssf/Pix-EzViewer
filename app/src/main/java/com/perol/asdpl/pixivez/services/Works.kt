@@ -26,8 +26,10 @@ package com.perol.asdpl.pixivez.services
 
 import android.app.Activity
 import android.content.Intent
+import android.media.MediaScannerConnection
 import android.net.Uri
 import android.util.Log
+import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.preference.PreferenceManager
@@ -109,12 +111,13 @@ class Works {
                     PxEZApp.instance.resources.getString(R.string.savesuccess),
                     Toast.LENGTH_SHORT
                 ).show()
-                PxEZApp.instance.sendBroadcast(
-                    Intent(
-                        Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                        Uri.fromFile(targetFile)
-                    )
-                )
+                MediaScannerConnection.scanFile(
+                    PxEZApp.instance,
+                    arrayOf(targetFile.path),
+                    arrayOf(MimeTypeMap.getSingleton().getMimeTypeFromExtension(targetFile.extension))
+                ) { _, _ ->
+
+                }
             } catch (e: Exception) {
 
             }
@@ -224,14 +227,19 @@ class Works {
                                 PxEZApp.instance.resources.getString(R.string.savesuccess),
                                 Toast.LENGTH_SHORT
                             ).show()
-                            val uri = workInfo.outputData.getString("path")
-                            if (uri != null)
-                                PxEZApp.instance.sendBroadcast(
-                                    Intent(
-                                        Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                                        Uri.fromFile(File(uri))
+                            val path = workInfo.outputData.getString("path")
+                            if (path != null)
+                                MediaScannerConnection.scanFile(
+                                    PxEZApp.instance,
+                                    arrayOf(path),
+                                    arrayOf(
+                                        MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+                                            File(path).extension
+                                        )
                                     )
-                                )
+                                ) { _, _ ->
+
+                                }
                         } else if (workInfo.state == WorkInfo.State.FAILED) {
 
                         } else if (workInfo.state == WorkInfo.State.CANCELLED) {

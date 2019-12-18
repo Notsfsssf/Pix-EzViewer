@@ -34,7 +34,7 @@ import android.graphics.Color
 import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.net.Uri
+import android.media.MediaScannerConnection
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
@@ -44,6 +44,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.MimeTypeMap
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -480,7 +481,15 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                                         withContext(Dispatchers.IO) {
                                             File(path).copyTo(file1, true)
                                         }
-                                        PxEZApp.instance.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file1)))
+                                        MediaScannerConnection.scanFile(
+                                            PxEZApp.instance, arrayOf(path2), arrayOf(
+                                                MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+                                                    file1.extension
+                                                )
+                                            )
+                                        ) { _, _ ->
+
+                                        }
                                         isEncoding = false
                                         Toast.makeText(PxEZApp.instance, R.string.savegifsuccess, Toast.LENGTH_SHORT).show()
 
@@ -497,8 +506,14 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                                     withContext(Dispatchers.IO) {
                                         File(path).copyTo(file1, true)
                                     }
-
-                                    PxEZApp.instance.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file1)))
+                                    MediaScannerConnection.scanFile(
+                                        PxEZApp.instance, arrayOf(path2), arrayOf(
+                                            MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+                                                file1.extension
+                                            )
+                                        )
+                                    ) { _, _ ->
+                                    }
                                     isEncoding = false
                                     Toast.makeText(PxEZApp.instance, R.string.savegifsuccess, Toast.LENGTH_SHORT).show()
                                 }

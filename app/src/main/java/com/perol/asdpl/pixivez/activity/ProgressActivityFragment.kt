@@ -26,12 +26,13 @@ package com.perol.asdpl.pixivez.activity
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
+import android.media.MediaScannerConnection
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -195,16 +196,18 @@ class ProgressActivityFragment : Fragment() {
                                                         PxEZApp.instance.resources.getString(R.string.savesuccess),
                                                         Toast.LENGTH_SHORT
                                                     ).show()
-                                                    val uri = workInfo.outputData.getString("path")
-                                                    if (uri != null)
-                                                        PxEZApp.instance.sendBroadcast(
-                                                            Intent(
-                                                                Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                                                                Uri.fromFile(
-                                                                    File(uri)
+                                                    val path = workInfo.outputData.getString("path")
+                                                    if (path != null)
+                                                        MediaScannerConnection.scanFile(
+                                                            PxEZApp.instance,
+                                                            arrayOf(path),
+                                                            arrayOf(
+                                                                MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+                                                                    File(path).extension
                                                                 )
                                                             )
-                                                        )
+                                                        ) { _, _ ->
+                                                        }
                                                 } else if (workInfo.state == WorkInfo.State.FAILED) {
 
                                                 } else if (workInfo.state == WorkInfo.State.CANCELLED) {

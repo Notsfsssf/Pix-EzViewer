@@ -27,7 +27,6 @@ package com.perol.asdpl.pixivez.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.Environment
 import android.view.Menu
 import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,7 +34,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.PathProviderAdapter
 import com.perol.asdpl.pixivez.objects.ThemeUtil
-import com.perol.asdpl.pixivez.objects.Toasty
 import kotlinx.android.synthetic.main.activity_path_provider.*
 import java.io.File
 
@@ -46,12 +44,7 @@ class PathProviderActivity : RinkActivity() {
         super.onCreate(savedInstanceState)
         ThemeUtil.themeInit(this)
         var a = 1
-        nowPath = Environment.getExternalStorageDirectory().absolutePath
-        if (nowPath == null || nowPath.isBlank()) {
-            Toasty.error(this, resources.getString(R.string.noaccess)).show()
-            finish()
-            return
-        }
+        nowPath = getExternalFilesDir(null)!!.absolutePath
         nowPathLists = ArrayList<File>()
         val pathProviderAdapter = PathProviderAdapter(R.layout.view_item_path_provider, getPathList(nowPath))
         setContentView(R.layout.activity_path_provider)
@@ -61,7 +54,7 @@ class PathProviderActivity : RinkActivity() {
             supportActionBar!!.setDisplayHomeAsUpEnabled(true);
         }
         clicktotop.setOnClickListener {
-            if (nowPath != Environment.getExternalStorageDirectory().absolutePath) {
+            if (nowPath != getExternalFilesDir(null)!!.absolutePath) {
                 nowPath = File(nowPath).parent
                 pathProviderAdapter.setNewData(getPathList(nowPath))
                 textView!!.text = nowPath

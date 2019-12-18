@@ -28,7 +28,6 @@ import android.app.Activity
 import android.app.Application
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import androidx.work.WorkManager
@@ -47,8 +46,11 @@ class PxEZApp : Application() {
         AppCompatDelegate.setDefaultNightMode(defaultSharedPreferences.getString("dark_mode", "-1")!!.toInt())
         animationEnable = defaultSharedPreferences.getBoolean("animation", true)
         language = defaultSharedPreferences.getString("language", "0")?.toInt() ?: 0
-        storepath = defaultSharedPreferences.getString("storepath1", Environment.getExternalStorageDirectory().absolutePath + File.separator + "PxEz")
-                ?: Environment.getExternalStorageDirectory().absolutePath + File.separator + "PxEz"
+        storepath = defaultSharedPreferences.getString(
+            "storepath1",
+            getExternalFilesDir(null)!!.absolutePath + File.separator + "PxEz"
+        )
+            ?: getExternalFilesDir(null)!!.absolutePath + File.separator + "PxEz"
         if (defaultSharedPreferences.getBoolean("crashreport", true)) {
             CrashHandler.getInstance().init(this)
         }
@@ -121,7 +123,7 @@ class PxEZApp : Application() {
 
     companion object {
         @JvmStatic
-        var storepath = Environment.getExternalStorageDirectory().absolutePath + File.separator + "PxEz"
+        var storepath = ""
         @JvmStatic
         var locale = "zh"
         @JvmStatic

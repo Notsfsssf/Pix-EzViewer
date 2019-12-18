@@ -30,13 +30,14 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
+import android.media.MediaScannerConnection
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
+import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -159,8 +160,8 @@ class UserMActivity : RinkActivity() {
         imageview_useruserimage.setOnClickListener {
             disposables.add(viewModel.isuser(id).subscribe({
                 var array = resources.getStringArray(R.array.user_profile)
-                if (it) {
-                    array = array.copyOfRange(0, 1)
+                if (!it) {
+                    array = array.copyOfRange(0, 2)
                 }
                 MaterialAlertDialogBuilder(this).setItems(array) { i, which ->
                     when (which) {
@@ -184,13 +185,17 @@ class UserMActivity : RinkActivity() {
                                         "user_${viewModel.userDetail.value!!.user.id}.png"
                                     )
                                     file?.copyTo(target, overwrite = true)
+                                    MediaScannerConnection.scanFile(
+                                        PxEZApp.instance, arrayOf(target.path), arrayOf(
+                                            MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+                                                target.extension
+                                            )
+                                        )
+                                    ) { _, _ ->
+
+                                    }
                                 }
-                                PxEZApp.instance.sendBroadcast(
-                                    Intent(
-                                        Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                                        Uri.fromFile(file)
-                                    )
-                                )
+
                                 Toasty.info(this@UserMActivity, "Saved", Toast.LENGTH_SHORT)
                                     .show()
                             }
