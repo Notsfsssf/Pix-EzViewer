@@ -70,4 +70,9 @@
         <item>開啟</item>
         <item>跟隨電池</item>
     </string-array>
+    <string-array name="user_profile">
+        <item>複製連結</item>
+        <item>保存頭像</item>
+        <item>更換頭像</item>
+    </string-array>
 </resources>

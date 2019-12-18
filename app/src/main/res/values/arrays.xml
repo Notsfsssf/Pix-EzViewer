@@ -102,4 +102,9 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+    <string-array name="user_profile">
+        <item>复制链接</item>
+        <item>保存头像</item>
+        <item>更换头像</item>
+    </string-array>
 </resources>

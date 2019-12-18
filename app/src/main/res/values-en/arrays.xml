@@ -56,4 +56,9 @@
         <item>YES</item>
         <item>AUTO_BATTERY</item>
     </string-array>
+    <string-array name="user_profile">
+        <item>Copy Link</item>
+        <item>Save Avatar</item>
+        <item>Change Avatar</item>
+    </string-array>
 </resources>

@@ -158,90 +158,52 @@ class UserMActivity : RinkActivity() {
         val shareLink = "https://www.pixiv.net/member.php?id=$id"
         imageview_useruserimage.setOnClickListener {
             disposables.add(viewModel.isuser(id).subscribe({
+                var array = resources.getStringArray(R.array.user_profile)
                 if (it) {
-                    fab.hide()
-                    mviewpager.currentItem = 2
-                    val array = arrayOf("Link", "User Image", "User Profile Image")
-                    MaterialAlertDialogBuilder(this).setTitle("Link").setItems(array) { i, which ->
-                        when (which) {
-                            0 -> {
-                                val clipboard =
-                                    getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                                val clip: ClipData = ClipData.newPlainText("simple text", shareLink)
-                                clipboard.setPrimaryClip(clip)
-                                Toasty.info(this@UserMActivity, "copied", Toast.LENGTH_SHORT).show()
-                            }
-                            1 -> {
-                                runBlocking {
-                                    var file: File? = null
-                                    withContext(Dispatchers.IO) {
-                                        val f = GlideApp.with(this@UserMActivity).asFile()
-                                            .load(viewModel.userDetail.value!!.user.profile_image_urls.medium)
-                                            .submit()
-                                        file = f.get()
-                                        val target = File(
-                                            PxEZApp.storepath,
-                                            "user_${viewModel.userDetail.value!!.user.id}.png"
-                                        )
-                                        file?.copyTo(target, overwrite = true)
-                                    }
-                                    PxEZApp.instance.sendBroadcast(
-                                        Intent(
-                                            Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                                            Uri.fromFile(file)
-                                        )
-                                    )
-                                    Toasty.info(this@UserMActivity, "Saved", Toast.LENGTH_SHORT)
-                                        .show()
-                                }
-                            }
-                            else -> {
-                                val intent = Intent(
-                                    Intent.ACTION_PICK,
-                                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                                )
-                                startActivityForResult(intent, SELECT_IMAGE)
-                            }
-                        }
-                    }.setTitle("Save").create().show()
-                } else {
-                    val array = arrayOf("Link", "User Image")
-                    MaterialAlertDialogBuilder(this).setTitle("Link").setItems(array) { i, which ->
-                        when (which) {
-                            0 -> {
-                                val clipboard =
-                                    getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                                val clip: ClipData = ClipData.newPlainText("simple text", shareLink)
-                                clipboard.setPrimaryClip(clip)
-                                Toasty.info(this@UserMActivity, "copied", Toast.LENGTH_SHORT).show()
-                            }
-                            1 -> {
-                                runBlocking {
-                                    var file: File? = null
-                                    withContext(Dispatchers.IO) {
-                                        val f = GlideApp.with(this@UserMActivity).asFile()
-                                            .load(viewModel.userDetail.value!!.user.profile_image_urls.medium)
-                                            .submit()
-                                        file = f.get()
-                                        val target = File(
-                                            PxEZApp.storepath,
-                                            "user_${viewModel.userDetail.value!!.user.id}.png"
-                                        )
-                                        file?.copyTo(target, overwrite = true)
-                                    }
-                                    PxEZApp.instance.sendBroadcast(
-                                        Intent(
-                                            Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                                            Uri.fromFile(file)
-                                        )
-                                    )
-                                    Toasty.info(this@UserMActivity, "Saved", Toast.LENGTH_SHORT)
-                                        .show()
-                                }
-                            }
-                        }
-                    }.setTitle("Save").create().show()
+                    array = array.copyOfRange(0, 1)
                 }
+                MaterialAlertDialogBuilder(this).setItems(array) { i, which ->
+                    when (which) {
+                        0 -> {
+                            val clipboard =
+                                getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                            val clip: ClipData = ClipData.newPlainText("simple text", shareLink)
+                            clipboard.setPrimaryClip(clip)
+                            Toasty.info(this@UserMActivity, "copied", Toast.LENGTH_SHORT).show()
+                        }
+                        1 -> {
+                            runBlocking {
+                                var file: File? = null
+                                withContext(Dispatchers.IO) {
+                                    val f = GlideApp.with(this@UserMActivity).asFile()
+                                        .load(viewModel.userDetail.value!!.user.profile_image_urls.medium)
+                                        .submit()
+                                    file = f.get()
+                                    val target = File(
+                                        PxEZApp.storepath,
+                                        "user_${viewModel.userDetail.value!!.user.id}.png"
+                                    )
+                                    file?.copyTo(target, overwrite = true)
+                                }
+                                PxEZApp.instance.sendBroadcast(
+                                    Intent(
+                                        Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                                        Uri.fromFile(file)
+                                    )
+                                )
+                                Toasty.info(this@UserMActivity, "Saved", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                        }
+                        else -> {
+                            val intent = Intent(
+                                Intent.ACTION_PICK,
+                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                            )
+                            startActivityForResult(intent, SELECT_IMAGE)
+                        }
+                    }
+                }.create().show()
             }, {}))
 
 
