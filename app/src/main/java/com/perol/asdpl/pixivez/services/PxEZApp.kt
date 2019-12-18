@@ -28,6 +28,7 @@ import android.app.Activity
 import android.app.Application
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import androidx.work.WorkManager
@@ -48,9 +49,9 @@ class PxEZApp : Application() {
         language = defaultSharedPreferences.getString("language", "0")?.toInt() ?: 0
         storepath = defaultSharedPreferences.getString(
             "storepath1",
-            getExternalFilesDir(null)!!.absolutePath + File.separator + "PxEz"
+            Environment.getExternalStorageDirectory().absolutePath + File.separator + "PxEz"
         )
-            ?: getExternalFilesDir(null)!!.absolutePath + File.separator + "PxEz"
+            ?: Environment.getExternalStorageDirectory().absolutePath + File.separator + "PxEz"
         if (defaultSharedPreferences.getBoolean("crashreport", true)) {
             CrashHandler.getInstance().init(this)
         }

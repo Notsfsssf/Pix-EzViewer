@@ -29,10 +29,6 @@
         <activity android:name=".activity.AboutXActivity" />
         <activity android:name=".activity.AccountActivity" />
         <activity android:name=".activity.ThemeActivity" />
-        <activity
-            android:name=".activity.PathProviderActivity"
-            android:label="@string/title_activity_path_provider" />
-
         <meta-data
             android:name="com.perol.asdpl.pixivez.services.CustomGlideModule"
             android:value="GlideModule" />
