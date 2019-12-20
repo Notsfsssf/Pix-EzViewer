@@ -65,7 +65,7 @@ class RankingAdapter(layoutResId: Int, data: List<Illust>?, private val R18on: B
             illustlist[i] = this.data[i].id
         }
         bundle.putLongArray("illustlist", illustlist)
-        bundle.putParcelable(this.data[position].id.toString(), this.data[position])
+      //  bundle.putParcelable(this.data[position].id.toString(), this.data[position])
         val intent = Intent(mContext, PictureActivity::class.java)
         intent.putExtras(bundle)
         if (PxEZApp.animationEnable) {

@@ -35,7 +35,6 @@ import com.perol.asdpl.pixivez.responses.Illust
 class PicturePagerAdapter(
     fm: FragmentManager,
     private val fragments: LongArray,
-    val illust: Illust?,
     val nowpostion: Int
 ) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
@@ -46,9 +45,7 @@ class PicturePagerAdapter(
     override fun getItem(position: Int): Fragment {
 
         return PictureXFragment.newInstance(
-            fragments[position], if (position == nowpostion) {
-                illust
-            } else null
+            fragments[position]
         )
     }
 

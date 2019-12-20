@@ -44,7 +44,6 @@ import com.perol.asdpl.pixivez.databinding.FragmentPictureXBinding
 import com.perol.asdpl.pixivez.dialog.CommentDialog
 import com.perol.asdpl.pixivez.objects.LazyV4Fragment
 import com.perol.asdpl.pixivez.objects.Toasty
-import com.perol.asdpl.pixivez.responses.Illust
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.viewmodel.PictureXViewModel
 import kotlinx.android.synthetic.main.fragment_picture_x.*
@@ -63,14 +62,11 @@ private const val ARG_PARAM1 = "param1"
 class PictureXFragment : LazyV4Fragment() {
 
     private var param1: Long? = null
-    private var param2: Illust? = null
     private lateinit var pictureXViewModel: PictureXViewModel
     override fun loadData() {
 //        val item = activity?.intent?.extras
 //        val illust = item?.getParcelable<Illust>(param1.toString())
-        pictureXViewModel.firstGet(param1!!, param2)
-
-
+        pictureXViewModel.firstGet(param1!!)
     }
 
     override fun onDestroy() {
@@ -165,7 +161,7 @@ class PictureXFragment : LazyV4Fragment() {
     var hasMoved = false
     private fun initView() {
         fab.setOnClickListener {
-            pictureXViewModel.FabClick()
+            pictureXViewModel.fabClick()
         }
         fab.setOnLongClickListener {
             if (pictureXViewModel.illustDetailResponse.value!!.illust.is_bookmarked) {
@@ -205,7 +201,6 @@ class PictureXFragment : LazyV4Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getLong(ARG_PARAM1)
-            param2 = it.getParcelable("illust")
         }
         initViewModel()
     }
@@ -242,11 +237,11 @@ class PictureXFragment : LazyV4Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: Long, illust: Illust?) =
+        fun newInstance(param1: Long) =
             PictureXFragment().apply {
                 arguments = Bundle().apply {
                     putLong(ARG_PARAM1, param1)
-                    putParcelable("illust", illust)
+/*                    putParcelable("illust", illust)*/
                 }
             }
     }

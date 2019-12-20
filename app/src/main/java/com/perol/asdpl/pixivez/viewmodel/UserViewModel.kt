@@ -30,16 +30,16 @@ import com.perol.asdpl.pixivez.repository.RetrofitRespository
 import com.perol.asdpl.pixivez.responses.SearchUserResponse
 import io.reactivex.Observable
 
-class UserViewModel : ViewModel() {
+class UserViewModel : BaseViewModel() {
     var users = MutableLiveData<SearchUserResponse>()
 
     var retrofitRespository = RetrofitRespository.getInstance()
     var nexturl = MutableLiveData<String>()
-    fun getnextusers(word: String) {
-        retrofitRespository.getNextUser(word)!!.subscribe({
+    fun getNextUsers(word: String) {
+        retrofitRespository.getNextUser(word).subscribe({
             users.value = it
             nexturl.value = it.next_url
-        }, {}, {})
+        }, {}, {}).add()
     }
 
     fun getSearchUser(word: String) {
@@ -51,6 +51,6 @@ class UserViewModel : ViewModel() {
                 }, {
 
         }, {}, {}
-        )
+        ).add()
     }
 }

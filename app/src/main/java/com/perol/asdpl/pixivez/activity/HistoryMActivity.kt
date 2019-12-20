@@ -58,7 +58,7 @@ class HistoryMActivity : RinkActivity() {
         fab.setOnClickListener {
             historyMViewModel!!.fabOnClick()
         }
-        historyAdapter.setOnItemClickListener { adapter, view, position ->
+        historyAdapter.setOnItemClickListener { _, _, position ->
             val bundle = Bundle()
             val arrayList = LongArray(1)
             arrayList[0] = (historyMViewModel!!.illustBeans.value!![position].illustid)
@@ -68,7 +68,7 @@ class HistoryMActivity : RinkActivity() {
             intent2.putExtras(bundle)
             startActivity(intent2)
         }
-        historyAdapter.setOnItemLongClickListener { baseQuickAdapter, view, i ->
+        historyAdapter.setOnItemLongClickListener { _, _, i ->
             MaterialAlertDialogBuilder(this)
                     .setTitle("Delete?").setPositiveButton("OK") { _, j ->
                         historyMViewModel!!.deleteSelect(i)

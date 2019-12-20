@@ -448,7 +448,7 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                         }
                     }
                     bundle.putStringArrayList("url", arrayList)
-                    bundle.putParcelable(
+                  bundle.putParcelable(
                         "illust",
                         pictureXViewModel.illustDetailResponse.value?.illust
                     )

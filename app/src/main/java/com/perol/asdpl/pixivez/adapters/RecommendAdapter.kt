@@ -66,7 +66,7 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
                 illustlist[i] = this.data[i].id
             }
             bundle.putLongArray("illustlist", illustlist)
-            bundle.putParcelable(this.data[position].id.toString(), this.data[position])
+//            bundle.putParcelable(this.data[position].id.toString(), this.data[position])  //容易造成memory leak,而且会导致收藏与未收藏的问题
             val intent = Intent(mContext, PictureActivity::class.java)
             intent.putExtras(bundle)
             if (PxEZApp.animationEnable) {

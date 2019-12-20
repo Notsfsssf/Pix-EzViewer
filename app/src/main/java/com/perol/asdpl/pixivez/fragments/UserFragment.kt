@@ -66,7 +66,7 @@ class UserFragment : LazyV4Fragment() {
         recyclerview_user.layoutManager = LinearLayoutManager(activity)
         userShowAdapter.setOnLoadMoreListener({
             if (userViewModel.nexturl.value != null)
-                userViewModel.getnextusers(userViewModel.nexturl.value!!)
+                userViewModel.getNextUsers(userViewModel.nexturl.value!!)
 
         }, recyclerview_user)
         userShowAdapter.setOnItemClickListener { adapter, view, position ->
