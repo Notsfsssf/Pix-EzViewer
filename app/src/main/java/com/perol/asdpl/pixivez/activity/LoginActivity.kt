@@ -25,7 +25,6 @@
 package com.perol.asdpl.pixivez.activity
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -71,8 +70,9 @@ class LoginActivity : RinkActivity() {
             "```\n" +
             "请尝试以下步骤  \n" +
             "1.确保应用是最新的，到google play或者github获取最新的版本  \n" +
-            "2.已是最新版，则用户名或者密码有错(104:)，需要核对账号密码  \n" +
-            "3.账号未完成验证或者用户账号无效(103:)，需要到官网进行验证完善  \n" +
+            "2.检查接入点APN是否为Net而不是Wap  \n" +
+            "3.已是最新版，则用户名或者密码有错(104:)，需要核对账号密码  \n" +
+            "4.账号未完成验证或者用户账号无效(103:)，需要到官网进行验证完善  \n" +
             "ps:账号密码指的是pixiv的账号密码，而不是github的\n" +
             "\n" +
             "\n" +
@@ -200,7 +200,6 @@ class LoginActivity : RinkActivity() {
         })
 
         loginBtn!!.setOnClickListener {
-            //            loginBtn.isClickable = false
 
             username = edit_username!!.text.toString().trim()
             password = edit_password!!.text.toString()
@@ -267,7 +266,6 @@ class LoginActivity : RinkActivity() {
                     }
 
                     override fun onError(e: Throwable) {
-//                            loginBtn.isClickable = true
                         loginBtn.isEnabled = true
 
                         textview_help.visibility = View.VISIBLE
@@ -279,16 +277,14 @@ class LoginActivity : RinkActivity() {
                                     errorBody,
                                     ErrorResponse::class.java
                                 )
-
                                 var errMsg = "${e.message}\n${errorResponse.errors.system.message}"
-
                                 if (errorResponse.has_error && errorResponse.errors.system.message.contains(
                                         Regex(""".*103:.*""")
                                     )
                                 ) {
                                     errMsg = getString(R.string.error_invalid_account_password)
                                 }
-
+                                errMsg="其他错误，检查接入点APN是否为Net而不是Wap,检查网络是否通畅\n${errMsg}"
                                 Toast.makeText(applicationContext, errMsg, Toast.LENGTH_LONG).show()
                             } catch (e1: IOException) {
                                 Toast.makeText(
@@ -305,16 +301,12 @@ class LoginActivity : RinkActivity() {
                     }
 
                     override fun onComplete() {
-//                            loginBtn.isClickable = true
-//                            loginBtn.isEnabled = true // Avoid double logins.
-
                         Toast.makeText(applicationContext, "登录成功", Toast.LENGTH_LONG).show()
                         val intent = Intent(this@LoginActivity, HelloMActivity::class.java).apply {
                             // 避免循环添加账号导致相同页面嵌套。或者在添加账号（登录）成功时回到账号列表页面而不是导航至新的主页
                             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK // Or launchMode = "singleTop|singleTask"
                         }
                         startActivity(intent)
-//                        finish()
                     }
                 })
         }
