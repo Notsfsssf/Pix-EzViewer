@@ -26,6 +26,7 @@ package com.perol.asdpl.pixivez.activity
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.viewpager.widget.ViewPager
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.ZoomPagerAdapter
@@ -38,14 +39,24 @@ class ZoomActivity : RinkActivity() {
     private var str: ArrayList<String>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
+                // Set the content to appear under the system bars so that the
+                // content doesn't resize when the system bars hide and show.
+                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                // Hide the nav bar and status bar
+                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_FULLSCREEN)
         setContentView(R.layout.activity_zoom)
+
         val intent = intent
         val bundle = intent.extras
         str = bundle!!.getStringArrayList("url")
-        val illust = bundle!!.getParcelable<Illust>("illust")
+        val illust = bundle.getParcelable<Illust>("illust")
         val num = bundle.getInt("num", 0)
         val zoomPagerAdapter = ZoomPagerAdapter(this, str!!, illust)
-        textview_zoom.text = 1.toString() + "/" + str!!.size
+        textview_zoom.text ="1/${str!!.size}"
         viewpage_zoom.adapter = zoomPagerAdapter
         viewpage_zoom.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
@@ -54,8 +65,8 @@ class ZoomActivity : RinkActivity() {
 
             override fun onPageSelected(position: Int) {
                 viewpage_zoom.tag = position
-                val positonx = position + 1
-                textview_zoom.text = "$positonx/${str!!.size}"
+                val positonX = position + 1
+                textview_zoom.text = "$positonX/${str!!.size}"
             }
 
             override fun onPageScrollStateChanged(state: Int) {

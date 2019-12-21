@@ -61,10 +61,9 @@ android {
     }
     flavorDimensions "version"
 
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding = true
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -178,9 +177,9 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.core:core:1.1.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.material:material:1.2.0-alpha02'
+    implementation 'com.google.android.material:material:1.2.0-alpha03'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
@@ -195,14 +194,18 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:bottomsheets:3.1.1'
     implementation 'com.afollestad.material-dialogs:lifecycle:3.1.1'
 
-    def paging_version = "2.1.0"
+    def paging_version = "2.1.1"
 
-    implementation "androidx.paging:paging-runtime:$paging_version" // For Kotlin use paging-runtime-ktx
+    implementation "androidx.paging:paging-runtime:$paging_version"
+    // For Kotlin use paging-runtime-ktx
 
     // alternatively - without Android dependencies for testing
-    testImplementation "androidx.paging:paging-common:$paging_version" // For Kotlin use paging-common-ktx
+    testImplementation "androidx.paging:paging-common:$paging_version"
+    // For Kotlin use paging-common-ktx
 
     // optional - RxJava support
-    implementation "androidx.paging:paging-rxjava2:$paging_version" // For Kotlin use paging-rxjava2-ktx
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0' // https://github.com/square/leakcanary
+    implementation "androidx.paging:paging-rxjava2:$paging_version"
+    // For Kotlin use paging-rxjava2-ktx
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0'
+    // https://github.com/square/leakcanary
 }

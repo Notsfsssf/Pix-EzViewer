@@ -33,6 +33,7 @@ import io.reactivex.Single
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.ResponseBody
 import java.io.File
 
@@ -86,7 +87,7 @@ class UserMViewModel : BaseViewModel() {
         val file = File(path)
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
-        val body = RequestBody.create("image/jpeg".toMediaTypeOrNull(), file)
+        val body = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
         builder.addFormDataPart("profile_image", file.name, body)
         return retrofitRespository.postUserProfileEdit(builder.build().part(0))
     }

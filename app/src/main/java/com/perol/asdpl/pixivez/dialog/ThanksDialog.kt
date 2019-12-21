@@ -231,7 +231,13 @@ class ThanksDialog : DialogFragment() {
         "卷柏泡茶",
         "闪耀的shining",
         "相信自己",
-        "钰"
+        "钰",
+        "*胜超",
+        "二货",
+        "*馮",
+        "*幕",
+        "*火",
+        "*】"
     )
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

@@ -40,7 +40,6 @@ import com.perol.asdpl.pixivez.adapters.UserShowAdapter
 import com.perol.asdpl.pixivez.objects.LazyV4Fragment
 import com.perol.asdpl.pixivez.responses.SearchUserResponse
 import com.perol.asdpl.pixivez.viewmodel.UserViewModel
-import com.perol.asdpl.pixivez.viewmodel.factory.userFactory
 import kotlinx.android.synthetic.main.fragment_user.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -69,8 +68,8 @@ class UserFragment : LazyV4Fragment() {
                 userViewModel.getNextUsers(userViewModel.nexturl.value!!)
 
         }, recyclerview_user)
-        userShowAdapter.setOnItemClickListener { adapter, view, position ->
-            val intent = Intent(activity!!.applicationContext, UserMActivity::class.java)
+        userShowAdapter.setOnItemClickListener { _, _, position ->
+            val intent = Intent(requireActivity().applicationContext, UserMActivity::class.java)
             intent.putExtra("data", userShowAdapter.data[position].user.id)
             startActivity(intent)
         }
@@ -96,7 +95,7 @@ class UserFragment : LazyV4Fragment() {
     }
 
     fun lazyLoad() {
-        userViewModel = ViewModelProviders.of(this, userFactory()).get(UserViewModel::class.java)
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
 
 
         userViewModel.users.observe(this, Observer {

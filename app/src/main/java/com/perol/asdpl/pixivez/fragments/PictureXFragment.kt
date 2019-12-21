@@ -167,7 +167,7 @@ class PictureXFragment : LazyV4Fragment() {
             if (pictureXViewModel.illustDetailResponse.value!!.illust.is_bookmarked) {
                 return@setOnLongClickListener true
             }
-            Toasty.info(activity!!, resources.getString(R.string.fetchtags), Toast.LENGTH_SHORT)
+            Toasty.info(requireActivity(), resources.getString(R.string.fetchtags), Toast.LENGTH_SHORT)
                 .show()
             val tagsBookMarkDialog = TagsBookMarkDialog();
             tagsBookMarkDialog.show(childFragmentManager, TagsBookMarkDialog::class.java.name)
