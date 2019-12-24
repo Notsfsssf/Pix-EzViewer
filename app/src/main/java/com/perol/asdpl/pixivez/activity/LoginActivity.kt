@@ -62,8 +62,8 @@ import java.util.*
 class LoginActivity : RinkActivity() {
     private var username: String? = null
     private var password: String? = null
-    private var sharedPreferencesServices: SharedPreferencesServices? = null
-    val markdownShot = "# TroubleShoot帮助\n" +
+    lateinit var sharedPreferencesServices: SharedPreferencesServices
+    private val markdownShot = "# TroubleShoot帮助\n" +
             "如果你登录时提示\n" +
             "```shell\n" +
             "    http 400 bad request\n" +
@@ -104,7 +104,7 @@ class LoginActivity : RinkActivity() {
 
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
-        initbind()
+        initBind()
 
     }
 
@@ -124,15 +124,15 @@ class LoginActivity : RinkActivity() {
         }
     }
 
-    private fun initbind() {
+    private fun initBind() {
         sharedPreferencesServices = SharedPreferencesServices.getInstance()
         try {
 
-            if (sharedPreferencesServices!!.getString("password") != null) {
-                edit_password!!.setText(sharedPreferencesServices!!.getString("password"))
-                edit_username!!.setText(sharedPreferencesServices!!.getString("username"))
+            if (sharedPreferencesServices.getString("password") != null) {
+                edit_password!!.setText(sharedPreferencesServices.getString("password"))
+                edit_username!!.setText(sharedPreferencesServices.getString("username"))
             }
-            if (!sharedPreferencesServices!!.getBoolean("firstinfo")) {
+            if (!sharedPreferencesServices.getBoolean("firstinfo")) {
                 val normalDialog = MaterialAlertDialogBuilder(this)
                 normalDialog.setMessage(
                     "0.请务必确保在google play或者项目地址内安装与更新,第三方提供的安装包可能存在问题且不是最新\n1.在图片详情页长按可以保存选定图片，长按头像快速关注作者，请提供应用权限\n2.浏览动图时，点击中间0%进度条开始下载,完毕播放后长按进行合成保存，合成过程内存开销相当之大,偶发崩溃不可避免\n3.若播放动图无法播放,请退出页面或者清除缓存后重试,这一般会起作用\n" +
@@ -141,9 +141,10 @@ class LoginActivity : RinkActivity() {
                 normalDialog.setTitle("请务必读完")
                 normalDialog.setPositiveButton(
                     "我已知晓"
-                ) { dialog, which ->
-                    sharedPreferencesServices!!.setBoolean("firstinfo", true)
+                ) { _, _ ->
+                    sharedPreferencesServices.setBoolean("firstinfo", true)
                 }
+
                 normalDialog.show()
             }
         } catch (e: Exception) {
@@ -216,16 +217,16 @@ class LoginActivity : RinkActivity() {
 
             loginBtn.isEnabled = false
 
-            sharedPreferencesServices!!.setString("username", username)
-            sharedPreferencesServices!!.setString("password", password)
+            sharedPreferencesServices.setString("username", username)
+            sharedPreferencesServices.setString("password", password)
             val map = HashMap<String, Any>()
             map["client_id"] = "MOBrBDS8blbauoSck0ZfDbtuzpyT"
             map["client_secret"] = "lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj"
             map["grant_type"] = "password"
             map["username"] = username!!
             map["password"] = password!!
-            if (sharedPreferencesServices!!.getString("Device_token") != null) {
-                map["device_token"] = sharedPreferencesServices!!.getString("Device_token")
+            if (sharedPreferencesServices.getString("Device_token") != null) {
+                map["device_token"] = sharedPreferencesServices.getString("Device_token")
             } else map["device_token"] = "pixiv"
 
             map["get_secure_url"] = true
@@ -258,9 +259,9 @@ class LoginActivity : RinkActivity() {
                                 )
                             )
 
-                            sharedPreferencesServices!!.setBoolean("isnone", false)
-                            sharedPreferencesServices!!.setString("username", username)
-                            sharedPreferencesServices!!.setString("password", password)
+                            sharedPreferencesServices.setBoolean("isnone", false)
+                            sharedPreferencesServices.setString("username", username)
+                            sharedPreferencesServices.setString("password", password)
 
                         }
                     }
@@ -283,8 +284,10 @@ class LoginActivity : RinkActivity() {
                                     )
                                 ) {
                                     errMsg = getString(R.string.error_invalid_account_password)
+                                }else{
+                                    errMsg="其他错误，检查接入点APN是否为Net而不是Wap,检查网络是否通畅\n${errMsg}"
                                 }
-                                errMsg="其他错误，检查接入点APN是否为Net而不是Wap,检查网络是否通畅\n${errMsg}"
+
                                 Toast.makeText(applicationContext, errMsg, Toast.LENGTH_LONG).show()
                             } catch (e1: IOException) {
                                 Toast.makeText(
