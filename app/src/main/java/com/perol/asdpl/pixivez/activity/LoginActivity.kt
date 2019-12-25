@@ -279,13 +279,13 @@ class LoginActivity : RinkActivity() {
                                     ErrorResponse::class.java
                                 )
                                 var errMsg = "${e.message}\n${errorResponse.errors.system.message}"
-                                if (errorResponse.has_error && errorResponse.errors.system.message.contains(
+                                errMsg = if (errorResponse.has_error && errorResponse.errors.system.message.contains(
                                         Regex(""".*103:.*""")
                                     )
                                 ) {
-                                    errMsg = getString(R.string.error_invalid_account_password)
+                                    getString(R.string.error_invalid_account_password)
                                 }else{
-                                    errMsg="其他错误，检查接入点APN是否为Net而不是Wap,检查网络是否通畅\n${errMsg}"
+                                    "其他错误，检查接入点APN是否为Net而不是Wap,检查网络是否通畅\n${errMsg}"
                                 }
 
                                 Toast.makeText(applicationContext, errMsg, Toast.LENGTH_LONG).show()
