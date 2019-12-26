@@ -41,6 +41,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
+
     buildTypes {
         release {
             ndk {
@@ -61,9 +62,10 @@ android {
     }
     flavorDimensions "version"
 
-    buildFeatures {
-        dataBinding = true
+    dataBinding {
+        enabled = true
     }
+    
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
