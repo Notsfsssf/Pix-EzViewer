@@ -48,19 +48,23 @@ import java.util.*
 
 class Works {
     companion object {
+        private fun String.toLegal(): String {
+            return this.replace("/", "").replace("\\", "").replace(":", "")
+        }
+
         fun imageDownloadWithFile(illust: Illust, file: File, part: Int?) {
             var url = ""
-            var title = illust.title
-            title = title.replace("/", "")
-            title = title.replace("\\", "")
-            title = title.replace(":", "")
+            val title = illust.title.toLegal()
+            val userName = illust.user.name.toLegal()
             val user = illust.user.id
             val name = illust.id
-            val format = PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance).getString(
+            val pre = PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance);
+            val format = pre.getString(
                 "saveformat",
                 "0"
             )?.toInt()
                 ?: 0
+            val needCreateFold = pre.getBoolean("needcreatefold", false)
             var type = ".png"
             var filename = "${name}_p$part$type"
             if (part != null && illust.meta_pages.isNotEmpty()) {
@@ -102,8 +106,10 @@ class Works {
                     }
                 }
             }
-
-            val targetFile = File(PxEZApp.storepath, filename)
+            val path = if (needCreateFold) {
+                "${PxEZApp.storepath}/$userName"
+            } else PxEZApp.storepath
+            val targetFile = File(path, filename)
             try {
                 file.copyTo(targetFile, overwrite = true)
                 Toasty.success(
@@ -137,17 +143,17 @@ class Works {
 
         fun imageDownloadOne(illust: Illust, part: Int?) {
             var url = ""
-            var title = illust.title
-            title = title.replace("/", "")
-            title = title.replace("\\", "")
-            title = title.replace(":", "")
+            val title = illust.title.toLegal()
+            val userName = illust.user.name.toLegal()
             val user = illust.user.id
             val name = illust.id
-            val format = PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance).getString(
+            val pre = PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance);
+            val format = pre.getString(
                 "saveformat",
                 "0"
             )?.toInt()
                 ?: 0
+            val needCreateFold = pre.getBoolean("needcreatefold", false)
             var type = ".png"
             var filename = "${name}_p$part$type"
             if (part != null && illust.meta_pages.isNotEmpty()) {
@@ -194,7 +200,9 @@ class Works {
                 "file" to filename,
                 "url" to url,
                 "title" to illust.title,
-                "id" to illust.id
+                "id" to illust.id,
+                "username" to userName,
+                "needcreatefold" to needCreateFold
             )
             val oneTimeWorkRequest = OneTimeWorkRequestBuilder<ImgDownLoadWorker>()
                 .setInputData(inputData)

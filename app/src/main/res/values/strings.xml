@@ -236,7 +236,6 @@
     <string name="new1">动态</string>
     <string name="saveselectpic1">保存选定图片?</string>
     <string name="confirm">确定</string>
-    <string name="cancel">取消</string>
     <string name="mutichoicesave">多选保存</string>
     <string name="choice">选择</string>
     <string name="title_activity_work">WorkActivity</string>
@@ -291,4 +290,6 @@
     <string name="action_apply">应用</string>
     <string name="action_select">选择</string>
     <string name="action_change">更换</string>
+    <string name="create_painter_folder">为每个画师单独创建文件夹</string>
+    <string name="create_separate_folder">创建单独文件夹</string>
 </resources>

@@ -67,6 +67,11 @@
         <Preference
             app:key="storepath1"
             app:title="@string/savepath" />
+        <SwitchPreference
+            app:key="needcreatefold"
+            app:defaultValue="false"
+            app:title="@string/create_separate_folder"
+           app:summary="@string/create_painter_folder"/>
         <ListPreference
             android:entries="@array/format"
             android:entryValues="@array/format_value"

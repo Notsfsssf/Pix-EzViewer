@@ -128,6 +128,8 @@ class ProgressActivityFragment : Fragment() {
                 val title1 = data[position].progress.getString("title")
                 val url = data[position].progress.getString("url")
                 val fileName = data[position].progress.getString("file")
+                val needCreateFold = data[position].progress.getBoolean("needcreatefold",false)
+                val userName = data[position].progress.getString("username")
                 holder.apply {
                     itemView.setOnClickListener {
                         val bundle = Bundle()
@@ -149,11 +151,14 @@ class ProgressActivityFragment : Fragment() {
                                     WorkManager.getInstance(mContext).cancelWorkById(workinfo.id)
                                 }
                                 else -> {
+
                                     val inputData = workDataOf(
                                         "file" to fileName,
                                         "url" to url,
                                         "title" to title1,
-                                        "id" to id
+                                        "id" to id,
+                                        "username" to userName,
+                                        "needcreatefold" to needCreateFold
                                     )
                                     val oneTimeWorkRequest =
                                         OneTimeWorkRequestBuilder<ImgDownLoadWorker>()

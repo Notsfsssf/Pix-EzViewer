@@ -236,7 +236,6 @@
     <string name="new1">動態</string>
     <string name="saveselectpic1">儲存選定圖像?</string>
     <string name="confirm">確定</string>
-    <string name="cancel">取消</string>
     <string name="mutichoicesave">多選儲存</string>
     <string name="choice">選擇</string>
     <string name="logoutallaccount">Log out of all accounts</string>
@@ -267,4 +266,6 @@
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
     <string name="choice_date">Choice Date</string>
+    <string name="create_painter_folder">为每个画师单独创建文件夹</string>
+    <string name="create_separate_folder">create separate folder</string>
 </resources>

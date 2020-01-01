@@ -27,11 +27,14 @@ package com.perol.asdpl.pixivez.activity
 import android.content.Intent
 import android.os.Bundle
 import android.webkit.WebResourceRequest
+import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.objects.ThemeUtil
 import kotlinx.android.synthetic.main.activity_web_view.*
+import java.io.ByteArrayInputStream
+
 
 class WebViewActivity : RinkActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +45,25 @@ class WebViewActivity : RinkActivity() {
         webview.settings.blockNetworkImage = false
         webview.settings.javaScriptEnabled = true
         webview.webViewClient = object : WebViewClient() {
+            override fun shouldInterceptRequest(
+                view: WebView?,
+                request: WebResourceRequest
+            ): WebResourceResponse? {
+                if (request.url.host!!.equals("d.pixiv.org") || request.url.host!!.equals("connect.facebook.net") || request.url.host!!.equals(
+                        "platform.twitter.com"
+                    ) || request.url.host!!.equals("www.google-analytics.com")
+                ) {
+                    val webResourceResponse =
+                        WebResourceResponse(
+                            "application/javascript",
+                            "UTF-8",
+                            ByteArrayInputStream("".toByteArray())
+                        );
+                    return webResourceResponse;
+                }
+                return super.shouldInterceptRequest(view, request)
+            }
+
             override fun shouldOverrideUrlLoading(
                 view: WebView,
                 request: WebResourceRequest

@@ -219,7 +219,6 @@
     <string name="new1">New</string>
     <string name="saveselectpic1">Save?</string>
     <string name="confirm">confirm</string>
-    <string name="cancel">cancel</string>
     <string name="mutichoicesave">Multiple selection</string>
     <string name="choice">Choice</string>
     <string name="errorgif">动图文件似乎出现了损坏，请清除缓存后重试</string>
@@ -252,4 +251,6 @@
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
     <string name="choice_date">Choice Date</string>
+    <string name="create_painter_folder">Create a separate folder for each painter</string>
+    <string name="create_separate_folder">create separate folder</string>
 </resources>

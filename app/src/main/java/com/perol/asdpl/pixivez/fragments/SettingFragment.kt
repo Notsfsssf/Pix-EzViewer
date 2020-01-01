@@ -103,7 +103,7 @@ class SettingFragment : PreferenceFragmentCompat() {
         return filesDir?.list(filter)
     }
 
-    fun onClick(position: Int) {
+    private fun onClick(position: Int) {
         Toast.makeText(PxEZApp.instance, "正在尝试更换，等待启动器刷新", Toast.LENGTH_SHORT).show()
         when (position) {
             0 -> {
@@ -290,6 +290,9 @@ class SettingFragment : PreferenceFragmentCompat() {
                         REQUEST_CODE_PERMISSIONS
                     )
                 }
+            }
+            "saveformat" -> {
+
             }
             "version" -> {
                 try {

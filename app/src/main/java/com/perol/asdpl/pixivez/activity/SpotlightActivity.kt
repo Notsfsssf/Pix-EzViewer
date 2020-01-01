@@ -101,7 +101,6 @@ class SpotlightActivity : RinkActivity() {
             val builder = OkHttpClient.Builder()
             val okHttpClient = builder.build()
             val request = Request.Builder()
-
                     .url(url)
                     .addHeader("Accept-Language", local.language)
                     .build()
