@@ -237,7 +237,10 @@ class ThanksDialog : DialogFragment() {
         "*馮",
         "*幕",
         "*火",
-        "*】"
+        "*】",
+        "如此精细",
+        "淼"
+
     )
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

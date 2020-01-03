@@ -354,14 +354,13 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
             imageView.apply {
                 setOnLongClickListener { it ->
                     val builder = MaterialAlertDialogBuilder(mContext as Activity)
-
                     builder.setTitle(mContext.resources.getString(R.string.saveselectpic1))
                     builder.setMessage("描述: " + Html.fromHtml(data.caption))
                     builder.setPositiveButton(mContext.resources.getString(R.string.confirm)) { dialog, which ->
                         TToast.startDownload(PxEZApp.instance)
                         Works.imageDownloadOne(data, position)
                     }
-                    builder.setNegativeButton(mContext.resources.getString(R.string.cancel)) { dialog, which ->
+                    builder.setNegativeButton(mContext.resources.getString(android.R.string.cancel)) { dialog, which ->
 
                     }
                     if (data.meta_pages.isNotEmpty()) {
