@@ -121,7 +121,7 @@ class ImgDownLoadWorker(var appContext: Context, workerParams: WorkerParameters)
         } catch (e: Exception) {
             e.printStackTrace()
             withContext(Dispatchers.IO) {
-                file.deleteOnExit()
+                file.delete()
             }
             return Result.failure()
         }

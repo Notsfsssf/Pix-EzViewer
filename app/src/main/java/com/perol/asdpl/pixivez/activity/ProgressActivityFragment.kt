@@ -218,7 +218,7 @@ class ProgressActivityFragment : Fragment() {
                                                 } else if (workInfo.state == WorkInfo.State.CANCELLED) {
 
                                                     val file = File(PxEZApp.storepath, fileName)
-                                                    file.deleteOnExit()
+                                                    file.delete()
                                                 }
                                                 WorkManager.getInstance(PxEZApp.instance)
                                                     .getWorkInfoByIdLiveData(oneTimeWorkRequest.id)

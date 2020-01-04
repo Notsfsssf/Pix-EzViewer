@@ -253,7 +253,7 @@ class Works {
                         } else if (workInfo.state == WorkInfo.State.CANCELLED) {
 
                             val file = File(PxEZApp.storepath, filename)
-                            file.deleteOnExit()
+                            file.delete()
                         }
                         WorkManager.getInstance(PxEZApp.instance)
                             .getWorkInfoByIdLiveData(oneTimeWorkRequest.id).removeObserver(this)
