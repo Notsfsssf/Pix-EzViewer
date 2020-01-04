@@ -114,7 +114,7 @@ class ImgDownLoadWorker(var appContext: Context, workerParams: WorkerParameters)
                     setProgress(lastUpdate1)
                 }
                 cacheFile.inputStream().copyTo(file.outputStream())
-                cacheFile.deleteOnExit()
+                cacheFile.delete()
             }
             val outputData = workDataOf("path" to file.absolutePath)
             return Result.success(outputData)
