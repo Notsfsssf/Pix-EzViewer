@@ -57,6 +57,18 @@ class IntentActivity : RinkActivity() {
                 return
             }
             if (segment.size == 2) {
+                if (segment[segment.size - 2] == "users") {
+                    val id = segment[segment.size - 1].toLong()
+                    try {
+                        val intent1 = Intent(this, UserMActivity::class.java)
+                        intent1.putExtra("data", id)
+                        startActivity(intent1)
+                        finish()
+                        return
+                    } catch (e: Exception) {
+                        Toasty.error(this, "wrong id")
+                    }
+                }
                 if (segment[segment.size - 2] == "u") {
                     val id = segment[segment.size - 1].toLong()
                     try {

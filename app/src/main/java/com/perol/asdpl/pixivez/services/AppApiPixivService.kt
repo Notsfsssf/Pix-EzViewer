@@ -164,7 +164,7 @@ interface AppApiPixivService {
 
 
     @FormUrlEncoded
-    @POST("v1/illust/comment/add")
+    @POST("/v1/illust/comment/add")
     fun postIllustComment(@Header("Authorization") paramString1: String, @Field("illust_id") illust_id: Long, @Field("comment") comment: String, @Field("parent_comment_id") parent_comment_id: Int?): Observable<ResponseBody>
 
 

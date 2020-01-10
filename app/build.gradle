@@ -44,18 +44,14 @@ android {
 
     buildTypes {
         release {
-            ndk {
-                abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
-            }
+    
 
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField("Boolean", "ISGOOGLEPLAY", ISGOOGLEPLAY)
         }
         debug {
-            ndk {
-                abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'
-            }
+
 
             buildConfigField("Boolean", "ISGOOGLEPLAY", ISGOOGLEPLAY)
         }

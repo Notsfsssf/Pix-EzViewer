@@ -90,7 +90,7 @@ class ImgDownLoadWorker(var appContext: Context, workerParams: WorkerParameters)
         val response = client.newCall(request).execute()
         try {
             withContext(Dispatchers.IO) {
-                val cacheFile = File.createTempFile(fileName, null, PxEZApp.instance.cacheDir)
+                val cacheFile = File.createTempFile(fileName, ".tmp", PxEZApp.instance.cacheDir)
                 val lenght = response.headersContentLength()
                 val inputstream = response.body?.byteStream()!!
                 var bytesCopied: Long = 0

@@ -150,6 +150,7 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
         } else {
             item.image_urls.medium
         }
+
         if (!R18on) {
             var isr18 = false
             for (i in item.tags) {
@@ -157,6 +158,7 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
                     isr18 = true
                     break
                 }
+
             }
             if (isr18) {
                 GlideApp.with(imageView.context)
