@@ -25,12 +25,14 @@
 package com.perol.asdpl.pixivez.activity
 
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.perol.asdpl.pixivez.R
+import com.perol.asdpl.pixivez.dialog.FirstInfoDialog
 import com.perol.asdpl.pixivez.fragments.AboutXFragment
 import com.perol.asdpl.pixivez.fragments.SettingFragment
 import com.perol.asdpl.pixivez.fragments.ThanksFragment
@@ -39,16 +41,24 @@ import kotlinx.android.synthetic.main.activity_setting.*
 import kotlinx.android.synthetic.main.content_setting.*
 
 class SettingActivity : RinkActivity() {
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             android.R.id.home -> {
-                this.finish() // back button
+                this.finish()
+                return true
+            }
+            R.id.menu_question -> {
+                FirstInfoDialog().show(supportFragmentManager, "Info")
                 return true
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_settings, menu)
+        return true
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ThemeUtil.themeInit(this)

@@ -37,6 +37,7 @@ import android.widget.Toast
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.perol.asdpl.pixivez.R
+import com.perol.asdpl.pixivez.dialog.FirstInfoDialog
 import com.perol.asdpl.pixivez.networks.RestClient
 import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
 import com.perol.asdpl.pixivez.objects.ThemeUtil
@@ -133,19 +134,7 @@ class LoginActivity : RinkActivity() {
                 edit_username!!.setText(sharedPreferencesServices.getString("username"))
             }
             if (!sharedPreferencesServices.getBoolean("firstinfo")) {
-                val normalDialog = MaterialAlertDialogBuilder(this)
-                normalDialog.setMessage(
-                    "0.请务必确保在google play或者项目地址内安装与更新,第三方提供的安装包可能存在问题且不是最新\n1.在图片详情页长按可以保存选定图片，长按头像快速关注作者，请提供应用权限\n2.浏览动图时，点击中间0%进度条开始下载,完毕播放后长按进行合成保存，合成过程内存开销相当之大,偶发崩溃不可避免\n3.若播放动图无法播放,请退出页面或者清除缓存后重试,这一般会起作用\n" +
-                            "4.这是一个个人开发的应用,反馈请发邮件到设置页标注的邮箱,个人精力和能力是有限的,请不要使用极端方式进行反馈,体谅开发者,也欢迎共同开发设计\n5.遇到更新后闪退的问题,请尝试清除应用数据并更新到最新版,将提示错误信息或日志反馈给开发者,多数情况下这是有效的\n6.限制总开关在官网里，遇到无权限访问的插画，自行至网页开启，开发者不提供帮助服务，开发者并不是老好人"
-                )
-                normalDialog.setTitle("请务必读完")
-                normalDialog.setPositiveButton(
-                    "我已知晓"
-                ) { _, _ ->
-                    sharedPreferencesServices.setBoolean("firstinfo", true)
-                }
-
-                normalDialog.show()
+                FirstInfoDialog().show(this.supportFragmentManager, "infodialog")
             }
         } catch (e: Exception) {
 
@@ -279,14 +268,15 @@ class LoginActivity : RinkActivity() {
                                     ErrorResponse::class.java
                                 )
                                 var errMsg = "${e.message}\n${errorResponse.errors.system.message}"
-                                errMsg = if (errorResponse.has_error && errorResponse.errors.system.message.contains(
-                                        Regex(""".*103:.*""")
-                                    )
-                                ) {
-                                    getString(R.string.error_invalid_account_password)
-                                }else{
-                                    "其他错误，检查接入点APN是否为Net而不是Wap,检查网络是否通畅\n${errMsg}"
-                                }
+                                errMsg =
+                                    if (errorResponse.has_error && errorResponse.errors.system.message.contains(
+                                            Regex(""".*103:.*""")
+                                        )
+                                    ) {
+                                        getString(R.string.error_invalid_account_password)
+                                    } else {
+                                        "其他错误，检查接入点APN是否为Net而不是Wap,检查网络是否通畅\n${errMsg}"
+                                    }
 
                                 Toast.makeText(applicationContext, errMsg, Toast.LENGTH_LONG).show()
                             } catch (e1: IOException) {
@@ -307,7 +297,8 @@ class LoginActivity : RinkActivity() {
                         Toast.makeText(applicationContext, "登录成功", Toast.LENGTH_LONG).show()
                         val intent = Intent(this@LoginActivity, HelloMActivity::class.java).apply {
                             // 避免循环添加账号导致相同页面嵌套。或者在添加账号（登录）成功时回到账号列表页面而不是导航至新的主页
-                            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK // Or launchMode = "singleTop|singleTask"
+                            flags =
+                                Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK // Or launchMode = "singleTop|singleTask"
                         }
                         startActivity(intent)
                     }
