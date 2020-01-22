@@ -27,6 +27,7 @@ package com.perol.asdpl.pixivez.services
 import android.app.Activity
 import android.app.Application
 import android.os.Build
+import android.os.Bundle
 import android.os.Environment
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
@@ -62,7 +63,7 @@ class PxEZApp : Application() {
 
         WorkManager.getInstance(this).pruneWork()
 
-/*        registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
+        registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
                 Logger.t(TAG).v("${activity.simpleName}: onActivityCreated")
 
@@ -94,7 +95,7 @@ class PxEZApp : Application() {
             override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
                 //
             }
-        })*/
+        })
     }
 
     private val Activity.simpleName get() = javaClass.simpleName

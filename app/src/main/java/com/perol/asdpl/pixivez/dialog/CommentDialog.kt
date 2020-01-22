@@ -139,14 +139,17 @@ class CommentDialog : DialogFragment() {
                                     runBlocking {
                                         Authorization = AppDataRepository.getUser().Authorization
                                     }
-                                    appApiPixivService!!.getIllustComments(Authorization!!, id!!)
+                                    appApiPixivService!!.getIllustCommentsNext(
+                                        Authorization!!,
+                                        nextUrl!!
+                                    )
                                 }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                                         .retryWhen(ReFreshFunction(context!!)).subscribe({
                                             commentAdapter?.addData(it.comments)
                                             nextUrl = it.next_url
                                             commentAdapter?.loadMoreComplete()
                                         }, {
-
+                                        it.printStackTrace()
                                         }, {
 
                                         }, {
@@ -214,7 +217,6 @@ class CommentDialog : DialogFragment() {
 
 
                                         }
-
                                     }
 
                                     override fun onComplete() {

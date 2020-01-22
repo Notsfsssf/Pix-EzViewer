@@ -44,8 +44,6 @@ android {
 
     buildTypes {
         release {
-    
-
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField("Boolean", "ISGOOGLEPLAY", ISGOOGLEPLAY)
@@ -61,7 +59,7 @@ android {
     dataBinding {
         enabled = true
     }
-    
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

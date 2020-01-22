@@ -36,6 +36,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.chip.Chip
 import com.perol.asdpl.pixivez.R
+import com.perol.asdpl.pixivez.activity.PictureActivity
 import com.perol.asdpl.pixivez.activity.SearchResultActivity
 import com.perol.asdpl.pixivez.adapters.TrendingTagAdapter
 import com.perol.asdpl.pixivez.sql.SearchHistoryEntity
@@ -49,7 +50,6 @@ class TrendTagFragment : Fragment() {
     }
 
     private lateinit var viewModel: TrendTagViewModel
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.trend_tag_fragment, container, false)
@@ -76,6 +76,18 @@ class TrendTagFragment : Fragment() {
                     val searchword = it.trend_tags[position].tag
                     upToPage(searchword)
                     viewModel.addhistory(searchword)
+                }
+                trendingtagAdapter.setOnItemLongClickListener { adapter, view, position ->
+                    var id = it.trend_tags[position].illust.id
+                    val bundle = Bundle()
+                    val arrayList = LongArray(1)
+                    arrayList[0] = id
+                    bundle.putLongArray("illustlist", arrayList)
+                    bundle.putLong("illustid", id)
+                    val intent2 = Intent(requireActivity(), PictureActivity::class.java)
+                    intent2.putExtras(bundle)
+                    startActivity(intent2)
+                    true
                 }
             }
         }, {})

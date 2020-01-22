@@ -184,5 +184,8 @@ interface AppApiPixivService {
     @GET
     fun getNextUser(@Header("Authorization") paramString1: String, @Url paramString2: String): Observable<SearchUserResponse>
 
+    @GET
+    fun getIllustCommentsNext(@Header("Authorization") paramString1: String, @Url nextUrl: String): Observable<IllustCommentsResponse>
+
 
 }

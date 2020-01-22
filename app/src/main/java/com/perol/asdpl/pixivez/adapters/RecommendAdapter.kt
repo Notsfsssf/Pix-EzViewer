@@ -94,7 +94,6 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
         val typedValue = TypedValue();
         mContext.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
         val colorPrimary = typedValue.resourceId;
-
         helper.setText(R.id.title, item.title).setTextColor(
             R.id.like, if (item.is_bookmarked) {
                 Color.YELLOW
@@ -143,14 +142,12 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
             }
         }
         imageView.setTag(R.id.tag_first, item.image_urls.medium)
-
         val needsmall = item.height > 1500 || item.height > 1500
         val loadurl = if (needsmall) {
             item.image_urls.square_medium
         } else {
             item.image_urls.medium
         }
-
         if (!R18on) {
             var isr18 = false
             for (i in item.tags) {
@@ -173,12 +170,9 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
                             resource: Drawable,
                             transition: Transition<in Drawable>?
                         ) {
-
                             if (imageView.getTag(R.id.tag_first) === item.image_urls.medium) {
                                 super.onResourceReady(resource, transition)
                             }
-
-
                         }
 
                         override fun setResource(resource: Drawable?) {
