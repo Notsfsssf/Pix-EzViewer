@@ -94,7 +94,7 @@ class UserFollowActivity : RinkActivity() {
         spinner.setVisibility(View.GONE)
 
         linearLayoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
-        appApiPixivService = restClient!!.retrofit_AppAPI
+        appApiPixivService = restClient!!.retrofitAppApi
                 .create(AppApiPixivService::class.java)
 
         recyclerviewusersearch = findViewById(R.id.recyclerview_usersearch)

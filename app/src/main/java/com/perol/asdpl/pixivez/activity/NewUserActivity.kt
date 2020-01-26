@@ -53,8 +53,9 @@ class NewUserActivity : RinkActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_user)
         restClient = RestClient()
-        accountPixivService = restClient!!.retrofit_Account.create(AccountPixivService::class.java)
-        oAuthSecureService = restClient!!.getretrofit_OAuthSecure().create(OAuthSecureService::class.java)
+        accountPixivService = restClient!!.retrofitAccount.create(AccountPixivService::class.java)
+        oAuthSecureService =
+            restClient!!.getRetrofitOauthSecure().create(OAuthSecureService::class.java)
         sharedPreferencesServices = SharedPreferencesServices(applicationContext)
         button_login.setOnClickListener(View.OnClickListener {
             if (edittext_username.text.toString().isNotBlank()) {

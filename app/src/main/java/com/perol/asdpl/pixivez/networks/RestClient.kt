@@ -67,7 +67,7 @@ class RestClient {
             override fun intercept(chain: Interceptor.Chain): Response {
                 val original = chain.request()
                 val requestBuilder = original.newBuilder()
-                        .addHeader("Accept-Language", local.language)
+                    .addHeader("Accept-Language", "${local.language}_${local.country}")
                         .removeHeader("User-Agent")
                         .addHeader("User-Agent", "PixivAndroidApp/5.0.155 (Android ${android.os.Build.VERSION.RELEASE}; Pixel C)")
                 val request = requestBuilder.build()
@@ -88,9 +88,8 @@ class RestClient {
             }).hostnameVerifier(HostnameVerifier { p0, p1 -> true })
             builder.dns(httpsDns)
         }
-        val okHttpClient = builder.build()
 
-        return@lazy okHttpClient
+        return@lazy builder.build()
     }
 
     private val imageHttpClient: OkHttpClient
@@ -114,7 +113,7 @@ class RestClient {
 
     private val gson = GsonBuilder()
             .create()
-    val retrofit_AppAPI: Retrofit
+    val retrofitAppApi: Retrofit
         get() {
             return Retrofit.Builder()
                     .baseUrl("https://app-api.pixiv.net")
@@ -124,7 +123,7 @@ class RestClient {
                     .build()
         }
 
-    val pixiviSion_AppAPI: Retrofit
+    val pixivisionAppApi: Retrofit
         get() {
             return Retrofit.Builder()
                     .baseUrl("https://app-api.pixiv.net/")
@@ -134,7 +133,7 @@ class RestClient {
                     .build()
         }
 
-    val retrofit_Account: Retrofit
+    val retrofitAccount: Retrofit
         get() {
             return Retrofit.Builder()
                     .baseUrl("https://accounts.pixiv.net/")
@@ -187,7 +186,7 @@ class RestClient {
                     val requestBuilder = original.newBuilder()
                             .removeHeader("User-Agent")
                             .addHeader("User-Agent", "PixivAndroidApp/5.0.155 (Android ${android.os.Build.VERSION.RELEASE}; Pixel C)")
-                            .addHeader("Accept-Language", local.language)
+                        .addHeader("Accept-Language", "${local.language}_${local.country}")
                             .addHeader("App-OS", "Android")
                             .addHeader("App-OS-Version", "${android.os.Build.VERSION.RELEASE}")
                             .header("App-Version", "5.0.166")
@@ -217,28 +216,22 @@ class RestClient {
         }
 
 
-    fun getretrofit_GIF(): Retrofit {
-
-        val retrofit_OAuthSecure = Retrofit.Builder()
+    fun getRetrofitGIF(): Retrofit {
+        return Retrofit.Builder()
                 .baseUrl("https://oauth.secure.pixiv.net/")
                 .client(imageHttpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
-        return retrofit_OAuthSecure
     }
 
-    fun getretrofit_OAuthSecure(): Retrofit {
-
-
-        val retrofit_OAuthSecure = Retrofit.Builder()
+    fun getRetrofitOauthSecure(): Retrofit {
+        return Retrofit.Builder()
                 .baseUrl("https://oauth.secure.pixiv.net/")
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
-
-        return retrofit_OAuthSecure
     }
 
 

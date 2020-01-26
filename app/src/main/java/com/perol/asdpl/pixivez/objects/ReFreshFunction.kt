@@ -51,11 +51,13 @@ class ReFreshFunction : io.reactivex.functions.Function<Observable<Throwable>, O
     private var retryCount = 0
 
     constructor(context: Context) : super() {
-        this.oAuthSecureService = RestClient().getretrofit_OAuthSecure().create(OAuthSecureService::class.java)
+        this.oAuthSecureService =
+            RestClient().getRetrofitOauthSecure().create(OAuthSecureService::class.java)
     }
 
     private constructor() {
-        this.oAuthSecureService = RestClient().getretrofit_OAuthSecure().create(OAuthSecureService::class.java)
+        this.oAuthSecureService =
+            RestClient().getRetrofitOauthSecure().create(OAuthSecureService::class.java)
     }
 
     @Throws(Exception::class)

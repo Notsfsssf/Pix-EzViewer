@@ -91,7 +91,7 @@ class CommentDialog : DialogFragment() {
     private fun getData() {
 
         val restClient = RestClient()
-        appApiPixivService = restClient.retrofit_AppAPI.create(AppApiPixivService::class.java)
+        appApiPixivService = restClient.retrofitAppApi.create(AppApiPixivService::class.java)
 
 
         Observable.just(1).flatMap {

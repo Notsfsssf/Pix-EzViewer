@@ -49,8 +49,8 @@ class RetrofitRespository {
     var reFreshFunction: ReFreshFunction
 
     init {
-        appApiPixivService = restClient.retrofit_AppAPI.create(AppApiPixivService::class.java)
-        gifApiPixivService = restClient.getretrofit_GIF().create(AppApiPixivService::class.java)
+        appApiPixivService = restClient.retrofitAppApi.create(AppApiPixivService::class.java)
+        gifApiPixivService = restClient.getRetrofitGIF().create(AppApiPixivService::class.java)
         sharedPreferencesServices = SharedPreferencesServices.getInstance()
         resetToken()
         reFreshFunction = ReFreshFunction.getInstance()

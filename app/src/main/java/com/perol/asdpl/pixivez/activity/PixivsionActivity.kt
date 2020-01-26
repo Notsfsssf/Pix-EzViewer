@@ -84,7 +84,7 @@ class PixivsionActivity : RinkActivity() {
     private fun initbind() {
 
         restClient = RestClient()
-        appApiPixivService = restClient!!.pixiviSion_AppAPI.create(AppApiPixivService::class.java)
+        appApiPixivService = restClient!!.pixivisionAppApi.create(AppApiPixivService::class.java)
         Observable.just(1).flatMap(object : Function<Int, ObservableSource<SpotlightResponse>> {
             override fun apply(t: Int): ObservableSource<SpotlightResponse> {
                 runBlocking {

@@ -65,7 +65,7 @@ class TagsShowDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val restClient = RestClient()
-        val appApiPixivService = restClient.retrofit_AppAPI.create(AppApiPixivService::class.java)
+        val appApiPixivService = restClient.retrofitAppApi.create(AppApiPixivService::class.java)
 
         val bundle = arguments
         val inflater = LayoutInflater.from(activity)

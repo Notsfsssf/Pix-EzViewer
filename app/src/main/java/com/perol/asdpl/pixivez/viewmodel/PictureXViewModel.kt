@@ -119,7 +119,7 @@ class PictureXViewModel : BaseViewModel() {
 
     fun firstGet(toLong: Long) {
         startPostPone.value = true
-        disposables.add(retrofitRespository.getIllust(toLong).subscribe({ it ->
+        retrofitRespository.getIllust(toLong).subscribe({ it ->
             illustDetailResponse.value = it
             likeIllust.value = it!!.illust.is_bookmarked
             Observable.just(1).observeOn(Schedulers.io()).subscribe { ot ->
@@ -142,7 +142,7 @@ class PictureXViewModel : BaseViewModel() {
                         )
                     )
             }
-        }, {}, {}))
+        }, {}, {}).add()
 
     }
 

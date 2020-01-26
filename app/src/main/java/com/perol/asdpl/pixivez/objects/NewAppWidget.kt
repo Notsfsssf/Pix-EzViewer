@@ -87,7 +87,8 @@ class NewAppWidget : AppWidgetProvider() {
                                      appWidgetId: Int) {
             val restClient = RestClient()
 
-            val appApiPixivService = restClient.retrofit_AppAPI.create(AppApiPixivService::class.java)
+            val appApiPixivService =
+                restClient.retrofitAppApi.create(AppApiPixivService::class.java)
             appApiPixivService.walkthroughIllusts().observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.io()).subscribe(object : Observer<IllustNext> {
                         override fun onSubscribe(d: Disposable) {

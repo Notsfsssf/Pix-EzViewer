@@ -141,7 +141,7 @@ class LoginActivity : RinkActivity() {
         }
         val restClient = RestClient()
         val oAuthSecureService =
-            restClient.getretrofit_OAuthSecure().create(OAuthSecureService::class.java)
+            restClient.getRetrofitOauthSecure().create(OAuthSecureService::class.java)
         textview_help.setOnClickListener {
             val builder = MaterialAlertDialogBuilder(this)
             val view = layoutInflater.inflate(R.layout.new_dialog_user_help, null)

@@ -85,7 +85,7 @@ class SpotlightActivity : RinkActivity() {
             startActivity(intent)
         })
         val restClient = RestClient()
-        appApiPixivService = restClient.retrofit_AppAPI.create(AppApiPixivService::class.java)
+        appApiPixivService = restClient.retrofitAppApi.create(AppApiPixivService::class.java)
         val local = when (PxEZApp.language) {
             1 -> {
                 Locale.ENGLISH
