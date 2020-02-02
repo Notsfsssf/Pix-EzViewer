@@ -31,6 +31,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
+import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.davemorrissey.labs.subscaleview.ImageSource
@@ -63,6 +64,25 @@ class ZoomPagerAdapter(
         val view = layoutInflater.inflate(R.layout.view_pager_zoom, container, false)
         val photoView = view.findViewById<SubsamplingScaleImageView>(R.id.photoview_zoom)
         photoView.isEnabled = true
+/*        val gestureDetector =
+            GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
+                override fun onFling(
+                    e1: MotionEvent,
+                    e2: MotionEvent,
+                    velocityX: Float,
+                    velocityY: Float
+                ): Boolean {
+                    if ((e2.rawY - e1.rawY) > 200) {
+                        (context as Activity).finish()
+                        return true;
+                    }
+                    return false
+                }
+            })
+        photoView.setOnTouchListener { v, event ->
+            return@setOnTouchListener gestureDetector.onTouchEvent(event);
+        }*/
+
         GlideApp.with(context).asFile().load(arrayList[position]).skipMemoryCache(true)
             .into(object : CustomTarget<File>() {
                 override fun onLoadCleared(placeholder: Drawable?) {
@@ -71,13 +91,23 @@ class ZoomPagerAdapter(
 
                 override fun onResourceReady(resource: File, transition: Transition<in File>?) {
                     photoView.setImage(ImageSource.uri(Uri.fromFile(resource)))
-                    if (illust != null)
+                    if (illust != null) {
                         photoView.setOnLongClickListener {
-                            if (!illust.meta_pages.isNullOrEmpty()) {
-                                Works.imageDownloadWithFile(illust, resource, position)
-                            } else Works.imageDownloadWithFile(illust, resource, null)
+                            MaterialDialog(context).show {
+                                title(R.string.saveselectpic1)
+                                positiveButton(android.R.string.ok) {
+                                    if (!illust.meta_pages.isNullOrEmpty()) {
+                                        Works.imageDownloadWithFile(illust, resource, position)
+                                    } else Works.imageDownloadWithFile(illust, resource, null)
+
+                                }
+                                negativeButton(android.R.string.cancel)
+                            }
+
                             true
                         }
+
+                    }
                 }
             })
         container.addView(view)

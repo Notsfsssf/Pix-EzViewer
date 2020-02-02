@@ -35,8 +35,8 @@ import kotlinx.android.synthetic.main.activity_zoom.*
 import java.util.*
 
 class ZoomActivity : RinkActivity() {
+    lateinit var str: ArrayList<String>
 
-    private var str: ArrayList<String>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
@@ -49,24 +49,26 @@ class ZoomActivity : RinkActivity() {
                 or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_FULLSCREEN)
         setContentView(R.layout.activity_zoom)
-
         val intent = intent
         val bundle = intent.extras
-        str = bundle!!.getStringArrayList("url")
+        str = bundle!!.getStringArrayList("url")!!
         val illust = bundle.getParcelable<Illust>("illust")
         val num = bundle.getInt("num", 0)
-        val zoomPagerAdapter = ZoomPagerAdapter(this, str!!, illust)
-        textview_zoom.text ="1/${str!!.size}"
+        val zoomPagerAdapter = ZoomPagerAdapter(this, str, illust)
+        textview_zoom.text = "1/${str.size}"
         viewpage_zoom.adapter = zoomPagerAdapter
         viewpage_zoom.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
 
             }
 
             override fun onPageSelected(position: Int) {
                 viewpage_zoom.tag = position
-                val positonX = position + 1
-                textview_zoom.text = "$positonX/${str!!.size}"
+                textview_zoom.text = "${position + 1}/${str!!.size}"
             }
 
             override fun onPageScrollStateChanged(state: Int) {
