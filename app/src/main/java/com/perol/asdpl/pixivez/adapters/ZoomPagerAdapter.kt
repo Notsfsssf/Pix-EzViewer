@@ -24,6 +24,7 @@
 
 package com.perol.asdpl.pixivez.adapters
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -59,6 +60,7 @@ class ZoomPagerAdapter(
     }
 
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val layoutInflater = LayoutInflater.from(context)
         val view = layoutInflater.inflate(R.layout.view_pager_zoom, container, false)

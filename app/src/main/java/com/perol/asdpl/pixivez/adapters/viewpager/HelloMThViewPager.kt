@@ -24,29 +24,28 @@
 
 package com.perol.asdpl.pixivez.adapters.viewpager
 
-import android.content.Context
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
-import com.perol.asdpl.pixivez.R
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.perol.asdpl.pixivez.fragments.HelloM.HelloMMyFragment
 import com.perol.asdpl.pixivez.fragments.IllustratorFragment
 
-class HelloMThViewPager(var context: Context, fm: FragmentManager, var long: Long) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-    override fun getItem(position: Int): Fragment {
-        return when (position) {
-            0 -> {
-                HelloMMyFragment.newInstance("1", "2")
+class HelloMThViewPager(fragment: Fragment, var long: Long) : FragmentStateAdapter(fragment) {
 
-            }
-            else -> {
-                IllustratorFragment.newInstance(long, true)
-            }
+
+    override fun getItemCount() = 2
+
+    override fun createFragment(position: Int) = when (position) {
+        0 -> {
+            HelloMMyFragment.newInstance("1", "2")
 
         }
+        else -> {
+            IllustratorFragment.newInstance(long, true)
+        }
+
     }
 
-    override fun getPageTitle(position: Int): CharSequence? =
+/*    override fun getPageTitle(position: Int): CharSequence? =
             when (position) {
                 0 -> {
                     context.getString(R.string.new1)
@@ -57,6 +56,6 @@ class HelloMThViewPager(var context: Context, fm: FragmentManager, var long: Lon
             }
 
 
-    override fun getCount() = 2
+    override fun getCount() = 2*/
 
 }

@@ -24,24 +24,31 @@
 
 package com.perol.asdpl.pixivez.adapters.viewpager
 
-import android.app.Activity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
-import com.perol.asdpl.pixivez.R
+import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.perol.asdpl.pixivez.fragments.UserBookMarkFragment
 import com.perol.asdpl.pixivez.fragments.UserIllustFragment
 
-class UserMPagerAdapter(var activity: Activity, fm: FragmentManager, var long: Long, var newInstance: Fragment) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-    override fun getItem(position: Int) =
-            when (position) {
-                0 -> UserIllustFragment.newInstance(long, "illust")
-                1 -> UserIllustFragment.newInstance(long, "manga")
-                2 -> UserBookMarkFragment.newInstance(long, "1")
-                else -> newInstance
-            }
+class UserMPagerAdapter(
+    var lifecycle: Lifecycle,
+    fm: FragmentManager,
+    var long: Long,
+    var newInstance: Fragment
+) : FragmentStateAdapter(fm, lifecycle) {
 
 
+    override fun getItemCount() = 4
+
+    override fun createFragment(position: Int) = when (position) {
+        0 -> UserIllustFragment.newInstance(long, "illust")
+        1 -> UserIllustFragment.newInstance(long, "manga")
+        2 -> UserBookMarkFragment.newInstance(long, "1")
+        else -> newInstance
+    }
+
+/*
     override fun getCount() = 4
 
     override fun getPageTitle(position: Int): CharSequence? {
@@ -52,7 +59,7 @@ class UserMPagerAdapter(var activity: Activity, fm: FragmentManager, var long: L
             else -> activity.getString(R.string.abouts)
         }
         return i
-    }
+    }*/
 
 
 }

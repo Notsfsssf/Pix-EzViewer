@@ -24,28 +24,20 @@
 
 package com.perol.asdpl.pixivez.adapters.viewpager
 
-import android.content.Context
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
-import com.perol.asdpl.pixivez.R
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.perol.asdpl.pixivez.fragments.HelloM.HelloMRecommandFragment
 import com.perol.asdpl.pixivez.fragments.HelloM.HelloRecomUserFragment
 
-class HelloMRecomViewPager(var activity: Context?, fm: FragmentManager) : FragmentStatePagerAdapter(fm, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-    override fun getItem(p0: Int): Fragment = when (p0) {
+
+class HelloMRecomViewPager(fragment: Fragment) :
+    FragmentStateAdapter(fragment) {
+
+    override fun getItemCount() = 2
+    override fun createFragment(position: Int) = when (position) {
         0 -> HelloMRecommandFragment.newInstance("", "");
         else -> HelloRecomUserFragment.newInstance("", "");
     }
 
-    override fun getCount() = 2
 
-    override fun getPageTitle(position: Int): CharSequence? {
-
-        return when (position) {
-            0 -> activity!!.getString(R.string.illust);
-            else -> activity!!.getString(R.string.painter);
-        }
-
-    }
 }

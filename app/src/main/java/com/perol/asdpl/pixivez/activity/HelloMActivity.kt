@@ -42,6 +42,7 @@ import androidx.core.view.GravityCompat
 import androidx.preference.PreferenceManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.tabs.TabLayoutMediator
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.HelloMViewPagerAdapter
 import com.perol.asdpl.pixivez.objects.ThemeUtil
@@ -232,8 +233,10 @@ class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedLi
     }
 
     private fun initView() {
-        viewpager_hellom.adapter = HelloMViewPagerAdapter(supportFragmentManager)
-        tablayout_hellom.setupWithViewPager(viewpager_hellom)
+        viewpager_hellom.adapter = HelloMViewPagerAdapter(supportFragmentManager, this.lifecycle)
+        TabLayoutMediator(tablayout_hellom, viewpager_hellom) { tab, position ->
+            viewpager_hellom.setCurrentItem(tab.position, true)
+        }.attach()
         for (i in 0..2) {
             val tabitem = tablayout_hellom.getTabAt(i)!!
 
@@ -252,11 +255,6 @@ class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedLi
 
         }
     }
-
-//    private fun initData() {
-//        val viewModel = ViewModelProviders.of(this).get(HelloMViewModel::class.java)
-//    }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.hello_m, menu)

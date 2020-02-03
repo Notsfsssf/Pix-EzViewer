@@ -43,6 +43,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.tabs.TabLayoutMediator
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.viewpager.UserMPagerAdapter
 import com.perol.asdpl.pixivez.databinding.ActivityUserMBinding
@@ -98,7 +99,7 @@ class UserMActivity : RinkActivity() {
                     lifecycleOwner = this@UserMActivity
                 }
 
-
+        binding.lifecycleOwner = this
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.decorView.systemUiVisibility =
             View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -125,11 +126,19 @@ class UserMActivity : RinkActivity() {
                          }
                      })*/
                 val userMPagerAdapter = UserMPagerAdapter(
-                    this, supportFragmentManager,
+                    this.lifecycle, supportFragmentManager,
                     id, UserMessageFragment.newInstance(it)
                 )
                 mviewpager.adapter = userMPagerAdapter
-                mtablayout.setupWithViewPager(mviewpager)
+                TabLayoutMediator(mtablayout, mviewpager) { tab, position ->
+                    tab.text = when (position) {
+                        0 -> getString(R.string.illust)
+                        1 -> getString(R.string.manga)
+                        2 -> getString(R.string.bookmark)
+                        else -> getString(R.string.abouts)
+                    }
+                    mviewpager.setCurrentItem(tab.position, true)
+                }.attach()
             }
         })
         viewModel.isfollow.observe(this, Observer {
@@ -210,7 +219,6 @@ class UserMActivity : RinkActivity() {
                     }
                 }.create().show()
             }, {}))
-
 
 
         }

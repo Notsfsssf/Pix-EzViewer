@@ -160,18 +160,16 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             @Override
             public void run() {
                 Looper.prepare();
-                if (ex instanceof Resources.NotFoundException || ex instanceof InflateException) {
+                if (ex instanceof Resources.NotFoundException || ex instanceof InflateException || (ex.getMessage() != null && ex.getMessage().contains("XML"))) {
                     Toast toast = Toast.makeText(mContext, "你使用的是二次打包的应用,请清除数据,前往google play或者设置中的github项目地址进行安装更新:\r\n" + ex.getMessage(),
                             Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
                 } else if (DEBUG) {
-                    Log.d(TAG, "异常信息->" + msg);
                     Toast toast = Toast.makeText(mContext, "程序出错，即将退出:\r\n" + ex.getMessage(),
                             Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
-
 
                 }
                 Looper.loop();

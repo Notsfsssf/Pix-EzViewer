@@ -5,22 +5,32 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tablayout"
+        style="@style/Widget.MaterialComponents.TabLayout.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:elevation="4dp"
+        app:tabIndicatorFullWidth="true">
 
-    <androidx.viewpager.widget.ViewPager
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/illust" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/painter" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tablayout"
-            style="@style/Widget.MaterialComponents.TabLayout.Colored"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:elevation="4dp"
-            app:tabIndicatorFullWidth="true">
 
-        </com.google.android.material.tabs.TabLayout>
-    </androidx.viewpager.widget.ViewPager>
+    </androidx.viewpager2.widget.ViewPager2>
 
 </LinearLayout>

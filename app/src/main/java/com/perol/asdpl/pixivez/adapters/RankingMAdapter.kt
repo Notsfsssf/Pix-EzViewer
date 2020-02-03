@@ -24,25 +24,25 @@
 
 package com.perol.asdpl.pixivez.adapters
 
-import android.content.Context
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
-import com.perol.asdpl.pixivez.R
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.perol.asdpl.pixivez.fragments.HelloM.RankingMFragment
 
-class RankingMAdapter(var context: Context, fm: FragmentManager) : FragmentStatePagerAdapter(fm, FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class RankingMAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     private val modelist = arrayOf(
         "day", "day_male", "day_female", "week_original", "week_rookie", "week", "month", "day_r18"
         , "day_male_r18", "day_female_r18", "week_r18", "week_r18g"
     )
-    override fun getCount(): Int = modelist.size
+
+    override fun getItemCount() = modelist.size
+    override fun createFragment(position: Int) = RankingMFragment.newInstance(modelist[position])
+/*    override fun getCount(): Int = modelist.size
 
     override fun getItem(position: Int): Fragment {
         return RankingMFragment.newInstance(modelist[position])
     }
 
 
-    override fun getPageTitle(position: Int): CharSequence? = context.resources.getStringArray(R.array.modellist)[position]
+    override fun getPageTitle(position: Int): CharSequence? = context.resources.getStringArray(R.array.modellist)[position]*/
 
 }

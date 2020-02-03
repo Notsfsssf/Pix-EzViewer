@@ -30,6 +30,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.material.tabs.TabLayoutMediator
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.viewpager.HelloMRecomViewPager
 import kotlinx.android.synthetic.main.fragment_hello_main.*
@@ -47,8 +48,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class HelloMainFragment : Fragment() {
     fun lazyLoad() {
-        tablayout.setupWithViewPager(viewpager)
-        viewpager.adapter = HelloMRecomViewPager(this@HelloMainFragment.context, childFragmentManager)
+//        tablayout.setupWithViewPager(viewpager)
     }
 
     // TODO: Rename and change types of parameters
@@ -63,8 +63,10 @@ class HelloMainFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_hello_main, container, false)
 
         return view
@@ -72,7 +74,19 @@ class HelloMainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lazyLoad()
+        viewpager.adapter =
+            HelloMRecomViewPager(this)
+        TabLayoutMediator(tablayout, viewpager) { tab, position ->
+            tab.text = when (position) {
+                0 -> {
+                    getString(R.string.illust)
+                }
+                else -> {
+                    getString(R.string.painter)
+                }
+            }
+            viewpager.setCurrentItem(tab.position, true)
+        }.attach()
     }
 
     companion object {
@@ -87,11 +101,11 @@ class HelloMainFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-                HelloMainFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
-                    }
+            HelloMainFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_PARAM1, param1)
+                    putString(ARG_PARAM2, param2)
                 }
+            }
     }
 }
