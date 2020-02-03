@@ -24,12 +24,12 @@
 
 package com.perol.asdpl.pixivez.adapters
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.DisplayMetrics
+import android.view.*
 import androidx.viewpager.widget.PagerAdapter
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.request.target.CustomTarget
@@ -64,7 +64,10 @@ class ZoomPagerAdapter(
         val view = layoutInflater.inflate(R.layout.view_pager_zoom, container, false)
         val photoView = view.findViewById<SubsamplingScaleImageView>(R.id.photoview_zoom)
         photoView.isEnabled = true
-/*        val gestureDetector =
+        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val dm = DisplayMetrics()
+        wm.defaultDisplay.getMetrics(dm)
+        val gestureDetector =
             GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
                 override fun onFling(
                     e1: MotionEvent,
@@ -72,16 +75,16 @@ class ZoomPagerAdapter(
                     velocityX: Float,
                     velocityY: Float
                 ): Boolean {
-                    if ((e2.rawY - e1.rawY) > 200) {
+                    if ((e2.rawY - e1.rawY) > dm.heightPixels / 4) {
                         (context as Activity).finish()
-                        return true;
                     }
                     return false
                 }
             })
         photoView.setOnTouchListener { v, event ->
             return@setOnTouchListener gestureDetector.onTouchEvent(event);
-        }*/
+        }
+
 
         GlideApp.with(context).asFile().load(arrayList[position]).skipMemoryCache(true)
             .into(object : CustomTarget<File>() {
