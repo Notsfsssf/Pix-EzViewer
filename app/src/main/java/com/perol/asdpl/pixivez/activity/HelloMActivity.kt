@@ -39,19 +39,21 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.tabs.TabLayoutMediator
+import com.google.android.material.tabs.TabLayout
 import com.perol.asdpl.pixivez.R
-import com.perol.asdpl.pixivez.adapters.HelloMViewPagerAdapter
+import com.perol.asdpl.pixivez.fragments.HelloM.HelloMDynamicsFragment
+import com.perol.asdpl.pixivez.fragments.HelloM.HelloMThFragment
+import com.perol.asdpl.pixivez.fragments.HelloM.HelloMainFragment
 import com.perol.asdpl.pixivez.objects.ThemeUtil
 import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.Works
 import com.perol.asdpl.pixivez.sql.UserEntity
 import kotlinx.android.synthetic.main.app_bar_hello_m.*
-import kotlinx.android.synthetic.main.content_hello_m.*
 import kotlinx.coroutines.runBlocking
 import java.io.File
 
@@ -148,12 +150,12 @@ class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedLi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var allUser = ArrayList<UserEntity>()
+        var allUser: ArrayList<UserEntity>? = null
         runBlocking {
             allUser = ArrayList(AppDataRepository.getAllUser())
 
         }
-        if (allUser.isEmpty()) {
+        if (allUser!!.isEmpty()) {
             startActivity(Intent(this@HelloMActivity, LoginActivity::class.java))
             finish()
             return
@@ -182,21 +184,22 @@ class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedLi
         permissionList.add(Manifest.permission.READ_EXTERNAL_STORAGE)
         checkAndRequestPermissions(permissionList)
         initView()
-        viewpager_hellom.currentItem =
+        val position =
             PreferenceManager.getDefaultSharedPreferences(this).getString("firstpage", "0")?.toInt()
                 ?: 0
-
-
+        tablayout_hellom.getTabAt(position)!!.select()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.content_view, getFragmentContent(position)).commit()
         val view = nav_view.inflateHeaderView(R.layout.nav_header_hello_m)
         val imageview = view.findViewById<ImageView>(R.id.imageView)
         val headtext = view.findViewById<TextView>(R.id.headtext)
         val textView = view.findViewById<TextView>(R.id.textView)
         var nowNum = PreferenceManager.getDefaultSharedPreferences(this).getInt("usernum", 0)
-        if (nowNum >= allUser.size) {
+        if (nowNum >= allUser!!.size) {
             nowNum = 0
         }
         GlideApp.with(imageview.context)
-            .load(allUser[nowNum].userimage)
+            .load(allUser!![nowNum].userimage)
             .circleCrop().into(imageview)
         imageview.setOnClickListener {
             runBlocking {
@@ -206,9 +209,8 @@ class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedLi
             }
         }
 
-        headtext.text = allUser[nowNum].username
-        textView.text = allUser[nowNum].useremail
-
+        headtext.text = allUser!![nowNum].username
+        textView.text = allUser!![nowNum].useremail
         Works.checkUpdate(this)
     }
 
@@ -232,28 +234,69 @@ class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedLi
         ActivityCompat.requestPermissions(this, permissions, 3000)
     }
 
+    fun getFragmentContent(position: Int): Fragment {
+        return when (position) {
+            0 -> {
+                HelloMainFragment.newInstance("s", "s")
+            }
+            1 -> {
+                HelloMDynamicsFragment.newInstance("d")
+            }
+            3 -> {
+                HelloMThFragment.newInstance("d", "c")
+            }
+            else -> {
+                HelloMThFragment.newInstance("d", "c")
+            }
+        }
+    }
+
     private fun initView() {
-        viewpager_hellom.adapter = HelloMViewPagerAdapter(supportFragmentManager, this.lifecycle)
+/*        viewpager_hellom.adapter = HelloMViewPagerAdapter(supportFragmentManager, this.lifecycle)
         TabLayoutMediator(tablayout_hellom, viewpager_hellom) { tab, position ->
             viewpager_hellom.setCurrentItem(tab.position, true)
-        }.attach()
-        for (i in 0..2) {
-            val tabitem = tablayout_hellom.getTabAt(i)!!
+        }.attach()*/
+        tablayout_hellom.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab) {
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                when (tab.position) {
+                    0 -> {
+
+                    }
+                    1 -> {
+                    }
+                    else -> {
+                    }
+                }
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.content_view, getFragmentContent(tab.position)).commit()
+            }
+
+        })
+/*        for (i in 0..2) {
+            val tabItem = tablayout_hellom.getTabAt(i)!!
 
             when (i) {
                 0 -> {
-                    tabitem.icon = ContextCompat.getDrawable(this, R.drawable.ic_action_home_white)
+                    tabItem.icon =
+                        ContextCompat.getDrawable(this, R.drawable.ic_action_home_white)
                 }
                 1 -> {
-                    tabitem.icon =
+                    tabItem.icon =
                         ContextCompat.getDrawable(this, R.drawable.ic_action_ranking_white)
                 }
                 2 -> {
-                    tabitem.icon = ContextCompat.getDrawable(this, R.drawable.ic_action_my_white)
+                    tabItem.icon =
+                        ContextCompat.getDrawable(this, R.drawable.ic_action_my_white)
                 }
             }
 
-        }
+        }*/
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

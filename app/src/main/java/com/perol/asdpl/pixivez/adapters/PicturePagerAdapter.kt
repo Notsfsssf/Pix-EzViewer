@@ -25,31 +25,20 @@
 package com.perol.asdpl.pixivez.adapters
 
 
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.viewpager.widget.PagerAdapter
+import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.perol.asdpl.pixivez.fragments.PictureXFragment
-import com.perol.asdpl.pixivez.responses.Illust
 
 class PicturePagerAdapter(
+    lifecycle: Lifecycle,
     fm: FragmentManager,
-    private val fragments: LongArray,
-    val nowpostion: Int
-) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    private val fragments: LongArray
+) : FragmentStateAdapter(fm, lifecycle) {
+    override fun getItemCount() = fragments.size
 
-    override fun getItemPosition(`object`: Any): Int {
-        return PagerAdapter.POSITION_NONE
-    }
+    override fun createFragment(position: Int) = PictureXFragment.newInstance(
+        fragments[position]
+    )
 
-    override fun getItem(position: Int): Fragment {
-
-        return PictureXFragment.newInstance(
-            fragments[position]
-        )
-    }
-
-    override fun getCount(): Int {
-        return fragments.size
-    }
 }

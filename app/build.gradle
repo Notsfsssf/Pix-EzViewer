@@ -94,12 +94,6 @@ dependencies {
     // optional - RxJava2 support
     implementation "androidx.work:work-rxjava2:$work_version"
 
-    // optional - GCMNetworkManager support
-    implementation "androidx.work:work-gcm:$work_version"
-
-    // optional - Test helpers
-    androidTestImplementation "androidx.work:work-testing:$work_version"
-
     implementation 'com.hyman:flowlayout-lib:1.1.2'
     implementation 'io.noties.markwon:core:4.1.2'
     implementation 'org.jsoup:jsoup:1.12.1'
@@ -205,7 +199,7 @@ dependencies {
     // optional - RxJava support
     implementation "androidx.paging:paging-rxjava2:$paging_version"
     // For Kotlin use paging-rxjava2-ktx
-//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0'
+//  debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0'
 
 
 }

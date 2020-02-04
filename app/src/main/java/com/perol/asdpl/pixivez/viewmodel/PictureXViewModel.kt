@@ -49,7 +49,6 @@ class PictureXViewModel : BaseViewModel() {
     val downloadGifSuccess = MutableLiveData<Boolean>()
     val startPostPone = MutableLiveData<Boolean>()
     private val appDatabase = AppDatabase.getInstance(PxEZApp.instance)
-    @Throws(Exception::class)
     fun downloadZip(medium: String) {
         val zipPath =
             "${PxEZApp.instance.cacheDir.path}/${illustDetailResponse.value!!.illust.id}.zip"
@@ -67,7 +66,6 @@ class PictureXViewModel : BaseViewModel() {
                 File(PxEZApp.instance.cacheDir.path + "/" + illustDetailResponse.value!!.illust.id).deleteRecursively()
                 file.delete()
                 reDownLoadGif(medium)
-
             }, {}).add()
         } else {
             reDownLoadGif(medium)
@@ -81,7 +79,7 @@ class PictureXViewModel : BaseViewModel() {
         val zipPath = "${PxEZApp.instance.cacheDir}/${illustDetailResponse.value!!.illust.id}.zip"
         val file = File(zipPath)
         progress.value = ProgressInfo(0, 0)
-        retrofitRespository.getGIFFile(medium).subscribe { response ->
+        retrofitRespository.getGIFFile(medium).subscribe({ response ->
             val inputStream = response.byteStream()
             Observable.create<Int> { ob ->
                 val output = file.outputStream()
@@ -114,7 +112,7 @@ class PictureXViewModel : BaseViewModel() {
                 it.printStackTrace()
             })
 
-        }.add()
+        }, {}, {}).add()
     }
 
     fun firstGet(toLong: Long) {

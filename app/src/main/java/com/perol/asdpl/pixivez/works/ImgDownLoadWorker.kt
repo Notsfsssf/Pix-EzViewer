@@ -81,7 +81,7 @@ class ImgDownLoadWorker(var appContext: Context, workerParams: WorkerParameters)
         val request = Request.Builder()
             .addHeader(
                 "User-Agent",
-                "PixivAndroidApp/5.0.155 (Android ${android.os.Build.VERSION.RELEASE}; Pixel C)"
+                "PixivAndroidApp/5.0.155 (Android ${android.os.Build.VERSION.RELEASE}; ${android.os.Build.MODEL})"
             )
             .addHeader("referer", "https://app-api.pixiv.net/")
             .get()

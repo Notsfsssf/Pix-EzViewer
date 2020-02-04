@@ -36,14 +36,34 @@
                     app:tabGravity="center"
                     app:tabIndicatorHeight="0dp"
                     app:tabPadding="0dp"
-                    app:tabPaddingStart="20dp" />
+                    app:tabPaddingStart="20dp">
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:icon="@drawable/ic_action_home_white"
+                        android:layout_height="wrap_content" />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:icon="@drawable/ic_action_ranking_white"
+                        android:layout_height="wrap_content" />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:icon="@drawable/ic_action_my_white"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.tabs.TabLayout>
 
             </com.google.android.material.appbar.MaterialToolbar>
 
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <include layout="@layout/content_hello_m" />
+        <FrameLayout
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:id="@+id/content_view"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.navigation.NavigationView

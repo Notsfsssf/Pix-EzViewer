@@ -69,7 +69,10 @@ class RestClient {
                 val requestBuilder = original.newBuilder()
                     .addHeader("Accept-Language", "${local.language}_${local.country}")
                         .removeHeader("User-Agent")
-                        .addHeader("User-Agent", "PixivAndroidApp/5.0.155 (Android ${android.os.Build.VERSION.RELEASE}; Pixel C)")
+                    .addHeader(
+                        "User-Agent",
+                        "PixivAndroidApp/5.0.155 (Android ${android.os.Build.VERSION.RELEASE}; ${android.os.Build.MODEL})"
+                    )
                 val request = requestBuilder.build()
                 return chain.proceed(request)
             }
@@ -101,7 +104,10 @@ class RestClient {
                     val original = chain.request()
                     val requestBuilder = original.newBuilder()
                             .removeHeader("User-Agent")
-                            .addHeader("User-Agent", "PixivAndroidApp/5.0.155 (Android ${android.os.Build.VERSION.RELEASE}; Pixel C)")
+                        .addHeader(
+                            "User-Agent",
+                            "PixivAndroidApp/5.0.155 (Android ${android.os.Build.VERSION.RELEASE}; ${android.os.Build.MODEL})"
+                        )
                             .addHeader("referer", "https://app-api.pixiv.net/")
                     val request = requestBuilder.build()
                     return chain.proceed(request)
@@ -185,7 +191,10 @@ class RestClient {
                     val original = chain.request()
                     val requestBuilder = original.newBuilder()
                             .removeHeader("User-Agent")
-                            .addHeader("User-Agent", "PixivAndroidApp/5.0.155 (Android ${android.os.Build.VERSION.RELEASE}; Pixel C)")
+                        .addHeader(
+                            "User-Agent",
+                            "PixivAndroidApp/5.0.155 (Android ${android.os.Build.VERSION.RELEASE}; ${android.os.Build.MODEL})"
+                        )
                         .addHeader("Accept-Language", "${local.language}_${local.country}")
                             .addHeader("App-OS", "Android")
                             .addHeader("App-OS-Version", "${android.os.Build.VERSION.RELEASE}")

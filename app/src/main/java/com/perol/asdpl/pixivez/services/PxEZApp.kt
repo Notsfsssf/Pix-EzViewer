@@ -65,29 +65,29 @@ class PxEZApp : Application() {
 
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-                Logger.t(TAG).v("${activity.simpleName}: onActivityCreated")
+//                Logger.t(TAG).v("${activity.simpleName}: onActivityCreated")
 
                 ActivityCollector.collect(activity)
             }
 
             override fun onActivityStarted(activity: Activity) {
-                Logger.t(TAG).v("${activity.simpleName}: onActivityStarted")
+//                Logger.t(TAG).v("${activity.simpleName}: onActivityStarted")
             }
 
             override fun onActivityResumed(activity: Activity) {
-                Logger.t(TAG).v("${activity.simpleName}: onActivityResumed")
+//                Logger.t(TAG).v("${activity.simpleName}: onActivityResumed")
             }
 
             override fun onActivityPaused(activity: Activity) {
-                Logger.t(TAG).v("${activity.simpleName}: onActivityPaused")
+//                Logger.t(TAG).v("${activity.simpleName}: onActivityPaused")
             }
 
             override fun onActivityStopped(activity: Activity) {
-                Logger.t(TAG).v("${activity.simpleName}: onActivityStopped")
+//                Logger.t(TAG).v("${activity.simpleName}: onActivityStopped")
             }
 
             override fun onActivityDestroyed(activity: Activity) {
-                Logger.t(TAG).v("${activity.simpleName}: onActivityDestroyed")
+//                Logger.t(TAG).v("${activity.simpleName}: onActivityDestroyed")
 
                 ActivityCollector.discard(activity)
             }

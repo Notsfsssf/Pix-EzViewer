@@ -530,7 +530,6 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                 Toasty.info(PxEZApp.instance, "Downloading...", Toast.LENGTH_SHORT).show()
                 pictureXViewModel.loadGif(data.id).flatMap {
                     duration = it.ugoira_metadata.frames[0].delay
-
                     pictureXViewModel.downloadZip(it.ugoira_metadata.zip_urls.medium)
                     return@flatMap Observable.just(it)
                 }.subscribe({
