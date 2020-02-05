@@ -58,11 +58,7 @@ class HelloMDynamicsFragment : LazyV4Fragment() {
     }
 
 
-    fun lazyLoad() {
-        initview()
-    }
-
-    private fun initview() {
+    private fun initView() {
         viewpage_rankingm.adapter = RankingMAdapter(this)
         val shareModel =
             ViewModelProviders.of(requireActivity()).get(RankingShareViewModel::class.java)
@@ -82,7 +78,6 @@ class HelloMDynamicsFragment : LazyV4Fragment() {
                         activity!!,
                         DatePickerDialog.OnDateSetListener { p0, year1, month1, day1 ->
                             val monthR = month1 + 1
-
                             picDateShare.value = if ("$year1-$monthR-$day1" == dateNow) {
                                 null
                             } else {
@@ -115,7 +110,7 @@ class HelloMDynamicsFragment : LazyV4Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lazyLoad()
+        initView()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

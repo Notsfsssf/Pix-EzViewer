@@ -36,13 +36,5 @@ class RankingMAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount() = modelist.size
     override fun createFragment(position: Int) = RankingMFragment.newInstance(modelist[position])
-/*    override fun getCount(): Int = modelist.size
-
-    override fun getItem(position: Int): Fragment {
-        return RankingMFragment.newInstance(modelist[position])
-    }
-
-
-    override fun getPageTitle(position: Int): CharSequence? = context.resources.getStringArray(R.array.modellist)[position]*/
 
 }
