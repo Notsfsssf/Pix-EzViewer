@@ -32,18 +32,20 @@ import java.net.InetAddress
 class ImageHttpDns : Dns {
 
     private val addressList = mutableListOf<InetAddress>()
+    private val service =
+        ServiceFactory.create<CloudflareService>(CloudflareService.URL_DNS_RESOLVER.toHttpUrl())
+
     override fun lookup(hostname: String): List<InetAddress> {
         if (addressList.isNotEmpty()) return addressList
-        val addressList = mutableListOf<InetAddress>()
         val defaultList = listOf(
             "210.140.92.139", "210.140.92.141", "210.140.92.144"
         ).map { InetAddress.getByName(it) }
-        val service =
-            ServiceFactory.create<CloudflareService>(CloudflareService.URL_DNS_RESOLVER.toHttpUrl())
-
         try {
             val response = service.queryDns(name = hostname).blockingSingle()
-            response.answer.flatMap { InetAddress.getAllByName(it.data).toList() }.also {
+            response.answer.flatMap {
+
+                InetAddress.getAllByName(it.data).toList()
+            }.also {
                 addressList.addAll(it)
             }
         } catch (e: Exception) {

@@ -27,10 +27,18 @@ package com.perol.asdpl.pixivez.services
 
 import android.content.Context
 import com.bumptech.glide.Glide
+import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.Registry
 import com.bumptech.glide.annotation.GlideModule
+import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
+import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.resource.bitmap.ExifInterfaceImageHeaderParser
 import com.bumptech.glide.module.AppGlideModule
-import com.perol.asdpl.pixivez.networks.HeaderLoaderFactory
+import com.bumptech.glide.request.RequestOptions
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import java.io.InputStream
 
 
@@ -40,27 +48,38 @@ class CustomGlideModule : AppGlideModule() {
 
     override fun registerComponents(context: Context, glide: Glide,
                                     registry: Registry) {
-//        val builder = OkHttpClient.Builder()
-//        builder.addInterceptor(object : Interceptor {
-//            @Throws(IOException::class)
-//            override fun intercept(chain: Interceptor.Chain): Response {
-//                val requestBuilder = chain.request().newBuilder()
-//                        .removeHeader("User-Agent")
-//                        .removeHeader("Accept-Encoding")
-//                        .addHeader("User-Agent", "PixivAndroidApp/5.0.155 (Android 6.0.1; ${android.os.Build.MODEL})")
-//                        .addHeader("referer", "https://app-api.pixiv.net/")
-//                        .addHeader("Accept-Encoding", "gzip");
-//                val request = requestBuilder.build()
-//                return chain.proceed(request)
-//            }
-//        }).dns(ImageHttpDns())
-//        val factory = OkHttpUrlLoader.Factory(builder.build())
-        registry.replace(String::class.java, InputStream::class.java, HeaderLoaderFactory())
+        val builder = OkHttpClient.Builder().apply {
+            addInterceptor(Interceptor {
+                val requestBuilder = it.request().newBuilder()
+                    .removeHeader("User-Agent")
+                    .addHeader(
+                        "User-Agent",
+                        "PixivAndroidApp/5.0.155 (Android 6.0.1; ${android.os.Build.MODEL})"
+                    )
+                    .addHeader("referer", "https://app-api.pixiv.net/")
+                val request = requestBuilder.build()
+                it.proceed(request)
+            })
+        }
+        val factory = OkHttpUrlLoader.Factory(builder.build())
+        registry.replace(GlideUrl::class.java, InputStream::class.java, factory)
+        glide.registry.imageHeaderParsers.removeAll { it is ExifInterfaceImageHeaderParser }
     }
 
     // Disable manifest parsing to avoid adding similar modules twice.
     override fun isManifestParsingEnabled(): Boolean {
         return false
+    }
+
+    override fun applyOptions(context: Context, builder: GlideBuilder) {
+/*        val calculator = MemorySizeCalculator.Builder(context)
+            .setMemoryCacheScreens(2f)
+            .build()
+        builder.setMemoryCache(LruResourceCache(calculator.memoryCacheSize.toLong()))*/
+        val requestOptions = RequestOptions
+            .formatOf(DecodeFormat.PREFER_ARGB_8888)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+        builder.setDefaultRequestOptions(requestOptions)
     }
 
 }

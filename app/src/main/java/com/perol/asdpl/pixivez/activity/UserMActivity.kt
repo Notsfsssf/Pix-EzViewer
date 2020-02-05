@@ -183,7 +183,7 @@ class UserMActivity : RinkActivity() {
                         }
                         1 -> {
                             runBlocking {
-                                var file: File? = null
+                                var file: File
                                 withContext(Dispatchers.IO) {
                                     val f = GlideApp.with(this@UserMActivity).asFile()
                                         .load(viewModel.userDetail.value!!.user.profile_image_urls.medium)
@@ -193,7 +193,7 @@ class UserMActivity : RinkActivity() {
                                         PxEZApp.storepath,
                                         "user_${viewModel.userDetail.value!!.user.id}.png"
                                     )
-                                    file?.copyTo(target, overwrite = true)
+                                    file.copyTo(target, overwrite = true)
                                     MediaScannerConnection.scanFile(
                                         PxEZApp.instance, arrayOf(target.path), arrayOf(
                                             MimeTypeMap.getSingleton().getMimeTypeFromExtension(
@@ -212,7 +212,7 @@ class UserMActivity : RinkActivity() {
                         else -> {
                             val intent = Intent(
                                 Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
                             )
                             startActivityForResult(intent, SELECT_IMAGE)
                         }

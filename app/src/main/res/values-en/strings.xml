@@ -138,7 +138,7 @@
     <string name="icon">icon</string>
     <string name="checktochang">check to change</string>
     <string name="limit">limit</string>q
-    <string name="_18">R u at least 18 years old?</string>
+    <string name="_18">18 tag shield</string>
     <string name="picturequality">Detail pic quality</string>
     <string name="opensource">Thanks to</string>
     <string name="tababout">About</string>
@@ -253,4 +253,5 @@
     <string name="choice_date">Choice Date</string>
     <string name="create_painter_folder">Create a separate folder for each painter</string>
     <string name="create_separate_folder">create separate folder</string>
+    <string name="refresh_token">refresh token</string>
 </resources>

@@ -600,7 +600,6 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
 
     var size = 1
     var duration: Int = 50
-    var recyclerView: RecyclerView? = null
     var progressBar: CircleProgressBar? = null
     var imageViewGif: ImageView? = null
     val aboutPictureAdapter = AboutPictureAdapter(R.layout.view_aboutpic_item)
@@ -642,23 +641,26 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
 
     }
 
+    var animationDrawable: AnimationDrawable? = null
     private fun createAnimationFrame(illustBean: Illust, imageView: ImageView, duration: Int) {
+        if (animationDrawable == null)
+            animationDrawable = AnimationDrawable()
         val parentPath = PxEZApp.instance.cacheDir.path + "/" + illustBean.id
         val parentFile = File(parentPath)
         val listFiles = parentFile.listFiles()
         listFiles.sortWith(Comparator { o1, o2 -> o1.name.compareTo(o2.name) })
-        val animationDrawable = AnimationDrawable()
+
         runBlocking {
             withContext(Dispatchers.IO) {
                 for (i in listFiles) {
                     val bitmap = GlideApp.with(imageView).asBitmap().load(i).skipMemoryCache(true).submit(illustBean.width, illustBean.height).get()
                     val drawable = BitmapDrawable(imageView.context.resources, bitmap)
-                    animationDrawable.addFrame(drawable, duration)
+                    animationDrawable!!.addFrame(drawable, duration)
                 }
-                animationDrawable.isOneShot = false
+                animationDrawable!!.isOneShot = false
             }
             imageView.setImageDrawable(animationDrawable)
-            animationDrawable.start()
+            animationDrawable!!.start()
         }
     }
 

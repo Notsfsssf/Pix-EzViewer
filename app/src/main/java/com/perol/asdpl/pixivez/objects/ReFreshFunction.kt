@@ -27,6 +27,7 @@ package com.perol.asdpl.pixivez.objects
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.networks.RestClient
 import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.services.OAuthSecureService
@@ -42,7 +43,7 @@ import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.util.concurrent.TimeoutException
 
-class ReFreshFunction : io.reactivex.functions.Function<Observable<Throwable>, ObservableSource<*>> {
+class ReFreshFunction : Function<Observable<Throwable>, ObservableSource<*>> {
     private var client_id: String? = "MOBrBDS8blbauoSck0ZfDbtuzpyT"
     private var client_secret: String? = "lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj"
     private var oAuthSecureService: OAuthSecureService? = null
@@ -69,12 +70,17 @@ class ReFreshFunction : io.reactivex.functions.Function<Observable<Throwable>, O
             } else if (throwable is HttpException) {
                 if (throwable.response()!!.code() == 400) {
                     if (++retryCount <= maxRetries) {
-                        var userEntitys: UserEntity? = null
-                        TToast.retoken(PxEZApp.instance)
+                        var userEntity: UserEntity? = null
+//                        TToast.retoken(PxEZApp.instance)
+                        Toasty.info(
+                            PxEZApp.instance,
+                            PxEZApp.instance.getString(R.string.refresh_token),
+                            Toast.LENGTH_SHORT
+                        ).show()
                         runBlocking {
-                            userEntitys = AppDataRepository.getUser()
+                            userEntity = AppDataRepository.getUser()
                         }
-                        return@Function refreshtoken(userEntitys!!)
+                        return@Function refreshtoken(userEntity!!)
                     } else
                         return@Function Observable.error<Any>(throwable)
 

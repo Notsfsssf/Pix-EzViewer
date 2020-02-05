@@ -24,6 +24,7 @@
 
 package com.perol.asdpl.pixivez.networks
 
+import android.util.Log
 import com.perol.asdpl.pixivez.services.CloudflareService
 import okhttp3.Dns
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -31,6 +32,9 @@ import java.net.InetAddress
 
 class RubyHttpDns : Dns {
     private val addressList = mutableListOf<InetAddress>()
+    private val service =
+        ServiceFactory.create<CloudflareService>(CloudflareService.URL_DNS_RESOLVER.toHttpUrl())
+
     override fun lookup(hostname: String): List<InetAddress> {
         if (addressList.isNotEmpty()) return addressList
         val defaultList = listOf(
@@ -38,9 +42,7 @@ class RubyHttpDns : Dns {
             "210.140.131.222",
             "210.140.131.224"
         ).map { InetAddress.getByName(it) }
-        val service =
-            ServiceFactory.create<CloudflareService>(CloudflareService.URL_DNS_RESOLVER.toHttpUrl())
-
+        Log.d("httpdns", "========================================")
         try {
             val response = service.queryDns(name = hostname).blockingSingle()
             response.answer.flatMap { InetAddress.getAllByName(it.data).toList() }.also {

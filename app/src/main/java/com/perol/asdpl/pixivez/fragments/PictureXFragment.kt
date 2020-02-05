@@ -79,13 +79,20 @@ class PictureXFragment : LazyV4Fragment() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        pictureXAdapter?.animationDrawable?.start()
+    }
+
+    override fun onPause() {
+        pictureXAdapter?.animationDrawable?.stop()
+        super.onPause()
+
+    }
     private var pictureXAdapter: PictureXAdapter? = null
     private fun initViewModel() {
 
         pictureXViewModel = ViewModelProviders.of(this).get(PictureXViewModel::class.java)
-        pictureXViewModel.startPostPone.observe(this, Observer {
-            //            activity?.supportStartPostponedEnterTransition()
-        })
         pictureXViewModel.illustDetailResponse.observe(this, Observer {
             if (it != null) {
                 rootBinding.illust = it.illust

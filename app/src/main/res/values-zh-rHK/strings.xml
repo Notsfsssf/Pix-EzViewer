@@ -138,7 +138,7 @@
     <string name="icon">圖示</string>
     <string name="checktochang">點擊更換</string>
     <string name="limit">限制</string>
-    <string name="_18">開啟即表示您已年滿18周歲</string>
+    <string name="_18">遮罩</string>
     <string name="picturequality">圖像質量</string>
     <string name="opensource">引用開源庫</string>
     <string name="tababout">關於</string>
@@ -268,4 +268,5 @@
     <string name="choice_date">Choice Date</string>
     <string name="create_painter_folder">为每个画师单独创建文件夹</string>
     <string name="create_separate_folder">create separate folder</string>
+    <string name="refresh_token">刷新token</string>
 </resources>

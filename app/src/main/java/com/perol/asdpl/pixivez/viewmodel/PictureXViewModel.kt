@@ -47,7 +47,6 @@ class PictureXViewModel : BaseViewModel() {
     var tags = MutableLiveData<BookMarkDetailResponse.BookmarkDetailBean>()
     val progress = MutableLiveData<ProgressInfo>()
     val downloadGifSuccess = MutableLiveData<Boolean>()
-    val startPostPone = MutableLiveData<Boolean>()
     private val appDatabase = AppDatabase.getInstance(PxEZApp.instance)
     fun downloadZip(medium: String) {
         val zipPath =
@@ -116,7 +115,6 @@ class PictureXViewModel : BaseViewModel() {
     }
 
     fun firstGet(toLong: Long) {
-        startPostPone.value = true
         retrofitRespository.getIllust(toLong).subscribe({ it ->
             illustDetailResponse.value = it
             likeIllust.value = it!!.illust.is_bookmarked
@@ -192,17 +190,16 @@ class PictureXViewModel : BaseViewModel() {
             }
         }
         if (!illustDetailResponse.value!!.illust.is_bookmarked) {
-            var string = "public"
-            if (!boolean) {
-                string = "public"
+            val string = if (!boolean) {
+                "public"
             } else {
-                string = "private"
+                "private"
             }
-            val postbookmark =
-                retrofitRespository.postLikeIllustWithTags(toLong, string, arrayList).subscribe({
-                    likeIllust.value = true
-                    illustDetailResponse.value!!.illust.is_bookmarked = true
-                }, {}, {}).add()
+
+            retrofitRespository.postLikeIllustWithTags(toLong, string, arrayList).subscribe({
+                likeIllust.value = true
+                illustDetailResponse.value!!.illust.is_bookmarked = true
+            }, {}, {}).add()
 
         } else {
             retrofitRespository.postUnlikeIllust(toLong.toLong())

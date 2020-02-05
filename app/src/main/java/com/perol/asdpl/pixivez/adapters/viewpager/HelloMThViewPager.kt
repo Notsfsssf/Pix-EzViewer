@@ -34,21 +34,9 @@ import com.perol.asdpl.pixivez.fragments.IllustratorFragment
 class HelloMThViewPager(var fragment: Fragment, fragmentManager: FragmentManager, var long: Long) :
     FragmentStatePagerAdapter(
         fragmentManager,
-        FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+        BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
     ) {
 
-    /*    override fun getItemCount() = 2
-
-        override fun createFragment(position: Int) = when (position) {
-            0 -> {
-                HelloMMyFragment.newInstance("1", "2")
-
-            }
-            else -> {
-                IllustratorFragment.newInstance(long, true)
-            }
-
-        }*/
     override fun getPageTitle(position: Int): CharSequence? =
             when (position) {
                 0 -> {
