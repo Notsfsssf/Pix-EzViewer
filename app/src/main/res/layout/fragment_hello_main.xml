@@ -25,12 +25,12 @@
             android:text="@string/painter" />
     </com.google.android.material.tabs.TabLayout>
 
-    <androidx.viewpager2.widget.ViewPager2
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
-    </androidx.viewpager2.widget.ViewPager2>
+    </androidx.viewpager.widget.ViewPager>
 
 </LinearLayout>

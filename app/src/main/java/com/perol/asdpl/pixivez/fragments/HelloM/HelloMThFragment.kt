@@ -30,7 +30,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.android.material.tabs.TabLayoutMediator
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.viewpager.HelloMThViewPager
 import com.perol.asdpl.pixivez.repository.AppDataRepository
@@ -56,8 +55,10 @@ class HelloMThFragment : Fragment() {
             val it = AppDataRepository.getUser()
             val userid = it.userid
             activity?.runOnUiThread {
-                viewpager_hellomth.adapter = HelloMThViewPager(this@HelloMThFragment, userid)
-                TabLayoutMediator(tablayout_hellomth, viewpager_hellomth) { tab, position ->
+                viewpager_hellomth.adapter =
+                    HelloMThViewPager(this@HelloMThFragment, childFragmentManager, userid)
+                tablayout_hellomth.setupWithViewPager(viewpager_hellomth)
+/*                TabLayoutMediator(tablayout_hellomth, viewpager_hellomth) { tab, position ->
                     tab.text = when (position) {
                         0 -> {
                             getString(R.string.new1)
@@ -67,7 +68,7 @@ class HelloMThFragment : Fragment() {
                         }
                     }
                     viewpager_hellomth.setCurrentItem(tab.position, true)
-                }.attach()
+                }.attach()*/
             }
 
         }

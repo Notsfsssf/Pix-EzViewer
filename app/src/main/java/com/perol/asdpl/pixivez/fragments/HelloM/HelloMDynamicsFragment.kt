@@ -32,7 +32,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.tabs.TabLayoutMediator
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.RankingMAdapter
 import com.perol.asdpl.pixivez.objects.LazyV4Fragment
@@ -59,13 +58,14 @@ class HelloMDynamicsFragment : LazyV4Fragment() {
 
 
     private fun initView() {
-        viewpage_rankingm.adapter = RankingMAdapter(this)
+        viewpage_rankingm.adapter = RankingMAdapter(this, childFragmentManager)
         val shareModel =
             ViewModelProviders.of(requireActivity()).get(RankingShareViewModel::class.java)
-        TabLayoutMediator(tablayout_rankingm, viewpage_rankingm) { tab, position ->
+        tablayout_rankingm.setupWithViewPager(viewpage_rankingm)
+/*        TabLayoutMediator(tablayout_rankingm, viewpage_rankingm) { tab, position ->
             tab.text = resources.getStringArray(R.array.modellist)[position]
             viewpage_rankingm.setCurrentItem(tab.position, true)
-        }.attach()
+        }.attach()*/
         val calendar = Calendar.getInstance()
         val yearNow = calendar.get(Calendar.YEAR)
         val monthNow = calendar.get(Calendar.MONTH) + 1

@@ -6,7 +6,7 @@
     tools:context="com.perol.asdpl.pixivez.activity.PictureActivity">
 
 
-    <androidx.viewpager2.widget.ViewPager2
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpage_picture"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

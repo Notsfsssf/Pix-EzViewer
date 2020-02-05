@@ -43,7 +43,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.tabs.TabLayoutMediator
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.viewpager.UserMPagerAdapter
 import com.perol.asdpl.pixivez.databinding.ActivityUserMBinding
@@ -125,20 +124,21 @@ class UserMActivity : RinkActivity() {
                              app_bar.background=resource
                          }
                      })*/
-                val userMPagerAdapter = UserMPagerAdapter(
-                    this.lifecycle, supportFragmentManager,
+
+                mviewpager.adapter = UserMPagerAdapter(
+                    this, supportFragmentManager,
                     id, UserMessageFragment.newInstance(it)
                 )
-                mviewpager.adapter = userMPagerAdapter
-                TabLayoutMediator(mtablayout, mviewpager) { tab, position ->
-                    tab.text = when (position) {
-                        0 -> getString(R.string.illust)
-                        1 -> getString(R.string.manga)
-                        2 -> getString(R.string.bookmark)
-                        else -> getString(R.string.abouts)
-                    }
-                    mviewpager.setCurrentItem(tab.position, true)
-                }.attach()
+                mtablayout.setupWithViewPager(mviewpager)
+                /*            TabLayoutMediator(mtablayout, mviewpager) { tab, position ->
+                                tab.text = when (position) {
+                                    0 -> getString(R.string.illust)
+                                    1 -> getString(R.string.manga)
+                                    2 -> getString(R.string.bookmark)
+                                    else -> getString(R.string.abouts)
+                                }
+                                mviewpager.setCurrentItem(tab.position, true)
+                            }.attach()*/
             }
         })
         viewModel.isfollow.observe(this, Observer {

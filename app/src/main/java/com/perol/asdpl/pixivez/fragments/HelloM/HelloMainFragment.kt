@@ -30,7 +30,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.android.material.tabs.TabLayoutMediator
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.viewpager.HelloMRecomViewPager
 import kotlinx.android.synthetic.main.fragment_hello_main.*
@@ -75,8 +74,9 @@ class HelloMainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewpager.adapter =
-            HelloMRecomViewPager(this)
-        TabLayoutMediator(tablayout, viewpager) { tab, position ->
+            HelloMRecomViewPager(this, childFragmentManager)
+        tablayout.setupWithViewPager(viewpager)
+/*        TabLayoutMediator(tablayout, viewpager) { tab, position ->
             tab.text = when (position) {
                 0 -> {
                     getString(R.string.illust)
@@ -86,7 +86,7 @@ class HelloMainFragment : Fragment() {
                 }
             }
             viewpager.setCurrentItem(tab.position, true)
-        }.attach()
+        }.attach()*/
     }
 
     companion object {

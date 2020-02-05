@@ -25,16 +25,41 @@
 package com.perol.asdpl.pixivez.adapters.viewpager
 
 import androidx.fragment.app.Fragment
-import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
+import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.fragments.HelloM.HelloMMyFragment
 import com.perol.asdpl.pixivez.fragments.IllustratorFragment
 
-class HelloMThViewPager(fragment: Fragment, var long: Long) : FragmentStateAdapter(fragment) {
+class HelloMThViewPager(var fragment: Fragment, fragmentManager: FragmentManager, var long: Long) :
+    FragmentStatePagerAdapter(
+        fragmentManager,
+        FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+    ) {
 
+    /*    override fun getItemCount() = 2
 
-    override fun getItemCount() = 2
+        override fun createFragment(position: Int) = when (position) {
+            0 -> {
+                HelloMMyFragment.newInstance("1", "2")
 
-    override fun createFragment(position: Int) = when (position) {
+            }
+            else -> {
+                IllustratorFragment.newInstance(long, true)
+            }
+
+        }*/
+    override fun getPageTitle(position: Int): CharSequence? =
+            when (position) {
+                0 -> {
+                    fragment.getString(R.string.new1)
+                }
+                else -> {
+                    fragment.getString(R.string.painter)
+                }
+            }
+
+    override fun getItem(position: Int) = when (position) {
         0 -> {
             HelloMMyFragment.newInstance("1", "2")
 
@@ -45,17 +70,6 @@ class HelloMThViewPager(fragment: Fragment, var long: Long) : FragmentStateAdapt
 
     }
 
-/*    override fun getPageTitle(position: Int): CharSequence? =
-            when (position) {
-                0 -> {
-                    context.getString(R.string.new1)
-                }
-                else -> {
-                    context.getString(R.string.painter)
-                }
-            }
-
-
-    override fun getCount() = 2*/
+    override fun getCount() = 2
 
 }
