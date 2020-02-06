@@ -208,12 +208,11 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                 btnTranslate.setOnClickListener {
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        intent.setAction(Intent.ACTION_PROCESS_TEXT)
-
-                        intent.putExtra(Intent.EXTRA_PROCESS_TEXT, s.caption.replace("<br />", ""))
+                        intent.action = Intent.ACTION_PROCESS_TEXT
+                        intent.putExtra(Intent.EXTRA_PROCESS_TEXT, captionTextView.text.toString())
                     } else {
-                        intent.setAction(Intent.ACTION_SEND)
-                        intent.putExtra(Intent.EXTRA_TEXT, s.caption)
+                        intent.action = Intent.ACTION_SEND
+                        intent.putExtra(Intent.EXTRA_TEXT, captionTextView.text.toString())
                     }
                     intent.component = ComponentName(
                         componentPackageName,
