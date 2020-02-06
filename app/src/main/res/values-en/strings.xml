@@ -254,4 +254,5 @@
     <string name="create_painter_folder">Create a separate folder for each painter</string>
     <string name="create_separate_folder">create separate folder</string>
     <string name="refresh_token">refresh token</string>
+    <string name="translate">Translate</string>
 </resources>

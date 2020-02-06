@@ -293,4 +293,5 @@
     <string name="create_painter_folder">为每个画师单独创建文件夹</string>
     <string name="create_separate_folder">创建单独文件夹</string>
     <string name="refresh_token">刷新token</string>
+    <string name="translate">翻译</string>
 </resources>

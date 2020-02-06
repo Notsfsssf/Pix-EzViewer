@@ -266,7 +266,8 @@
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
     <string name="choice_date">Choice Date</string>
-    <string name="create_painter_folder">为每个画师单独创建文件夹</string>
+    <string name="create_painter_folder">為每個畫師單獨創建文件夾</string>
     <string name="create_separate_folder">create separate folder</string>
     <string name="refresh_token">刷新token</string>
+    <string name="translate">翻譯</string>
 </resources>

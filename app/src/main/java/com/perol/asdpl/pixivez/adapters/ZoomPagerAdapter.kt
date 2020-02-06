@@ -46,7 +46,7 @@ import java.util.*
 
 
 class ZoomPagerAdapter(
-    private val context: Context,
+    val context: Context,
     private val arrayList: ArrayList<String>,
     val illust: Illust?
 ) : PagerAdapter() {
@@ -86,9 +86,7 @@ class ZoomPagerAdapter(
         photoView.setOnTouchListener { v, event ->
             return@setOnTouchListener gestureDetector.onTouchEvent(event);
         }
-
-
-        GlideApp.with(context).asFile().load(arrayList[position]).skipMemoryCache(true)
+        GlideApp.with(context).asFile().load(arrayList[position])
             .into(object : CustomTarget<File>() {
                 override fun onLoadCleared(placeholder: Drawable?) {
 

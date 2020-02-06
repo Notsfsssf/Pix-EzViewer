@@ -209,7 +209,8 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         intent.setAction(Intent.ACTION_PROCESS_TEXT)
-                        intent.putExtra(Intent.EXTRA_PROCESS_TEXT, s.caption)
+
+                        intent.putExtra(Intent.EXTRA_PROCESS_TEXT, s.caption.replace("<br />", ""))
                     } else {
                         intent.setAction(Intent.ACTION_SEND)
                         intent.putExtra(Intent.EXTRA_TEXT, s.caption)

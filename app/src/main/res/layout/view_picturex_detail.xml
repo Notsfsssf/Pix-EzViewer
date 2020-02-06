@@ -203,7 +203,7 @@
             android:layout_margin="8dp"
             android:linksClickable="true"
             android:padding="4dp"
-            android:text='Translate'
+            android:text="@string/translate"
             />
         <RelativeLayout
             android:layout_width="match_parent"
