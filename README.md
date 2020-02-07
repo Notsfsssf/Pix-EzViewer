@@ -26,6 +26,8 @@ Java 端通过修改 `OkHttp` 的 `SSLSocket` 实现绕过 SNI 审查（即旁�
 
 如果你需要一个 UWP 客户端，那么由 [@tobiichiamane](https://github.com/tobiichiamane) 开发的 [pixivfs-uwp ](https://github.com/tobiichiamane/pixivfs-uwp)会是不二之选。
 
+如果你需要一个WPF客户端，那么可以尝试一下由 [@Rinacm](https://github.com/Rinacm)开发的[Pixeval](https://github.com/Rinacm/Pixeval)
+
 # Preview
 |![Preview](./preview/2.jpg) | ![Preview](./preview/1.jpg) | ![Preview](./preview/3.jpg) |
 |:-------------------:|:------------------------:|:-----------------:|
