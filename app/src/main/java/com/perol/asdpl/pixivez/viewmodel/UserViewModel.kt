@@ -25,15 +25,14 @@
 package com.perol.asdpl.pixivez.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.perol.asdpl.pixivez.repository.RetrofitRespository
+import com.perol.asdpl.pixivez.repository.RetrofitRepository
 import com.perol.asdpl.pixivez.responses.SearchUserResponse
 import io.reactivex.Observable
 
 class UserViewModel : BaseViewModel() {
     var users = MutableLiveData<SearchUserResponse>()
 
-    var retrofitRespository = RetrofitRespository.getInstance()
+    var retrofitRespository = RetrofitRepository.getInstance()
     var nexturl = MutableLiveData<String>()
     fun getNextUsers(word: String) {
         retrofitRespository.getNextUser(word).subscribe({

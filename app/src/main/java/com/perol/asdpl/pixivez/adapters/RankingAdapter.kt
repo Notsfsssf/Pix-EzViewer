@@ -46,7 +46,7 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.PictureActivity
 import com.perol.asdpl.pixivez.activity.UserMActivity
-import com.perol.asdpl.pixivez.repository.RetrofitRespository
+import com.perol.asdpl.pixivez.repository.RetrofitRepository
 import com.perol.asdpl.pixivez.responses.Illust
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.PxEZApp
@@ -56,7 +56,7 @@ import com.perol.asdpl.pixivez.services.Works
 class RankingAdapter(layoutResId: Int, data: List<Illust>?, private val R18on: Boolean) : BaseQuickAdapter<Illust, BaseViewHolder>(layoutResId, data), BaseQuickAdapter.OnItemClickListener {
 
 
-    val retrofit = RetrofitRespository.getInstance()
+    val retrofit = RetrofitRepository.getInstance()
 
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
         val bundle = Bundle()

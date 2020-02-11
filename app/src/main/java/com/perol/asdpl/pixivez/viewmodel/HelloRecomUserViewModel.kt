@@ -25,11 +25,11 @@
 package com.perol.asdpl.pixivez.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.perol.asdpl.pixivez.repository.RetrofitRespository
+import com.perol.asdpl.pixivez.repository.RetrofitRepository
 import com.perol.asdpl.pixivez.responses.SearchUserResponse
 
 class HelloRecomUserViewModel : BaseViewModel() {
-    val retrofit = RetrofitRespository.getInstance()
+    val retrofit = RetrofitRepository.getInstance()
     val nexturl = MutableLiveData<String>()
     val adddata = MutableLiveData<List<SearchUserResponse.UserPreviewsBean>>()
     val data = MutableLiveData<List<SearchUserResponse.UserPreviewsBean>>()

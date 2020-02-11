@@ -25,11 +25,11 @@
 package com.perol.asdpl.pixivez.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.perol.asdpl.pixivez.repository.RetrofitRespository
+import com.perol.asdpl.pixivez.repository.RetrofitRepository
 import com.perol.asdpl.pixivez.responses.Illust
 
 class HelloMMyViewModel : BaseViewModel() {
-    var retrofitRespository = RetrofitRespository.getInstance()
+    var retrofitRespository = RetrofitRepository.getInstance()
     val illusts = MutableLiveData<ArrayList<Illust>>()
     val addillusts = MutableLiveData<ArrayList<Illust>>()
     val bookmarknum = MutableLiveData<Illust>()

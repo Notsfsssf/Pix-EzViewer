@@ -25,7 +25,7 @@
 package com.perol.asdpl.pixivez.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.perol.asdpl.pixivez.repository.RetrofitRespository
+import com.perol.asdpl.pixivez.repository.RetrofitRepository
 import com.perol.asdpl.pixivez.responses.Illust
 import java.util.*
 import kotlin.collections.ArrayList
@@ -44,7 +44,7 @@ class IllustfragmentViewModel : BaseViewModel() {
 
     var illusts = MutableLiveData<ArrayList<Illust>>()
     var addIllusts = MutableLiveData<ArrayList<Illust>>()
-    var retrofitRespository = RetrofitRespository.getInstance()
+    var retrofitRespository = RetrofitRepository.getInstance()
     var nexturl = MutableLiveData<String>()
     var bookmarkid = MutableLiveData<Long>()
     var isRefresh = MutableLiveData<Boolean>(false)

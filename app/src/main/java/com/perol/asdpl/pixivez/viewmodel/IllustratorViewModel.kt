@@ -25,11 +25,11 @@
 package com.perol.asdpl.pixivez.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.perol.asdpl.pixivez.repository.RetrofitRespository
+import com.perol.asdpl.pixivez.repository.RetrofitRepository
 import com.perol.asdpl.pixivez.responses.SearchUserResponse
 
 class IllustratorViewModel : BaseViewModel() {
-    val retrofitRespository = RetrofitRespository.getInstance()
+    val retrofitRespository = RetrofitRepository.getInstance()
     val userpreviews = MutableLiveData<ArrayList<SearchUserResponse.UserPreviewsBean>>()
     val adduserpreviews = MutableLiveData<ArrayList<SearchUserResponse.UserPreviewsBean>>()
     val nexturl = MutableLiveData<String>()

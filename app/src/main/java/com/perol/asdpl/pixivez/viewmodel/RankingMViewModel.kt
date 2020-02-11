@@ -25,11 +25,11 @@
 package com.perol.asdpl.pixivez.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.perol.asdpl.pixivez.repository.RetrofitRespository
+import com.perol.asdpl.pixivez.repository.RetrofitRepository
 import com.perol.asdpl.pixivez.responses.Illust
 
 class RankingMViewModel : BaseViewModel() {
-    val retrofitRespository = RetrofitRespository.getInstance()
+    val retrofitRespository = RetrofitRepository.getInstance()
     val nexturl = MutableLiveData<String>()
     val addillusts = MutableLiveData<ArrayList<Illust>>()
     val illusts = MutableLiveData<ArrayList<Illust>>()

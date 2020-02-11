@@ -25,7 +25,7 @@
 package com.perol.asdpl.pixivez.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.perol.asdpl.pixivez.repository.RetrofitRespository
+import com.perol.asdpl.pixivez.repository.RetrofitRepository
 import com.perol.asdpl.pixivez.responses.Tags
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.sql.AppDatabase
@@ -35,7 +35,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class TagsTextViewModel : BaseViewModel() {
-    val retrofitRespository = RetrofitRespository.getInstance()
+    val retrofitRespository = RetrofitRepository.getInstance()
     var appDatabase = AppDatabase.getInstance(PxEZApp.instance)
     val tags = MutableLiveData<List<Tags>>()
     fun onQueryTextChange(newText: String) {

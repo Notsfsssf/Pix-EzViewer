@@ -26,19 +26,18 @@ package com.perol.asdpl.pixivez.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.perol.asdpl.pixivez.repository.AppDataRepository
-import com.perol.asdpl.pixivez.repository.RetrofitRespository
+import com.perol.asdpl.pixivez.repository.RetrofitRepository
 import com.perol.asdpl.pixivez.responses.UserDetailResponse
 import io.reactivex.Observable
 import io.reactivex.Single
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.ResponseBody
 import java.io.File
 
 class UserMViewModel : BaseViewModel() {
-    var retrofitRespository = RetrofitRespository.getInstance()
+    var retrofitRespository = RetrofitRepository.getInstance()
     var userDetail = MutableLiveData<UserDetailResponse>()
     var isfollow = MutableLiveData<Boolean>()
 

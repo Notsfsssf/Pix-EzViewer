@@ -25,7 +25,7 @@
 package com.perol.asdpl.pixivez.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.perol.asdpl.pixivez.repository.RetrofitRespository
+import com.perol.asdpl.pixivez.repository.RetrofitRepository
 import com.perol.asdpl.pixivez.responses.BookMarkDetailResponse
 import com.perol.asdpl.pixivez.responses.Illust
 import com.perol.asdpl.pixivez.responses.IllustDetailResponse
@@ -40,7 +40,7 @@ import java.io.File
 
 class PictureXViewModel : BaseViewModel() {
     val illustDetailResponse = MutableLiveData<IllustDetailResponse?>()
-    val retrofitRespository: RetrofitRespository = RetrofitRespository.getInstance()
+    val retrofitRespository: RetrofitRepository = RetrofitRepository.getInstance()
     val aboutPics = MutableLiveData<ArrayList<Illust>>()
     val likeIllust = MutableLiveData<Boolean>()
     val followUser = MutableLiveData<Boolean>()

@@ -38,7 +38,7 @@ import okhttp3.ResponseBody
 import retrofit2.HttpException
 
 
-class RetrofitRespository {
+class RetrofitRepository {
 
 
     var restClient = RestClient()
@@ -309,12 +309,12 @@ class RetrofitRespository {
     }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).retryWhen(reFreshFunction)
 
     companion object {
-        private var instance: RetrofitRespository? = null
-        fun getInstance(): RetrofitRespository {
+        private var instance: RetrofitRepository? = null
+        fun getInstance(): RetrofitRepository {
             if (instance == null) {
-                synchronized(RetrofitRespository::class.java) {
+                synchronized(RetrofitRepository::class.java) {
                     if (instance == null) {
-                        instance = RetrofitRespository()
+                        instance = RetrofitRepository()
                     }
                 }
             }

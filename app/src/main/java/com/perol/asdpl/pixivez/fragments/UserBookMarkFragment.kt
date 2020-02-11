@@ -63,7 +63,7 @@ class UserBookMarkFragment : LazyV4Fragment(), TagsShowDialog.Callback {
                 val imagebutton = view.findViewById<ImageView>(R.id.imagebutton_showtags)
                 recommendAdapter.addHeaderView(view)
                 imagebutton.setOnClickListener {
-                    showtagdialog()
+                    showTagDialog()
                 }
             }
         }.doOnError {
@@ -144,7 +144,7 @@ class UserBookMarkFragment : LazyV4Fragment(), TagsShowDialog.Callback {
     var viewmodel: UserBookMarkViewModel? = null
 
 
-    fun showtagdialog() {
+    private fun showTagDialog() {
         val arrayList = ArrayList<String>()
         val arrayList1 = ArrayList<Int>()
         if (viewmodel!!.tags.value != null) {
@@ -159,7 +159,7 @@ class UserBookMarkFragment : LazyV4Fragment(), TagsShowDialog.Callback {
             bundle.putIntegerArrayList("counts", arrayList1)
             bundle.putString("nexturl", viewmodel!!.tags.value!!.next_url)
             bundle.putLong("id", param1!!)
-            tagsShowDialog.setArguments(bundle)
+            tagsShowDialog.arguments = bundle
             tagsShowDialog.show(childFragmentManager)
         }
 

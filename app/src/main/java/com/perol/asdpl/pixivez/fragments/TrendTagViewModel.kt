@@ -25,7 +25,7 @@
 package com.perol.asdpl.pixivez.fragments
 
 import androidx.lifecycle.MutableLiveData
-import com.perol.asdpl.pixivez.repository.RetrofitRespository
+import com.perol.asdpl.pixivez.repository.RetrofitRepository
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.sql.AppDatabase
 import com.perol.asdpl.pixivez.sql.SearchHistoryEntity
@@ -37,7 +37,7 @@ import io.reactivex.schedulers.Schedulers
 class TrendTagViewModel : BaseViewModel() {
     var appDatabase = AppDatabase.getInstance(PxEZApp.instance)
     var searchhistroy = MutableLiveData<List<SearchHistoryEntity>>()
-    var retrofitRespository: RetrofitRespository = RetrofitRespository.getInstance()
+    var retrofitRespository: RetrofitRepository = RetrofitRepository.getInstance()
 
     init {
         resethistory()

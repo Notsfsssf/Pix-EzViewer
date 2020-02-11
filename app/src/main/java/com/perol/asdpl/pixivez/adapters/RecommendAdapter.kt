@@ -46,7 +46,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
 import com.chad.library.adapter.base.BaseViewHolder
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.PictureActivity
-import com.perol.asdpl.pixivez.repository.RetrofitRespository
+import com.perol.asdpl.pixivez.repository.RetrofitRepository
 import com.perol.asdpl.pixivez.responses.Illust
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.PxEZApp
@@ -55,7 +55,7 @@ import android.util.Pair as UtilPair
 
 class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on: Boolean) :
     BaseQuickAdapter<Illust, BaseViewHolder>(layoutResId, data) {
-    val retrofit = RetrofitRespository.getInstance()
+    val retrofit = RetrofitRepository.getInstance()
 
     init {
         this.openLoadAnimation(SCALEIN)
