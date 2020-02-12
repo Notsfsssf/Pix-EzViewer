@@ -98,7 +98,7 @@
             android:entryValues="@array/language_values"
             app:defaultValue="0"
             app:key="language"
-            app:title="@string/pref_language" />
+            app:title="Language" />
     </PreferenceCategory>
 
 
