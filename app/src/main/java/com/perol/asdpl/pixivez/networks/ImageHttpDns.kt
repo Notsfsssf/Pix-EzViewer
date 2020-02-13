@@ -38,7 +38,7 @@ class ImageHttpDns : Dns {
     override fun lookup(hostname: String): List<InetAddress> {
         if (addressList.isNotEmpty()) return addressList
         val defaultList = listOf(
-            "210.140.92.139", "210.140.92.141", "210.140.92.144"
+            "210.140.92.141", "210.140.92.142", "210.140.92.144"
         ).map { InetAddress.getByName(it) }
         try {
             val response = service.queryDns(name = hostname).blockingSingle()

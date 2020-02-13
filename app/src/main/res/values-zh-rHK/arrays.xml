@@ -26,7 +26,7 @@
         <item>個人</item>
     </string-array>
     <string-array name="format">
-        <item>默認:id_+part</item>
+        <item>預設:id_+part</item>
         <item>P站:id_p+part</item>
         <item>血書:userid_id_part</item>
         <item>特殊:id_title_part</item>

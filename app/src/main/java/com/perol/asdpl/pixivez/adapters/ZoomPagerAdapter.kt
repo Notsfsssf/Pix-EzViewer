@@ -29,6 +29,7 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.AsyncTask
 import android.util.DisplayMetrics
 import android.view.*
 import androidx.viewpager.widget.PagerAdapter
@@ -69,6 +70,7 @@ class ZoomPagerAdapter(
         val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val dm = DisplayMetrics()
         wm.defaultDisplay.getMetrics(dm)
+        var resourceFile: File? = null
         val gestureDetector =
             GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
                 override fun onFling(
@@ -82,6 +84,22 @@ class ZoomPagerAdapter(
                     }
                     return false
                 }
+
+                override fun onLongPress(e: MotionEvent?) {
+                    super.onLongPress(e)
+                    if (illust != null && resourceFile != null) {
+                        MaterialDialog(context).show {
+                            title(R.string.saveselectpic1)
+                            positiveButton(android.R.string.ok) {
+                                if (!illust.meta_pages.isNullOrEmpty()) {
+                                    Works.imageDownloadWithFile(illust, resourceFile!!, position)
+                                } else Works.imageDownloadWithFile(illust, resourceFile!!, null)
+
+                            }
+                            negativeButton(android.R.string.cancel)
+                        }
+                    }
+                }
             })
         photoView.setOnTouchListener { v, event ->
             return@setOnTouchListener gestureDetector.onTouchEvent(event);
@@ -89,28 +107,10 @@ class ZoomPagerAdapter(
         GlideApp.with(context).asFile().load(arrayList[position])
             .into(object : CustomTarget<File>() {
                 override fun onLoadCleared(placeholder: Drawable?) {
-
                 }
-
                 override fun onResourceReady(resource: File, transition: Transition<in File>?) {
                     photoView.setImage(ImageSource.uri(Uri.fromFile(resource)))
-                    if (illust != null) {
-                        photoView.setOnLongClickListener {
-                            MaterialDialog(context).show {
-                                title(R.string.saveselectpic1)
-                                positiveButton(android.R.string.ok) {
-                                    if (!illust.meta_pages.isNullOrEmpty()) {
-                                        Works.imageDownloadWithFile(illust, resource, position)
-                                    } else Works.imageDownloadWithFile(illust, resource, null)
-
-                                }
-                                negativeButton(android.R.string.cancel)
-                            }
-
-                            true
-                        }
-
-                    }
+                    resourceFile = resource
                 }
             })
         container.addView(view)

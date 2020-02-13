@@ -25,9 +25,9 @@
 package com.perol.asdpl.pixivez.networks
 
 
+import android.util.Log
 import androidx.preference.PreferenceManager
 import com.google.gson.GsonBuilder
-import com.orhanobut.logger.Logger
 import com.perol.asdpl.pixivez.BuildConfig
 import com.perol.asdpl.pixivez.services.PxEZApp
 import okhttp3.Interceptor
@@ -63,12 +63,11 @@ class RestClient {
     private val pixivOkHttpClient: OkHttpClient by lazy {
         val builder = OkHttpClient.Builder()
         builder.addInterceptor(object : Interceptor {
-            @Throws(IOException::class)
             override fun intercept(chain: Interceptor.Chain): Response {
                 val original = chain.request()
                 val requestBuilder = original.newBuilder()
                     .addHeader("Accept-Language", "${local.language}_${local.country}")
-                        .removeHeader("User-Agent")
+                    .removeHeader("User-Agent")
                     .addHeader(
                         "User-Agent",
                         "PixivAndroidApp/5.0.155 (Android ${android.os.Build.VERSION.RELEASE}; ${android.os.Build.MODEL})"
@@ -76,8 +75,14 @@ class RestClient {
                 val request = requestBuilder.build()
                 return chain.proceed(request)
             }
+
+
         })
-        if (!PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance).getBoolean("disableproxy", false)) {
+        if (!PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance).getBoolean(
+                "disableproxy",
+                false
+            )
+        ) {
             builder.sslSocketFactory(RubySSLSocketFactory(), object : X509TrustManager {
                 override fun checkClientTrusted(p0: Array<out X509Certificate>?, p1: String?) {
                 }
@@ -103,12 +108,12 @@ class RestClient {
                 override fun intercept(chain: Interceptor.Chain): Response {
                     val original = chain.request()
                     val requestBuilder = original.newBuilder()
-                            .removeHeader("User-Agent")
+                        .removeHeader("User-Agent")
                         .addHeader(
                             "User-Agent",
                             "PixivAndroidApp/5.0.155 (Android ${android.os.Build.VERSION.RELEASE}; ${android.os.Build.MODEL})"
                         )
-                            .addHeader("referer", "https://app-api.pixiv.net/")
+                        .addHeader("referer", "https://app-api.pixiv.net/")
                     val request = requestBuilder.build()
                     return chain.proceed(request)
                 }
@@ -118,38 +123,38 @@ class RestClient {
 
 
     private val gson = GsonBuilder()
-            .create()
+        .create()
     val retrofitAppApi: Retrofit
         get() {
             return Retrofit.Builder()
-                    .baseUrl("https://app-api.pixiv.net")
-                    .client(okHttpClient)
-                    .addConverterFactory(GsonConverterFactory.create(gson))
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .build()
+                .baseUrl("https://app-api.pixiv.net")
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
         }
 
     val pixivisionAppApi: Retrofit
         get() {
             return Retrofit.Builder()
-                    .baseUrl("https://app-api.pixiv.net/")
-                    .client(pixivOkHttpClient)
-                    .addConverterFactory(GsonConverterFactory.create(gson))
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .build()
+                .baseUrl("https://app-api.pixiv.net/")
+                .client(pixivOkHttpClient)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
         }
 
     val retrofitAccount: Retrofit
         get() {
             return Retrofit.Builder()
-                    .baseUrl("https://accounts.pixiv.net/")
-                    .client(okHttpClient)
-                    .addConverterFactory(GsonConverterFactory.create(gson))
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .build()
+                .baseUrl("https://accounts.pixiv.net/")
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
         }
     private val HashSalt =
-            "28c1fdd170a5204386cb1313c7077b34f83e4aaf4aa829ce78c231e05b0bae2c"
+        "28c1fdd170a5204386cb1313c7077b34f83e4aaf4aa829ce78c231e05b0bae2c"
 
     fun encode(text: String): String {
         try {
@@ -174,39 +179,47 @@ class RestClient {
 
     private val okHttpClient: OkHttpClient
         get() {
-            val httpLoggingInterceptor = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
-                override fun log(message: String) = Logger.t("HttpLoggingInterceptor").d(message)
-            }).apply {
-                level =
-                    if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
-            }
+            val httpLoggingInterceptor =
+                HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
+                    override fun log(message: String) {
+                        Log.d("GlideInterceptor", message)
+                    }
+                }).apply {
+                    level =
+                        if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+                }
             val builder = OkHttpClient.Builder()
 
             builder.addInterceptor(object : Interceptor {
 
                 @Throws(IOException::class)
                 override fun intercept(chain: Interceptor.Chain): Response {
-                    val ISO8601DATETIMEFORMAT = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ", local)
+                    val ISO8601DATETIMEFORMAT =
+                        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ", local)
                     val isoDate = ISO8601DATETIMEFORMAT.format(Date())
                     val original = chain.request()
                     val requestBuilder = original.newBuilder()
-                            .removeHeader("User-Agent")
+                        .removeHeader("User-Agent")
                         .addHeader(
                             "User-Agent",
                             "PixivAndroidApp/5.0.155 (Android ${android.os.Build.VERSION.RELEASE}; ${android.os.Build.MODEL})"
                         )
                         .addHeader("Accept-Language", "${local.language}_${local.country}")
-                            .addHeader("App-OS", "Android")
-                            .addHeader("App-OS-Version", "${android.os.Build.VERSION.RELEASE}")
-                            .header("App-Version", "5.0.166")
-                            .addHeader("X-Client-Time", isoDate)
-                            .addHeader("X-Client-Hash", encode("$isoDate$HashSalt"))
+                        .addHeader("App-OS", "Android")
+                        .addHeader("App-OS-Version", "${android.os.Build.VERSION.RELEASE}")
+                        .header("App-Version", "5.0.166")
+                        .addHeader("X-Client-Time", isoDate)
+                        .addHeader("X-Client-Hash", encode("$isoDate$HashSalt"))
                     val request = requestBuilder.build()
                     return chain.proceed(request)
                 }
             })
-                    .addInterceptor(httpLoggingInterceptor)
-            if (!PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance).getBoolean("disableproxy", false)) {
+                .addInterceptor(httpLoggingInterceptor)
+            if (!PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance).getBoolean(
+                    "disableproxy",
+                    false
+                )
+            ) {
                 builder.sslSocketFactory(RubySSLSocketFactory(), object : X509TrustManager {
                     override fun checkClientTrusted(p0: Array<out X509Certificate>?, p1: String?) {
                     }
@@ -221,26 +234,26 @@ class RestClient {
                 builder.dns(RubyHttpDns())
             }
             return builder
-                    .build()
+                .build()
         }
 
 
     fun getRetrofitGIF(): Retrofit {
         return Retrofit.Builder()
-                .baseUrl("https://oauth.secure.pixiv.net/")
-                .client(imageHttpClient)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build()
+            .baseUrl("https://oauth.secure.pixiv.net/")
+            .client(imageHttpClient)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
     }
 
     fun getRetrofitOauthSecure(): Retrofit {
         return Retrofit.Builder()
-                .baseUrl("https://oauth.secure.pixiv.net/")
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build()
+            .baseUrl("https://oauth.secure.pixiv.net/")
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
     }
 
 

@@ -44,7 +44,7 @@ class HeaderLoaderFactory : ModelLoaderFactory<String, InputStream> {
 
 class OkHttpUrlLoader(concreteLoader: ModelLoader<GlideUrl, InputStream>, modelCache: ModelCache<String, GlideUrl>) : BaseGlideUrlLoader<String>(concreteLoader, modelCache) {
     override fun getUrl(model: String, width: Int, height: Int, options: Options?): String {
-        return model
+        return model.replace("https", "http")
     }
 
     override fun handles(model: String): Boolean {

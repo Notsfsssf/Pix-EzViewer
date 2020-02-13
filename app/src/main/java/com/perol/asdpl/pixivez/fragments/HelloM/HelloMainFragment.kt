@@ -30,6 +30,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.ViewPager
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.viewpager.HelloMRecomViewPager
 import kotlinx.android.synthetic.main.fragment_hello_main.*
@@ -66,9 +67,8 @@ class HelloMainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_hello_main, container, false)
 
-        return view
+        return inflater.inflate(R.layout.fragment_hello_main, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -76,17 +76,7 @@ class HelloMainFragment : Fragment() {
         viewpager.adapter =
             HelloMRecomViewPager(this, childFragmentManager)
         tablayout.setupWithViewPager(viewpager)
-/*        TabLayoutMediator(tablayout, viewpager) { tab, position ->
-            tab.text = when (position) {
-                0 -> {
-                    getString(R.string.illust)
-                }
-                else -> {
-                    getString(R.string.painter)
-                }
-            }
-            viewpager.setCurrentItem(tab.position, true)
-        }.attach()*/
+
     }
 
     companion object {
