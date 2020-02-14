@@ -22,7 +22,7 @@
  * SOFTWARE
  */
 
-package com.perol.asdpl.pixivez.fragments.HelloM
+package com.perol.asdpl.pixivez.fragments.hellom
 
 
 import android.app.DatePickerDialog

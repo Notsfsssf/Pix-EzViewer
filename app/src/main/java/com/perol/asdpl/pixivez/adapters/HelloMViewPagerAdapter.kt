@@ -27,9 +27,9 @@ package com.perol.asdpl.pixivez.adapters
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.perol.asdpl.pixivez.fragments.HelloM.HelloMDynamicsFragment
-import com.perol.asdpl.pixivez.fragments.HelloM.HelloMThFragment
-import com.perol.asdpl.pixivez.fragments.HelloM.HelloMainFragment
+import com.perol.asdpl.pixivez.fragments.hellom.HelloMDynamicsFragment
+import com.perol.asdpl.pixivez.fragments.hellom.HelloMThFragment
+import com.perol.asdpl.pixivez.fragments.hellom.HelloMainFragment
 
 class HelloMViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {

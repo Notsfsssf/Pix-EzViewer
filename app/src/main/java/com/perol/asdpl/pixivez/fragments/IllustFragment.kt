@@ -35,6 +35,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.tabs.TabLayout
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.RecommendAdapter
 import com.perol.asdpl.pixivez.dialog.SearchSectionDialog
@@ -92,6 +93,7 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
 
     }
 
+    var exitTime = 0L
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val searchtext = activity!!.findViewById<TextView>(R.id.searchtext)
@@ -158,6 +160,16 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
         }
         val spinner: Spinner = activity!!.findViewById<Spinner>(R.id.spinner_result)
         spinner.onItemSelectedListener = this
+        requireActivity().findViewById<TabLayout>(R.id.tablayout_searchresult)?.getTabAt(0)
+            ?.view?.setOnClickListener {
+            if ((System.currentTimeMillis() - exitTime) > 3000) {
+
+                exitTime = System.currentTimeMillis()
+            } else {
+                recyclerview_illust.smoothScrollToPosition(0)
+            }
+
+        }
     }
 
     private val starnum = intArrayOf(50000, 30000, 20000, 10000, 5000, 1000, 500, 250, 100, 0)
@@ -200,7 +212,7 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
     }
 
 
-    fun lazyLoad() {
+    private fun lazyLoad() {
         viewModel = ViewModelProviders.of(this).get(IllustfragmentViewModel::class.java)
 
         viewModel.illusts.observe(this, Observer {
@@ -213,7 +225,7 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
             nexturl(it)
         })
         viewModel.bookmarkid.observe(this, Observer {
-            changetoblue(it)
+            changeToBlue(it)
         })
         viewModel.isRefresh.observe(this, Observer {
             swiperefresh.isRefreshing = it
@@ -227,7 +239,7 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
     }
 
     private var position: Int? = null
-    private fun changetoblue(it: Long?) {
+    private fun changeToBlue(it: Long?) {
         if (it != null) {
             val item = searchIllustAdapter.getViewByPosition(
                 recyclerview_illust,
@@ -235,7 +247,7 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
                 R.id.linearlayout_isbookmark
             ) as LinearLayout
             item.setBackgroundColor(Color.YELLOW)
-            Toasty.success(activity!!.applicationContext, "收藏成功", Toast.LENGTH_SHORT).show()
+            Toasty.success(requireActivity(), "收藏成功", Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -28,19 +28,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.perol.asdpl.pixivez.R
-import com.perol.asdpl.pixivez.fragments.HelloM.HelloMRecommandFragment
-import com.perol.asdpl.pixivez.fragments.HelloM.HelloRecomUserFragment
+import com.perol.asdpl.pixivez.fragments.hellom.HelloMRecommendFragment
+import com.perol.asdpl.pixivez.fragments.hellom.HelloRecomUserFragment
 
 
 class HelloMRecomViewPager(var context: Fragment, fragmentManager: FragmentManager) :
     FragmentStatePagerAdapter(
         fragmentManager,
-        FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+        BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
     ) {
 
 
     override fun getItem(position: Int) = when (position) {
-        0 -> HelloMRecommandFragment.newInstance("", "");
+        0 -> HelloMRecommendFragment.newInstance("", "");
         else -> HelloRecomUserFragment.newInstance("", "");
     }
 

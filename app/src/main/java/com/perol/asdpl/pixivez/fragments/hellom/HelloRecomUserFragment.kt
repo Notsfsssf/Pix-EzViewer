@@ -22,7 +22,7 @@
  * SOFTWARE
  */
 
-package com.perol.asdpl.pixivez.fragments.HelloM
+package com.perol.asdpl.pixivez.fragments.hellom
 
 
 import android.os.Bundle
@@ -40,9 +40,6 @@ import com.perol.asdpl.pixivez.viewmodel.HelloRecomUserViewModel
 import kotlinx.android.synthetic.main.fragment_recom_user.*
 
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 /**
  * A simple [Fragment] subclass.
  * Use the [HelloRecomUserFragment.newInstance] factory method to
@@ -55,7 +52,7 @@ class HelloRecomUserFragment : LazyV4Fragment() {
     }
 
     var viewmodel: HelloRecomUserViewModel? = null
-    fun lazyLoad() {
+    private fun lazyLoad() {
 
         viewmodel!!.adddata.observe(this, Observer {
             if (it != null) {
@@ -79,15 +76,9 @@ class HelloRecomUserFragment : LazyV4Fragment() {
 
     }
 
-    private var param1: String? = null
-    private var param2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
         viewmodel = ViewModelProviders.of(this).get(HelloRecomUserViewModel::class.java)
         lazyLoad()
     }
@@ -109,8 +100,10 @@ class HelloRecomUserFragment : LazyV4Fragment() {
 
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_recom_user, container, false)
     }
 
@@ -126,11 +119,6 @@ class HelloRecomUserFragment : LazyV4Fragment() {
          */
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-                HelloRecomUserFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
-                    }
-                }
+            HelloRecomUserFragment()
     }
 }

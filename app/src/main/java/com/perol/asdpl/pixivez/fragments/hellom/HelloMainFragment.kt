@@ -22,7 +22,7 @@
  * SOFTWARE
  */
 
-package com.perol.asdpl.pixivez.fragments.HelloM
+package com.perol.asdpl.pixivez.fragments.hellom
 
 
 import android.os.Bundle
@@ -30,7 +30,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.ViewPager
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.viewpager.HelloMRecomViewPager
 import kotlinx.android.synthetic.main.fragment_hello_main.*

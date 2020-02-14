@@ -45,9 +45,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import com.perol.asdpl.pixivez.R
-import com.perol.asdpl.pixivez.fragments.HelloM.HelloMDynamicsFragment
-import com.perol.asdpl.pixivez.fragments.HelloM.HelloMThFragment
-import com.perol.asdpl.pixivez.fragments.HelloM.HelloMainFragment
+import com.perol.asdpl.pixivez.fragments.hellom.HelloMDynamicsFragment
+import com.perol.asdpl.pixivez.fragments.hellom.HelloMThFragment
+import com.perol.asdpl.pixivez.fragments.hellom.HelloMainFragment
 import com.perol.asdpl.pixivez.objects.ThemeUtil
 import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.services.GlideApp

@@ -28,7 +28,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.perol.asdpl.pixivez.R
-import com.perol.asdpl.pixivez.fragments.HelloM.RankingMFragment
+import com.perol.asdpl.pixivez.fragments.hellom.RankingMFragment
 
 class RankingMAdapter(var fragment: Fragment, fragmentManager: FragmentManager) :
     FragmentPagerAdapter(
@@ -40,7 +40,7 @@ class RankingMAdapter(var fragment: Fragment, fragmentManager: FragmentManager) 
         , "day_male_r18", "day_female_r18", "week_r18", "week_r18g"
     )
 
-    override fun getItem(position: Int) = RankingMFragment.newInstance(modelist[position])
+    override fun getItem(position: Int) = RankingMFragment.newInstance(modelist[position], position)
 
     override fun getCount() = modelist.size
     override fun getPageTitle(position: Int) =

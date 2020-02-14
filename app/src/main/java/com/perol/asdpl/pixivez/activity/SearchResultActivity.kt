@@ -61,7 +61,7 @@ class SearchResultActivity : RinkActivity() {
         } else {
             "1"
         }
-        initview()
+        initView()
 
     }
 
@@ -75,15 +75,8 @@ class SearchResultActivity : RinkActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun initdata() {
 
-    }
-
-    private fun initlisen() {
-
-    }
-
-    private fun initview() {
+    private fun initView() {
 
         tablayout_searchresult.setupWithViewPager(viewpage_searchresult)
         arrayList.add(IllustFragment.newInstance(searchword))

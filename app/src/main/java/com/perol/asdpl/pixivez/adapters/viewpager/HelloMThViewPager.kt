@@ -28,7 +28,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.perol.asdpl.pixivez.R
-import com.perol.asdpl.pixivez.fragments.HelloM.HelloMMyFragment
+import com.perol.asdpl.pixivez.fragments.hellom.HelloMMyFragment
 import com.perol.asdpl.pixivez.fragments.IllustratorFragment
 
 class HelloMThViewPager(var fragment: Fragment, fragmentManager: FragmentManager, var long: Long) :

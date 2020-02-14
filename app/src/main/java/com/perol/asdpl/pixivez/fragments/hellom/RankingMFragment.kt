@@ -22,21 +22,24 @@
  * SOFTWARE
  */
 
-package com.perol.asdpl.pixivez.fragments.HelloM
+package com.perol.asdpl.pixivez.fragments.hellom
 
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.tabs.TabLayout
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.RankingAdapter
 import com.perol.asdpl.pixivez.objects.LazyV4Fragment
+import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.viewmodel.RankingMViewModel
 import com.perol.asdpl.pixivez.viewmodel.factory.RankingShareViewModel
 import kotlinx.android.synthetic.main.fragment_ranking_m.*
@@ -45,6 +48,7 @@ import java.util.*
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -60,6 +64,7 @@ class RankingMFragment : LazyV4Fragment() {
     var sharemodel: RankingShareViewModel? = null
     lateinit var rankingAdapter: RankingAdapter
     private var param1: String? = null
+    private var param2: Int? = null
     override fun loadData() {
 
         viewmodel!!.first(param1!!, picDate)
@@ -105,6 +110,7 @@ class RankingMFragment : LazyV4Fragment() {
         })
     }
 
+    var exitTime = 0L
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         swiperefresh_rankingm.setOnRefreshListener {
@@ -117,12 +123,23 @@ class RankingMFragment : LazyV4Fragment() {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             adapter = rankingAdapter
         }
+        parentFragment?.view?.findViewById<TabLayout>(R.id.tablayout_rankingm)?.getTabAt(param2!!)
+            ?.view?.setOnClickListener {
+            if ((System.currentTimeMillis() - exitTime) > 3000) {
+
+                exitTime = System.currentTimeMillis()
+            } else {
+                recyclerview_rankingm.smoothScrollToPosition(0)
+            }
+
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
+            param2 = it.getInt(ARG_PARAM2)
         }
         lazyLoad()
     }
@@ -150,11 +167,11 @@ class RankingMFragment : LazyV4Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String) =
+        fun newInstance(param1: String, position: Int) =
             RankingMFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
-
+                    putInt(ARG_PARAM2, position)
                 }
             }
     }

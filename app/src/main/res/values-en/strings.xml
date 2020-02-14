@@ -255,4 +255,5 @@
     <string name="create_separate_folder">create separate folder</string>
     <string name="refresh_token">refresh token</string>
     <string name="translate">Translate</string>
+    <string name="back_to_the_top">Double-click back to the top</string>
 </resources>

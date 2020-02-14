@@ -30,15 +30,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.tabs.TabLayout
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.RecommendAdapter
 import com.perol.asdpl.pixivez.dialog.TagsShowDialog
 import com.perol.asdpl.pixivez.objects.LazyV4Fragment
+import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.viewmodel.UserBookMarkViewModel
 import kotlinx.android.synthetic.main.fragment_user_book_mark.*
 
@@ -71,6 +74,7 @@ class UserBookMarkFragment : LazyV4Fragment(), TagsShowDialog.Callback {
         }.subscribe()
     }
 
+    var exitTime = 0L
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mrecyclerview.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
@@ -81,6 +85,16 @@ class UserBookMarkFragment : LazyV4Fragment(), TagsShowDialog.Callback {
 
         mrefreshlayout.setOnRefreshListener {
             viewmodel!!.onRefreshListener(param1!!, pub, null)
+        }
+        requireActivity().findViewById<TabLayout>(R.id.mtablayout)?.getTabAt(2)
+            ?.view?.setOnClickListener {
+            if ((System.currentTimeMillis() - exitTime) > 3000) {
+
+                exitTime = System.currentTimeMillis()
+            } else {
+                mrecyclerview.smoothScrollToPosition(0)
+            }
+
         }
     }
 
