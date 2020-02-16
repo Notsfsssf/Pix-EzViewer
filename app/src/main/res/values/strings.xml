@@ -197,7 +197,7 @@
     <string name="pref_language">语言</string>
     <string name="themecoloful">主题样式</string>
     <string name="setting">设置</string>
-    <string name="savesuccess">保存图片成功!</string>
+    <string name="savesuccess">保存成功!</string>
     <string name="alreadysaved">图片已存在</string>
     <string name="registerclose">应用内注册入口已关闭，请自行前往Pixiv官网注册</string>
     <string name="nodiscribe">没有说明哦~</string>
@@ -295,4 +295,6 @@
     <string name="refresh_token">刷新token</string>
     <string name="translate">翻译</string>
     <string name="back_to_the_top">双击回顶</string>
+    <string name="savefail">保存失败</string>
+    <string name="add_to_block_tag_list">添加到屏蔽标签列表</string>
 </resources>

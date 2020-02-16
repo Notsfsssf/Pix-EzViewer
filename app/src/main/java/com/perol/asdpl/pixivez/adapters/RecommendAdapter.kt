@@ -55,8 +55,6 @@ import android.util.Pair as UtilPair
 
 class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on: Boolean) :
     BaseQuickAdapter<Illust, BaseViewHolder>(layoutResId, data) {
-    val retrofit = RetrofitRepository.getInstance()
-
     init {
         this.openLoadAnimation(SCALEIN)
         this.onItemClickListener = OnItemClickListener { adapter, view, position ->
@@ -67,13 +65,11 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
                 illustlist[i] = this.data[i].id
             }
             bundle.putLongArray("illustlist", illustlist)
-//            bundle.putParcelable(this.data[position].id.toString(), this.data[position])  //容易造成memory leak,而且会导致收藏与未收藏的问题
             val intent = Intent(mContext, PictureActivity::class.java)
             intent.putExtras(bundle)
             if (PxEZApp.animationEnable) {
                 val mainimage = view!!.findViewById<View>(R.id.item_img)
                 val title = view.findViewById<View>(R.id.title)
-
                 val options = ActivityOptions.makeSceneTransitionAnimation(
                     mContext as Activity,
                     UtilPair.create(
@@ -93,7 +89,8 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
 
     override fun convert(helper: BaseViewHolder, item: Illust) {
         val typedValue = TypedValue();
-        mContext.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
+        mContext.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
+
         val colorPrimary = typedValue.resourceId;
         helper.setText(R.id.title, item.title).setTextColor(
             R.id.like, if (item.is_bookmarked) {
@@ -107,6 +104,7 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
             }
             .setOnClickListener(R.id.like) { v ->
                 val textView = v as Button
+                val retrofit = RetrofitRepository.getInstance()
                 if (item.is_bookmarked) {
                     retrofit.postUnlikeIllust(item.id).subscribe({
                         textView.setTextColor(ContextCompat.getColor(mContext, colorPrimary))
@@ -114,7 +112,6 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
                     }, {}, {})
                 } else {
                     retrofit.postLikeIllust(item.id)!!.subscribe({
-
                         textView.setTextColor(
                             Color.YELLOW
                         )
@@ -186,7 +183,6 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
 
             }
         } else {
-
             GlideApp.with(imageView.context).load(loadurl).transition(withCrossFade())
                 .placeholder(R.color.white)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)

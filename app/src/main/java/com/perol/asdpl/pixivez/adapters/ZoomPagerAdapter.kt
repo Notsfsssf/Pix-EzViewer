@@ -32,8 +32,10 @@ import android.net.Uri
 import android.os.AsyncTask
 import android.util.DisplayMetrics
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.PagerAdapter
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.davemorrissey.labs.subscaleview.ImageSource
@@ -97,6 +99,7 @@ class ZoomPagerAdapter(
 
                             }
                             negativeButton(android.R.string.cancel)
+                            lifecycleOwner((context as AppCompatActivity))
                         }
                     }
                 }

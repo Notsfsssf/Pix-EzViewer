@@ -99,7 +99,8 @@ class PictureXFragment : LazyV4Fragment() {
                 if (it.illust.meta_pages.isNotEmpty())
                     position = it.illust.meta_pages.size
                 else position = 1
-                pictureXAdapter = PictureXAdapter(pictureXViewModel, it.illust, activity!!).also {
+                pictureXAdapter =
+                    PictureXAdapter(pictureXViewModel, it.illust, requireContext()).also {
                     it.setListener {
                         //                        activity?.supportStartPostponedEnterTransition()
                         if (!hasMoved) {

@@ -232,7 +232,7 @@ class Works {
                             }
                             Toasty.success(
                                 PxEZApp.instance,
-                                PxEZApp.instance.resources.getString(R.string.savesuccess),
+                                "${title}${PxEZApp.instance.resources.getString(R.string.savesuccess)}",
                                 Toast.LENGTH_SHORT
                             ).show()
                             val path = workInfo.outputData.getString("path")
@@ -249,9 +249,11 @@ class Works {
 
                                 }
                         } else if (workInfo.state == WorkInfo.State.FAILED) {
-
+                            Toasty.error(
+                                PxEZApp.instance,
+                                "${title}${PxEZApp.instance.resources.getString(R.string.savefail)}"
+                            ).show()
                         } else if (workInfo.state == WorkInfo.State.CANCELLED) {
-
                             val file = File(PxEZApp.storepath, filename)
                             file.delete()
                         }

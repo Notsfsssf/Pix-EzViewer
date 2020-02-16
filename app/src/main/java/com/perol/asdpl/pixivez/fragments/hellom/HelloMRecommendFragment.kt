@@ -77,31 +77,33 @@ class HelloMRecommendFragment : LazyV4Fragment() {
     override fun loadData() {
         swiperefresh_recom.isRefreshing = true
         viewmodel.firstRxGet().subscribe({
+            viewmodel.getBanner().subscribe(
+                {
+                    val arrayList = ArrayList<String>()
+                    it.spotlight_articles.map {
+                        arrayList.add(it.thumbnail)
+                    }
+                    banner.setDelayTime(3800);
+                    banner.setImages(arrayList)
+                    banner.setOnBannerListener {
+                        startActivity(
+                            Intent(
+                                activity!!.applicationContext,
+                                PixivsionActivity::class.java
+                            )
+                        )
+                    }
+                    banner.start()
+                }, {}, {}
+            ).add()
             nextUrl = it.next_url
             swiperefresh_recom.isRefreshing = false
             rankingAdapter.setNewData(it.illusts)
+
         }, {
             swiperefresh_recom.isRefreshing = false
         }, {}).add()
-        viewmodel.getBanner().subscribe(
-            {
-                val arrayList = ArrayList<String>()
-                it.spotlight_articles.map {
-                    arrayList.add(it.thumbnail)
-                }
-                banner.setDelayTime(3800);
-                banner.setImages(arrayList)
-                banner.setOnBannerListener {
-                    startActivity(
-                        Intent(
-                            activity!!.applicationContext,
-                            PixivsionActivity::class.java
-                        )
-                    )
-                }
-                banner.start()
-            }, {}, {}
-        ).add()
+
     }
 
     lateinit var rankingAdapter: RecommendAdapter

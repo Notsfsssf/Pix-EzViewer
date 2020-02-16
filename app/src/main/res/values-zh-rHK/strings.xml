@@ -197,7 +197,7 @@
     <string name="pref_language">語言</string>
     <string name="themecoloful">主題樣式</string>
     <string name="setting">設定</string>
-    <string name="savesuccess">儲存圖像成功!</string>
+    <string name="savesuccess">儲存成功!</string>
     <string name="alreadysaved">圖像已存在</string>
     <string name="registerclose">應用內註冊入口已關閉，請自行前往官網註冊</string>
     <string name="nodiscribe">沒有說明哦~</string>
@@ -271,4 +271,6 @@
     <string name="refresh_token">刷新token</string>
     <string name="translate">翻譯</string>
     <string name="back_to_the_top">双击回顶</string>
+    <string name="savefail">保存失败</string>
+    <string name="add_to_block_tag_list">添加到屏蔽标签列表</string>
 </resources>

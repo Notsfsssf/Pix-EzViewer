@@ -256,4 +256,6 @@
     <string name="refresh_token">refresh token</string>
     <string name="translate">Translate</string>
     <string name="back_to_the_top">Double-click back to the top</string>
+    <string name="savefail">save fail</string>
+    <string name="add_to_block_tag_list">Add to block tag list</string>
 </resources>

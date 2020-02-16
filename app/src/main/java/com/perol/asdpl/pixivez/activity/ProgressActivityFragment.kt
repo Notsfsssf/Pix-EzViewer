@@ -259,11 +259,6 @@ class ProgressActivityFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity!!)
             adapter = progressAdapter
         }
-//        val allData = WorkManager.getInstance(activity!!).getWorkInfosByTag("image")
-//        val mutableList = allData.get()
-//        if (mutableList != null && mutableList.size > 0) {
-//            progressAdapter.setNewData(ArrayList(mutableList))
-//        }
         WorkManager.getInstance(activity!!).getWorkInfosByTagLiveData("image")
             .observe(this, Observer {
                 it.sortByDescending {

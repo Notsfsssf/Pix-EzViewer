@@ -74,7 +74,7 @@ class UserBookMarkFragment : LazyV4Fragment(), TagsShowDialog.Callback {
         }.subscribe()
     }
 
-    var exitTime = 0L
+    private var exitTime = 0L
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mrecyclerview.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)

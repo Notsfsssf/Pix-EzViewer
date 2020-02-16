@@ -53,6 +53,8 @@ import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -71,6 +73,7 @@ import com.perol.asdpl.pixivez.activity.SearchResultActivity
 import com.perol.asdpl.pixivez.activity.UserMActivity
 import com.perol.asdpl.pixivez.activity.ZoomActivity
 import com.perol.asdpl.pixivez.databinding.ViewPicturexDetailBinding
+import com.perol.asdpl.pixivez.fragments.PictureXFragment
 import com.perol.asdpl.pixivez.objects.TToast
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.responses.Illust
@@ -78,6 +81,8 @@ import com.perol.asdpl.pixivez.responses.Tag
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.services.Works
+import com.perol.asdpl.pixivez.sql.AppDatabase
+import com.perol.asdpl.pixivez.sql.entity.BlockTagEntity
 import com.perol.asdpl.pixivez.viewmodel.PictureXViewModel
 import com.perol.asdpl.pixivez.viewmodel.ProgressInfo
 import com.shehuan.niv.NiceImageView
@@ -88,6 +93,7 @@ import com.zhy.view.flowlayout.TagFlowLayout
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.extensions.LayoutContainer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -96,13 +102,18 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data: Illust, var mContext: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PictureXAdapter(
+    private val pictureXViewModel: PictureXViewModel,
+    private val data: Illust,
+    private val mContext: Context
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val imageUrls = ArrayList<String>()
     lateinit var mListen: () -> Unit
     lateinit var mViewCommentListen: () -> Unit
     lateinit var mUserPicLongClick: () -> Unit
     fun setUserPicLongClick(listener: () -> Unit) {
         this.mUserPicLongClick = listener
+
     }
 
     fun setListener(listener: () -> Unit) {
@@ -114,8 +125,11 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
     }
 
     init {
-        when (PreferenceManager.getDefaultSharedPreferences(mContext).getString("quality", "0")?.toInt()
-                ?: 0) {
+        when (PreferenceManager.getDefaultSharedPreferences(mContext).getString(
+            "quality",
+            "0"
+        )?.toInt()
+            ?: 0) {
             0 -> {
                 if (data.meta_pages.isEmpty()) {
                     imageUrls.add(data.image_urls.medium)
@@ -148,14 +162,23 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
     class FisrtDetailViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
-    class DetailViewHolder(var binding: ViewPicturexDetailBinding) : RecyclerView.ViewHolder(binding.root) {
+    class DetailViewHolder(
+        var binding: ViewPicturexDetailBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
         private val tagFlowLayout = itemView.findViewById<TagFlowLayout>(R.id.tagflowlayout)
         private val captionTextView = itemView.findViewById<TextView>(R.id.textview_caption)
         private val btnTranslate = itemView.findViewById<TextView>(R.id.btn_translate)
         private val viewCommentTextView = itemView.findViewById<TextView>(R.id.textview_viewcomment)
         private val imageView = itemView.findViewById<NiceImageView>(R.id.imageView5)
-        private val imageButtonDownload = itemView.findViewById<ImageButton>(R.id.imagebutton_download)
-        fun updateWithPage(mContext: Context, s: Illust, mViewCommentListen: () -> Unit, mUserPicLongClick: () -> Unit) {
+        private val imageButtonDownload =
+            itemView.findViewById<ImageButton>(R.id.imagebutton_download)
+
+        fun updateWithPage(
+            mContext: Context,
+            s: Illust,
+            mViewCommentListen: () -> Unit,
+            mUserPicLongClick: () -> Unit
+        ) {
             binding.illust = s
             captionTextView.autoLinkMask = Linkify.WEB_URLS
             val typedValue = TypedValue();
@@ -192,7 +215,7 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
             var componentPackageName = ""
             var componentName = ""
             var isGoogleTranslateEnabled = false
-            for (resolveInfo: ResolveInfo in mContext.getPackageManager().queryIntentActivities(
+            for (resolveInfo: ResolveInfo in mContext.packageManager.queryIntentActivities(
                 intent,
                 0
             )) {
@@ -227,21 +250,40 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
 
                 adapter = object : TagAdapter<Tag>(s.tags) {
                     override fun getView(parent: FlowLayout, position: Int, t: Tag): View {
-                        val tv = LayoutInflater.from(context).inflate(R.layout.picture_tag, parent, false)
+                        val tv = LayoutInflater.from(context)
+                            .inflate(R.layout.picture_tag, parent, false)
                         val name = tv.findViewById<TextView>(R.id.name)
-                        val translatename = tv.findViewById<TextView>(R.id.translated_name)
+                        val translateName = tv.findViewById<TextView>(R.id.translated_name)
                         name.text = "#${t.name} "
-
                         if (!t.translated_name.isNullOrBlank()) {
-                            translatename.visibility = View.VISIBLE
-                            translatename.text = t.translated_name
+                            translateName.visibility = View.VISIBLE
+                            translateName.text = t.translated_name
                         }
-                        if (t.name.equals("R-18") || t.name.equals("R-18G")) {
+                        if (t.name == "R-18" || t.name == "R-18G") {
                             name.setTextColor(Color.RED)
+                        }
+                        name.setOnLongClickListener {
+                            MaterialDialog(mContext).show {
+                                title(R.string.add_to_block_tag_list)
+                                negativeButton(android.R.string.cancel)
+                                positiveButton(android.R.string.ok) {
+                                    AppDatabase.getInstance(PxEZApp.instance).blockTagDao().insert(
+                                        BlockTagEntity(
+                                            name = t.name,
+                                            translateName = "${t.translated_name}"
+                                        )
+                                    ).subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread()).doOnError { }
+                                        .doOnComplete { }
+                                }
+                                lifecycleOwner(binding.lifecycleOwner)
+                            }
+                            true
                         }
                         return tv
                     }
                 }
+
                 setOnTagClickListener { view, position, parent ->
                     val bundle = Bundle()
                     bundle.putString("searchword", s.tags[position].name)
@@ -274,26 +316,30 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
 
             ITEM_TYPE.ITEM_TYPE_PICTURE.ordinal -> {
                 val view = LayoutInflater.from(parent.context)
-                        .inflate(R.layout.view_picturex_item, parent, false)
+                    .inflate(R.layout.view_picturex_item, parent, false)
                 return PictureViewHolder(view)
             }
             ITEM_TYPE.ITEM_TYPE_GIF.ordinal -> {
                 val view = LayoutInflater.from(parent.context)
-                        .inflate(R.layout.view_picturex_gif, parent, false)
+                    .inflate(R.layout.view_picturex_gif, parent, false)
                 return GifViewHolder(view)
             }
             ITEM_TYPE.ITEM_TYPE_BLANK.ordinal -> {
                 val view = LayoutInflater.from(parent.context)
-                        .inflate(R.layout.view_picturex_firstdetail, parent, false)
+                    .inflate(R.layout.view_picturex_firstdetail, parent, false)
                 return BlankViewHolder(view)
             }
             ITEM_TYPE.ITEM_TYPE_RELATIVE.ordinal -> {
                 val view = LayoutInflater.from(parent.context)
-                        .inflate(R.layout.view_picturex_relative, parent, false)
+                    .inflate(R.layout.view_picturex_relative, parent, false)
                 return RelativeHolder(view)
             }
             else -> {
-                val binding = ViewPicturexDetailBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                val binding = ViewPicturexDetailBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
                 return DetailViewHolder(binding)
             }
 
@@ -336,14 +382,26 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is PictureViewHolder) {
             val imageView = holder.itemView.findViewById<ImageView>(R.id.imageview_pic)
-            GlideApp.with(imageView).load(imageUrls[position]).placeholder(R.color.white).transition(withCrossFade()).listener(object : RequestListener<Drawable> {
+            GlideApp.with(imageView).load(imageUrls[position]).placeholder(R.color.white)
+                .transition(withCrossFade()).listener(object : RequestListener<Drawable> {
 
-                override fun onLoadFailed(e: GlideException?, model: Any, target: Target<Drawable>, isFirstResource: Boolean): Boolean {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any,
+                        target: Target<Drawable>,
+                        isFirstResource: Boolean
+                    ): Boolean {
                     mListen.invoke()
                     return false
                 }
 
-                override fun onResourceReady(resource: Drawable, model: Any, target: Target<Drawable>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        model: Any,
+                        target: Target<Drawable>,
+                        dataSource: DataSource,
+                        isFirstResource: Boolean
+                    ): Boolean {
                     if (position == 0) {
                         mListen.invoke()
                     }
@@ -370,7 +428,8 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                             data.meta_pages.map { ot ->
                                 list.add(ot.image_urls.original)
                             }
-                            val mSelectedItems = ArrayList<Int>()  // Where we track the selected items
+                            val mSelectedItems =
+                                ArrayList<Int>()  // Where we track the selected items
                             val builder = MaterialAlertDialogBuilder(mContext as Activity)
                             val showlist = ArrayList<String>()
                             for (i in list.indices) {
@@ -381,7 +440,37 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                                 boolean[i] = false
                             }
                             builder.setTitle(R.string.choice)
-                                    .setMultiChoiceItems(showlist.toTypedArray(), boolean
+                                .setMultiChoiceItems(
+                                    showlist.toTypedArray(), boolean
+                                ) { _, which, isChecked ->
+                                    if (isChecked) {
+                                        // If the user checked the item, add it to the selected items
+
+                                        mSelectedItems.add(which)
+                                    } else if (mSelectedItems.contains(which)) {
+                                        // Else, if the item is already in the array, remove it
+                                        mSelectedItems.remove(Integer.valueOf(which))
+                                    }
+                                }
+                                // Set the action buttons
+                                .setPositiveButton(android.R.string.ok) { dialog, id ->
+                                    TToast.startDownload(PxEZApp.instance)
+                                    mSelectedItems.map {
+                                        Works.imageDownloadOne(data, it)
+                                    }
+                                }
+                                .setNegativeButton(android.R.string.cancel) { dialog, id -> }
+                                .setNeutralButton("全选") { _, id ->
+                                    for (i in boolean.indices) {
+                                        boolean[i] = true
+                                    }
+
+                                    mSelectedItems.clear()
+                                    for (i in showlist.indices) {
+                                        mSelectedItems.add(i)
+                                    }
+                                    builder.setMultiChoiceItems(
+                                        showlist.toTypedArray(), boolean
                                     ) { _, which, isChecked ->
                                         if (isChecked) {
                                             // If the user checked the item, add it to the selected items
@@ -392,36 +481,8 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                                             mSelectedItems.remove(Integer.valueOf(which))
                                         }
                                     }
-                                    // Set the action buttons
-                                    .setPositiveButton(android.R.string.ok) { dialog, id ->
-                                        TToast.startDownload(PxEZApp.instance)
-                                        mSelectedItems.map {
-                                            Works.imageDownloadOne(data, it)
-                                        }
-                                    }
-                                    .setNegativeButton(android.R.string.cancel) { dialog, id -> }
-                                .setNeutralButton("全选") { _, id ->
-                                        for (i in boolean.indices) {
-                                            boolean[i] = true
-                                        }
-
-                                        mSelectedItems.clear()
-                                        for (i in showlist.indices) {
-                                            mSelectedItems.add(i)
-                                        }
-                                        builder.setMultiChoiceItems(showlist.toTypedArray(), boolean
-                                        ) { _, which, isChecked ->
-                                            if (isChecked) {
-                                                // If the user checked the item, add it to the selected items
-
-                                                mSelectedItems.add(which)
-                                            } else if (mSelectedItems.contains(which)) {
-                                                // Else, if the item is already in the array, remove it
-                                                mSelectedItems.remove(Integer.valueOf(which))
-                                            }
-                                        }
-                                        builder.create().show()
-                                    }
+                                    builder.create().show()
+                                }
 
                             val dialog = builder.create()
 
@@ -447,7 +508,7 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                         }
                     }
                     bundle.putStringArrayList("url", arrayList)
-                  bundle.putParcelable(
+                    bundle.putParcelable(
                         "illust",
                         pictureXViewModel.illustDetailResponse.value?.illust
                     )
@@ -466,7 +527,11 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
             imageViewGif = holder.itemView.findViewById(R.id.imageview_gif)
             imageViewGif!!.setOnLongClickListener {
                 if (progressBar?.visibility != View.VISIBLE) {
-                    Snackbar.make(imageViewGif!!, mContext.getString(R.string.encodegif), Snackbar.LENGTH_LONG).setAction(android.R.string.ok) { view ->
+                    Snackbar.make(
+                        imageViewGif!!,
+                        mContext.getString(R.string.encodegif),
+                        Snackbar.LENGTH_LONG
+                    ).setAction(android.R.string.ok) { view ->
                         if (!isEncoding) {
                             isEncoding = true
                             val file1 = File(path2)
@@ -490,12 +555,20 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
 
                                         }
                                         isEncoding = false
-                                        Toast.makeText(PxEZApp.instance, R.string.savegifsuccess, Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(
+                                            PxEZApp.instance,
+                                            R.string.savegifsuccess,
+                                            Toast.LENGTH_SHORT
+                                        ).show()
 
                                     }
                                 }, {
                                     isEncoding = false
-                                    Toast.makeText(PxEZApp.instance, R.string.savegifsuccesserr, Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        PxEZApp.instance,
+                                        R.string.savegifsuccesserr,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
 
                                 }, {
 
@@ -514,12 +587,20 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                                     ) { _, _ ->
                                     }
                                     isEncoding = false
-                                    Toast.makeText(PxEZApp.instance, R.string.savegifsuccess, Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        PxEZApp.instance,
+                                        R.string.savegifsuccess,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
 
                             }
                         } else {
-                            Toasty.info(PxEZApp.instance, "It's already going on", Toast.LENGTH_LONG).show()
+                            Toasty.info(
+                                PxEZApp.instance,
+                                "It's already going on",
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
                     }.show()
                 }
@@ -540,13 +621,18 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                     play.visibility = View.VISIBLE
                 }, {})
             }
-            GlideApp.with(imageViewGif!!).load(data.image_urls.medium).placeholder(R.color.white).transition(DrawableTransitionOptions.withCrossFade()).into(object : DrawableImageViewTarget(imageViewGif) {
+            GlideApp.with(imageViewGif!!).load(data.image_urls.medium).placeholder(R.color.white)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(object : DrawableImageViewTarget(imageViewGif) {
 
-                override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                    super.onResourceReady(resource, transition)
-                    mListen.invoke()
-                }
-            })
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        transition: Transition<in Drawable>?
+                    ) {
+                        super.onResourceReady(resource, transition)
+                        mListen.invoke()
+                    }
+                })
         } else if (holder is DetailViewHolder) {
 
             holder.updateWithPage(mContext, data, mViewCommentListen, mUserPicLongClick)
@@ -584,7 +670,12 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
                     val bitmap = BitmapFactory.decodeFile(listFiles[i].absolutePath)
 
                     if (i == 0) {
-                        gifEncoder.init(bitmap.width, bitmap.height, path, GifEncoder.EncodingType.ENCODING_TYPE_STABLE_HIGH_MEMORY)
+                        gifEncoder.init(
+                            bitmap.width,
+                            bitmap.height,
+                            path,
+                            GifEncoder.EncodingType.ENCODING_TYPE_STABLE_HIGH_MEMORY
+                        )
                     }
                     gifEncoder.encodeFrame(bitmap, duration)
                     Log.d("progressset", i.toString())
@@ -655,7 +746,8 @@ class PictureXAdapter(val pictureXViewModel: PictureXViewModel, private val data
         runBlocking {
             withContext(Dispatchers.IO) {
                 for (i in listFiles) {
-                    val bitmap = GlideApp.with(imageView).asBitmap().load(i).skipMemoryCache(true).submit(illustBean.width, illustBean.height).get()
+                    val bitmap = GlideApp.with(imageView).asBitmap().load(i).skipMemoryCache(true)
+                        .submit(illustBean.width, illustBean.height).get()
                     val drawable = BitmapDrawable(imageView.context.resources, bitmap)
                     animationDrawable!!.addFrame(drawable, duration)
                 }
