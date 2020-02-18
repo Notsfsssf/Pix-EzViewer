@@ -119,11 +119,7 @@ class UserMActivity : RinkActivity() {
                 }, {}))
 
                 binding.user = it
-                /*     GlideApp.with(this).asDrawable().load(viewmodel.userDetail.value!!.profile.background_image_url).into(object : SimpleTarget<Drawable>() {
-                         override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                             app_bar.background=resource
-                         }
-                     })*/
+
 
                 mviewpager.adapter = UserMPagerAdapter(
                     this, supportFragmentManager,

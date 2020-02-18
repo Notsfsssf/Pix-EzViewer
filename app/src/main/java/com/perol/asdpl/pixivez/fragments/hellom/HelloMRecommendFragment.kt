@@ -83,6 +83,7 @@ class HelloMRecommendFragment : BaseFragment() {
             blockTags = allTags.map {
                 it.name
             }
+            rankingAdapter.blockTags = blockTags
             rankingAdapter.notifyDataSetChanged()
         }
     }

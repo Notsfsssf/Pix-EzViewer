@@ -30,13 +30,13 @@
         android:icon="@drawable/ic_action_expand"
         android:title="share"
         android:visible="false"
-        app:iconTint="?android:textColorPrimaryInverse"
+        app:iconTint="?android:textColorPrimary"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_share"
         android:icon="@drawable/ic_action_share_black"
         android:title="share"
-        app:iconTint="?android:textColorPrimaryInverse"
+        app:iconTint="?android:textColorPrimary"
         app:showAsAction="ifRoom" />
 
 

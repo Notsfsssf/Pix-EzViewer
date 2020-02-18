@@ -58,17 +58,6 @@ class HelloMThFragment : Fragment() {
                 viewpager_hellomth.adapter =
                     HelloMThViewPager(this@HelloMThFragment, childFragmentManager, userid)
                 tablayout_hellomth.setupWithViewPager(viewpager_hellomth)
-/*                TabLayoutMediator(tablayout_hellomth, viewpager_hellomth) { tab, position ->
-                    tab.text = when (position) {
-                        0 -> {
-                            getString(R.string.new1)
-                        }
-                        else -> {
-                            getString(R.string.painter)
-                        }
-                    }
-                    viewpager_hellomth.setCurrentItem(tab.position, true)
-                }.attach()*/
             }
 
         }

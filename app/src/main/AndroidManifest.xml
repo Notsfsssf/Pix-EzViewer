@@ -16,6 +16,8 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppThemeBase">
+
+
         <activity android:name=".activity.BlockActivity"></activity>
         <activity android:name=".activity.NovelActivity" />
         <activity

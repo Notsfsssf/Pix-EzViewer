@@ -28,6 +28,8 @@ package com.perol.asdpl.pixivez.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.ContextMenu
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -65,12 +67,20 @@ class SearchResultActivity : RinkActivity() {
 
     }
 
+/*    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_search_block, menu)
+        return super.onCreateOptionsMenu(menu)
+    }*/
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item!!.itemId) {
             android.R.id.home -> {
                 this.finish() // back button
                 return true
             }
+            /*        R.id.action_bloctag->{
+                        startActivity(Intent(this, BlockActivity::class.java))
+                    }*/
         }
         return super.onOptionsItemSelected(item)
     }

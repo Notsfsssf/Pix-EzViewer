@@ -34,6 +34,7 @@ import android.util.Pair
 import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -53,7 +54,13 @@ import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.services.Works
 
 
-class RankingAdapter(layoutResId: Int, data: List<Illust>?, private val R18on: Boolean) : BaseQuickAdapter<Illust, BaseViewHolder>(layoutResId, data), BaseQuickAdapter.OnItemClickListener {
+class RankingAdapter(
+    layoutResId: Int,
+    data: List<Illust>?,
+    private val R18on: Boolean,
+    var blockTags: List<String>
+) : BaseQuickAdapter<Illust, BaseViewHolder>(layoutResId, data),
+    BaseQuickAdapter.OnItemClickListener {
 
 
     val retrofit = RetrofitRepository.getInstance()
@@ -66,7 +73,7 @@ class RankingAdapter(layoutResId: Int, data: List<Illust>?, private val R18on: B
             illustlist[i] = this.data[i].id
         }
         bundle.putLongArray("illustlist", illustlist)
-      //  bundle.putParcelable(this.data[position].id.toString(), this.data[position])
+        //  bundle.putParcelable(this.data[position].id.toString(), this.data[position])
         val intent = Intent(mContext, PictureActivity::class.java)
         intent.putExtras(bundle)
         if (PxEZApp.animationEnable) {
@@ -97,7 +104,34 @@ class RankingAdapter(layoutResId: Int, data: List<Illust>?, private val R18on: B
 
 
     override fun convert(helper: BaseViewHolder, item: Illust) {
-        val constraintLayout = helper.itemView.findViewById<ConstraintLayout>(R.id.constraintLayout_num)
+        val tags = item.tags.map {
+            it.name
+        }
+        var needBlock = false
+        for (i in blockTags) {
+            if (tags.contains(i)) {
+                needBlock = true
+                break
+            }
+        }
+
+        if (blockTags.isNotEmpty() && tags.isNotEmpty() && needBlock) {
+            helper.itemView.visibility = View.GONE
+            helper.itemView.layoutParams.apply {
+                height = 0
+                width = 0
+            }
+            return
+        } else {
+            helper.itemView.visibility = View.VISIBLE
+            helper.itemView.layoutParams.apply {
+                height = LinearLayout.LayoutParams.WRAP_CONTENT
+                width = LinearLayout.LayoutParams.MATCH_PARENT
+            }
+        }
+
+        val constraintLayout =
+            helper.itemView.findViewById<ConstraintLayout>(R.id.constraintLayout_num)
         val typedValue = TypedValue()
         mContext.getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
         val colorPrimary = typedValue.resourceId;
@@ -128,103 +162,112 @@ class RankingAdapter(layoutResId: Int, data: List<Illust>?, private val R18on: B
 
         }
         imageViewuser.setTag(R.id.tag_first, item.user.profile_image_urls.medium)
-        helper.setText(R.id.textview_title, item.title).setTextColor(R.id.textview_context, ContextCompat.getColor(mContext, colorPrimary))
+        helper.setText(R.id.textview_title, item.title)
+            .setTextColor(R.id.textview_context, ContextCompat.getColor(mContext, colorPrimary))
         helper.setText(R.id.textview_context, item.user.name)
-        helper.setTextColor(R.id.like, if (item.is_bookmarked) {
-            Color.YELLOW
-        } else {
-            ContextCompat.getColor(mContext, colorPrimary)
-        })
-                .setOnClickListener(R.id.save) {
-                    val illust = item
-                    Works.imageDownloadAll(illust)
-                }
-                .setOnLongClickListener(R.id.save) {
-                    Works.imageDownloadAll(item)
-                    true
-                }
-                .setOnClickListener(R.id.like) { v ->
-                    val textView = v as TextView
-                    if (item.is_bookmarked) {
-                        retrofit.postUnlikeIllust(item.id).subscribe({
-                            textView.setTextColor(ContextCompat.getColor(mContext, colorPrimary))
-                            item.is_bookmarked = false
-                        }, {}, {})
-                    } else {
-                        retrofit.postLikeIllust(item.id)!!.subscribe({
+        helper.setTextColor(
+            R.id.like, if (item.is_bookmarked) {
+                Color.YELLOW
+            } else {
+                ContextCompat.getColor(mContext, colorPrimary)
+            }
+        )
+            .setOnClickListener(R.id.save) {
+                val illust = item
+                Works.imageDownloadAll(illust)
+            }
+            .setOnLongClickListener(R.id.save) {
+                Works.imageDownloadAll(item)
+                true
+            }
+            .setOnClickListener(R.id.like) { v ->
+                val textView = v as TextView
+                if (item.is_bookmarked) {
+                    retrofit.postUnlikeIllust(item.id).subscribe({
+                        textView.setTextColor(ContextCompat.getColor(mContext, colorPrimary))
+                        item.is_bookmarked = false
+                    }, {}, {})
+                } else {
+                    retrofit.postLikeIllust(item.id)!!.subscribe({
 
-                            textView.setTextColor(Color.YELLOW)
-                            item.is_bookmarked = true
-                        }, {}, {})
+                        textView.setTextColor(Color.YELLOW)
+                        item.is_bookmarked = true
+                    }, {}, {})
+                }
+            }
+
+
+        GlideApp.with(imageViewuser.context).load(item.user.profile_image_urls.medium).circleCrop()
+            .into(object : ImageViewTarget<Drawable>(imageViewuser) {
+                override fun setResource(resource: Drawable?) {
+                    imageViewuser.setImageDrawable(resource)
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable,
+                    transition: Transition<in Drawable>?
+                ) {
+                    if (item.user.profile_image_urls.medium === imageViewuser.getTag(R.id.tag_first)) {
+                        super.onResourceReady(resource, transition)
+
                     }
                 }
+            })
 
 
-        GlideApp.with(imageViewuser.context).load(item.user.profile_image_urls.medium).circleCrop().into(object : ImageViewTarget<Drawable>(imageViewuser) {
-            override fun setResource(resource: Drawable?) {
-                imageViewuser.setImageDrawable(resource)
-            }
-
-            override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                if (item.user.profile_image_urls.medium === imageViewuser.getTag(R.id.tag_first)) {
-                    super.onResourceReady(resource, transition)
-
-                }
-            }
-        })
-
-
-        val needsmall = item.height > 1500 || item.height > 1500
-        val loadurl = if (needsmall) {
+        val needSmall = item.height > 1500 || item.height > 1500
+        val loadUrl = if (needSmall) {
             item.image_urls.square_medium
         } else {
             item.image_urls.medium
         }
         if (!R18on) {
-            var isr18 = false
-            for (i in item.tags) {
-                if (i.name == "R-18" || i.name == "R-18G") {
-                    isr18 = true
-                    break
-                }
-            }
+            val isr18 = tags.contains("R-18") || tags.contains("R-18G")
             if (isr18) {
-                GlideApp.with(imageView.context).load(ContextCompat.getDrawable(mContext, R.drawable.h)).placeholder(R.drawable.h).into(imageView)
+                GlideApp.with(imageView.context)
+                    .load(ContextCompat.getDrawable(mContext, R.drawable.h))
+                    .placeholder(R.drawable.h).into(imageView)
             } else {
 
-                GlideApp.with(imageView.context).load(loadurl).transition(withCrossFade())
+                GlideApp.with(imageView.context).load(loadUrl).transition(withCrossFade())
                     .placeholder(android.R.color.white)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(object : ImageViewTarget<Drawable>(imageView) {
+                        override fun setResource(resource: Drawable?) {
+                            imageView.setImageDrawable(resource)
+                        }
+
+                        override fun onResourceReady(
+                            resource: Drawable,
+                            transition: Transition<in Drawable>?
+                        ) {
+                            if (imageView.getTag(R.id.tag_first) === item.image_urls.medium) {
+                                super.onResourceReady(resource, transition)
+                            }
+
+                        }
+                    })
+            }
+        } else {
+            GlideApp.with(imageView.context).load(loadUrl).transition(withCrossFade())
+                .placeholder(android.R.color.white)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .error(ContextCompat.getDrawable(imageView.context, R.drawable.ai))
+                .into(object : ImageViewTarget<Drawable>(imageView) {
                     override fun setResource(resource: Drawable?) {
                         imageView.setImageDrawable(resource)
                     }
 
-                    override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        transition: Transition<in Drawable>?
+                    ) {
                         if (imageView.getTag(R.id.tag_first) === item.image_urls.medium) {
                             super.onResourceReady(resource, transition)
                         }
 
                     }
                 })
-            }
-        } else {
-            GlideApp.with(imageView.context).load(loadurl).transition(withCrossFade())
-                .placeholder(android.R.color.white)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .error(ContextCompat.getDrawable(imageView.context, R.drawable.ai))
-                .into(object : ImageViewTarget<Drawable>(imageView) {
-                override fun setResource(resource: Drawable?) {
-                    imageView.setImageDrawable(resource)
-                }
-
-                override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                    if (imageView.getTag(R.id.tag_first) === item.image_urls.medium) {
-                        super.onResourceReady(resource, transition)
-                    }
-
-                }
-            })
         }
     }
 

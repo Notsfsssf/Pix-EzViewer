@@ -26,6 +26,7 @@ package com.perol.asdpl.pixivez.fragments
 
 
 import TagsBookMarkDialog
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -34,19 +35,25 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.perol.asdpl.pixivez.R
+import com.perol.asdpl.pixivez.activity.BlockActivity
 import com.perol.asdpl.pixivez.activity.UserMActivity
 import com.perol.asdpl.pixivez.adapters.PictureXAdapter
 import com.perol.asdpl.pixivez.databinding.FragmentPictureXBinding
 import com.perol.asdpl.pixivez.dialog.CommentDialog
+import com.perol.asdpl.pixivez.objects.AdapterRefreshEvent
 import com.perol.asdpl.pixivez.objects.BaseFragment
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.viewmodel.PictureXViewModel
 import kotlinx.android.synthetic.main.fragment_picture_x.*
+import kotlinx.coroutines.runBlocking
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -89,40 +96,71 @@ class PictureXFragment : BaseFragment() {
         super.onPause()
 
     }
+
     private var pictureXAdapter: PictureXAdapter? = null
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: AdapterRefreshEvent) {
+        runBlocking {
+            val allTags = blockViewModel.getAllTags()
+            blockTags = allTags.map {
+                it.name
+            }
+            var needBlock = false
+            pictureXViewModel.illustDetailResponse.value?.illust?.tags?.forEach {
+                if (blockTags.contains(it.name)) needBlock = true
+            }
+            if (!needBlock) {
+                block_view.visibility = View.GONE
+            }
+        }
+    }
     private fun initViewModel() {
 
-        pictureXViewModel = ViewModelProviders.of(this).get(PictureXViewModel::class.java)
+        pictureXViewModel = ViewModelProvider(this).get(PictureXViewModel::class.java)
         pictureXViewModel.illustDetailResponse.observe(this, Observer {
+            progress_view.visibility = View.GONE
             if (it != null) {
+                val tags = it.illust.tags.map {
+                    it.name
+                }
+                for (i in tags) {
+                    if (blockTags.contains(i)) {
+                        jump_button.setOnClickListener {
+                            startActivity(Intent(requireActivity(), BlockActivity::class.java))
+                        }
+                        blocktag_textview.text = "${i}"
+                        block_view.visibility = View.VISIBLE
+                    }
+                }
                 rootBinding.illust = it.illust
+
                 if (it.illust.meta_pages.isNotEmpty())
                     position = it.illust.meta_pages.size
                 else position = 1
                 pictureXAdapter =
                     PictureXAdapter(pictureXViewModel, it.illust, requireContext()).also {
-                    it.setListener {
-                        //                        activity?.supportStartPostponedEnterTransition()
-                        if (!hasMoved) {
-                            recyclerview.scrollToPosition(0)
-                            (recyclerview.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
-                                0,
-                                0
-                            )
+                        it.setListener {
+                            //                        activity?.supportStartPostponedEnterTransition()
+                            if (!hasMoved) {
+                                recyclerview.scrollToPosition(0)
+                                (recyclerview.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
+                                    0,
+                                    0
+                                )
+                            }
+                            pictureXViewModel.getRelative(param1!!)
+
                         }
-                        pictureXViewModel.getRelative(param1!!)
+                        it.setViewCommentListen {
+                            val commentDialog =
+                                CommentDialog.newInstance(pictureXViewModel.illustDetailResponse.value!!.illust.id)
+                            commentDialog.show(childFragmentManager)
+                        }
+                        it.setUserPicLongClick {
+                            pictureXViewModel.likeUser()
+                        }
 
                     }
-                    it.setViewCommentListen {
-                        val commentDialog =
-                            CommentDialog.newInstance(pictureXViewModel.illustDetailResponse.value!!.illust.id)
-                        commentDialog.show(childFragmentManager)
-                    }
-                    it.setUserPicLongClick {
-                        pictureXViewModel.likeUser()
-                    }
-
-                }
 
                 recyclerview.adapter = pictureXAdapter
 
@@ -175,7 +213,11 @@ class PictureXFragment : BaseFragment() {
             if (pictureXViewModel.illustDetailResponse.value!!.illust.is_bookmarked) {
                 return@setOnLongClickListener true
             }
-            Toasty.info(requireActivity(), resources.getString(R.string.fetchtags), Toast.LENGTH_SHORT)
+            Toasty.info(
+                requireActivity(),
+                resources.getString(R.string.fetchtags),
+                Toast.LENGTH_SHORT
+            )
                 .show()
             val tagsBookMarkDialog = TagsBookMarkDialog();
             tagsBookMarkDialog.show(childFragmentManager, TagsBookMarkDialog::class.java.name)
@@ -184,7 +226,6 @@ class PictureXFragment : BaseFragment() {
         imageButton.setOnClickListener {
             recyclerview.scrollToPosition(position)
         }
-//        recyclerview.setHasFixedSize(true)
         val linearLayoutManager = LinearLayoutManager(activity!!)
         recyclerview.layoutManager = linearLayoutManager
         recyclerview.setHasFixedSize(true)
@@ -195,7 +236,6 @@ class PictureXFragment : BaseFragment() {
             }
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-
                 if (linearLayoutManager.findLastCompletelyVisibleItemPosition() == position || linearLayoutManager.findFirstCompletelyVisibleItemPosition() == position || linearLayoutManager.findFirstVisibleItemPosition() == position || linearLayoutManager.findLastVisibleItemPosition() == position) {
                     constraintLayout_fold.visibility = View.INVISIBLE
                 } else

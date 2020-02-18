@@ -214,7 +214,6 @@ class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedLi
 
         headtext.text = allUser!![nowNum].username
         textView.text = allUser!![nowNum].useremail
-        Works.checkUpdate(this)
     }
 
 

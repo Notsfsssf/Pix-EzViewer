@@ -491,9 +491,7 @@ class PictureXAdapter(
                                     }
                                     builder.create().show()
                                 }
-
                             val dialog = builder.create()
-
                             dialog.show()
                         }
                     }

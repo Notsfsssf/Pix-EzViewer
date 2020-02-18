@@ -35,6 +35,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.RankingMAdapter
 import com.perol.asdpl.pixivez.objects.BaseFragment
+import com.perol.asdpl.pixivez.objects.LazyFragment
 import com.perol.asdpl.pixivez.viewmodel.factory.RankingShareViewModel
 import kotlinx.android.synthetic.main.fragment_hello_mdynamics.*
 import java.util.*
@@ -51,7 +52,7 @@ private const val ARG_PARAM1 = "param1"
  * create an instance of this fragment.
  *
  */
-class HelloMDynamicsFragment : BaseFragment() {
+class HelloMDynamicsFragment : LazyFragment() {
     override fun loadData() {
 
     }

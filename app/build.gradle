@@ -55,6 +55,11 @@ android {
         }
     }
     flavorDimensions "version"
+    sourceSets {
+        main {
+            manifest.srcFile "true".equals(ISGOOGLEPLAY) ? 'src/main/AndroidManifest.xml' : 'src/main/bugly/AndroidManifest.xml'
+        }
+    }
 
     dataBinding {
         enabled = true
@@ -190,6 +195,11 @@ dependencies {
     implementation "androidx.viewpager2:viewpager2:1.0.0"
 
     implementation 'org.greenrobot:eventbus:3.2.0'
+
+
+    implementation 'com.tencent.bugly:crashreport_upgrade:1.4.2'
+
+    implementation 'com.google.android.gms:play-services-wallet:18.0.0'
 //  debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0'
 
 

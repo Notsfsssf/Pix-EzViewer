@@ -41,6 +41,7 @@ import com.perol.asdpl.pixivez.objects.BaseFragment
 import com.perol.asdpl.pixivez.viewmodel.RankingMViewModel
 import com.perol.asdpl.pixivez.viewmodel.factory.RankingShareViewModel
 import kotlinx.android.synthetic.main.fragment_ranking_m.*
+import kotlinx.coroutines.runBlocking
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.*
@@ -72,6 +73,14 @@ class RankingMFragment : BaseFragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: AdapterRefreshEvent) {
+        runBlocking {
+            val allTags = blockViewModel.getAllTags()
+            blockTags = allTags.map {
+                it.name
+            }
+            rankingAdapter.blockTags = blockTags
+            rankingAdapter.notifyDataSetChanged()
+        }
     }
     fun lazyLoad() {
         viewmodel = ViewModelProvider(this).get(RankingMViewModel::class.java)
@@ -113,6 +122,7 @@ class RankingMFragment : BaseFragment() {
     }
 
     var exitTime = 0L
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         swiperefresh_rankingm.setOnRefreshListener {
@@ -153,7 +163,7 @@ class RankingMFragment : BaseFragment() {
         rankingAdapter = RankingAdapter(
             R.layout.view_ranking_item,
             null,
-            isR18on
+            isR18on, blockTags
         )
         return inflater.inflate(R.layout.fragment_ranking_m, container, false)
     }

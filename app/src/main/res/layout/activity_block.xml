@@ -10,16 +10,15 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/MyToolbar"
         app:title="@string/block_tag"
-        app:titleTextColor="?android:attr/textColorPrimaryInverse"
-        android:background="?attr/colorPrimary"
-        android:layout_height="?attr/actionBarSize" />
+        app:titleTextColor="?android:attr/textColorPrimaryInverse" />
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chipgroup"
-        app:chipSpacing="2dp"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

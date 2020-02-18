@@ -34,8 +34,13 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
+import com.perol.asdpl.pixivez.BuildConfig
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.dialog.FirstInfoDialog
 import com.perol.asdpl.pixivez.networks.RestClient
@@ -304,7 +309,18 @@ class LoginActivity : RinkActivity() {
                     }
                 })
         }
-        Works.checkUpdate(this)
+/*        println(GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this))
+        if(BuildConfig.ISGOOGLEPLAY)
+        if(GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this)==ConnectionResult.SERVICE_MISSING){
+            MaterialDialog(this).show {
+                title(text="Google Play service丢失！")
+                message(text = "你使用的是Google play的版本，请确保应用是从Google play安装的，而不是第三方打包（如QQ传应用，APKPURE，应用备份等等），因为这会导致play版本的诸多问题bug\n" +
+                        "如果无法使用play service，请前往项目地址下载适合中国内陆地区更新的全量包版本")
+                negativeButton(android.R.string.cancel)
+                positiveButton(R.string.action_select)
+                lifecycleOwner(this@LoginActivity)
+            }
+        }*/
     }
 
     fun showHelp(view: View) {

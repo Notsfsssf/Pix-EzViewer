@@ -34,7 +34,9 @@ import androidx.preference.PreferenceManager
 import androidx.work.WorkManager
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
+import com.perol.asdpl.pixivez.BuildConfig
 import com.perol.asdpl.pixivez.objects.CrashHandler
+import com.tencent.bugly.Bugly
 import java.io.File
 
 class PxEZApp : Application() {
@@ -60,9 +62,9 @@ class PxEZApp : Application() {
         } else {
             resources.configuration.locale.language
         }
-
+        if (!BuildConfig.ISGOOGLEPLAY)
+            Bugly.init(this, "1a2d5c746f", BuildConfig.DEBUG)
         WorkManager.getInstance(this).pruneWork()
-
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
 //                Logger.t(TAG).v("${activity.simpleName}: onActivityCreated")

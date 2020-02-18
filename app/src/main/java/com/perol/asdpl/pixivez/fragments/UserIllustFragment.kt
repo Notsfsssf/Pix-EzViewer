@@ -31,13 +31,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.RecommendAdapter
+import com.perol.asdpl.pixivez.objects.AdapterRefreshEvent
 import com.perol.asdpl.pixivez.objects.BaseFragment
 import com.perol.asdpl.pixivez.viewmodel.UserMillustViewModel
 import kotlinx.android.synthetic.main.fragment_user_illust.*
+import kotlinx.coroutines.runBlocking
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -52,17 +56,30 @@ private const val ARG_PARAM2 = "param2"
  */
 class UserIllustFragment : BaseFragment() {
     override fun loadData() {
-        viewmodel!!.first(param1!!, param2!!)
+        viewmodel.first(param1!!, param2!!)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: AdapterRefreshEvent) {
+        runBlocking {
+            val allTags = blockViewModel.getAllTags()
+            blockTags = allTags.map {
+                it.name
+            }
+            recommendAdapter.blockTags = blockTags
+            recommendAdapter.notifyDataSetChanged()
+        }
     }
 
     fun lazyLoad() {
         recommendAdapter.setOnLoadMoreListener({
-            viewmodel!!.onLoadMoreListener()
+            viewmodel.onLoadMoreListener()
         }, mrecyclerview)
         mrefreshlayout.setOnRefreshListener {
-            viewmodel!!.onRefreshListener(param1!!, param2!!)
+            viewmodel.onRefreshListener(param1!!, param2!!)
         }
-        mrecyclerview.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        mrecyclerview.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         mrecyclerview.adapter = recommendAdapter
     }
 
@@ -76,7 +93,28 @@ class UserIllustFragment : BaseFragment() {
             param1 = it.getLong(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        initvoid()
+        viewmodel = ViewModelProvider(this).get(UserMillustViewModel::class.java)
+
+        viewmodel.nexturl.observe(this, Observer {
+            if (it.isNullOrEmpty()) {
+                recommendAdapter.loadMoreEnd()
+            } else {
+                recommendAdapter.loadMoreComplete()
+            }
+        })
+        viewmodel.data.observe(this, Observer {
+            if (it != null) {
+                mrefreshlayout.isRefreshing = false
+                recommendAdapter.setNewData(it)
+            }
+
+        })
+        viewmodel.adddata.observe(this, Observer {
+            if (it != null) {
+                recommendAdapter.addData(it)
+                recommendAdapter.loadMoreComplete()
+            }
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -84,38 +122,14 @@ class UserIllustFragment : BaseFragment() {
         lazyLoad()
     }
 
-    var viewmodel: UserMillustViewModel? = null
-    private fun initvoid() {
-        viewmodel = ViewModelProviders.of(this).get(UserMillustViewModel::class.java)
-
-        viewmodel!!.nexturl.observe(this, Observer {
-            if (it.isNullOrEmpty()) {
-                recommendAdapter.loadMoreEnd()
-            } else {
-                recommendAdapter.loadMoreComplete()
-            }
-        })
-        viewmodel!!.data.observe(this, Observer {
-            if (it != null) {
-                mrefreshlayout.isRefreshing = false
-                recommendAdapter.setNewData(it)
-            }
-
-        })
-        viewmodel!!.adddata.observe(this, Observer {
-            if (it != null) {
-                recommendAdapter.addData(it)
-                recommendAdapter.loadMoreComplete()
-            }
-        })
-
-
-    }
+    lateinit var viewmodel: UserMillustViewModel
 
 
     lateinit var recommendAdapter: RecommendAdapter
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
         recommendAdapter = RecommendAdapter(R.layout.view_recommand_item, null, isR18on, blockTags)
 
@@ -135,11 +149,11 @@ class UserIllustFragment : BaseFragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: Long, param2: String) =
-                UserIllustFragment().apply {
-                    arguments = Bundle().apply {
-                        putLong(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
-                    }
+            UserIllustFragment().apply {
+                arguments = Bundle().apply {
+                    putLong(ARG_PARAM1, param1)
+                    putString(ARG_PARAM2, param2)
                 }
+            }
     }
 }

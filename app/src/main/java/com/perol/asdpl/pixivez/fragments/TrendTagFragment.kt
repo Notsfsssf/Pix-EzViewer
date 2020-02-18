@@ -32,7 +32,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.chip.Chip
 import com.perol.asdpl.pixivez.R
@@ -40,8 +40,8 @@ import com.perol.asdpl.pixivez.activity.PictureActivity
 import com.perol.asdpl.pixivez.activity.SearchResultActivity
 import com.perol.asdpl.pixivez.adapters.TrendingTagAdapter
 import com.perol.asdpl.pixivez.sql.SearchHistoryEntity
-import kotlinx.android.synthetic.main.trend_tag_fragment.*
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.trend_tag_fragment.*
 
 
 class TrendTagFragment : Fragment() {
@@ -76,7 +76,7 @@ class TrendTagFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(TrendTagViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(TrendTagViewModel::class.java)
         mDisposable.add(viewModel.getIllustTrendTags().subscribe({
             if (it != null) {
                 recyclerview_searhm.layoutManager =

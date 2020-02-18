@@ -35,12 +35,14 @@ import androidx.lifecycle.Observer
 import androidx.preference.PreferenceManager
 import androidx.work.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.perol.asdpl.pixivez.BuildConfig
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.SettingActivity
 import com.perol.asdpl.pixivez.objects.TToast
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.responses.Illust
 import com.perol.asdpl.pixivez.works.ImgDownLoadWorker
+import com.tencent.bugly.beta.Beta
 import okhttp3.*
 import java.io.File
 import java.io.IOException
@@ -263,82 +265,12 @@ class Works {
                 })
         }
 
-        fun checkUpdate(activty: Activity) {
-            val defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(activty)
-            if (com.perol.asdpl.pixivez.BuildConfig.ISGOOGLEPLAY || PxEZApp.autochecked || !defaultSharedPreferences.getBoolean(
-                    "autocheck",
-                    true
-                )
-            ) {
-                return
+        fun checkUpdate() {
+            if (!BuildConfig.ISGOOGLEPLAY)
+                Beta.checkUpgrade()
+            else {
+
             }
-            PxEZApp.autochecked = true
-            val checkurl =
-                "https://raw.githubusercontent.com/Notsfsssf/Pix-EzViewer/master/gradle.properties";
-            val okHttpClient = OkHttpClient.Builder().build()
-            val requests = Request.Builder()
-                .url(checkurl).get().build();
-            okHttpClient.newCall(request = requests).enqueue(object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-                    e.printStackTrace()
-                }
-
-                override fun onResponse(call: Call, response: Response) {
-                    try {
-                        val props = Properties()
-                        props.load(response.body?.byteStream())
-                        val versioncode = props.getProperty("VERSIONCODE")
-                        val versionName = props.getProperty("VERSIONNAME")
-
-                        val pm = activty.packageManager;
-                        val packageInfo = pm.getPackageInfo(activty.packageName, 0);
-                        val versioncodeP = packageInfo.versionCode
-                        Log.d("CODE", versioncode + versioncodeP)
-                        if (versioncodeP >= versioncode.toInt() || defaultSharedPreferences.getString(
-                                "ignoreversion",
-                                ""
-                            ) == versioncode
-                        ) {
-
-                        } else {
-                            activty.runOnUiThread {
-                                try {
-                                    val dialogs =
-                                        MaterialAlertDialogBuilder(activty).setTitle("发现新版本")
-                                            .setMessage(versionName)
-                                            .setPositiveButton("前往更新") { i, j ->
-                                                try {
-                                                    val uri =
-                                                        Uri.parse("https://github.com/Notsfsssf/Pix-EzViewer")
-                                                    val intent = Intent(Intent.ACTION_VIEW, uri)
-                                                    activty.startActivity(intent)
-                                                } catch (e: Exception) {
-                                                    Toasty.info(
-                                                        PxEZApp.instance,
-                                                        "no browser found",
-                                                        Toast.LENGTH_SHORT
-                                                    ).show()
-                                                }
-                                            }.setNegativeButton("提醒设置") { i, j ->
-                                                val intent =
-                                                    Intent(activty, SettingActivity::class.java)
-                                                activty.startActivity(intent)
-                                            }.setNeutralButton("此版不提示") { i, j ->
-                                                defaultSharedPreferences.edit()
-                                                    .putString("ignoreversion", versioncode).apply()
-                                            }
-                                    dialogs.show()
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
-                                }
-                            }
-
-                        }
-                    } catch (e: Exception) {
-
-                    }
-                }
-            })
         }
 
     }

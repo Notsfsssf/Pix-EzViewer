@@ -35,6 +35,8 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
@@ -47,12 +49,15 @@ import com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
 import com.chad.library.adapter.base.BaseViewHolder
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.PictureActivity
+import com.perol.asdpl.pixivez.objects.AdapterRefreshEvent
 import com.perol.asdpl.pixivez.repository.RetrofitRepository
 import com.perol.asdpl.pixivez.responses.Illust
 import com.perol.asdpl.pixivez.responses.Tag
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.services.Works
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import android.util.Pair as UtilPair
 
 class RecommendAdapter(
@@ -113,6 +118,12 @@ class RecommendAdapter(
                 width = 0
             }
             return
+        } else {
+            helper.itemView.visibility = View.VISIBLE
+            helper.itemView.layoutParams.apply {
+                height = LinearLayout.LayoutParams.WRAP_CONTENT
+                width = LinearLayout.LayoutParams.MATCH_PARENT
+            }
         }
         val typedValue = TypedValue();
         mContext.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)

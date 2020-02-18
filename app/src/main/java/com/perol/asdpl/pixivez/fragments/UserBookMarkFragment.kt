@@ -38,9 +38,13 @@ import com.google.android.material.tabs.TabLayout
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.RecommendAdapter
 import com.perol.asdpl.pixivez.dialog.TagsShowDialog
+import com.perol.asdpl.pixivez.objects.AdapterRefreshEvent
 import com.perol.asdpl.pixivez.objects.BaseFragment
 import com.perol.asdpl.pixivez.viewmodel.UserBookMarkViewModel
 import kotlinx.android.synthetic.main.fragment_user_book_mark.*
+import kotlinx.coroutines.runBlocking
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -187,6 +191,17 @@ class UserBookMarkFragment : BaseFragment(), TagsShowDialog.Callback {
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: AdapterRefreshEvent) {
+        runBlocking {
+            val allTags = blockViewModel.getAllTags()
+            blockTags = allTags.map {
+                it.name
+            }
+            recommendAdapter.blockTags = blockTags
+            recommendAdapter.notifyDataSetChanged()
+        }
+    }
     private lateinit var recommendAdapter: RecommendAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -50,6 +50,7 @@ import com.perol.asdpl.pixivez.BuildConfig
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.services.PxEZApp
+import com.tencent.bugly.beta.Beta
 import okhttp3.*
 import java.io.File
 import java.io.FilenameFilter
@@ -206,53 +207,7 @@ class SettingFragment : PreferenceFragmentCompat() {
         }
     }
 
-    private fun checkUpdate() {
-        val checkurl =
-            "https://raw.githubusercontent.com/Notsfsssf/Pix-EzViewer/master/gradle.properties";
-        val okHttpClient = OkHttpClient.Builder().build()
-        val requests = Request.Builder()
-            .url(checkurl).get().build();
-        okHttpClient.newCall(request = requests).enqueue(object : Callback {
 
-            override fun onFailure(call: Call, e: IOException) {
-                activity?.runOnUiThread {
-                    Toasty.info(PxEZApp.instance, "检查更新出错，前往项目地址更新", Toast.LENGTH_LONG).show()
-                    try {
-                        val uri = Uri.parse("https://github.com/Notsfsssf/Pix-EzViewer")
-                        val intent = Intent(Intent.ACTION_VIEW, uri)
-                        startActivity(intent)
-                    } catch (e: Exception) {
-                        Toasty.info(PxEZApp.instance, "no browser found", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                activity?.runOnUiThread {
-                    val props = Properties()
-                    props.load(response.body?.byteStream())
-                    val versioncode = props.getProperty("VERSIONCODE")
-                    Log.d("CODE", versioncode)
-                    if (BuildConfig.VERSION_CODE >= versioncode.toInt()) {
-                        Toasty.error(PxEZApp.instance, "未发现新版本,可以前往项目地址确认").show()
-                    } else {
-                        Toasty.info(PxEZApp.instance, "发现新版本,前往项目地址更新", Toast.LENGTH_LONG).show()
-                        try {
-                            val uri = Uri.parse("https://github.com/Notsfsssf/Pix-EzViewer")
-                            val intent = Intent(Intent.ACTION_VIEW, uri)
-                            startActivity(intent)
-                        } catch (e: Exception) {
-                            Toasty.info(PxEZApp.instance, "no browser found", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    }
-                }
-
-            }
-        })
-
-
-    }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (preference?.key) {
@@ -276,7 +231,7 @@ class SettingFragment : PreferenceFragmentCompat() {
                         Toasty.info(PxEZApp.instance, "no browser found", Toast.LENGTH_SHORT).show()
                     }
                 } else
-                    checkUpdate()
+                    Beta.checkUpgrade()
             }
             "storepath1" -> {
 //                startActivityForResult(Intent(activity, PathProviderActivity::class.java), 887)
