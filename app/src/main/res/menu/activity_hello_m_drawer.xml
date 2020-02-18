@@ -37,6 +37,10 @@
                 android:id="@+id/nav_progress"
                 android:icon="@drawable/ic_action_download"
                 android:title="@string/download_progress" />
+            <item
+                android:id="@+id/nav_blocklist"
+                android:title="@string/block_tag"
+                android:icon="@drawable/ic_action_fold" />
         </menu>
     </item>
 

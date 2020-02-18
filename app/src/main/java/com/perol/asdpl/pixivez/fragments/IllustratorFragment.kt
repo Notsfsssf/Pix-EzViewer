@@ -39,7 +39,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.UserMActivity
 import com.perol.asdpl.pixivez.adapters.UserShowAdapter
-import com.perol.asdpl.pixivez.objects.LazyV4Fragment
+import com.perol.asdpl.pixivez.objects.BaseFragment
 import com.perol.asdpl.pixivez.responses.SearchUserResponse
 import com.perol.asdpl.pixivez.viewmodel.IllustratorViewModel
 import kotlinx.android.synthetic.main.fragment_illustrator.*
@@ -55,7 +55,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class IllustratorFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
+class IllustratorFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     override fun loadData() {
         viewModel!!.first(param1!!, restrict, param2!!)
     }

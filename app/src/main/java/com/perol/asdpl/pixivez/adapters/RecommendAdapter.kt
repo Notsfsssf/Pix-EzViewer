@@ -29,6 +29,7 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
@@ -48,12 +49,18 @@ import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.PictureActivity
 import com.perol.asdpl.pixivez.repository.RetrofitRepository
 import com.perol.asdpl.pixivez.responses.Illust
+import com.perol.asdpl.pixivez.responses.Tag
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.services.Works
 import android.util.Pair as UtilPair
 
-class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on: Boolean) :
+class RecommendAdapter(
+    layoutResId: Int,
+    data: List<Illust>?,
+    private val R18on: Boolean,
+    var blockTags: List<String>
+) :
     BaseQuickAdapter<Illust, BaseViewHolder>(layoutResId, data) {
     init {
         this.openLoadAnimation(SCALEIN)
@@ -88,6 +95,25 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
 
 
     override fun convert(helper: BaseViewHolder, item: Illust) {
+        val tags = item.tags.map {
+            it.name
+        }
+        var needBlock = false
+        for (i in blockTags) {
+            if (tags.contains(i)) {
+                needBlock = true
+                break
+            }
+        }
+
+        if (blockTags.isNotEmpty() && tags.isNotEmpty() && needBlock) {
+            helper.itemView.visibility = View.GONE
+            helper.itemView.layoutParams.apply {
+                height = 0
+                width = 0
+            }
+            return
+        }
         val typedValue = TypedValue();
         mContext.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
 
@@ -146,15 +172,9 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
         } else {
             item.image_urls.medium
         }
-        if (!R18on) {
-            var isr18 = false
-            for (i in item.tags) {
-                if (i.name == "R-18" || i.name == "R-18G") {
-                    isr18 = true
-                    break
-                }
 
-            }
+        if (!R18on) {
+            val isr18 = tags.contains("R-18") || tags.contains("R-18G")
             if (isr18) {
                 GlideApp.with(imageView.context)
                     .load(ContextCompat.getDrawable(mContext, R.drawable.h))
@@ -183,6 +203,7 @@ class RecommendAdapter(layoutResId: Int, data: List<Illust>?, private val R18on:
 
             }
         } else {
+
             GlideApp.with(imageView.context).load(loadurl).transition(withCrossFade())
                 .placeholder(R.color.white)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)

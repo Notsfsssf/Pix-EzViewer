@@ -34,14 +34,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
-import androidx.preference.PreferenceManager
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.PixivsionActivity
 import com.perol.asdpl.pixivez.adapters.RecommendAdapter
-import com.perol.asdpl.pixivez.objects.LazyV4Fragment
+import com.perol.asdpl.pixivez.objects.AdapterRefreshEvent
+import com.perol.asdpl.pixivez.objects.BaseFragment
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.viewmodel.HelloMRecomModel
@@ -50,6 +50,9 @@ import com.youth.banner.loader.ImageLoader
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_recommend.*
+import kotlinx.coroutines.runBlocking
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,7 +65,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class HelloMRecommendFragment : LazyV4Fragment() {
+class HelloMRecommendFragment : BaseFragment() {
     val disposables = CompositeDisposable()
     fun Disposable.add() {
         disposables.add(this)
@@ -71,6 +74,17 @@ class HelloMRecommendFragment : LazyV4Fragment() {
     override fun onStop() {
         super.onStop()
         disposables.clear()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: AdapterRefreshEvent) {
+        runBlocking {
+            val allTags = blockViewModel.getAllTags()
+            blockTags = allTags.map {
+                it.name
+            }
+            rankingAdapter.notifyDataSetChanged()
+        }
     }
 
     private var nextUrl = ""
@@ -120,7 +134,7 @@ class HelloMRecommendFragment : LazyV4Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        viewmodel = ViewModelProviders.of(this).get(HelloMRecomModel::class.java)
+        viewmodel = ViewModelProvider(this).get(HelloMRecomModel::class.java)
     }
 
     var exitTime = 0L
@@ -173,7 +187,8 @@ class HelloMRecommendFragment : LazyV4Fragment() {
         rankingAdapter = RecommendAdapter(
             R.layout.view_recommand_item,
             null,
-            PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("r18on", false)
+            isR18on,
+            blockTags
         )
         bannerView = inflater.inflate(R.layout.header_recom, container, false)
         rankingAdapter.apply {

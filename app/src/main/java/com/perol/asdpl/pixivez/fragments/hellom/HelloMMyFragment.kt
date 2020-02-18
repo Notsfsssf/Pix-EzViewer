@@ -30,19 +30,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.preference.PreferenceManager
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.RecommendAdapter
-import com.perol.asdpl.pixivez.objects.LazyV4Fragment
-import com.perol.asdpl.pixivez.services.PxEZApp
+import com.perol.asdpl.pixivez.objects.AdapterRefreshEvent
+import com.perol.asdpl.pixivez.objects.BaseFragment
 import com.perol.asdpl.pixivez.viewmodel.HelloMMyViewModel
 import kotlinx.android.synthetic.main.fragment_hello_mmy.*
+import kotlinx.coroutines.runBlocking
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -55,16 +56,27 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class HelloMMyFragment : LazyV4Fragment() {
+class HelloMMyFragment : BaseFragment() {
     override fun loadData() {
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: AdapterRefreshEvent) {
+        runBlocking {
+            val allTags = blockViewModel.getAllTags()
+            blockTags = allTags.map {
+                it.name
+            }
+            rankingAdapter.blockTags = blockTags
+            rankingAdapter.notifyDataSetChanged()
+        }
+    }
     lateinit var rankingAdapter: RecommendAdapter
     var viewmodel: HelloMMyViewModel? = null
     var restrict = "all"
     fun lazyLoad() {
-        viewmodel = ViewModelProviders.of(this).get(HelloMMyViewModel::class.java)
+        viewmodel = ViewModelProvider(this).get(HelloMMyViewModel::class.java)
         viewmodel!!.addillusts.observe(this, Observer {
             if (it != null) {
                 rankingAdapter.addData(it)
@@ -105,7 +117,7 @@ class HelloMMyFragment : LazyV4Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        rankingAdapter = RecommendAdapter(R.layout.view_recommand_item, null, PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("r18on", false));
+        rankingAdapter = RecommendAdapter(R.layout.view_recommand_item, null, isR18on, blockTags)
         return inflater.inflate(R.layout.fragment_hello_mmy, container, false)
     }
 

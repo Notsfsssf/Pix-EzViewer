@@ -32,14 +32,13 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.RecommendAdapter
 import com.perol.asdpl.pixivez.dialog.SearchSectionDialog
-import com.perol.asdpl.pixivez.objects.LazyV4Fragment
+import com.perol.asdpl.pixivez.objects.BaseFragment
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.responses.Illust
@@ -60,7 +59,7 @@ private const val ARG_PARAM1 = "word"
  * create an instance of this fragment.
  *
  */
-class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
+class IllustFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     override fun loadData() {
 
     }
@@ -96,11 +95,12 @@ class IllustFragment : LazyV4Fragment(), AdapterView.OnItemSelectedListener {
     var exitTime = 0L
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val searchtext = activity!!.findViewById<TextView>(R.id.searchtext)
+        val searchtext = requireActivity().findViewById<TextView>(R.id.searchtext)
         searchIllustAdapter = RecommendAdapter(
             R.layout.view_recommand_item,
-            ArrayList<Illust>(),
-            PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("r18on", false)
+            emptyList(),
+            isR18on,
+            blockTags
         )
         searchtext.text = param1
         recyclerview_illust.adapter = searchIllustAdapter

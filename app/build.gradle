@@ -104,7 +104,7 @@ dependencies {
     implementation 'com.waynejo:androidndkgif:0.3.3'
     // optional - Test helpers
     implementation 'androidx.annotation:annotation:1.1.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
 
     def room_version = "2.2.3"
@@ -125,24 +125,24 @@ dependencies {
     implementation 'com.youth.banner:banner:1.4.10'
 
     // ViewModel and LiveData
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
     // alternatively - just ViewModel
-    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.1.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.2.0'
 
     // use -ktx for Kotlin
 
     // alternatively - just LiveData
-    implementation 'androidx.lifecycle:lifecycle-livedata:2.1.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.2.0'
 
     // alternatively - Lifecycles only (no ViewModel or LiveData).
 
     //     Support library depends on this lightweight import
-    implementation 'androidx.lifecycle:lifecycle-runtime:2.1.0'
-    kapt 'androidx.lifecycle:lifecycle-common-java8:2.1.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime:2.2.0'
+    kapt 'androidx.lifecycle:lifecycle-common-java8:2.2.0'
 
     // optional - ReactiveStreams support for LiveData
-    implementation 'androidx.lifecycle:lifecycle-reactivestreams:2.1.0'
+    implementation 'androidx.lifecycle:lifecycle-reactivestreams:2.2.0'
 
     // optional - Test helpers for LiveData
     testImplementation 'androidx.arch.core:core-testing:2.1.0'
@@ -187,18 +187,9 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:bottomsheets:3.1.1'
     implementation 'com.afollestad.material-dialogs:lifecycle:3.1.1'
 
-    def paging_version = "2.1.1"
-
-    implementation "androidx.paging:paging-runtime:$paging_version"
-    // For Kotlin use paging-runtime-ktx
-
-    // alternatively - without Android dependencies for testing
-    testImplementation "androidx.paging:paging-common:$paging_version"
-    // For Kotlin use paging-common-ktx
     implementation "androidx.viewpager2:viewpager2:1.0.0"
-    // optional - RxJava support
-    implementation "androidx.paging:paging-rxjava2:$paging_version"
-    // For Kotlin use paging-rxjava2-ktx
+
+    implementation 'org.greenrobot:eventbus:3.2.0'
 //  debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0'
 
 

@@ -292,9 +292,10 @@
     <string name="action_change">更换</string>
     <string name="create_painter_folder">为每个画师单独创建文件夹</string>
     <string name="create_separate_folder">创建单独文件夹</string>
-    <string name="refresh_token">刷新token</string>
+    <string name="refresh_token">刷新身份信息</string>
     <string name="translate">翻译</string>
     <string name="back_to_the_top">双击回顶</string>
     <string name="savefail">保存失败</string>
     <string name="add_to_block_tag_list">添加到屏蔽标签列表</string>
+    <string name="block_tag">屏蔽标签</string>
 </resources>

@@ -31,10 +31,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.RankingMAdapter
-import com.perol.asdpl.pixivez.objects.LazyV4Fragment
+import com.perol.asdpl.pixivez.objects.BaseFragment
 import com.perol.asdpl.pixivez.viewmodel.factory.RankingShareViewModel
 import kotlinx.android.synthetic.main.fragment_hello_mdynamics.*
 import java.util.*
@@ -51,7 +51,7 @@ private const val ARG_PARAM1 = "param1"
  * create an instance of this fragment.
  *
  */
-class HelloMDynamicsFragment : LazyV4Fragment() {
+class HelloMDynamicsFragment : BaseFragment() {
     override fun loadData() {
 
     }
@@ -60,7 +60,7 @@ class HelloMDynamicsFragment : LazyV4Fragment() {
     private fun initView() {
         viewpage_rankingm.adapter = RankingMAdapter(this, childFragmentManager)
         val shareModel =
-            ViewModelProviders.of(requireActivity()).get(RankingShareViewModel::class.java)
+            ViewModelProvider(requireActivity()).get(RankingShareViewModel::class.java)
         tablayout_rankingm.setupWithViewPager(viewpage_rankingm)
 /*        TabLayoutMediator(tablayout_rankingm, viewpage_rankingm) { tab, position ->
             tab.text = resources.getStringArray(R.array.modellist)[position]

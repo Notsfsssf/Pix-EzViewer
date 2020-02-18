@@ -35,7 +35,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.UserShowAdapter
-import com.perol.asdpl.pixivez.objects.LazyV4Fragment
+import com.perol.asdpl.pixivez.objects.BaseFragment
 import com.perol.asdpl.pixivez.viewmodel.HelloRecomUserViewModel
 import kotlinx.android.synthetic.main.fragment_recom_user.*
 
@@ -46,7 +46,7 @@ import kotlinx.android.synthetic.main.fragment_recom_user.*
  * create an instance of this fragment.
  *
  */
-class HelloRecomUserFragment : LazyV4Fragment() {
+class HelloRecomUserFragment : BaseFragment() {
     override fun loadData() {
         viewmodel!!.reData()
     }

@@ -121,6 +121,9 @@ class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedLi
             R.id.nav_account -> {
                 startActivity(Intent(this, AccountActivity::class.java))
             }
+            R.id.nav_blocklist -> {
+                startActivity(Intent(this, BlockActivity::class.java))
+            }
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)

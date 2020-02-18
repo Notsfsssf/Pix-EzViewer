@@ -37,7 +37,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.UserMActivity
 import com.perol.asdpl.pixivez.adapters.UserShowAdapter
-import com.perol.asdpl.pixivez.objects.LazyV4Fragment
+import com.perol.asdpl.pixivez.objects.BaseFragment
 import com.perol.asdpl.pixivez.responses.SearchUserResponse
 import com.perol.asdpl.pixivez.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_user.*
@@ -53,7 +53,7 @@ private const val ARG_PARAM1 = "param1"
  * create an instance of this fragment.
  *
  */
-class UserFragment : LazyV4Fragment() {
+class UserFragment : BaseFragment() {
     override fun loadData() {
         userViewModel.getSearchUser(param1!!)
     }

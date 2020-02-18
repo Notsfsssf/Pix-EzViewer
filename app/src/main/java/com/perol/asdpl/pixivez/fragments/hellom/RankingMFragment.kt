@@ -29,20 +29,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.preference.PreferenceManager
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.RankingAdapter
-import com.perol.asdpl.pixivez.objects.LazyV4Fragment
-import com.perol.asdpl.pixivez.services.PxEZApp
+import com.perol.asdpl.pixivez.objects.AdapterRefreshEvent
+import com.perol.asdpl.pixivez.objects.BaseFragment
 import com.perol.asdpl.pixivez.viewmodel.RankingMViewModel
 import com.perol.asdpl.pixivez.viewmodel.factory.RankingShareViewModel
 import kotlinx.android.synthetic.main.fragment_ranking_m.*
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -56,7 +56,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class RankingMFragment : LazyV4Fragment() {
+class RankingMFragment : BaseFragment() {
 
 
     var picDate: String? = null
@@ -70,10 +70,12 @@ class RankingMFragment : LazyV4Fragment() {
         viewmodel!!.first(param1!!, picDate)
     }
 
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: AdapterRefreshEvent) {
+    }
     fun lazyLoad() {
-        viewmodel = ViewModelProviders.of(this).get(RankingMViewModel::class.java)
-        sharemodel = ViewModelProviders.of(activity!!).get(RankingShareViewModel::class.java)
+        viewmodel = ViewModelProvider(this).get(RankingMViewModel::class.java)
+        sharemodel = ViewModelProvider(requireActivity()).get(RankingShareViewModel::class.java)
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH) + 1
@@ -151,7 +153,7 @@ class RankingMFragment : LazyV4Fragment() {
         rankingAdapter = RankingAdapter(
             R.layout.view_ranking_item,
             null,
-            PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("r18on", false)
+            isR18on
         )
         return inflater.inflate(R.layout.fragment_ranking_m, container, false)
     }

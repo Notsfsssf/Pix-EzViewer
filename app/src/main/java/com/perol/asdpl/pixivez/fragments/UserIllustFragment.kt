@@ -32,11 +32,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.RecommendAdapter
-import com.perol.asdpl.pixivez.objects.LazyV4Fragment
+import com.perol.asdpl.pixivez.objects.BaseFragment
 import com.perol.asdpl.pixivez.viewmodel.UserMillustViewModel
 import kotlinx.android.synthetic.main.fragment_user_illust.*
 
@@ -51,7 +50,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class UserIllustFragment : LazyV4Fragment() {
+class UserIllustFragment : BaseFragment() {
     override fun loadData() {
         viewmodel!!.first(param1!!, param2!!)
     }
@@ -118,7 +117,7 @@ class UserIllustFragment : LazyV4Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        recommendAdapter = RecommendAdapter(R.layout.view_recommand_item, null, PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("r18on", false))
+        recommendAdapter = RecommendAdapter(R.layout.view_recommand_item, null, isR18on, blockTags)
 
         return inflater.inflate(R.layout.fragment_user_illust, container, false)
     }

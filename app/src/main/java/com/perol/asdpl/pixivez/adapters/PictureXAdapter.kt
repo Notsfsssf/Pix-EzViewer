@@ -74,6 +74,7 @@ import com.perol.asdpl.pixivez.activity.UserMActivity
 import com.perol.asdpl.pixivez.activity.ZoomActivity
 import com.perol.asdpl.pixivez.databinding.ViewPicturexDetailBinding
 import com.perol.asdpl.pixivez.fragments.PictureXFragment
+import com.perol.asdpl.pixivez.objects.AdapterRefreshEvent
 import com.perol.asdpl.pixivez.objects.TToast
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.responses.Illust
@@ -90,13 +91,16 @@ import com.waynejo.androidndkgif.GifEncoder
 import com.zhy.view.flowlayout.FlowLayout
 import com.zhy.view.flowlayout.TagAdapter
 import com.zhy.view.flowlayout.TagFlowLayout
+import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import org.greenrobot.eventbus.EventBus
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
@@ -267,14 +271,18 @@ class PictureXAdapter(
                                 title(R.string.add_to_block_tag_list)
                                 negativeButton(android.R.string.cancel)
                                 positiveButton(android.R.string.ok) {
-                                    AppDatabase.getInstance(PxEZApp.instance).blockTagDao().insert(
-                                        BlockTagEntity(
-                                            name = t.name,
-                                            translateName = "${t.translated_name}"
-                                        )
-                                    ).subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread()).doOnError { }
-                                        .doOnComplete { }
+                                    runBlocking {
+                                        withContext(Dispatchers.IO) {
+                                            AppDatabase.getInstance(PxEZApp.instance).blockTagDao()
+                                                .insert(
+                                                    BlockTagEntity(
+                                                        name = t.name,
+                                                        translateName = "${t.translated_name}"
+                                                    )
+                                                )
+                                        }
+                                        EventBus.getDefault().post(AdapterRefreshEvent())
+                                    }
                                 }
                                 lifecycleOwner(binding.lifecycleOwner)
                             }
@@ -391,9 +399,9 @@ class PictureXAdapter(
                         target: Target<Drawable>,
                         isFirstResource: Boolean
                     ): Boolean {
-                    mListen.invoke()
-                    return false
-                }
+                        mListen.invoke()
+                        return false
+                    }
 
                     override fun onResourceReady(
                         resource: Drawable,
@@ -402,13 +410,13 @@ class PictureXAdapter(
                         dataSource: DataSource,
                         isFirstResource: Boolean
                     ): Boolean {
-                    if (position == 0) {
-                        mListen.invoke()
-                    }
+                        if (position == 0) {
+                            mListen.invoke()
+                        }
 
-                    return false
-                }
-            }).into(imageView)
+                        return false
+                    }
+                }).into(imageView)
             imageView.apply {
                 setOnLongClickListener { it ->
                     val builder = MaterialAlertDialogBuilder(mContext as Activity)

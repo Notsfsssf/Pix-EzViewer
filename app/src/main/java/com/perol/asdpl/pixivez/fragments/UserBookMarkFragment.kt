@@ -30,18 +30,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.RecommendAdapter
 import com.perol.asdpl.pixivez.dialog.TagsShowDialog
-import com.perol.asdpl.pixivez.objects.LazyV4Fragment
-import com.perol.asdpl.pixivez.services.PxEZApp
+import com.perol.asdpl.pixivez.objects.BaseFragment
 import com.perol.asdpl.pixivez.viewmodel.UserBookMarkViewModel
 import kotlinx.android.synthetic.main.fragment_user_book_mark.*
 
@@ -58,7 +55,7 @@ private const val ARG_PARAM2 = "param2"
  *
  */
 
-class UserBookMarkFragment : LazyV4Fragment(), TagsShowDialog.Callback {
+class UserBookMarkFragment : BaseFragment(), TagsShowDialog.Callback {
     override fun loadData() {
         viewmodel!!.first(param1!!, pub).doOnSuccess {
             if (it) {
@@ -77,7 +74,15 @@ class UserBookMarkFragment : LazyV4Fragment(), TagsShowDialog.Callback {
     private var exitTime = 0L
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mrecyclerview.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
+        recommendAdapter = RecommendAdapter(
+            R.layout.view_recommand_item,
+            null,
+            isR18on,
+            blockTags
+        )
+        mrecyclerview.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         mrecyclerview.adapter = recommendAdapter
         recommendAdapter.setOnLoadMoreListener({
             viewmodel!!.onLoadMoreListener()
@@ -101,14 +106,16 @@ class UserBookMarkFragment : LazyV4Fragment(), TagsShowDialog.Callback {
     override fun onClick(string: String, public: String) {
         viewmodel!!.onRefreshListener(
             param1!!, public, if (string.isNotBlank()) {
-            string
-        } else {
-            null
-        })
+                string
+            } else {
+                null
+            }
+        )
     }
 
     fun lazyLoad() {
         viewmodel = ViewModelProviders.of(this).get(UserBookMarkViewModel::class.java)
+
         viewmodel!!.nexturl.observe(this, Observer {
             if (it.isNullOrEmpty()) {
                 recommendAdapter.loadMoreEnd()
@@ -180,11 +187,13 @@ class UserBookMarkFragment : LazyV4Fragment(), TagsShowDialog.Callback {
 
     }
 
-    lateinit var recommendAdapter: RecommendAdapter
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    private lateinit var recommendAdapter: RecommendAdapter
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
-        recommendAdapter = RecommendAdapter(R.layout.view_recommand_item, null, PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("r18on", false))
+
         return inflater.inflate(R.layout.fragment_user_book_mark, container, false)
     }
 
@@ -201,11 +210,11 @@ class UserBookMarkFragment : LazyV4Fragment(), TagsShowDialog.Callback {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: Long, param2: String) =
-                UserBookMarkFragment().apply {
-                    arguments = Bundle().apply {
-                        putLong(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
-                    }
+            UserBookMarkFragment().apply {
+                arguments = Bundle().apply {
+                    putLong(ARG_PARAM1, param1)
+                    putString(ARG_PARAM2, param2)
                 }
+            }
     }
 }

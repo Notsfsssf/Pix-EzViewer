@@ -42,7 +42,7 @@ import com.perol.asdpl.pixivez.activity.UserMActivity
 import com.perol.asdpl.pixivez.adapters.PictureXAdapter
 import com.perol.asdpl.pixivez.databinding.FragmentPictureXBinding
 import com.perol.asdpl.pixivez.dialog.CommentDialog
-import com.perol.asdpl.pixivez.objects.LazyV4Fragment
+import com.perol.asdpl.pixivez.objects.BaseFragment
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.viewmodel.PictureXViewModel
@@ -59,7 +59,7 @@ private const val ARG_PARAM1 = "param1"
  * create an instance of this fragment.
  *
  */
-class PictureXFragment : LazyV4Fragment() {
+class PictureXFragment : BaseFragment() {
 
     private var param1: Long? = null
     private lateinit var pictureXViewModel: PictureXViewModel
