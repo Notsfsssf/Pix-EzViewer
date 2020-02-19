@@ -259,7 +259,7 @@
     <string name="account_management">賬號管理</string>
     <string name="auto_check_update">自動檢查更新</string>
     <string name="half_year">半年</string>
-    <string name="a_year">一年</string>
+    <string name="a_year">壹年</string>
     <string name="unlimit">不限</string>
     <string name="bookmark_private">悄悄收藏</string>
     <string name="bookmark_public">公開收藏</string>
@@ -270,9 +270,10 @@
     <string name="create_separate_folder">create separate folder</string>
     <string name="refresh_token">刷新token</string>
     <string name="translate">翻譯</string>
-    <string name="back_to_the_top">双击回顶</string>
-    <string name="savefail">保存失败</string>
-    <string name="add_to_block_tag_list">添加到屏蔽标签列表</string>
-    <string name="block_tag">屏蔽标签</string>
+    <string name="back_to_the_top">雙擊回頂</string>
+    <string name="savefail">保存失敗</string>
+    <string name="add_to_block_tag_list">添加到屏蔽標簽列表</string>
+    <string name="block_tag">屏蔽標簽</string>
     <string name="block_face"><![CDATA[>_<]]></string>
+    <string name="help_maintenance">支持開發者工作</string>
 </resources>

@@ -260,4 +260,5 @@
     <string name="add_to_block_tag_list">Add to block tag list</string>
     <string name="block_tag">Block tag</string>
     <string name="block_face"><![CDATA[>_<]]></string>
+    <string name="help_maintenance">Help maintenance</string>
 </resources>

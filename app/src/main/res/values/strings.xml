@@ -299,4 +299,5 @@
     <string name="add_to_block_tag_list">添加到屏蔽标签列表</string>
     <string name="block_tag">屏蔽标签</string>
     <string name="block_face"><![CDATA[>_<]]></string>
+    <string name="help_maintenance">支持开发者工作</string>
 </resources>
