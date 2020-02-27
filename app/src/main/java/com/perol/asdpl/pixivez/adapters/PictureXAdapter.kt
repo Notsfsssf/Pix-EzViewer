@@ -266,6 +266,42 @@ class PictureXAdapter(
                         if (t.name == "R-18" || t.name == "R-18G") {
                             name.setTextColor(Color.RED)
                         }
+                        translateName.setOnClickListener {
+                            val bundle = Bundle()
+                            bundle.putString("searchword", s.tags[position].name)
+                            val intent = Intent(context, SearchResultActivity::class.java)
+                            intent.putExtras(bundle)
+                            context.startActivity(intent)
+                        }
+                        name.setOnClickListener {
+                            val bundle = Bundle()
+                            bundle.putString("searchword", s.tags[position].name)
+                            val intent = Intent(context, SearchResultActivity::class.java)
+                            intent.putExtras(bundle)
+                            context.startActivity(intent)
+                        }
+                        translateName.setOnLongClickListener {
+                            MaterialDialog(mContext).show {
+                                title(R.string.add_to_block_tag_list)
+                                negativeButton(android.R.string.cancel)
+                                positiveButton(android.R.string.ok) {
+                                    runBlocking {
+                                        withContext(Dispatchers.IO) {
+                                            AppDatabase.getInstance(PxEZApp.instance).blockTagDao()
+                                                .insert(
+                                                    BlockTagEntity(
+                                                        name = t.name,
+                                                        translateName = "${t.translated_name}"
+                                                    )
+                                                )
+                                        }
+                                        EventBus.getDefault().post(AdapterRefreshEvent())
+                                    }
+                                }
+                                lifecycleOwner(binding.lifecycleOwner)
+                            }
+                            true
+                        }
                         name.setOnLongClickListener {
                             MaterialDialog(mContext).show {
                                 title(R.string.add_to_block_tag_list)
@@ -292,14 +328,6 @@ class PictureXAdapter(
                     }
                 }
 
-                setOnTagClickListener { view, position, parent ->
-                    val bundle = Bundle()
-                    bundle.putString("searchword", s.tags[position].name)
-                    val intent = Intent(context, SearchResultActivity::class.java)
-                    intent.putExtras(bundle)
-                    context.startActivity(intent)
-                    true
-                }
 
             }
             imageButtonDownload.setOnClickListener {

@@ -36,12 +36,7 @@
                            style="@style/Widget.MaterialComponents.TabLayout.Colored"
                            app:tabMode="scrollable"
                            android:layout_height="wrap_content" />
-                       <Spinner
-                           android:id="@+id/spinner_result"
-                           android:layout_width="wrap_content"
-                           android:layout_gravity="end"
-                           android:entries="@array/sort"
-                           android:layout_height="match_parent"/>
+
 
                 </androidx.appcompat.widget.Toolbar>
 

@@ -67,10 +67,10 @@ class SearchResultActivity : RinkActivity() {
 
     }
 
-/*    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_search_block, menu)
         return super.onCreateOptionsMenu(menu)
-    }*/
+    }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item!!.itemId) {
@@ -78,9 +78,9 @@ class SearchResultActivity : RinkActivity() {
                 this.finish() // back button
                 return true
             }
-            /*        R.id.action_bloctag->{
-                        startActivity(Intent(this, BlockActivity::class.java))
-                    }*/
+            R.id.action_bloctag -> {
+                startActivity(Intent(this, BlockActivity::class.java))
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -93,7 +93,11 @@ class SearchResultActivity : RinkActivity() {
         arrayList.add(UserFragment.newInstance(searchword))
         viewpage_searchresult.adapter = SearchResultAdapter(this, supportFragmentManager, arrayList)
         viewpage_searchresult.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
 
             }
 

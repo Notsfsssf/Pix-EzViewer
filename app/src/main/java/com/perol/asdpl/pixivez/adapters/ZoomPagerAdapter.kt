@@ -99,7 +99,7 @@ class ZoomPagerAdapter(
 
                             }
                             negativeButton(android.R.string.cancel)
-                            lifecycleOwner((context as AppCompatActivity))
+                            lifecycleOwner((this@ZoomPagerAdapter.context as AppCompatActivity))
                         }
                     }
                 }

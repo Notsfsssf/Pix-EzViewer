@@ -26,9 +26,7 @@ package com.perol.asdpl.pixivez.fragments
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -64,7 +62,6 @@ private const val ARG_PARAM1 = "word"
  */
 class IllustFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     override fun loadData() {
-
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -82,6 +79,7 @@ class IllustFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
             searchIllustAdapter.notifyDataSetChanged()
         }
     }
+
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         if (view != null) {
             selectSort = position
@@ -115,7 +113,14 @@ class IllustFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
             emptyList(),
             isR18on,
             blockTags
-        )
+        ).apply {
+            val view = LayoutInflater.from(requireContext()).inflate(
+                R.layout.search_result_header, null
+            )
+            view.findViewById<Spinner>(R.id.spinner_result).onItemSelectedListener =
+                this@IllustFragment
+            setHeaderView(view)
+        }
         searchtext.text = param1
         recyclerview_illust.adapter = searchIllustAdapter
         recyclerview_illust.layoutManager =
@@ -172,8 +177,32 @@ class IllustFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                 }
             }
         }
-        val spinner: Spinner = activity!!.findViewById<Spinner>(R.id.spinner_result)
-        spinner.onItemSelectedListener = this
+/*        val gestureDetector =
+            GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
+                override fun onFling(
+                    e1: MotionEvent,
+                    e2: MotionEvent,
+                    velocityX: Float,
+                    velocityY: Float
+                ): Boolean {
+
+                    return false
+                }
+
+                override fun onDoubleTap(e: MotionEvent?): Boolean {
+                    return super.onDoubleTap(e)
+
+                }
+
+                override fun onLongPress(e: MotionEvent?) {
+                    super.onLongPress(e)
+
+                }
+            })
+        requireActivity().findViewById<TabLayout>(R.id.tablayout_searchresult)?.getTabAt(0)
+            ?.view?.setOnTouchListener { v, event ->
+            gestureDetector.onTouchEvent(event)
+        }*/
         requireActivity().findViewById<TabLayout>(R.id.tablayout_searchresult)?.getTabAt(0)
             ?.view?.setOnClickListener {
             if ((System.currentTimeMillis() - exitTime) > 3000) {

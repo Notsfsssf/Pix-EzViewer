@@ -29,6 +29,7 @@ import android.util.Log
 import android.widget.Toast
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.networks.RestClient
+import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
 import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.services.OAuthSecureService
 import com.perol.asdpl.pixivez.services.PxEZApp
@@ -80,7 +81,7 @@ class ReFreshFunction : Function<Observable<Throwable>, ObservableSource<*>> {
                         runBlocking {
                             userEntity = AppDataRepository.getUser()
                         }
-                        return@Function refreshtoken(userEntity!!)
+                        return@Function reFreshToken(userEntity!!)
                     } else
                         return@Function Observable.error<Any>(throwable)
 
@@ -99,7 +100,8 @@ class ReFreshFunction : Function<Observable<Throwable>, ObservableSource<*>> {
 
     }
 
-    private fun refreshtoken(it: UserEntity): ObservableSource<*> {
+    private fun reFreshToken(it: UserEntity): ObservableSource<*> {
+        SharedPreferencesServices.getInstance().setString("Device_token", it.Device_token)
         return oAuthSecureService!!.postRefreshAuthToken(client_id, client_secret, "refresh_token", it.Refresh_token,
                 it.Device_token, true)
                 .subscribeOn(Schedulers.io()).doOnNext { pixivOAuthResponse ->

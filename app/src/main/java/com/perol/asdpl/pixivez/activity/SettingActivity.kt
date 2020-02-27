@@ -59,6 +59,7 @@ class SettingActivity : RinkActivity() {
         menuInflater.inflate(R.menu.menu_settings, menu)
         return true
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ThemeUtil.themeInit(this)

@@ -138,7 +138,7 @@
     <string name="icon">图标</string>
     <string name="checktochang">点击更换</string>
     <string name="limit">限制</string>
-    <string name="_18">遮罩</string>
+    <string name="_18">隐藏遮罩</string>
     <string name="picturequality">图片质量</string>
     <string name="opensource">引用开源库</string>
     <string name="tababout">关于</string>

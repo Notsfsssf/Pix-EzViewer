@@ -61,6 +61,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.HttpException
 import java.io.IOException
 import java.util.*
@@ -208,9 +209,7 @@ class LoginActivity : RinkActivity() {
             if (username.isNullOrBlank() || password.isNullOrBlank()) {
                 return@setOnClickListener
             }
-
             loginBtn.isEnabled = false
-
             sharedPreferencesServices.setString("username", username)
             sharedPreferencesServices.setString("password", password)
             val map = HashMap<String, Any>()
@@ -219,10 +218,7 @@ class LoginActivity : RinkActivity() {
             map["grant_type"] = "password"
             map["username"] = username!!
             map["password"] = password!!
-            if (sharedPreferencesServices.getString("Device_token") != null) {
-                map["device_token"] = sharedPreferencesServices.getString("Device_token")
-            } else map["device_token"] = "pixiv"
-
+            map["device_token"] = sharedPreferencesServices.getString("Device_token") ?: "pixiv"
             map["get_secure_url"] = true
             map["include_policy"] = true
 
@@ -256,7 +252,10 @@ class LoginActivity : RinkActivity() {
                             sharedPreferencesServices.setBoolean("isnone", false)
                             sharedPreferencesServices.setString("username", username)
                             sharedPreferencesServices.setString("password", password)
-
+                            sharedPreferencesServices.setString(
+                                "Device_token",
+                                pixivOAuthResponse.response.device_token
+                            )
                         }
                     }
 
