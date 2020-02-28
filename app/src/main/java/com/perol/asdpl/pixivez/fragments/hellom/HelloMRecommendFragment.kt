@@ -145,10 +145,12 @@ class HelloMRecommendFragment : BaseFragment() {
             loadData()
         }
         rankingAdapter.setOnLoadMoreListener({
+
             if (!nextUrl.isNullOrBlank())
                 viewmodel.onLoadMoreRxRequested(nextUrl).subscribe({
                     rankingAdapter.addData(it.illusts)
                     nextUrl = it.next_url
+                    rankingAdapter.loadMoreComplete()
                 }, {
                     rankingAdapter.loadMoreFail()
                 }, {})

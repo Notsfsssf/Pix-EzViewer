@@ -142,8 +142,8 @@ class PictureXFragment : BaseFragment() {
                         it.setListener {
                             //                        activity?.supportStartPostponedEnterTransition()
                             if (!hasMoved) {
-                                recyclerview.scrollToPosition(0)
-                                (recyclerview.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
+                                recyclerview?.scrollToPosition(0)
+                                (recyclerview?.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
                                     0,
                                     0
                                 )
@@ -193,7 +193,7 @@ class PictureXFragment : BaseFragment() {
         })
         pictureXViewModel.progress.observe(this, Observer {
             if (pictureXAdapter != null) {
-                pictureXAdapter!!.setProgress(it)
+                pictureXAdapter?.setProgress(it)
             }
         })
         pictureXViewModel.downloadGifSuccess.observe(this, Observer {

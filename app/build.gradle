@@ -198,7 +198,7 @@ dependencies {
 
 
     implementation 'com.tencent.bugly:crashreport_upgrade:1.4.2'
-
+    implementation 'com.google.android.play:core:1.6.5'
     implementation 'com.google.android.gms:play-services-wallet:18.0.0'
 
 

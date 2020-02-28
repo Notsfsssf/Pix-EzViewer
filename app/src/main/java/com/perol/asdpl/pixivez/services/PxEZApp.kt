@@ -32,6 +32,7 @@ import android.os.Environment
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import androidx.work.WorkManager
+import com.google.android.play.core.missingsplits.MissingSplitsManagerFactory
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.perol.asdpl.pixivez.BuildConfig
@@ -42,11 +43,23 @@ import java.io.File
 class PxEZApp : Application() {
 
     override fun onCreate() {
+        //https://developer.android.com/guide/app-bundle/sideload-check#missing_splits
+        if (BuildConfig.ISGOOGLEPLAY)
+            if (MissingSplitsManagerFactory.create(this).disableAppIfMissingRequiredSplits()) {
+                // Skip app initialization.
+                return
+            }
         super.onCreate()
+
         instance = this
         Logger.addLogAdapter(AndroidLogAdapter())
         val defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        AppCompatDelegate.setDefaultNightMode(defaultSharedPreferences.getString("dark_mode", "-1")!!.toInt())
+        AppCompatDelegate.setDefaultNightMode(
+            defaultSharedPreferences.getString(
+                "dark_mode",
+                "-1"
+            )!!.toInt()
+        )
         animationEnable = defaultSharedPreferences.getBoolean("animation", true)
         language = defaultSharedPreferences.getString("language", "0")?.toInt() ?: 0
         storepath = defaultSharedPreferences.getString(
