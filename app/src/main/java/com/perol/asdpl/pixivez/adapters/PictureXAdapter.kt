@@ -102,6 +102,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 import java.io.File
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -223,10 +224,14 @@ class PictureXAdapter(
                 intent,
                 0
             )) {
-                if (resolveInfo.activityInfo.packageName.contains("com.google.android.apps.translate")) {
-                    isGoogleTranslateEnabled = true
-                    componentPackageName = resolveInfo.activityInfo.packageName
-                    componentName = resolveInfo.activityInfo.name
+                try {
+                    if (resolveInfo.activityInfo.packageName.contains("com.google.android.apps.translate")) {//emui null point exception
+                        isGoogleTranslateEnabled = true
+                        componentPackageName = resolveInfo.activityInfo.packageName
+                        componentName = resolveInfo.activityInfo.name
+                    }
+                } catch (e: Exception) {
+
                 }
 
             }

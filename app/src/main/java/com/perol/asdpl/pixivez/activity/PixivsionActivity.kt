@@ -51,9 +51,8 @@ import kotlinx.coroutines.runBlocking
 class PixivsionActivity : RinkActivity() {
 
 
-    private var restClient: RestClient? = null
-    private var appApiPixivService: AppApiPixivService? = null
-    private var sharedPreferencesServices: SharedPreferencesServices? = null
+    lateinit var appApiPixivService: AppApiPixivService
+    lateinit var sharedPreferencesServices: SharedPreferencesServices
     private var Authorization: String? = null
     private var Nexturl: String? = null
     private var data: SpotlightResponse? = null
@@ -83,18 +82,14 @@ class PixivsionActivity : RinkActivity() {
 
     private fun initbind() {
 
-        restClient = RestClient()
-        appApiPixivService = restClient!!.pixivisionAppApi.create(AppApiPixivService::class.java)
-        Observable.just(1).flatMap(object : Function<Int, ObservableSource<SpotlightResponse>> {
-            override fun apply(t: Int): ObservableSource<SpotlightResponse> {
-                runBlocking {
-                    Authorization = AppDataRepository.getUser().Authorization
-                }
-                return appApiPixivService!!.getPixivisionArticles(Authorization!!, "all")
+        val restClient = RestClient()
+        appApiPixivService = restClient.pixivisionAppApi.create(AppApiPixivService::class.java)
+        Observable.just(1).flatMap {
+            runBlocking {
+                Authorization = AppDataRepository.getUser().Authorization
             }
-
-
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            appApiPixivService.getPixivisionArticles(Authorization!!, "all")
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .retryWhen(ReFreshFunction(applicationContext))
                 .subscribe(object : Observer<SpotlightResponse> {
                     override fun onSubscribe(d: Disposable) {
@@ -112,7 +107,10 @@ class PixivsionActivity : RinkActivity() {
                                 runBlocking {
                                     Authorization = AppDataRepository.getUser().Authorization
                                 }
-                                appApiPixivService!!.getNextPixivisionArticles(Authorization!!, Nexturl!!)
+                                appApiPixivService.getNextPixivisionArticles(
+                                    Authorization!!,
+                                    Nexturl!!
+                                )
                             }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                                     .retryWhen(ReFreshFunction(applicationContext))
                                     .subscribe(object : Observer<SpotlightResponse> {
@@ -135,7 +133,7 @@ class PixivsionActivity : RinkActivity() {
                                     })
                         }, recyclerview_pixivision)
                         pixiviSionAdapter.setOnItemChildClickListener { adapter, view, position ->
-                            val intent = Intent(applicationContext, WebViewActivity::class.java)
+                            val intent = Intent(this@PixivsionActivity, WebViewActivity::class.java)
                             intent.putExtra("url", data!!.spotlight_articles[position].article_url.replace("ja", if (PxEZApp.locale == "zh") {
                                 "zh"
                             } else {
