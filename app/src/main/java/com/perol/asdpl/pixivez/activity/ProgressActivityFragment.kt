@@ -128,7 +128,8 @@ class ProgressActivityFragment : Fragment() {
                 val title1 = data[position].progress.getString("title")
                 val url = data[position].progress.getString("url")
                 val fileName = data[position].progress.getString("file")
-                val needCreateFold = data[position].progress.getBoolean("needcreatefold",false)
+                val userId = data[position].progress.getString("user_id")
+                val needCreateFold = data[position].progress.getBoolean("needcreatefold", false)
                 val userName = data[position].progress.getString("username")
                 holder.apply {
                     itemView.setOnClickListener {
@@ -158,7 +159,8 @@ class ProgressActivityFragment : Fragment() {
                                         "title" to title1,
                                         "id" to id,
                                         "username" to userName,
-                                        "needcreatefold" to needCreateFold
+                                        "needcreatefold" to needCreateFold,
+                                        "user_id" to userId
                                     )
                                     val oneTimeWorkRequest =
                                         OneTimeWorkRequestBuilder<ImgDownLoadWorker>()

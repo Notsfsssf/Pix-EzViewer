@@ -109,7 +109,7 @@ class Works {
                 }
             }
             val path = if (needCreateFold) {
-                "${PxEZApp.storepath}/$userName"
+                "${PxEZApp.storepath}/${userName}_${user}"
             } else PxEZApp.storepath
             val targetFile = File(path, filename)
             try {
@@ -204,7 +204,8 @@ class Works {
                 "title" to illust.title,
                 "id" to illust.id,
                 "username" to userName,
-                "needcreatefold" to needCreateFold
+                "needcreatefold" to needCreateFold,
+                "user_id" to illust.user.id.toString()
             )
             val oneTimeWorkRequest = OneTimeWorkRequestBuilder<ImgDownLoadWorker>()
                 .setInputData(inputData)

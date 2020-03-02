@@ -50,9 +50,10 @@ class ImgDownLoadWorker(var appContext: Context, workerParams: WorkerParameters)
         val title = inputData.getString("title")!!
         val id = inputData.getLong("id", 0L)
         val userName =inputData.getString("username")
+        val userId = inputData.getString("user_id")
         val needCreateFold= inputData.getBoolean("needcreatefold",false)
         val path = if (needCreateFold) {
-            "${PxEZApp.storepath}/$userName"
+            "${PxEZApp.storepath}/${userName}_${userId}"
         } else PxEZApp.storepath
         val appDir = File(path)
 
@@ -64,7 +65,8 @@ class ImgDownLoadWorker(var appContext: Context, workerParams: WorkerParameters)
             "title" to title,
             "id" to id,
             "username" to userName,
-            "needcreatefold" to needCreateFold
+            "needcreatefold" to needCreateFold,
+            "user_id" to userId
         )
         setProgress(lastUpdate)
         if (!appDir.exists()) {
@@ -109,7 +111,8 @@ class ImgDownLoadWorker(var appContext: Context, workerParams: WorkerParameters)
                         "title" to title,
                         "id" to id,
                         "username" to userName,
-                        "needcreatefold" to needCreateFold
+                        "needcreatefold" to needCreateFold,
+                        "user_id" to userId
                     )
                     setProgress(lastUpdate1)
                 }

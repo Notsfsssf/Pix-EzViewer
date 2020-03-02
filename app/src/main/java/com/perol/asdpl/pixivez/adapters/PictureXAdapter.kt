@@ -225,7 +225,8 @@ class PictureXAdapter(
                 0
             )) {
                 try {
-                    if (resolveInfo.activityInfo.packageName.contains("com.google.android.apps.translate")) {//emui null point exception
+                    //emui null point exception
+                    if (resolveInfo.activityInfo.packageName.contains("com.google.android.apps.translate")) {
                         isGoogleTranslateEnabled = true
                         componentPackageName = resolveInfo.activityInfo.packageName
                         componentName = resolveInfo.activityInfo.name
@@ -354,7 +355,6 @@ class PictureXAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when (viewType) {
-
             ITEM_TYPE.ITEM_TYPE_PICTURE.ordinal -> {
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.view_picturex_item, parent, false)
