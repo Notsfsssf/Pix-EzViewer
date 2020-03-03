@@ -121,7 +121,7 @@ class ProgressActivityFragment : Fragment() {
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
             if (holder is ProgressViewHolder) {
-                val workinfo = data[position]
+                val workInfo = data[position]
                 val max = data[position].progress.getLong("max", 100)
                 val now = data[position].progress.getLong("now", 0)
                 val id = data[position].progress.getLong("id", 0)
@@ -149,7 +149,7 @@ class ProgressActivityFragment : Fragment() {
                         ) { _, which ->
                             when (which) {
                                 1 -> {
-                                    WorkManager.getInstance(mContext).cancelWorkById(workinfo.id)
+                                    WorkManager.getInstance(mContext).cancelWorkById(workInfo.id)
                                 }
                                 else -> {
 
@@ -236,13 +236,13 @@ class ProgressActivityFragment : Fragment() {
                     progress.max = max.toInt()
                     progress.progress = now.toInt()
                     title.text = title1
-                    val progressText = if (workinfo.state == WorkInfo.State.SUCCEEDED) {
+                    val progressText = if (workInfo.state == WorkInfo.State.SUCCEEDED) {
                         "completed"
                     } else {
                         "$now/$max"
                     }
                     progress_num.text = progressText
-                    progress_state.text = workinfo.state.toString()
+                    progress_state.text = workInfo.state.toString()
 
                 }
 
@@ -262,7 +262,7 @@ class ProgressActivityFragment : Fragment() {
             adapter = progressAdapter
         }
         WorkManager.getInstance(activity!!).getWorkInfosByTagLiveData("image")
-            .observe(this, Observer {
+            .observe(viewLifecycleOwner, Observer {
                 it.sortByDescending {
                     it.progress.getString("title")
                 }

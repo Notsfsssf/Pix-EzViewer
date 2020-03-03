@@ -99,15 +99,12 @@ class IntentActivity : RinkActivity() {
                     }
                 }
             }
-            val test1 = uri.getQueryParameter("illust_id")
-
-            if (test1 != null) {
+            uri.getQueryParameter("illust_id")?.let {
                 val bundle = Bundle()
-                val arrayList = LongArray(1)
+                val arrayList = longArrayOf(it.toLong())
                 try {
-                    arrayList[arrayList.size - 1] = test1.toLong()
                     bundle.putLongArray("illustlist", arrayList)
-                    bundle.putLong("illustid", test1.toLong())
+                    bundle.putLong("illustid", it.toLong())
                     val intent2 = Intent(this, PictureActivity::class.java)
                     intent2.putExtras(bundle)
                     startActivity(intent2)
@@ -116,24 +113,24 @@ class IntentActivity : RinkActivity() {
                 } catch (e: Exception) {
                     Toasty.error(this, "wrong id")
                 }
-
             }
-            var id = uri.getQueryParameter("id")
+
             if (uri.encodedSchemeSpecificPart.contains("/fanbox/creator/")) {
-                id = uri.pathSegments[uri.pathSegments.size - 1]
-            }
-            if (id != null) {
-
-                try {
-                    val intent1 = Intent(this, UserMActivity::class.java)
-                    intent1.putExtra("data", id.toLong())
-                    startActivity(intent1)
-                    finish()
-                } catch (e: Exception) {
-                    Toasty.error(this, "wrong id")
+                val index = uri.pathSegments.indexOf("creator") + 1
+                val targetString = uri.pathSegments[index]
+                targetString.toLongOrNull()?.let {
+                    try {
+                        val intent1 = Intent(this, UserMActivity::class.java)
+                        intent1.putExtra("data", it)
+                        startActivity(intent1)
+                        finish()
+                    } catch (e: Exception) {
+                        Toasty.error(this, "wrong id")
+                    }
                 }
 
             }
+
 
         }
 
