@@ -1,0 +1,264 @@
+<resources>
+    <string name="app_name">Pix-EzViewer</string>
+    <string name="large_text">
+        "Material is the metaphor.\n\n"
+
+        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
+        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
+        "technologically advanced and open to imagination and magic.\n"
+        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
+        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
+        "flexibility of the material creates new affordances that supercede those in the physical "
+        "world, without breaking the rules of physics.\n"
+        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
+        "interact, and exist in space and in relation to each other. Realistic lighting shows "
+        "seams, divides space, and indicates moving parts.\n\n"
+
+        "Bold, graphic, intentional.\n\n"
+
+        "The foundational elements of print based design typography, grids, space, scale, color, "
+        "and use of imagery guide visual treatments. These elements do far more than please the "
+        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
+        "imagery, large scale typography, and intentional white space create a bold and graphic "
+        "interface that immerse the user in the experience.\n"
+        "An emphasis on user actions makes core functionality immediately apparent and provides "
+        "waypoints for the user.\n\n"
+
+        "Motion provides meaning.\n\n"
+
+        "Motion respects and reinforces the user as the prime mover. Primary user actions are "
+        "inflection points that initiate motion, transforming the whole design.\n"
+        "All action takes place in a single environment. Objects are presented to the user without "
+        "breaking the continuity of experience even as they transform and reorganize.\n"
+        "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
+        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
+
+        "3D world.\n\n"
+
+        "The material environment is a 3D space, which means all objects have x, y, and z "
+        "dimensions. The z-axis is perpendicularly aligned to the plane of the display, with the "
+        "positive z-axis extending towards the viewer. Every sheet of material occupies a single "
+        "position along the z-axis and has a standard 1dp thickness.\n"
+        "On the web, the z-axis is used for layering and not for perspective. The 3D world is "
+        "emulated by manipulating the y-axis.\n\n"
+
+        "Light and shadow.\n\n"
+
+        "Within the material environment, virtual lights illuminate the scene. Key lights create "
+        "directional shadows, while ambient light creates soft shadows from all angles.\n"
+        "Shadows in the material environment are cast by these two light sources. In Android "
+        "development, shadows occur when light sources are blocked by sheets of material at "
+        "various positions along the z-axis. On the web, shadows are depicted by manipulating the "
+        "y-axis only. The following example shows the card with a height of 6dp.\n\n"
+
+        "Resting elevation.\n\n"
+
+        "All material objects, regardless of size, have a resting elevation, or default elevation "
+        "that does not change. If an object changes elevation, it should return to its resting "
+        "elevation as soon as possible.\n\n"
+
+        "Component elevations.\n\n"
+
+        "The resting elevation for a component type is consistent across apps (e.g., FAB elevation "
+        "does not vary from 6dp in one app to 16dp in another app).\n"
+        "Components may have different resting elevations across platforms, depending on the depth "
+        "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"
+
+        "Responsive elevation and dynamic elevation offsets.\n\n"
+
+        "Some component types have responsive elevation, meaning they change elevation in response "
+        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
+        "changes are consistently implemented using dynamic elevation offsets.\n"
+        "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
+        "to the component’s resting state. They ensure that elevation changes are consistent "
+        "across actions and component types. For example, all components that lift on press have "
+        "the same elevation change relative to their resting elevation.\n"
+        "Once the input event is completed or cancelled, the component will return to its resting "
+        "elevation.\n\n"
+
+        "Avoiding elevation interference.\n\n"
+
+        "Components with responsive elevations may encounter other components as they move between "
+        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
+        "through other material, components avoid interfering with one another any number of ways, "
+        "whether on a per component basis or using the entire app layout.\n"
+        "On a component level, components can move or be removed before they cause interference. "
+        "For example, a floating action button (FAB) can disappear or move off screen before a "
+        "user picks up a card, or it can move if a snackbar appears.\n"
+        "On the layout level, design your app layout to minimize opportunities for interference. "
+        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
+        "when a user tries to pick up one of cards.\n\n"
+    </string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <item name="tag_first" type="id"></item>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_user">UserActivity</string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="about">BRVAH http://www.recyclerview.org/\nGLIDE https://github.com/bumptech/glide
+\nHam Button https://github.com/Nightonke/BoomMenu
+\nRetrofit\nhttp://square.github.io/retrofit/
+        \nRxjava https://github.com/ReactiveX/RxJava
+        \nGlide-transformations\nhttps://github.com/wasabeef/glide-transformations
+        \nSpinKitView\nhttps://github.com/ybq/Android-SpinKit
+        \nBaner\nhttps://github.com/youth5201314/banner
+        \nMaterialDrawer\nhttps://github.com/mikepenz/MaterialDrawer
+    </string>
+    <string name="focus">focus</string>
+    <string name="unfocus">unfocus</string>
+    <string name="title_activity_fullscreen2">FullscreenActivity2</string>
+    <string name="support">912756674@qq.com</string>
+    <string name="thanks">感谢腐奇，爱酱,Snake，PoisonBCat,涛灬,万物皆虚,繁落,碘酒,betray,right now,niconiconi,firok,YAMAHA,OneMice,SC61帮助我测试的弹幕委员会的热心你群群友们，以及提供会员帐号的果干辣，还有积极提供建议的吸血姬，逢田梨香子的老公,吃猫的咸鱼等热心用户们</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="title_activity_saucenao">SaucenaoActivity</string>
+    <string name="configure">Configure</string>
+    <string name="title_activity_search_result">SearchResultActivity</string>
+    <string name="title_activity_result">ResultActivity</string>
+    <string name="title_home">ホーム</string>
+    <string name="title_dashboard">ダッシュボード</string>
+    <string name="title_notifications">通知</string>
+    <string name="title_activity_download">DownloadActivity</string>
+    <string name="title_activity_hello_m">HelloMActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">PxEz</string>
+    <string name="nav_header_subtitle">PxEzFeedBack@outlook.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="title_activity_illust_recom">IllustRecomActivity</string>
+    <string name="title_activity_fling">FlingActivity</string>
+    <string name="copyright">
+    </string>
+    <string name="dali">プロキシ設定</string>
+    <string name="checkupdate">確認</string>
+    <string name="icon">アイコン</string>
+    <string name="checktochang">チェックして変更</string>
+    <string name="limit">制限</string>
+    <string name="_18">R-18コンテンツを隠さない</string>
+    <string name="picturequality">画像サムネイルの画質</string>
+    <string name="opensource">Thanks to</string>
+    <string name="tababout">Pix-Ezについて</string>
+    <string name="tabthanks">謝辞</string>
+    <string name="searchsource">元画像を検索</string>
+    <string name="cleancatche">キャッシュを削除</string>
+    <string name="historyrecord">履歴</string>
+    <string name="appsetting">設定</string>
+    <string name="completemessage">Complete Message</string>
+    <string name="logout">ログアウト</string>
+    <string name="account">アカウント</string>
+    <string name="account_helper">Pixiv ID又はメールアドレス</string>
+    <string name="password">パスワード</string>
+    <string name="login">ログイン</string>
+    <string name="login_help">ログインに関するヘルプ</string>
+    <string name="donthaveaccount">アカウントがありませんか?</string>
+    <string name="error_blank_account">アカウントを追加してください</string>
+    <string name="error_blank_password">パスワードを入力してください</string>
+    <string name="error_invalid_account_password">ID又はパスワードが間違っています</string>
+    <string name="saveformat">保存するファイル名</string>
+    <string name="savepath">S保存先</string>
+    <string name="secondpath">Second path</string>
+    <string name="startpage">デフォルトのページ</string>
+    <string name="try_to_login">trying</string>
+    <string name="pixel">pixel</string>
+    <string name="view">views</string>
+    <string name="bookmark">marks</string>
+    <string name="viewcomment">コメントを表示</string>
+    <string name="aboutpic">relative</string>
+    <string name="illustid">イラストID</string>
+    <string name="searchhistory">検索履歴</string>
+    <string name="clearhistory">履歴を消去</string>
+    <string name="hottags">hot tags</string>
+    <string name="aday">日</string>
+    <string name="aweek">週</string>
+    <string name="amonth">1月</string>
+    <string name="newwork">新規作品</string>
+    <string name="oldwork">過去の作品</string>
+    <string name="recent">最近</string>
+    <string name="part">一部一致</string>
+    <string name="complete">完全一致</string>
+    <string name="title">タイトル</string>
+    <string name="by">by</string>
+    <string name="search_by">search by</string>
+    <string name="some_as_tag">some as tag</string>
+    <string name="painterid">PAINTER</string>
+    <string name="word">WORD</string>
+    <string name="developer">開発者</string>
+    <string name="news">新着情報</string>
+    <string name="saveselectpic">保存しますか？</string>
+    <string name="goodpfriend">P</string>
+    <string name="ta">about</string>
+    <string name="taziliao">information</string>
+    <string name="internal">internal</string>
+    <string name="language">言語</string>
+    <string name="pref_language">言語</string>
+    <string name="themecoloful">Theme Colorful</string>
+    <string name="setting">設定</string>
+    <string name="savesuccess">保存しました</string>
+    <string name="alreadysaved">すでに保存されています</string>
+    <string name="registerclose">アプリ内からの登録はできません。pixivの公式サイトからアカウントを作成してください。</string>
+    <string name="nodiscribe">No explanation~</string>
+    <string name="proxy">Not in Mainland China</string>
+    <string name="proxydetail">Disable direct link to Pixiv</string>
+    <string name="encodinggif">GIFアニメをエンコードしています...</string>
+    <string name="privatep">非公開</string>
+    <string name="fetchtags" >タグを取得中....</string>
+    <string name="publics">公開</string>
+    <string name="privates">非公開</string>
+    <string name="onlysupportinternalstorage">内臓ストレージのみをサポート</string>
+    <string name="pickapath">フォルダを選択</string>
+    <string name="noaccess">アクセス権限がありません</string>
+    <string name="conflict">ユーザー情報が競合しています。アバターを表示するため，ログインしなおしてください。</string>
+    <string name="illust">イラスト</string>
+    <string name="manga">漫画</string>
+    <string name="abouts">About</string>
+    <string name="painter">投稿者</string>
+    <string name="new1">新規</string>
+    <string name="saveselectpic1">保存しますか？</string>
+    <string name="confirm">確定</string>
+    <string name="mutichoicesave">複数選択</string>
+    <string name="choice">選択</string>
+    <string name="errorgif">GIFアニメが破損しています</string>
+    <string name="add">追加</string>
+    <string name="logoutallaccount">すべてのアカウントからログアウトしますか？</string>
+    <string name="mypage">マイページ</string>
+    <string name="savegifsuccess">GIFアニメを保存しました</string>
+    <string name="savegifsuccesserr">GIFアニメを保存中にエラーが発生しました</string>
+    <string name="encodegif">GIFアニメをエンコードしますか？</string>
+    <string name="crash_report">クラッシュリポート</string>
+    <string name="feed_back">フィードバック</string>
+    <string name="needstatusbar">ノッチスクリーン</string>
+    <string name="changeicons">アイコンを変更</string>
+    <string name="supporttitle">支援</string>
+    <string name="viewreport">リポートを閲覧</string>
+    <string name="needtorestart">アプリの再起動が必要です</string>
+    <string name="animation">アニメーション</string>
+    <string name="download_progress">ダウンロードの進捗</string>
+    <string name="join_download_queue">Join download queue</string>
+    <string name="again_to_exit">もう一度タップして終了</string>
+    <string name="dark_mode">ダークモード</string>
+    <string name="restart_now">今すぐ再起動</string>
+    <string name="account_management">アカウント管理</string>
+    <string name="auto_check_update">更新を自動で確認</string>
+    <string name="half_year">半年</string>
+    <string name="a_year">一年</string>
+    <string name="unlimit">無制限</string>
+    <string name="bookmark_private">非公開</string>
+    <string name="bookmark_public">公開</string>
+    <string name="start_date">開始日</string>
+    <string name="end_date">終了日</string>
+    <string name="choice_date">日付を選択</string>
+    <string name="create_painter_folder">投稿者ごとにフォルダを分割します</string>
+    <string name="create_separate_folder">フォルダを分割</string>
+    <string name="refresh_token">トークンを更新</string>
+    <string name="translate">翻訳</string>
+    <string name="back_to_the_top">ダブルタップしてホームに戻る</string>
+    <string name="savefail">保存に失敗</string>
+    <string name="add_to_block_tag_list">タグをブロックリストに追加</string>
+    <string name="block_tag">タグをブロック</string>
+    <string name="block_face"><![ｻﾖﾅﾗ![>_<]]></string>
+    <string name="help_maintenance">開発をサポート</string>
+</resources>
