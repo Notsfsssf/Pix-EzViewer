@@ -12,7 +12,6 @@ object LanguageUtil {
         val resources = context.resources
         val configuration = resources.configuration
         val displayMetrics = resources.displayMetrics
-
         configuration.setLocale(getLocale(language))
         // https://developer.android.com/reference/android/content/res/Resources.html#updateConfiguration(android.content.res.Configuration,%20android.util.DisplayMetrics).
         resources.updateConfiguration(
