@@ -114,7 +114,7 @@
     <string name="support">912756674@qq.com</string>
     <string name="thanks">感谢腐奇，爱酱,Snake，PoisonBCat,涛灬,万物皆虚,繁落,碘酒,betray,right now,niconiconi,firok,YAMAHA,OneMice,SC61帮助我测试的弹幕委员会的热心你群群友们，以及提供会员帐号的果干辣，还有积极提供建议的吸血姬，逢田梨香子的老公,吃猫的咸鱼等热心用户们</string>
     <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
+    <string name="add_widget">ウィジェットを追加</string>
     <string name="title_activity_saucenao">SaucenaoActivity</string>
     <string name="configure">Configure</string>
     <string name="title_activity_search_result">SearchResultActivity</string>
@@ -124,11 +124,11 @@
     <string name="title_notifications">通知</string>
     <string name="title_activity_download">DownloadActivity</string>
     <string name="title_activity_hello_m">HelloMActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">ナビゲーションドロワーを開く</string>
+    <string name="navigation_drawer_close">ナビゲーションドロワーを閉じる</string>
     <string name="nav_header_title">PxEz</string>
     <string name="nav_header_subtitle">PxEzFeedBack@outlook.com</string>
-    <string name="nav_header_desc">Navigation header</string>
+    <string name="nav_header_desc">ナビゲーションヘッダー</string>
     <string name="title_activity_illust_recom">IllustRecomActivity</string>
     <string name="title_activity_fling">FlingActivity</string>
     <string name="copyright">
@@ -163,11 +163,11 @@
     <string name="secondpath">Second path</string>
     <string name="startpage">デフォルトのページ</string>
     <string name="try_to_login">ログイン試行中...</string>
-    <string name="pixel">pixel</string>
-    <string name="view">views</string>
-    <string name="bookmark">marks</string>
+    <string name="pixel">解像度</string>
+    <string name="view">閲覧数</string>
+    <string name="bookmark">ブックマーク数</string>
     <string name="viewcomment">コメントを表示</string>
-    <string name="aboutpic">relative</string>
+    <string name="aboutpic">関連画像</string>
     <string name="illustid">イラストID</string>
     <string name="searchhistory">検索履歴</string>
     <string name="clearhistory">履歴を消去</string>
@@ -181,8 +181,8 @@
     <string name="part">部分一致</string>
     <string name="complete">完全一致</string>
     <string name="title">タイトル</string>
-    <string name="by">by</string>
-    <string name="search_by">search by</string>
+    <string name="by">ソート順</string>
+    <string name="search_by">検索フィルタ</string>
     <string name="some_as_tag">some as tag</string>
     <string name="painterid">PAINTER</string>
     <string name="word">WORD</string>
@@ -192,15 +192,15 @@
     <string name="goodpfriend">P</string>
     <string name="ta">about</string>
     <string name="taziliao">information</string>
-    <string name="internal">internal</string>
+    <string name="internal">内部</string>
     <string name="language">言語</string>
     <string name="pref_language">言語</string>
-    <string name="themecoloful">Theme Colorful</string>
+    <string name="themecoloful">テーマの設定</string>
     <string name="setting">設定</string>
     <string name="savesuccess">保存しました</string>
     <string name="alreadysaved">すでに保存されています</string>
     <string name="registerclose">アプリ内からの登録はできません。pixivの公式サイトからアカウントを作成してください。</string>
-    <string name="nodiscribe">No explanation~</string>
+    <string name="nodiscribe">説明なし</string>
     <string name="proxy">Not in Mainland China</string>
     <string name="proxydetail">Disable direct link to Pixiv</string>
     <string name="encodinggif">GIFアニメをエンコードしています...</string>
@@ -259,6 +259,6 @@
     <string name="savefail">保存に失敗</string>
     <string name="add_to_block_tag_list">タグをブロックリストに追加</string>
     <string name="block_tag">タグをブロック</string>
-    <string name="block_face"><![ｻﾖﾅﾗ![>_<]]></string>
+    <string name="block_face"><![CDATA[>_<]]></string>
     <string name="help_maintenance">開発をサポート</string>
 </resources>
