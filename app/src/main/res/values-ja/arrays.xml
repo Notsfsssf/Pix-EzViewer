@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="week">
-        <item>All</item>
-        <item>Public</item>
-        <item>Private</item>
+        <item>すべて</item>
+        <item>公開</item>
+        <item>非公開</item>
     </string-array>
     <string-array name="user">
-        <item>Public</item>
-        <item>Private</item>
+        <item>公開</item>
+        <item>非公開</item>
     </string-array>
     <string-array name="search">
-        <item>word</item>
-        <item>illust id</item>
-        <item>painter id</item>
+        <item>ワード</item>
+        <item>イラストID</item>
+        <item>投稿者ID</item>
 
     </string-array>
     <string-array name="sort">
-        <item>default</item>
-        <item>default asc</item>
-        <item>hot</item>
+        <item>デフォルト</item>
+        <item>デフォルト(古い順)</item>
+        <item>人気</item>
     </string-array>
     <string-array name="firstpage">
-        <item>recommend</item>
-        <item>ranking</item>
-        <item>myself</item>
+        <item>おすすめ</item>
+        <item>ランキング</item>
+        <item>マイページ</item>
     </string-array>
     <string-array name="format">
-        <item>default:id_+part</item>
-        <item>P default:id_p+part</item>
+        <item>デフォルト:id_+part</item>
+        <item>P付きデフォルト:id_p+part</item>
         <item>血书:userid_id_part</item>
         <item>特殊:id_title_part</item>
     </string-array>
     <string-array name="quality">
-        <item>meduim（fast）</item>
-        <item>high（low）</item>
+        <item>標準画質（高速）</item>
+        <item>高画質（低速）</item>
     </string-array>
     <string-array name="modellist">
-        <item>day</item>
-        <item>day_male</item>
-        <item>day_female</item>
-        <item>week_original</item>
-        <item>week_rookie</item>
-        <item>week</item>
-        <item>month</item>
+        <item>一日以内</item>
+        <item>男性向け</item>
+        <item>女性向け</item>
+        <item>オリジナル</item>
+        <item>新人</item>
+        <item>一週間以内</item>
+        <item>一か月以内</item>
         <item>XVIII</item>
         <item>XVIII_Male</item>
         <item>XVIII_FeMale</item>
@@ -50,15 +50,15 @@
         <item>XVIII_WeekG</item>
     </string-array>
     <string-array name="dark_mode">
-        <item>FOLLOW_SYSTEM</item>
-        <item>AUTO_TIME</item>
-        <item>NO</item>
-        <item>YES</item>
-        <item>AUTO_BATTERY</item>
+        <item>システムに従う</item>
+        <item>時間で自動変更</item>
+        <item>無効</item>
+        <item>有効</item>
+        <item>バッテリー残量で自動変更</item>
     </string-array>
     <string-array name="user_profile">
-        <item>Copy Link</item>
-        <item>Save Avatar</item>
-        <item>Change Avatar</item>
+        <item>リンクをコピー</item>
+        <item>アバターを保存</item>
+        <item>アバターを変更</item>
     </string-array>
 </resources>
