@@ -38,9 +38,9 @@ class RubyHttpDns : Dns {
     override fun lookup(hostname: String): List<InetAddress> {
         if (addressList.isNotEmpty()) return addressList
         val defaultList = listOf(
-            "210.140.131.219",
-            "210.140.131.222",
-            "210.140.131.224"
+            "210.140.131.187",
+            "210.140.131.188",
+            "210.140.131.189"
         ).map { InetAddress.getByName(it) }
         Log.d("httpdns", "========================================")
         try {

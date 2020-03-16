@@ -136,8 +136,10 @@ class PixivsionActivity : RinkActivity() {
                             val intent = Intent(this@PixivsionActivity, WebViewActivity::class.java)
                             intent.putExtra("url", data!!.spotlight_articles[position].article_url.replace("ja", if (PxEZApp.locale == "zh") {
                                 "zh"
-                            } else {
+                            } else if (PxEZApp.language == 1) {
                                 "en"
+                            } else {
+                                "ja"
                             }))
                             startActivity(intent)
                         }

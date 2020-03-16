@@ -31,6 +31,7 @@ object LanguageUtil {
                 }
             }
             Language.ENGLISH -> Locale.ENGLISH
+            Language.JAPANESE -> Locale.JAPANESE
             Language.SIMPLIFIED_CHINESE -> Locale.SIMPLIFIED_CHINESE
             Language.TRADITIONAL_CHINESE -> Locale.TRADITIONAL_CHINESE
             else -> Locale.SIMPLIFIED_CHINESE
@@ -41,7 +42,8 @@ object LanguageUtil {
         Language.SYSTEM,
         Language.ENGLISH,
         Language.TRADITIONAL_CHINESE,
-        Language.SIMPLIFIED_CHINESE
+        Language.SIMPLIFIED_CHINESE,
+        Language.JAPANESE
     )
     @Target(AnnotationTarget.VALUE_PARAMETER)
     @Retention(AnnotationRetention.SOURCE)
@@ -52,6 +54,7 @@ object LanguageUtil {
             const val ENGLISH = 1 // 英语
             const val SIMPLIFIED_CHINESE = 0 // 简体中文
             const val TRADITIONAL_CHINESE = 2 // 繁体中文
+            const val JAPANESE = 3//日语
         }
     }
 }

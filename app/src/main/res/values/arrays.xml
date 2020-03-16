@@ -81,7 +81,7 @@
     <string-array name="language" >
         <item>zh</item>
         <item>en</item>
-        <item>zh-rHK</item>
+        <item>zh-rTW</item>
 		<item>ja</item>
     </string-array>
     <string-array name="language_values" >

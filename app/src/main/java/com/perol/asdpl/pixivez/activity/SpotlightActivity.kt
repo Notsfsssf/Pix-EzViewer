@@ -93,6 +93,9 @@ class SpotlightActivity : RinkActivity() {
             2 -> {
                 Locale.TRADITIONAL_CHINESE
             }
+            3 -> {
+                Locale.JAPANESE
+            }
             else -> {
                 Locale.SIMPLIFIED_CHINESE
             }
