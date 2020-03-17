@@ -16,8 +16,8 @@
 
     </string-array>
     <string-array name="sort">
-        <item>默認</item>
-        <item>默認asc</item>
+        <item>預設</item>
+        <item>預設asc</item>
         <item>熱門</item>
     </string-array>
     <string-array name="firstpage">
@@ -57,11 +57,11 @@
         <item>新人</item>
         <item>每周</item>
         <item>每月</item>
-        <item>XVIII</item>
-        <item>XVIII_Male</item>
-        <item>XVIII_FeMale</item>
-        <item>XVIII_Week</item>
-        <item>XVIII_WeekG</item>
+        <item>R18</item>
+        <item>R18男性</item>
+        <item>R18女性</item>
+        <item>R18每周</item>
+        <item>R18G每周</item>
     </string-array>
     <string-array name="dark_mode">
         <item>跟隨系統</item>
@@ -72,7 +72,7 @@
     </string-array>
     <string-array name="user_profile">
         <item>複製連結</item>
-        <item>保存頭像</item>
-        <item>更換頭像</item>
+        <item>儲存頭圖</item>
+        <item>更換頭圖</item>
     </string-array>
 </resources>
