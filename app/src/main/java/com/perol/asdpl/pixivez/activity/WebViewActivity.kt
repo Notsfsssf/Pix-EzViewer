@@ -32,8 +32,10 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.objects.ThemeUtil
+import com.perol.asdpl.pixivez.services.PxEZApp
 import kotlinx.android.synthetic.main.activity_web_view.*
 import java.io.ByteArrayInputStream
+import java.util.*
 
 
 class WebViewActivity : RinkActivity() {
@@ -41,7 +43,24 @@ class WebViewActivity : RinkActivity() {
         super.onCreate(savedInstanceState)
         ThemeUtil.themeInit(this)
         setContentView(R.layout.activity_web_view)
-        webview.loadUrl(intent.getStringExtra("url"))
+        val local = when (PxEZApp.language) {
+            1 -> {
+                "en"
+            }
+            2 -> {
+                "zh"
+            }
+            3 -> {
+                "ja"
+            }
+            else -> {
+                "zh"
+            }
+        }
+
+//        val additionalHttpHeaders = hashMapOf<String,String>("Accept-Language" to local.displayLanguage)
+//        "Accept-Language": "zh-CN"
+        webview.loadUrl(intent.getStringExtra("url")!!.replace("ja", local))
         webview.settings.blockNetworkImage = false
         webview.settings.javaScriptEnabled = true
         webview.webViewClient = object : WebViewClient() {

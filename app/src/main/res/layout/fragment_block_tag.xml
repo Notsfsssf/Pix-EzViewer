@@ -5,11 +5,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.perol.asdpl.pixivez.fragments.BlockTagFragment">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chipgroup"
         app:chipSpacing="2dp"
         android:padding="8dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
+    </ScrollView>
+
 
 </FrameLayout>

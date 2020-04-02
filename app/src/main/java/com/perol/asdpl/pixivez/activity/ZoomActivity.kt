@@ -52,6 +52,10 @@ class ZoomActivity : RinkActivity() {
                 or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_FULLSCREEN)
         setContentView(R.layout.activity_zoom)
+        setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
+        toolbar.setNavigationOnClickListener { finish() }
         val intent = intent
         val bundle = intent.extras
         str = bundle!!.getStringArrayList("url")!!

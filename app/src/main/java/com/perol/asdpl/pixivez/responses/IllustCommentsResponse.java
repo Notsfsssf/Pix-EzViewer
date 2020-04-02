@@ -127,16 +127,16 @@ public class IllustCommentsResponse implements Serializable {
              * profile_image_urls : {"medium":"https://i.pximg.net/user-profile/img/2017/10/05/19/56/20/13307506_0f98c48babaac8ceb11673464ad40ad3_170.jpg"}
              */
 
-            private int id;
+            private Long id;
             private String name;
             private String account;
             private ProfileImageUrlsBean profile_image_urls;
 
-            public int getId() {
+            public Long getId() {
                 return id;
             }
 
-            public void setId(int id) {
+            public void setId(Long id) {
                 this.id = id;
             }
 

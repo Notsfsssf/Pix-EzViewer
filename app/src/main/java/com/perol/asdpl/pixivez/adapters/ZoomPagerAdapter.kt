@@ -81,9 +81,9 @@ class ZoomPagerAdapter(
                     velocityX: Float,
                     velocityY: Float
                 ): Boolean {
-                    if ((e2.rawY - e1.rawY) > dm.heightPixels / 4) {
+/*                    if ((e2.rawY - e1.rawY) > dm.heightPixels / 3) {
                         (context as Activity).finish()
-                    }
+                    }*/
                     return false
                 }
 

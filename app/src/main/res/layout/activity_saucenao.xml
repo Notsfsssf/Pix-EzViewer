@@ -29,7 +29,7 @@
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                     app:theme="@style/MyToolbar"
                     android:background="?attr/colorPrimary"
-                    app:title="以图搜源"
+                    app:title="@string/searchsource"
                     app:titleTextColor="?android:attr/textColorPrimaryInverse" />
             </com.google.android.material.appbar.AppBarLayout>
 

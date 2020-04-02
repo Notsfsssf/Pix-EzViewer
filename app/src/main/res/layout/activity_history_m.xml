@@ -23,7 +23,7 @@
                 android:theme="@style/MyToolbar"
                 android:layout_height="?attr/actionBarSize"
                 app:titleTextColor="?android:attr/textColorPrimaryInverse"
-                app:title="历史" />
+                app:title="@string/historyrecord" />
         </com.google.android.material.appbar.AppBarLayout>
 
 

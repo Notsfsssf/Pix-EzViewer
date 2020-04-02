@@ -12,7 +12,7 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            app:title="Account"
+            app:title="@string/account_management"
             android:fitsSystemWindows="true"
             app:titleTextColor="?android:attr/textColorPrimaryInverse"
             android:background="?attr/colorPrimary"

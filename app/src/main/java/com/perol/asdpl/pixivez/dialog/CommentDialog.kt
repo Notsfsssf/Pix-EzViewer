@@ -100,140 +100,160 @@ class CommentDialog : DialogFragment() {
             }
             appApiPixivService!!.getIllustComments(Authorization!!, id!!)
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .retryWhen(ReFreshFunction(context!!))
-                .subscribe(object : Observer<IllustCommentsResponse> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
+            .retryWhen(ReFreshFunction(context!!))
+            .subscribe(object : Observer<IllustCommentsResponse> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
 
-                    override fun onNext(illustCommentsResponse: IllustCommentsResponse) {
-                        button.isClickable = true
-                        commentAdapter = CommentAdapter(R.layout.view_comment_item, illustCommentsResponse.comments, context)
-                        recyclerviewPicture.isNestedScrollingEnabled = false
-                        recyclerviewPicture.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-                        recyclerviewPicture.adapter = commentAdapter
-                        recyclerviewPicture.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
-                        commentAdapter!!.setOnItemClickListener { adapter, view, position ->
-                            val builder = MaterialAlertDialogBuilder(activity!!)
-                            val comment = illustCommentsResponse.comments[position].comment
-                            builder.setMessage(comment)
-                            val dialog = builder.create()
-                            dialog.show()
+                override fun onNext(illustCommentsResponse: IllustCommentsResponse) {
+                    button.isClickable = true
+                    commentAdapter = CommentAdapter(
+                        R.layout.view_comment_item,
+                        illustCommentsResponse.comments,
+                        context
+                    )
+                    recyclerviewPicture.isNestedScrollingEnabled = false
+                    recyclerviewPicture.layoutManager =
+                        LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+                    recyclerviewPicture.adapter = commentAdapter
+                    recyclerviewPicture.addItemDecoration(
+                        DividerItemDecoration(
+                            context,
+                            DividerItemDecoration.HORIZONTAL
+                        )
+                    )
+                    commentAdapter!!.setOnItemClickListener { adapter, view, position ->
+                        val builder = MaterialAlertDialogBuilder(activity!!)
+                        val comment = illustCommentsResponse.comments[position].comment
+                        builder.setMessage(comment)
+                        val dialog = builder.create()
+                        dialog.show()
+                    }
+                    commentAdapter!!.setOnItemChildClickListener { adapter, view, position ->
+                        if (view.id == R.id.commentuserimage) {
+                            val intent = Intent(context, UserMActivity::class.java)
+                            intent.putExtra(
+                                "data",
+                                illustCommentsResponse.comments[position].user.id
+                            )
+                            startActivity(intent)
                         }
-                        commentAdapter!!.setOnItemChildClickListener { adapter, view, position ->
-                            if (view.id == R.id.commentuserimage) {
-                                val intent = Intent(context, UserMActivity::class.java)
-                                intent.putExtra("data", illustCommentsResponse.comments[position].user.id)
-                                startActivity(intent)
-                            }
-                            if (view.id == R.id.repley_to_hit) {
-                                Parent_comment_id = illustCommentsResponse.comments[position].id
-                                edittextComment.hint = "回复:" + illustCommentsResponse.comments[position].user.name
-                            }
+                        if (view.id == R.id.repley_to_hit) {
+                            Parent_comment_id = illustCommentsResponse.comments[position].id
+                            edittextComment.hint =
+                                "回复:" + illustCommentsResponse.comments[position].user.name
                         }
-                        nextUrl = illustCommentsResponse.next_url
-                        commentAdapter?.setOnLoadMoreListener({
-                            if (!nextUrl.isNullOrBlank()) {
-                                Observable.just(1).flatMap {
-
-                                    runBlocking {
-                                        Authorization = AppDataRepository.getUser().Authorization
-                                    }
-                                    appApiPixivService!!.getIllustCommentsNext(
-                                        Authorization!!,
-                                        nextUrl!!
-                                    )
-                                }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                                        .retryWhen(ReFreshFunction(context!!)).subscribe({
-                                            commentAdapter?.addData(it.comments)
-                                            nextUrl = it.next_url
-                                            commentAdapter?.loadMoreComplete()
-                                        }, {
-                                        it.printStackTrace()
-                                        }, {
-
-                                        }, {
-                                            compositeDisposable.add(it)
-                                        })
-                            } else {
-                                commentAdapter?.loadMoreEnd()
-                            }
-                        }, recyclerviewPicture)
-                        button.setOnClickListener { commit() }
-
                     }
+                    nextUrl = illustCommentsResponse.next_url
+                    commentAdapter?.setOnLoadMoreListener({
+                        if (!nextUrl.isNullOrBlank()) {
+                            Observable.just(1).flatMap {
 
-                    override fun onError(e: Throwable) {
+                                runBlocking {
+                                    Authorization = AppDataRepository.getUser().Authorization
+                                }
+                                appApiPixivService!!.getIllustCommentsNext(
+                                    Authorization!!,
+                                    nextUrl!!
+                                )
+                            }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                                .retryWhen(ReFreshFunction(context!!)).subscribe({
+                                    commentAdapter?.addData(it.comments)
+                                    nextUrl = it.next_url
+                                    commentAdapter?.loadMoreComplete()
+                                }, {
+                                    it.printStackTrace()
+                                }, {
 
-                    }
+                                }, {
+                                    compositeDisposable.add(it)
+                                })
+                        } else {
+                            commentAdapter?.loadMoreEnd()
+                        }
+                    }, recyclerviewPicture)
+                    button.setOnClickListener { commit() }
 
-                    override fun onComplete() {
+                }
 
-                    }
-                })
+                override fun onError(e: Throwable) {
+
+                }
+
+                override fun onComplete() {
+
+                }
+            })
 
 
     }
 
     fun commit() {
         appApiPixivService!!
-                .postIllustComment(Authorization!!, id!!, edittextComment.text.toString(), if (Parent_comment_id == 1) null else Parent_comment_id)
-                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<ResponseBody> {
-                    override fun onSubscribe(d: Disposable) {
+            .postIllustComment(
+                Authorization!!,
+                id!!,
+                edittextComment.text.toString(),
+                if (Parent_comment_id == 1) null else Parent_comment_id
+            )
+            .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<ResponseBody> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
 
-                    }
-
-                    override fun onNext(responseBody: ResponseBody) {
-                        Observable.just(1).flatMap {
-                            var Authorization: String = ""
-                            runBlocking {
-                                Authorization = AppDataRepository.getUser().Authorization
+                override fun onNext(responseBody: ResponseBody) {
+                    Observable.just(1).flatMap {
+                        var Authorization: String = ""
+                        runBlocking {
+                            Authorization = AppDataRepository.getUser().Authorization
+                        }
+                        appApiPixivService!!.getIllustComments(Authorization, id!!)
+                    }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                        .retryWhen(ReFreshFunction(context!!))
+                        .subscribe(object : Observer<IllustCommentsResponse> {
+                            override fun onSubscribe(d: Disposable) {
+                                compositeDisposable.add(d)
                             }
-                            appApiPixivService!!.getIllustComments(Authorization, id!!)
-                        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                                .retryWhen(ReFreshFunction(context!!))
-                                .subscribe(object : Observer<IllustCommentsResponse> {
-                                    override fun onSubscribe(d: Disposable) {
-                                        compositeDisposable.add(d)
-                                    }
 
-                                    override fun onNext(illustCommentsResponse: IllustCommentsResponse) {
+                            override fun onNext(illustCommentsResponse: IllustCommentsResponse) {
 
-                                        commentAdapter!!.setNewData(illustCommentsResponse.comments)
-                                        Toast.makeText(context, "评论成功！", Toast.LENGTH_SHORT).show()
-                                        edittextComment.setText("")
-                                        Parent_comment_id = 1
-                                        edittextComment.hint = ""
-                                    }
+                                commentAdapter!!.setNewData(illustCommentsResponse.comments)
+                                Toast.makeText(context, "评论成功！", Toast.LENGTH_SHORT).show()
+                                edittextComment.setText("")
+                                Parent_comment_id = 1
+                                edittextComment.hint = ""
+                            }
 
-                                    override fun onError(e: Throwable) {
-                                        if ((e as HttpException).response()!!.code() == 403) {
+                            override fun onError(e: Throwable) {
+                                if ((e as HttpException).response()!!.code() == 403) {
 
-                                            Toasty.warning(context!!, "Rate Limit", Toast.LENGTH_SHORT).show()
+                                    Toasty.warning(context!!, "Rate Limit", Toast.LENGTH_SHORT)
+                                        .show()
 
 
-                                        } else if (e.response()!!.code() == 404) {
+                                } else if (e.response()!!.code() == 404) {
 
 
-                                        }
-                                    }
+                                }
+                            }
 
-                                    override fun onComplete() {
+                            override fun onComplete() {
 
-                                    }
-                                })
+                            }
+                        })
 
-                    }
+                }
 
-                    override fun onError(e: Throwable) {
+                override fun onError(e: Throwable) {
 
-                    }
+                }
 
-                    override fun onComplete() {
+                override fun onComplete() {
 
-                    }
-                })
+                }
+            })
 
 
     }
