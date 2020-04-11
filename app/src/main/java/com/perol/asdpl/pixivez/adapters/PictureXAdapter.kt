@@ -457,7 +457,7 @@ class PictureXAdapter(
                     builder.setMessage("描述: " + Html.fromHtml(data.caption))
                     builder.setPositiveButton(mContext.resources.getString(R.string.confirm)) { dialog, which ->
                         TToast.startDownload(PxEZApp.instance)
-                        Works.imageDownloadOne(data, position)
+                        Works.imgD(data, position)
                     }
                     builder.setNegativeButton(mContext.resources.getString(android.R.string.cancel)) { dialog, which ->
 
@@ -497,7 +497,7 @@ class PictureXAdapter(
                                 .setPositiveButton(android.R.string.ok) { dialog, id ->
                                     TToast.startDownload(PxEZApp.instance)
                                     mSelectedItems.map {
-                                        Works.imageDownloadOne(data, it)
+                                        Works.imgD(data, it)
                                     }
                                 }
                                 .setNegativeButton(android.R.string.cancel) { dialog, id -> }

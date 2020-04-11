@@ -69,7 +69,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    buildToolsVersion = '29.0.3'
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8
     }
@@ -79,14 +78,43 @@ android {
     lintOptions {
         abortOnError false
     }
+
 /*    configurations.all {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
     }*/
 
 }
+kapt {
+    correctErrorTypes true
+    mapDiagnosticLocations true
+}
 
 
 dependencies {
+
+    implementation 'com.arialyy.aria:core:3.8.5'
+    kapt 'com.arialyy.aria:compiler:3.8.5'
+    // Litho
+    implementation 'com.facebook.litho:litho-core-kotlin:0.34.0'
+    implementation 'com.facebook.litho:litho-widget-kotlin:0.34.0'
+    kapt 'com.facebook.litho:litho-processor:0.34.0'
+
+    // SoLoader
+    implementation 'com.facebook.soloader:soloader:0.6.0'
+
+    // For integration with Fresco
+    implementation 'com.facebook.litho:litho-fresco:0.34.0'
+
+    // For testing
+    testImplementation 'com.facebook.litho:litho-testing:0.34.0'
+
+    // Sections
+    implementation 'com.facebook.litho:litho-sections-core:0.34.0'
+
+    implementation 'com.facebook.litho:litho-sections-widget:0.34.0'
+    compileOnly 'com.facebook.litho:litho-sections-annotations:0.34.0'
+
+    kapt 'com.facebook.litho:litho-sections-processor:0.34.0'
 
     implementation 'com.orhanobut:logger:2.2.0'
     def work_version = "2.3.0-alpha01"
@@ -112,7 +140,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
 
-    def room_version = "2.2.3"
+    def room_version = "2.2.5"
 
     implementation "androidx.room:room-runtime:$room_version"
     implementation 'androidx.preference:preference:1.1.0'
@@ -152,30 +180,30 @@ dependencies {
     // optional - Test helpers for LiveData
     testImplementation 'androidx.arch.core:core-testing:2.1.0'
     implementation 'com.esotericsoftware.kryo:kryo:2.24.0'
-    implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.4.0'
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
     implementation 'com.google.android:flexbox:1.1.0'
-    implementation 'jp.wasabeef:glide-transformations:3.1.1'
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
+    implementation 'jp.wasabeef:glide-transformations:4.1.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.13'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.squareup.okhttp3:logging-interceptor:4.0.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.0.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.2.2'
 
     api 'com.github.bumptech.glide:glide:4.11.0'
     api 'com.github.bumptech.glide:annotations:4.11.0'
     api 'com.github.bumptech.glide:okhttp3-integration:4.11.0'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
 
-    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.2'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.45-androidx'
     //noinspection GradleCompatible
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.core:core:1.2.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.material:material:1.2.0-alpha04'
+    implementation 'com.google.android.material:material:1.2.0-alpha05'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
@@ -187,10 +215,11 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
 
     // Material Dialogs: https://github.com/afollestad/material-dialogs
-    implementation 'com.afollestad.material-dialogs:core:3.1.1'
+    implementation 'com.afollestad.material-dialogs:core:3.2.1'
     implementation 'com.afollestad.material-dialogs:files:3.1.1'
-    implementation 'com.afollestad.material-dialogs:bottomsheets:3.1.1'
+    implementation 'com.afollestad.material-dialogs:bottomsheets:3.2.1'
     implementation 'com.afollestad.material-dialogs:lifecycle:3.1.1'
+    implementation 'com.afollestad.material-dialogs:input:3.2.1'
 
     implementation "androidx.viewpager2:viewpager2:1.0.0"
 
@@ -198,10 +227,12 @@ dependencies {
 
 
     implementation 'com.tencent.bugly:crashreport_upgrade:1.4.2'
-    implementation 'com.google.android.play:core:1.6.5'
+    implementation 'com.google.android.play:core:1.7.2'
     implementation 'com.google.android.gms:play-services-wallet:18.0.0'
 
-
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.11.0.rc1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.0.rc1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.0.rc1'
 //  debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0'
 
 

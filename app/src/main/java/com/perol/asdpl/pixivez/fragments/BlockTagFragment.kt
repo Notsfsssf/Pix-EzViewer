@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.input.input
 import com.google.android.material.chip.Chip
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.objects.AdapterRefreshEvent
@@ -83,6 +85,34 @@ class BlockTagFragment : Fragment() {
             it.forEach { v ->
                 chipgroup.addView(getChip(v))
             }
+            val chip = Chip(requireContext())
+            val paddingDp = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 5f,
+                resources.displayMetrics
+            ).toInt()
+            chip.text = "+"
+            chip.setOnClickListener {
+                MaterialDialog(requireContext()).show {
+                    title(R.string.block_tag)
+                    input { dialog, text ->
+                        if (text.isBlank()) return@input
+                        runBlocking {
+                            viewModel.insertBlockTag(
+                                BlockTagEntity(
+                                    text.toString(),
+                                    text.toString()
+                                )
+                            )
+                            getTagList()
+                        }
+
+                        EventBus.getDefault().post(AdapterRefreshEvent())
+                    }
+                    positiveButton()
+                    negativeButton()
+                }
+            }
+            chipgroup.addView(chip)
         }
 
     }

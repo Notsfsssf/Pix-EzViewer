@@ -212,12 +212,13 @@ class SettingFragment : PreferenceFragmentCompat() {
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (preference?.key) {
             "me" -> {
+//                Toasty.info(PxEZApp.instance, "no browser found", Toast.LENGTH_SHORT).show()
                 try {
-                    val uri = Uri.parse("https://music.163.com/song?id=1335514068&userid=32973424")
-                    val intent = Intent(Intent.ACTION_VIEW, uri)
-                    startActivity(intent)
+                    /*         val uri = Uri.parse("https://music.163.com/song?id=1335514068&userid=32973424")
+                             val intent = Intent(Intent.ACTION_VIEW, uri)
+                             startActivity(intent)*/
                 } catch (e: Exception) {
-                    Toasty.info(PxEZApp.instance, "no browser found", Toast.LENGTH_SHORT).show()
+
                 }
             }
             "check" -> {

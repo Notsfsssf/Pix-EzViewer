@@ -96,5 +96,14 @@
         <item name="colorAccent">@color/nowDark</item>
     </style>
 
+    <style name="AppThemeBase.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppThemeBase.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppThemeBase.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 
 </resources>

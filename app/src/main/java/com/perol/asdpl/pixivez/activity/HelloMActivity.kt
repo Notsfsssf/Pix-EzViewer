@@ -26,6 +26,7 @@ package com.perol.asdpl.pixivez.activity
 
 import android.Manifest
 import android.app.Activity
+import android.app.DownloadManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -48,6 +49,7 @@ import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.fragments.hellom.HelloMDynamicsFragment
 import com.perol.asdpl.pixivez.fragments.hellom.HelloMThFragment
 import com.perol.asdpl.pixivez.fragments.hellom.HelloMainFragment
+import com.perol.asdpl.pixivez.manager.DownloadManagerActivity
 import com.perol.asdpl.pixivez.objects.ThemeUtil
 import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.services.GlideApp
@@ -116,7 +118,7 @@ class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedLi
             }
 
             R.id.nav_progress -> {
-                startActivity(Intent(this@HelloMActivity, ProgressActivity::class.java))
+                DownloadManagerActivity.start(this)
             }
             R.id.nav_account -> {
                 startActivity(Intent(this, AccountActivity::class.java))

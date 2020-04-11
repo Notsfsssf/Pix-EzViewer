@@ -29,14 +29,14 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.TypedValue
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
@@ -49,15 +49,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
 import com.chad.library.adapter.base.BaseViewHolder
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.PictureActivity
-import com.perol.asdpl.pixivez.objects.AdapterRefreshEvent
 import com.perol.asdpl.pixivez.repository.RetrofitRepository
 import com.perol.asdpl.pixivez.responses.Illust
-import com.perol.asdpl.pixivez.responses.Tag
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.services.Works
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import android.util.Pair as UtilPair
 
 class RecommendAdapter(
@@ -69,6 +65,7 @@ class RecommendAdapter(
     BaseQuickAdapter<Illust, BaseViewHolder>(layoutResId, data) {
     init {
         this.openLoadAnimation(SCALEIN)
+//        addFooterView(LayoutInflater.from(mContext).inflate(R.layout.foot_list,null))
         this.onItemClickListener = OnItemClickListener { adapter, view, position ->
             val bundle = Bundle()
             bundle.putLong("illustid", this@RecommendAdapter.data[position].id)
@@ -100,6 +97,9 @@ class RecommendAdapter(
 
 
     override fun convert(helper: BaseViewHolder, item: Illust) {
+        if (helper.adapterPosition == 0) {
+            addFooterView(LayoutInflater.from(mContext).inflate(R.layout.foot_list, null))
+        }
         val tags = item.tags.map {
             it.name
         }

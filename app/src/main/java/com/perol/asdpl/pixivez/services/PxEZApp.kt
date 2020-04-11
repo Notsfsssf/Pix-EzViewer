@@ -32,6 +32,8 @@ import android.os.Environment
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import androidx.work.WorkManager
+import com.arialyy.aria.core.Aria
+import com.facebook.soloader.SoLoader
 import com.google.android.play.core.missingsplits.MissingSplitsManagerFactory
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
@@ -50,7 +52,9 @@ class PxEZApp : Application() {
                 return
             }
         super.onCreate()
-
+        SoLoader.init(this, false)
+        Aria.download(this).register()
+        Aria.download(this).removeAllTask(true)
         instance = this
         Logger.addLogAdapter(AndroidLogAdapter())
         val defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)

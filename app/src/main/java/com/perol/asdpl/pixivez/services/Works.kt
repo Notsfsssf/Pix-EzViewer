@@ -24,255 +24,253 @@
 
 package com.perol.asdpl.pixivez.services
 
-import android.app.Activity
-import android.content.Intent
 import android.media.MediaScannerConnection
-import android.net.Uri
-import android.util.Log
 import android.webkit.MimeTypeMap
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.preference.PreferenceManager
-import androidx.work.*
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.perol.asdpl.pixivez.BuildConfig
+import com.arialyy.aria.core.Aria
+import com.arialyy.aria.core.common.HttpOption
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.google.gson.GsonBuilder
 import com.perol.asdpl.pixivez.R
-import com.perol.asdpl.pixivez.activity.SettingActivity
 import com.perol.asdpl.pixivez.objects.TToast
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.responses.Illust
-import com.perol.asdpl.pixivez.works.ImgDownLoadWorker
-import com.tencent.bugly.beta.Beta
-import okhttp3.*
 import java.io.File
-import java.io.IOException
-import java.util.*
 
-class Works {
-    companion object {
-        private fun String.toLegal(): String {
-            return this.replace("/", "").replace("\\", "").replace(":", "")
-        }
 
-        fun imageDownloadWithFile(illust: Illust, file: File, part: Int?) {
-            var url = ""
-            val title = illust.title.toLegal()
-            val userName = illust.user.name.toLegal()
-            val user = illust.user.id
-            val name = illust.id
-            val pre = PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance);
-            val format = pre.getString(
-                "saveformat",
-                "0"
-            )?.toInt()
-                ?: 0
-            val needCreateFold = pre.getBoolean("needcreatefold", false)
-            var type = ".png"
-            var filename = "${name}_p$part$type"
-            if (part != null && illust.meta_pages.isNotEmpty()) {
-                url = illust.meta_pages[part].image_urls.original
-                type = if (url.contains("png")) {
-                    ".png"
-                } else ".jpg"
-                when (format) {
-                    0 -> {
-                        filename = "${name}_$part$type"
-                    }
-                    1 -> {
-                        filename = "${name}_p$part$type"
-                    }
-                    2 -> {
-                        filename = "${user}_${name}_$part$type"
-                    }
-                    3 -> {
-                        filename = "${name}_${title}_$part$type"
-                    }
+object Works {
+
+
+    private fun String.toLegal(): String {
+        return this.replace("/", "").replace("\\", "").replace(":", "")
+    }
+
+    fun imageDownloadWithFile(illust: Illust, file: File, part: Int?) {
+        var url = ""
+        val title = illust.title.toLegal()
+        val userName = illust.user.name.toLegal()
+        val user = illust.user.id
+        val name = illust.id
+        val pre = PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance);
+        val format = pre.getString(
+            "saveformat",
+            "0"
+        )?.toInt()
+            ?: 0
+        val needCreateFold = pre.getBoolean("needcreatefold", false)
+        var type = ".png"
+        var filename = "${name}_p$part$type"
+        if (part != null && illust.meta_pages.isNotEmpty()) {
+            url = illust.meta_pages[part].image_urls.original
+            type = if (url.contains("png")) {
+                ".png"
+            } else ".jpg"
+            when (format) {
+                0 -> {
+                    filename = "${name}_$part$type"
                 }
-            } else {
-                url = illust.meta_single_page.original_image_url!!
-                type = if (url.contains("png")) {
-                    ".png"
-                } else ".jpg"
-                when (format) {
-                    0 -> {
-                        filename = "$name$type"
-                    }
-                    1 -> {
-                        filename = "$name$type"
-                    }
-                    2 -> {
-                        filename = "${user}_$name$type"
-                    }
-                    3 -> {
-                        filename = "${name}_${title}$type"
-                    }
+                1 -> {
+                    filename = "${name}_p$part$type"
+                }
+                2 -> {
+                    filename = "${user}_${name}_$part$type"
+                }
+                3 -> {
+                    filename = "${name}_${title}_$part$type"
                 }
             }
-            val path = if (needCreateFold) {
-                "${PxEZApp.storepath}/${userName}_${user}"
-            } else PxEZApp.storepath
-            val targetFile = File(path, filename)
-            try {
-                file.copyTo(targetFile, overwrite = true)
-                Toasty.success(
-                    PxEZApp.instance,
-                    PxEZApp.instance.resources.getString(R.string.savesuccess),
-                    Toast.LENGTH_SHORT
-                ).show()
-                MediaScannerConnection.scanFile(
-                    PxEZApp.instance,
-                    arrayOf(targetFile.path),
-                    arrayOf(MimeTypeMap.getSingleton().getMimeTypeFromExtension(targetFile.extension))
-                ) { _, _ ->
-
+        } else {
+            url = illust.meta_single_page.original_image_url!!
+            type = if (url.contains("png")) {
+                ".png"
+            } else ".jpg"
+            when (format) {
+                0 -> {
+                    filename = "$name$type"
                 }
-            } catch (e: Exception) {
-
-            }
-
-        }
-
-        fun imageDownloadAll(illust: Illust) {
-            TToast.startDownload(PxEZApp.instance)
-            if (illust.meta_pages.isEmpty()) {
-                imageDownloadOne(illust, null)
-            } else {
-                for (i in illust.meta_pages.indices) {
-                    imageDownloadOne(illust, i)
+                1 -> {
+                    filename = "$name$type"
+                }
+                2 -> {
+                    filename = "${user}_$name$type"
+                }
+                3 -> {
+                    filename = "${name}_${title}$type"
                 }
             }
         }
-
-        fun imageDownloadOne(illust: Illust, part: Int?) {
-            var url = ""
-            val title = illust.title.toLegal()
-            val userName = illust.user.name.toLegal()
-            val user = illust.user.id
-            val name = illust.id
-            val pre = PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance);
-            val format = pre.getString(
-                "saveformat",
-                "0"
-            )?.toInt()
-                ?: 0
-            val needCreateFold = pre.getBoolean("needcreatefold", false)
-            var type = ".png"
-            var filename = "${name}_p$part$type"
-            if (part != null && illust.meta_pages.isNotEmpty()) {
-                url = illust.meta_pages[part].image_urls.original
-                type = if (url.contains("png")) {
-                    ".png"
-                } else ".jpg"
-                when (format) {
-                    0 -> {
-                        filename = "${name}_$part$type"
-                    }
-                    1 -> {
-                        filename = "${name}_p$part$type"
-                    }
-                    2 -> {
-                        filename = "${user}_${name}_$part$type"
-                    }
-                    3 -> {
-                        filename = "${name}_${title}_$part$type"
-                    }
-                }
-            } else {
-                url = illust.meta_single_page.original_image_url!!
-                type = if (url.contains("png")) {
-                    ".png"
-                } else ".jpg"
-                when (format) {
-                    0 -> {
-                        filename = "$name$type"
-                    }
-                    1 -> {
-                        filename = "$name$type"
-                    }
-                    2 -> {
-                        filename = "${user}_$name$type"
-                    }
-                    3 -> {
-                        filename = "${name}_${title}$type"
-                    }
-                }
-            }
-
-            val inputData = workDataOf(
-                "file" to filename,
-                "url" to url,
-                "title" to illust.title,
-                "id" to illust.id,
-                "username" to userName,
-                "needcreatefold" to needCreateFold,
-                "user_id" to illust.user.id.toString()
-            )
-            val oneTimeWorkRequest = OneTimeWorkRequestBuilder<ImgDownLoadWorker>()
-                .setInputData(inputData)
-                .addTag("image")
-                .build()
-            WorkManager.getInstance(PxEZApp.instance)
-                .enqueueUniqueWork(url, ExistingWorkPolicy.REPLACE, oneTimeWorkRequest)
-
-
-            WorkManager.getInstance(PxEZApp.instance).getWorkInfoByIdLiveData(oneTimeWorkRequest.id)
-                .observeForever(object : Observer<WorkInfo> {
-                    override fun onChanged(workInfo: WorkInfo?) {
-                        if (workInfo == null) {
-                            return
-                        }
-                        if (workInfo.state == WorkInfo.State.SUCCEEDED) {
-                            if (workInfo.outputData.getBoolean("exist", false)) {
-                                Toasty.success(
-                                    PxEZApp.instance,
-                                    PxEZApp.instance.resources.getString(R.string.alreadysaved),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                WorkManager.getInstance(PxEZApp.instance)
-                                    .getWorkInfoByIdLiveData(oneTimeWorkRequest.id)
-                                    .removeObserver(this)
-                                return
-                            }
-                            Toasty.success(
-                                PxEZApp.instance,
-                                "${title}${PxEZApp.instance.resources.getString(R.string.savesuccess)}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            val path = workInfo.outputData.getString("path")
-                            if (path != null)
-                                MediaScannerConnection.scanFile(
-                                    PxEZApp.instance,
-                                    arrayOf(path),
-                                    arrayOf(
-                                        MimeTypeMap.getSingleton().getMimeTypeFromExtension(
-                                            File(path).extension
-                                        )
-                                    )
-                                ) { _, _ ->
-
-                                }
-                        } else if (workInfo.state == WorkInfo.State.FAILED) {
-                            Toasty.error(
-                                PxEZApp.instance,
-                                "${title}${PxEZApp.instance.resources.getString(R.string.savefail)}"
-                            ).show()
-                        } else if (workInfo.state == WorkInfo.State.CANCELLED) {
-                            val file = File(PxEZApp.storepath, filename)
-                            file.delete()
-                        }
-                        WorkManager.getInstance(PxEZApp.instance)
-                            .getWorkInfoByIdLiveData(oneTimeWorkRequest.id).removeObserver(this)
-                    }
-                })
-        }
-
-        fun checkUpdate() {
-            if (!BuildConfig.ISGOOGLEPLAY)
-                Beta.checkUpgrade()
-            else {
+        val path = if (needCreateFold) {
+            "${PxEZApp.storepath}/${userName}_${user}"
+        } else PxEZApp.storepath
+        val targetFile = File(path, filename)
+        try {
+            file.copyTo(targetFile, overwrite = true)
+            Toasty.success(
+                PxEZApp.instance,
+                PxEZApp.instance.resources.getString(R.string.savesuccess),
+                Toast.LENGTH_SHORT
+            ).show()
+            MediaScannerConnection.scanFile(
+                PxEZApp.instance,
+                arrayOf(targetFile.path),
+                arrayOf(
+                    MimeTypeMap.getSingleton().getMimeTypeFromExtension(targetFile.extension)
+                )
+            ) { _, _ ->
 
             }
+        } catch (e: Exception) {
+
         }
 
     }
+
+    fun imageDownloadAll(illust: Illust) {
+        TToast.startDownload(PxEZApp.instance)
+        if (illust.meta_pages.isEmpty()) {
+            imgD(illust, null)
+        } else {
+            for (i in illust.meta_pages.indices) {
+                imgD(illust, i)
+            }
+        }
+    }
+
+    fun imgD(illust: Illust, part: Int?) {
+        var url = ""
+        val title = illust.title.toLegal()
+        val userName = illust.user.name.toLegal()
+        val user = illust.user.id
+        val name = illust.id
+        val pre = PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance);
+        val format = pre.getString(
+            "saveformat",
+            "0"
+        )?.toInt()
+            ?: 0
+        val needCreateFold = pre.getBoolean("needcreatefold", false)
+        var type = ".png"
+        var filename = "${name}_p$part$type"
+        if (part != null && illust.meta_pages.isNotEmpty()) {
+            url = illust.meta_pages[part].image_urls.original
+            type = if (url.contains("png")) {
+                ".png"
+            } else ".jpg"
+            when (format) {
+                0 -> {
+                    filename = "${name}_$part$type"
+                }
+                1 -> {
+                    filename = "${name}_p$part$type"
+                }
+                2 -> {
+                    filename = "${user}_${name}_$part$type"
+                }
+                3 -> {
+                    filename = "${name}_${title}_$part$type"
+                }
+            }
+        } else {
+            url = illust.meta_single_page.original_image_url!!
+            type = if (url.contains("png")) {
+                ".png"
+            } else ".jpg"
+            when (format) {
+                0 -> {
+                    filename = "$name$type"
+                }
+                1 -> {
+                    filename = "$name$type"
+                }
+                2 -> {
+                    filename = "${user}_$name$type"
+                }
+                3 -> {
+                    filename = "${name}_${title}$type"
+                }
+            }
+        }
+
+
+        val path = if (needCreateFold) {
+            "${PxEZApp.storepath}/${userName}_${illust.user.id}"
+        } else PxEZApp.storepath
+        val option = HttpOption()
+        option.addHeader(
+            "User-Agent",
+            "PixivAndroidApp/5.0.155 (Android ${android.os.Build.VERSION.RELEASE}; ${android.os.Build.MODEL})"
+        ).addHeader("referer", "https://app-api.pixiv.net/")
+        val mapper = ObjectMapper()
+        val taskId: Long = Aria.download(this)
+            .load(url) //读取下载地址
+            .setFilePath(File(path, filename).path) //设置文件保存的完整路径
+            .setExtendField(GsonBuilder().create().toJson(illust))
+            .option(option)
+            .create()
+
+
+    }
+
+
+    @Deprecated("imgD")
+    fun imageDownloadOne(illust: Illust, part: Int?) {
+        var url = ""
+        val title = illust.title.toLegal()
+        val userName = illust.user.name.toLegal()
+        val user = illust.user.id
+        val name = illust.id
+        val pre = PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance);
+        val format = pre.getString(
+            "saveformat",
+            "0"
+        )?.toInt()
+            ?: 0
+        val needCreateFold = pre.getBoolean("needcreatefold", false)
+        var type = ".png"
+        var filename = "${name}_p$part$type"
+        if (part != null && illust.meta_pages.isNotEmpty()) {
+            url = illust.meta_pages[part].image_urls.original
+            type = if (url.contains("png")) {
+                ".png"
+            } else ".jpg"
+            when (format) {
+                0 -> {
+                    filename = "${name}_$part$type"
+                }
+                1 -> {
+                    filename = "${name}_p$part$type"
+                }
+                2 -> {
+                    filename = "${user}_${name}_$part$type"
+                }
+                3 -> {
+                    filename = "${name}_${title}_$part$type"
+                }
+            }
+        } else {
+            url = illust.meta_single_page.original_image_url!!
+            type = if (url.contains("png")) {
+                ".png"
+            } else ".jpg"
+            when (format) {
+                0 -> {
+                    filename = "$name$type"
+                }
+                1 -> {
+                    filename = "$name$type"
+                }
+                2 -> {
+                    filename = "${user}_$name$type"
+                }
+                3 -> {
+                    filename = "${name}_${title}$type"
+                }
+            }
+        }
+
+
+    }
+
+
 }
