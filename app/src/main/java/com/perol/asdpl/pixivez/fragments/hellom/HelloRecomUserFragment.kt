@@ -58,18 +58,18 @@ class HelloRecomUserFragment : BaseFragment() {
             if (it != null) {
                 userShowAdapter.addData(it)
             } else {
-                userShowAdapter.loadMoreFail()
+                userShowAdapter.loadMoreModule?.loadMoreFail()
             }
         })
         viewmodel!!.data.observe(this, Observer {
-            userShowAdapter.setNewData(it)
+            userShowAdapter.setNewData(it.toMutableList())
             swipe.isRefreshing = false
         })
         viewmodel!!.nexturl.observe(this, Observer {
             if (it != null) {
-                userShowAdapter.loadMoreComplete()
+                userShowAdapter.loadMoreModule?.loadMoreComplete()
             } else {
-                userShowAdapter.loadMoreEnd()
+                userShowAdapter.loadMoreModule?.loadMoreEnd()
             }
         })
 
@@ -90,9 +90,7 @@ class HelloRecomUserFragment : BaseFragment() {
             adapter = userShowAdapter
             layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         }
-        userShowAdapter.setOnLoadMoreListener({
-            viewmodel!!.getNext()
-        }, recyclerView)
+        userShowAdapter.loadMoreModule?.setOnLoadMoreListener { viewmodel!!.getNext() }
         swipe.setOnRefreshListener {
             viewmodel!!.reData()
 

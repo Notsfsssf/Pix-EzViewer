@@ -30,7 +30,8 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.module.LoadMoreModule;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.perol.asdpl.pixivez.R;
 import com.perol.asdpl.pixivez.responses.IllustCommentsResponse;
 import com.perol.asdpl.pixivez.services.GlideApp;
@@ -38,7 +39,7 @@ import com.perol.asdpl.pixivez.services.GlideApp;
 import java.util.List;
 
 
-public class CommentAdapter extends BaseQuickAdapter<IllustCommentsResponse.CommentsBean, BaseViewHolder> {
+public class CommentAdapter extends BaseQuickAdapter<IllustCommentsResponse.CommentsBean, BaseViewHolder> implements LoadMoreModule {
 
     private Context context;
 
@@ -49,8 +50,6 @@ public class CommentAdapter extends BaseQuickAdapter<IllustCommentsResponse.Comm
 
     @Override
     protected void convert(BaseViewHolder helper, IllustCommentsResponse.CommentsBean item) {
-        helper.addOnClickListener(R.id.commentuserimage);
-        helper.addOnClickListener(R.id.repley_to_hit);
         helper.setText(R.id.commentdate, item.getDate());
         if (item.getParent_comment().getUser() != null)
             helper.setText(R.id.commentusername, item.getUser().getName() + " to " + item.getParent_comment().getUser().getName());

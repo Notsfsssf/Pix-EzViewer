@@ -128,9 +128,9 @@ class RankingMFragment : BaseFragment() {
         swiperefresh_rankingm.setOnRefreshListener {
             viewmodel!!.onRefresh(param1!!, picDate)
         }
-        rankingAdapter.setOnLoadMoreListener({
+        rankingAdapter.loadMoreModule?.setOnLoadMoreListener {
             viewmodel!!.onLoadMore()
-        }, recyclerview_rankingm)
+        }
         recyclerview_rankingm.apply {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             adapter = rankingAdapter

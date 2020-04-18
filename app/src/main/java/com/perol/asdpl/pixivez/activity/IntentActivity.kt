@@ -56,7 +56,8 @@ class IntentActivity : RinkActivity() {
                 }
                 return
             }
-            if (segment.size == 2) {
+            //en/user/xxxx
+            if (segment.size == 2 || segment.size == 3) {
                 if (segment[segment.size - 2] == "users") {
                     val s = segment[segment.size - 1]
                     val id = s.toLong()
@@ -117,9 +118,7 @@ class IntentActivity : RinkActivity() {
             }
             uri.getQueryParameter("id")?.let {
                 try {
-                    val intent1 = Intent(this, UserMActivity::class.java)
-                    intent1.putExtra("data", it.toLong())
-                    startActivity(intent1)
+                    UserMActivity.start(this, it.toLong())
                     finish()
                     return
                 } catch (e: Exception) {
@@ -131,9 +130,7 @@ class IntentActivity : RinkActivity() {
                 val targetString = uri.pathSegments[index]
                 targetString.toLongOrNull()?.let {
                     try {
-                        val intent1 = Intent(this, UserMActivity::class.java)
-                        intent1.putExtra("data", it)
-                        startActivity(intent1)
+                        UserMActivity.start(this, it)
                         finish()
                     } catch (e: Exception) {
                         Toasty.error(this, "wrong id")

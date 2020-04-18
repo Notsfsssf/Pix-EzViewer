@@ -129,9 +129,9 @@ class HelloMMyFragment : BaseFragment() {
         swiperefresh_mym.setOnRefreshListener {
             viewmodel!!.OnRefreshListener(restrict)
         }
-        rankingAdapter.setOnLoadMoreListener({
+        rankingAdapter.loadMoreModule?.setOnLoadMoreListener {
             viewmodel!!.onLoadMoreRequested()
-        }, recyclerview_mym)
+        }
         spinner_mmy.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 when (position) {

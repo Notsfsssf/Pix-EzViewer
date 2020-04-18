@@ -92,40 +92,8 @@ kapt {
 
 dependencies {
 
-    implementation 'com.arialyy.aria:core:3.8.5'
-    kapt 'com.arialyy.aria:compiler:3.8.5'
-    // Litho
-    implementation 'com.facebook.litho:litho-core-kotlin:0.34.0'
-    implementation 'com.facebook.litho:litho-widget-kotlin:0.34.0'
-    kapt 'com.facebook.litho:litho-processor:0.34.0'
-
-    // SoLoader
-    implementation 'com.facebook.soloader:soloader:0.6.0'
-
-    // For integration with Fresco
-    implementation 'com.facebook.litho:litho-fresco:0.34.0'
-
-    // For testing
-    testImplementation 'com.facebook.litho:litho-testing:0.34.0'
-
-    // Sections
-    implementation 'com.facebook.litho:litho-sections-core:0.34.0'
-
-    implementation 'com.facebook.litho:litho-sections-widget:0.34.0'
-    compileOnly 'com.facebook.litho:litho-sections-annotations:0.34.0'
-
-    kapt 'com.facebook.litho:litho-sections-processor:0.34.0'
-
-    implementation 'com.orhanobut:logger:2.2.0'
-    def work_version = "2.3.0-alpha01"
-    // (Java only)
-    implementation "androidx.work:work-runtime:$work_version"
-
-    // Kotlin + coroutines
-    implementation "androidx.work:work-runtime-ktx:$work_version"
-
-    // optional - RxJava2 support
-    implementation "androidx.work:work-rxjava2:$work_version"
+    implementation 'com.arialyy.aria:core:3.8.6'
+    kapt 'com.arialyy.aria:compiler:3.8.6'
 
     implementation 'com.hyman:flowlayout-lib:1.1.2'
     implementation 'io.noties.markwon:core:4.1.2'
@@ -143,7 +111,7 @@ dependencies {
     def room_version = "2.2.5"
 
     implementation "androidx.room:room-runtime:$room_version"
-    implementation 'androidx.preference:preference:1.1.0'
+    implementation 'androidx.preference:preference:1.1.1'
     kapt "androidx.room:room-compiler:$room_version"
     // For Kotlin use kapt instead of annotationProcessor
 
@@ -198,7 +166,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.2'
-    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.45-androidx'
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.1'
     //noinspection GradleCompatible
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.core:core:1.2.0'
@@ -233,6 +201,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-core:2.11.0.rc1'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.0.rc1'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.0.rc1'
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.11.0.rc1'
 //  debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0'
 
 

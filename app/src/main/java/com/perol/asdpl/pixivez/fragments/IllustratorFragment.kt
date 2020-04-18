@@ -92,9 +92,9 @@ class IllustratorFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         recyclerview_illustrator.adapter = userShowAdapter
         recyclerview_illustrator.layoutManager = LinearLayoutManager(activity!!.applicationContext, RecyclerView.VERTICAL, false)
         spinner_illustrator.onItemSelectedListener = this
-        userShowAdapter.setOnLoadMoreListener({
+        userShowAdapter.loadMoreModule?.setOnLoadMoreListener {
             viewModel!!.onLoadMore(viewModel!!.nexturl.value!!)
-        }, recyclerview_illustrator)
+        }
         swiperefresh_illustrator.setOnRefreshListener {
             viewModel!!.onRefresh(param1!!, restrict, param2!!)
         }
@@ -135,9 +135,9 @@ class IllustratorFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
     private fun nexturl(it: String?) {
         if (it != null) {
-            userShowAdapter.loadMoreComplete()
+            userShowAdapter.loadMoreModule?.loadMoreComplete()
         } else {
-            userShowAdapter.loadMoreEnd()
+            userShowAdapter.loadMoreModule?.loadMoreEnd()
         }
     }
 

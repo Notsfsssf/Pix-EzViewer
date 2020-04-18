@@ -131,16 +131,17 @@ class TagsShowDialog : DialogFragment() {
 
             }
         })
-        tagsShowAdapter.setOnLoadMoreListener({
+        tagsShowAdapter.loadMoreModule?.setOnLoadMoreListener {
             if (!nexturl.isNullOrBlank()) {
                 var Authorization: String = ""
                 runBlocking {
                     Authorization = AppDataRepository.getUser().Authorization
                 }
                 appApiPixivService.getNexttags(Authorization, nexturl!!)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeOn(Schedulers.io())
-                        .subscribe({
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(
+                        {
                             nexturl = it.next_url
                             val arrayList = ArrayList<String>()
                             it.bookmark_tags.map {
@@ -148,11 +149,13 @@ class TagsShowDialog : DialogFragment() {
                                 tagsShowAdapter.counts.add(it.count)
                             }
                             tagsShowAdapter.addData(arrayList)
-                        }, { tagsShowAdapter.loadMoreFail() }, { tagsShowAdapter.loadMoreComplete() })
+                        },
+                        { tagsShowAdapter.loadMoreModule?.loadMoreFail() },
+                        { tagsShowAdapter.loadMoreModule?.loadMoreComplete() })
             } else {
-                tagsShowAdapter.loadMoreEnd()
+                tagsShowAdapter.loadMoreModule?.loadMoreEnd()
             }
-        }, recyclerView)
+        }
         recyclerView.layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         builder.setView(dialogView)
         return builder.create()

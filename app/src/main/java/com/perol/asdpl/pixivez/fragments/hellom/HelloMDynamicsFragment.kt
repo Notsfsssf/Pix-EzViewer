@@ -34,7 +34,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.RankingMAdapter
-import com.perol.asdpl.pixivez.objects.BaseFragment
 import com.perol.asdpl.pixivez.objects.LazyFragment
 import com.perol.asdpl.pixivez.viewmodel.factory.RankingShareViewModel
 import kotlinx.android.synthetic.main.fragment_hello_mdynamics.*
@@ -76,7 +75,7 @@ class HelloMDynamicsFragment : LazyFragment() {
             setOnClickListener {
                 shareModel.apply {
                     val dateDialog = DatePickerDialog(
-                        activity!!,
+                        requireActivity(),
                         DatePickerDialog.OnDateSetListener { p0, year1, month1, day1 ->
                             val monthR = month1 + 1
                             picDateShare.value = if ("$year1-$monthR-$day1" == dateNow) {
@@ -87,11 +86,7 @@ class HelloMDynamicsFragment : LazyFragment() {
                             year.value = year1
                             month.value = month1
                             day.value = day1
-                            com.orhanobut.logger.Logger.i(
-                                year.value!!.toString(),
-                                month.value!!,
-                                day.value!!
-                            )
+
                         },
                         year.value!!,
                         month.value!!,

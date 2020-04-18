@@ -24,8 +24,9 @@
 
 package com.perol.asdpl.pixivez.adapters
 
+import android.widget.CheckBox
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.responses.BookMarkDetailResponse
 
@@ -35,17 +36,21 @@ class TagsAdapter(
 ) :
     BaseQuickAdapter<BookMarkDetailResponse.BookmarkDetailBean.TagsBean, BaseViewHolder>(
         layoutResId,
-        data
+        data?.toMutableList()
     ) {
     override fun convert(
         helper: BaseViewHolder,
         item: BookMarkDetailResponse.BookmarkDetailBean.TagsBean
     ) {
-        helper.setText(R.id.textview_tag1, item.name)
-            .setChecked(R.id.checkBox, item.isIs_registered)
-            .setOnCheckedChangeListener(R.id.checkBox) { buttonView, isChecked ->
-                this.data[helper.layoutPosition].isIs_registered = isChecked
+        helper.getView<CheckBox>(R.id.checkBox).apply {
+            isChecked = item.isIs_registered
+            setOnCheckedChangeListener { buttonView, isChecked ->
+                this@TagsAdapter.data[helper.layoutPosition].isIs_registered = isChecked
             }
+        }
+        helper.setText(R.id.textview_tag1, item.name)
+
+
     }
 
 }

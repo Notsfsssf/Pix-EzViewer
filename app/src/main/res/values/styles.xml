@@ -30,9 +30,13 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:navigationBarColor">?attr/colorPrimary</item>
         <item name="android:statusBarColor">?attr/colorPrimary</item>
-
+        <item name="autoCompleteTextViewStyle">@style/AppAutoCompleteTextView</item>
+        r
     </style>
 
+    <style name="AppAutoCompleteTextView" parent="Widget.AppCompat.AutoCompleteTextView">
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+    </style>
     <style name="MyToolbar">
         <item name="colorControlNormal">?android:attr/textColorPrimaryInverse</item>
     </style>

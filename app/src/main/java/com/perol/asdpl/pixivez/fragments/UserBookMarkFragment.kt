@@ -88,9 +88,9 @@ class UserBookMarkFragment : BaseFragment(), TagsShowDialog.Callback {
         mrecyclerview.layoutManager =
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         mrecyclerview.adapter = recommendAdapter
-        recommendAdapter.setOnLoadMoreListener({
+        recommendAdapter.loadMoreModule?.setOnLoadMoreListener {
             viewmodel!!.onLoadMoreListener()
-        }, mrecyclerview)
+        }
 
         mrefreshlayout.setOnRefreshListener {
             viewmodel!!.onRefreshListener(param1!!, pub, null)
@@ -130,8 +130,7 @@ class UserBookMarkFragment : BaseFragment(), TagsShowDialog.Callback {
         viewmodel!!.data.observe(this, Observer {
             if (it != null) {
                 mrefreshlayout.isRefreshing = false
-                recommendAdapter.setNewData(it)
-
+                recommendAdapter.setNewData(it.toMutableList())
             }
 
         })

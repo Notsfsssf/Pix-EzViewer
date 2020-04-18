@@ -102,7 +102,7 @@ class PixivsionActivity : RinkActivity() {
                         val pixiviSionAdapter = PixiviSionAdapter(R.layout.view_pixivision_item, spotlightResponse.spotlight_articles, this@PixivsionActivity)
                         recyclerview_pixivision.layoutManager = LinearLayoutManager(applicationContext)
                         recyclerview_pixivision.adapter = pixiviSionAdapter
-                        pixiviSionAdapter.setOnLoadMoreListener({
+                        pixiviSionAdapter.loadMoreModule?.setOnLoadMoreListener {
                             Observable.just(1).flatMap {
                                 runBlocking {
                                     Authorization = AppDataRepository.getUser().Authorization
@@ -124,14 +124,15 @@ class PixivsionActivity : RinkActivity() {
                                         }
 
                                         override fun onError(e: Throwable) {
-                                            pixiviSionAdapter.loadMoreFail()
+                                            pixiviSionAdapter.loadMoreModule?.loadMoreFail()
                                         }
 
                                         override fun onComplete() {
-                                            pixiviSionAdapter.loadMoreComplete()
+                                            pixiviSionAdapter.loadMoreModule?.loadMoreComplete()
                                         }
                                     })
-                        }, recyclerview_pixivision)
+                        }
+                        pixiviSionAdapter.addChildClickViewIds(R.id.imageView_pixivision)
                         pixiviSionAdapter.setOnItemChildClickListener { adapter, view, position ->
                             val intent = Intent(this@PixivsionActivity, WebViewActivity::class.java)
                             intent.putExtra("url", data!!.spotlight_articles[position].article_url)

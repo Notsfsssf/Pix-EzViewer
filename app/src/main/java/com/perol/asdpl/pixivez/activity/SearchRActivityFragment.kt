@@ -72,9 +72,10 @@ class SearchRActivityFragment : Fragment() {
     val tags = ArrayList<Tags>()
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        tagsTextViewModel = ViewModelProviders.of(activity!!).get(TagsTextViewModel::class.java)
-        tagsTextViewModel.tags.observe(this, Observer {
-            tagsTextAdapter.setNewData(it)
+        tagsTextViewModel =
+            ViewModelProviders.of(requireActivity()).get(TagsTextViewModel::class.java)
+        tagsTextViewModel.tags.observe(viewLifecycleOwner, Observer {
+            tagsTextAdapter.setNewData(it.toMutableList())
             tags.clear()
             tags.addAll(it)
         })

@@ -206,11 +206,12 @@ class SpotlightActivity : RinkActivity() {
                     }
 
                     override fun onComplete() {
-                        spotlightAdapter = SpotlightAdapter(R.layout.view_ranking_item1, list, this@SpotlightActivity)
-                        recyclerview_spotlight.setLayoutManager(LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false))
+                        spotlightAdapter = SpotlightAdapter(R.layout.view_ranking_item1, list)
+                        recyclerview_spotlight.layoutManager =
+                            LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
 
                         recyclerview_spotlight.setAdapter(spotlightAdapter)
-                        recyclerview_spotlight.setNestedScrollingEnabled(false)
+                        recyclerview_spotlight.isNestedScrollingEnabled = false
                     }
                 })
 

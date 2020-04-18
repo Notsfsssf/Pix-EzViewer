@@ -24,7 +24,6 @@
 
 package com.perol.asdpl.pixivez.adapters
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -32,25 +31,24 @@ import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.PictureActivity
 import com.perol.asdpl.pixivez.activity.UserMActivity
 import com.perol.asdpl.pixivez.objects.Spotlight
 import com.perol.asdpl.pixivez.services.GlideApp
 
-class SpotlightAdapter(layoutResId: Int, data: List<Spotlight>?, private val context: Context) : BaseQuickAdapter<Spotlight, BaseViewHolder>(layoutResId, data) {
+class SpotlightAdapter(layoutResId: Int, data: List<Spotlight>?) :
+    BaseQuickAdapter<Spotlight, BaseViewHolder>(layoutResId, data?.toMutableList()) {
 
-    init {
-        this.openLoadAnimation(SCALEIN)
-    }
+
 
     override fun convert(helper: BaseViewHolder, item: Spotlight) {
         val constraintLayout = helper.itemView.findViewById<ConstraintLayout>(R.id.constraintLayout_num)
         constraintLayout.visibility = View.GONE
         val imageView = helper.getView<ImageView>(R.id.imageview_user)
         val imageView1 = helper.getView<ImageView>(R.id.item_img)
-        helper.addOnClickListener(R.id.item_img).setText(R.id.textview_context, item.username)
+        helper.setText(R.id.textview_context, item.username)
                 .setText(R.id.textview_title, item.title)
         GlideApp.with(imageView1.context).load(item.pictureurl).error(R.drawable.ai).transition(withCrossFade()).into(imageView1)
         GlideApp.with(imageView.context).load(item.userpic).transition(withCrossFade()).circleCrop().into(imageView)

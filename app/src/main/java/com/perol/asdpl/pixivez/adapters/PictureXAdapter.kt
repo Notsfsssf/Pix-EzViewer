@@ -676,7 +676,7 @@ class PictureXAdapter(
 
             holder.updateWithPage(mContext, data, mViewCommentListen, mUserPicLongClick)
         } else if (holder is RelativeHolder) {
-            aboutPictureAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN)
+//            aboutPictureAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN)
             holder.updateWithPage(aboutPictureAdapter, mContext)
         }
     }

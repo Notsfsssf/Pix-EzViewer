@@ -72,9 +72,9 @@ class UserIllustFragment : BaseFragment() {
     }
 
     fun lazyLoad() {
-        recommendAdapter.setOnLoadMoreListener({
+        recommendAdapter.loadMoreModule?.setOnLoadMoreListener {
             viewmodel.onLoadMoreListener()
-        }, mrecyclerview)
+        }
         mrefreshlayout.setOnRefreshListener {
             viewmodel.onRefreshListener(param1!!, param2!!)
         }
@@ -105,7 +105,7 @@ class UserIllustFragment : BaseFragment() {
         viewmodel.data.observe(this, Observer {
             if (it != null) {
                 mrefreshlayout.isRefreshing = false
-                recommendAdapter.setNewData(it)
+                recommendAdapter.setNewData(it.toMutableList())
             }
 
         })

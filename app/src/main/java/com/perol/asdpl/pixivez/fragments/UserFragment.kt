@@ -37,7 +37,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.UserMActivity
 import com.perol.asdpl.pixivez.adapters.UserShowAdapter
-import com.perol.asdpl.pixivez.objects.BaseFragment
 import com.perol.asdpl.pixivez.objects.LazyFragment
 import com.perol.asdpl.pixivez.responses.SearchUserResponse
 import com.perol.asdpl.pixivez.viewmodel.UserViewModel
@@ -64,11 +63,11 @@ class UserFragment : LazyFragment() {
         userShowAdapter = UserShowAdapter(R.layout.view_usershow_item)
         recyclerview_user.adapter = userShowAdapter
         recyclerview_user.layoutManager = LinearLayoutManager(activity)
-        userShowAdapter.setOnLoadMoreListener({
+        userShowAdapter.loadMoreModule?.setOnLoadMoreListener {
             if (userViewModel.nexturl.value != null)
                 userViewModel.getNextUsers(userViewModel.nexturl.value!!)
 
-        }, recyclerview_user)
+        }
         userShowAdapter.setOnItemClickListener { _, _, position ->
             val intent = Intent(requireActivity().applicationContext, UserMActivity::class.java)
             intent.putExtra("data", userShowAdapter.data[position].user.id)
@@ -118,8 +117,8 @@ class UserFragment : LazyFragment() {
 
     private fun nexturl(it: String?) {
         if (it != null) {
-            userShowAdapter.loadMoreComplete()
-        } else userShowAdapter.loadMoreEnd()
+            userShowAdapter.loadMoreModule?.loadMoreComplete()
+        } else userShowAdapter.loadMoreModule?.loadMoreEnd()
     }
 
     companion object {

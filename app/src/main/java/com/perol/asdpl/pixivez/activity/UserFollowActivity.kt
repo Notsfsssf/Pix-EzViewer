@@ -148,31 +148,31 @@ class UserFollowActivity : RinkActivity() {
                             }
                         }
 
-                        userShowAdapter!!.setOnLoadMoreListener({
+                        userShowAdapter!!.loadMoreModule?.setOnLoadMoreListener {
                             if (Next_url != null) {
                                 appApiPixivService!!.getNextUser(Authorization!!, Next_url!!).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
-                                        .subscribe(object : Observer<SearchUserResponse> {
-                                            override fun onSubscribe(d: Disposable) {
+                                    .subscribe(object : Observer<SearchUserResponse> {
+                                        override fun onSubscribe(d: Disposable) {
 
-                                            }
+                                        }
 
-                                            override fun onNext(searchUserResponse: SearchUserResponse) {
-                                                Next_url = searchUserResponse.next_url
-                                                userShowAdapter!!.addData(searchUserResponse.user_previews)
-                                            }
+                                        override fun onNext(searchUserResponse: SearchUserResponse) {
+                                            Next_url = searchUserResponse.next_url
+                                            userShowAdapter!!.addData(searchUserResponse.user_previews)
+                                        }
 
-                                            override fun onError(e: Throwable) {
-                                                userShowAdapter!!.loadMoreFail()
-                                            }
+                                        override fun onError(e: Throwable) {
+                                            userShowAdapter!!.loadMoreModule?.loadMoreFail()
+                                        }
 
-                                            override fun onComplete() {
-                                                userShowAdapter!!.loadMoreComplete()
-                                            }
-                                        })
+                                        override fun onComplete() {
+                                            userShowAdapter!!.loadMoreModule?.loadMoreComplete()
+                                        }
+                                    })
                             } else {
-                                userShowAdapter!!.loadMoreEnd()
+                                userShowAdapter!!.loadMoreModule?.loadMoreEnd()
                             }
-                        }, recyclerviewusersearch)
+                        }
                     }
 
                     override fun onError(e: Throwable) {

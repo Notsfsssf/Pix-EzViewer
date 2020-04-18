@@ -26,7 +26,9 @@ package com.perol.asdpl.pixivez.fragments
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -156,9 +158,9 @@ class IllustFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                 }
             }.show(childFragmentManager)
         }
-        searchIllustAdapter.setOnLoadMoreListener({
+        searchIllustAdapter.loadMoreModule?.setOnLoadMoreListener {
             viewModel.onLoadMoreListen()
-        }, recyclerview_illust)
+        }
         swiperefresh.setOnRefreshListener {
             runBlocking {
                 val user = AppDataRepository.getUser()
@@ -285,7 +287,6 @@ class IllustFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     private fun changeToBlue(it: Long?) {
         if (it != null) {
             val item = searchIllustAdapter.getViewByPosition(
-                recyclerview_illust,
                 position!!,
                 R.id.linearlayout_isbookmark
             ) as LinearLayout

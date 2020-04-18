@@ -73,6 +73,7 @@ class SearchRActivity : RinkActivity() {
         setContentView(R.layout.activity_search_r)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
         tagsTextViewModel = ViewModelProviders.of(this).get(TagsTextViewModel::class.java)
         trendTagViewModel = ViewModelProviders.of(this).get(TrendTagViewModel::class.java)
         searchRActivityFragment = SearchRActivityFragment()
@@ -126,7 +127,7 @@ class SearchRActivity : RinkActivity() {
                             arrayList[0] = query.toLong()
                             bundle.putLongArray("illustlist", arrayList)
                             bundle.putLong("illustid", query.toLong())
-                            val intent = Intent(applicationContext, PictureActivity::class.java)
+                            val intent = Intent(this@SearchRActivity, PictureActivity::class.java)
                             intent.putExtras(bundle)
                             startActivity(intent)
                         }

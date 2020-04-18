@@ -61,4 +61,9 @@
         <item>アバターを保存</item>
         <item>アバターを変更</item>
     </string-array>
+    <string-array name="download_task_choice">
+        <item>PAUSE</item>
+        <item>RESUME</item>
+        <item>CANCEL</item>
+    </string-array>
 </resources>

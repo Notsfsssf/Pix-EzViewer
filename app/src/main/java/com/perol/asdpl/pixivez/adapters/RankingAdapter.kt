@@ -32,18 +32,23 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Pair
 import android.util.TypedValue
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.bumptech.glide.request.target.ImageViewTarget
 import com.bumptech.glide.request.transition.Transition
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.listener.OnLoadMoreListener
+import com.chad.library.adapter.base.module.LoadMoreModule
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.google.android.material.button.MaterialButton
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.PictureActivity
 import com.perol.asdpl.pixivez.activity.UserMActivity
@@ -59,50 +64,63 @@ class RankingAdapter(
     data: List<Illust>?,
     private val R18on: Boolean,
     var blockTags: List<String>
-) : BaseQuickAdapter<Illust, BaseViewHolder>(layoutResId, data),
-    BaseQuickAdapter.OnItemClickListener {
+) : BaseQuickAdapter<Illust, BaseViewHolder>(layoutResId, data?.toMutableList()), LoadMoreModule {
+    fun loadMoreEnd() {
+        this.loadMoreModule?.loadMoreEnd()
+    }
 
+    fun loadMoreComplete() {
+        this.loadMoreModule?.loadMoreComplete()
+    }
+
+    fun loadMoreFail() {
+        this.loadMoreModule?.loadMoreFail()
+    }
+
+    fun setOnLoadMoreListener(onLoadMoreListener: OnLoadMoreListener, recyclerView: RecyclerView?) {
+        this.loadMoreModule?.setOnLoadMoreListener(onLoadMoreListener)
+    }
 
     val retrofit = RetrofitRepository.getInstance()
 
-    override fun onItemClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
-        val bundle = Bundle()
-        bundle.putLong("illustid", data[position].id)
-        val illustlist = LongArray(this.data.count())
-        for (i in this.data.indices) {
-            illustlist[i] = this.data[i].id
-        }
-        bundle.putLongArray("illustlist", illustlist)
-        //  bundle.putParcelable(this.data[position].id.toString(), this.data[position])
-        val intent = Intent(mContext, PictureActivity::class.java)
-        intent.putExtras(bundle)
-        if (PxEZApp.animationEnable) {
-            val mainimage = view!!.findViewById<View>(R.id.item_img)
-            val title = view.findViewById<View>(R.id.textview_title)
-            val userImage = view.findViewById<View>(R.id.imageview_user)
-
-            val options = ActivityOptions.makeSceneTransitionAnimation(
-                mContext as Activity,
-                Pair.create(
-                    mainimage,
-                    "mainimage"
-                ),
-                Pair.create(title, "title"),
-                Pair.create(userImage, "userimage")
-            )
-            ContextCompat.startActivity(mContext, intent, options.toBundle())
-        } else ContextCompat.startActivity(mContext, intent, null)
-    }
-
-
     init {
 
-        this.openLoadAnimation(BaseQuickAdapter.SCALEIN)
-        this.onItemClickListener = this
+        this.setOnItemClickListener { adapter, view, position ->
+            val bundle = Bundle()
+            bundle.putLong("illustid", this.data[position].id)
+            val illustlist = LongArray(this.data.count())
+            for (i in this.data.indices) {
+                illustlist[i] = this.data[i].id
+            }
+            bundle.putLongArray("illustlist", illustlist)
+            //  bundle.putParcelable(this.data[position].id.toString(), this.data[position])
+            val intent = Intent(context, PictureActivity::class.java)
+            intent.putExtras(bundle)
+            if (PxEZApp.animationEnable) {
+                val mainimage = view!!.findViewById<View>(R.id.item_img)
+                val title = view.findViewById<View>(R.id.textview_title)
+                val userImage = view.findViewById<View>(R.id.imageview_user)
 
+                val options = ActivityOptions.makeSceneTransitionAnimation(
+                    context as Activity,
+                    Pair.create(
+                        mainimage,
+                        "mainimage"
+                    ),
+                    Pair.create(title, "title"),
+                    Pair.create(userImage, "userimage")
+                )
+                ContextCompat.startActivity(context, intent, options.toBundle())
+            } else ContextCompat.startActivity(context, intent, null)
+        }
     }
 
-
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        addFooterView(LayoutInflater.from(context).inflate(R.layout.foot_list, null))
+        animationEnable = true
+        setAnimationWithDefault(AnimationType.ScaleIn)
+    }
     override fun convert(helper: BaseViewHolder, item: Illust) {
         val tags = item.tags.map {
             it.name
@@ -133,7 +151,7 @@ class RankingAdapter(
         val constraintLayout =
             helper.itemView.findViewById<ConstraintLayout>(R.id.constraintLayout_num)
         val typedValue = TypedValue()
-        mContext.getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
+        context.getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
         val colorPrimary = typedValue.resourceId;
         when (item.type) {
             "illust" -> if (item.meta_pages.isEmpty()) {
@@ -155,47 +173,43 @@ class RankingAdapter(
         imageView.setTag(R.id.tag_first, item.image_urls.medium)
         val imageViewuser = helper.getView<ImageView>(R.id.imageview_user)
         imageViewuser.setOnClickListener {
-            val intent = Intent(mContext, UserMActivity::class.java)
+            val intent = Intent(context, UserMActivity::class.java)
             intent.putExtra("data", item.user.id)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            mContext.startActivity(intent)
+            context.startActivity(intent)
 
         }
         imageViewuser.setTag(R.id.tag_first, item.user.profile_image_urls.medium)
         helper.setText(R.id.textview_title, item.title)
-            .setTextColor(R.id.textview_context, ContextCompat.getColor(mContext, colorPrimary))
+            .setTextColor(R.id.textview_context, ContextCompat.getColor(context, colorPrimary))
         helper.setText(R.id.textview_context, item.user.name)
+        helper.getView<MaterialButton>(R.id.save).setOnClickListener {
+            Works.imageDownloadAll(item)
+        }
         helper.setTextColor(
             R.id.like, if (item.is_bookmarked) {
                 Color.YELLOW
             } else {
-                ContextCompat.getColor(mContext, colorPrimary)
+                ContextCompat.getColor(context, colorPrimary)
             }
         )
-            .setOnClickListener(R.id.save) {
-                val illust = item
-                Works.imageDownloadAll(illust)
+        helper.getView<MaterialButton>((R.id.like)).setOnClickListener { v ->
+            val textView = v as Button
+            val retrofit = RetrofitRepository.getInstance()
+            if (item.is_bookmarked) {
+                retrofit.postUnlikeIllust(item.id).subscribe({
+                    textView.setTextColor(ContextCompat.getColor(context, colorPrimary))
+                    item.is_bookmarked = false
+                }, {}, {})
+            } else {
+                retrofit.postLikeIllust(item.id)!!.subscribe({
+                    textView.setTextColor(
+                        Color.YELLOW
+                    )
+                    item.is_bookmarked = true
+                }, {}, {})
             }
-            .setOnLongClickListener(R.id.save) {
-                Works.imageDownloadAll(item)
-                true
-            }
-            .setOnClickListener(R.id.like) { v ->
-                val textView = v as TextView
-                if (item.is_bookmarked) {
-                    retrofit.postUnlikeIllust(item.id).subscribe({
-                        textView.setTextColor(ContextCompat.getColor(mContext, colorPrimary))
-                        item.is_bookmarked = false
-                    }, {}, {})
-                } else {
-                    retrofit.postLikeIllust(item.id)!!.subscribe({
-
-                        textView.setTextColor(Color.YELLOW)
-                        item.is_bookmarked = true
-                    }, {}, {})
-                }
-            }
-
+        }
 
         GlideApp.with(imageViewuser.context).load(item.user.profile_image_urls.medium).circleCrop()
             .into(object : ImageViewTarget<Drawable>(imageViewuser) {
@@ -225,7 +239,7 @@ class RankingAdapter(
             val isr18 = tags.contains("R-18") || tags.contains("R-18G")
             if (isr18) {
                 GlideApp.with(imageView.context)
-                    .load(ContextCompat.getDrawable(mContext, R.drawable.h))
+                    .load(ContextCompat.getDrawable(context, R.drawable.h))
                     .placeholder(R.drawable.h).into(imageView)
             } else {
 

@@ -26,23 +26,62 @@ package com.perol.asdpl.pixivez.services
 
 import android.app.Activity
 import android.app.Application
+import android.content.SharedPreferences
+import android.media.MediaScannerConnection
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.webkit.MimeTypeMap
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
-import androidx.work.WorkManager
+import com.arialyy.annotations.Download
 import com.arialyy.aria.core.Aria
-import com.facebook.soloader.SoLoader
+import com.arialyy.aria.core.task.DownloadTask
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.google.android.play.core.missingsplits.MissingSplitsManagerFactory
-import com.orhanobut.logger.AndroidLogAdapter
-import com.orhanobut.logger.Logger
 import com.perol.asdpl.pixivez.BuildConfig
+import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.objects.CrashHandler
+import com.perol.asdpl.pixivez.objects.Toasty
 import com.tencent.bugly.Bugly
 import java.io.File
 
+
 class PxEZApp : Application() {
+    private val objectMapper by lazy { ObjectMapper().registerKotlinModule() }
+    lateinit var pre: SharedPreferences;
+
+    @Download.onTaskComplete
+    fun taskComplete(task: DownloadTask?) {
+        task?.let {
+            val extendField = it.extendField
+            val illustD = objectMapper.readValue(extendField, IllustD::class.java)
+            val title = illustD.title
+            val sourceFile = File(it.filePath)
+
+            val needCreateFold = pre.getBoolean("needcreatefold", false)
+            val userName = illustD.userName?.toLegal()
+            val path = if (needCreateFold) {
+                "$storepath/${userName}_${illustD.userId}"
+            } else storepath
+            val targetFile = File(path, sourceFile.name)
+            sourceFile.copyTo(targetFile, overwrite = true)
+            MediaScannerConnection.scanFile(
+                this,
+                arrayOf(targetFile.path),
+                arrayOf(
+                    MimeTypeMap.getSingleton()
+                        .getMimeTypeFromExtension(targetFile.extension)
+                )
+            ) { _, _ ->
+
+            }
+            Toasty.success(this, "${title}${getString(R.string.savesuccess)}", Toast.LENGTH_SHORT)
+                .show()
+        }
+    }
 
     override fun onCreate() {
         //https://developer.android.com/guide/app-bundle/sideload-check#missing_splits
@@ -52,26 +91,26 @@ class PxEZApp : Application() {
                 return
             }
         super.onCreate()
-        SoLoader.init(this, false)
+        pre = PreferenceManager.getDefaultSharedPreferences(this)
+
         Aria.download(this).register()
+//        Aria.get(this).appConfig.logLevel= ALog.LOG_CLOSE
         Aria.download(this).removeAllTask(true)
         instance = this
-        Logger.addLogAdapter(AndroidLogAdapter())
-        val defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         AppCompatDelegate.setDefaultNightMode(
-            defaultSharedPreferences.getString(
+            pre.getString(
                 "dark_mode",
                 "-1"
             )!!.toInt()
         )
-        animationEnable = defaultSharedPreferences.getBoolean("animation", true)
-        language = defaultSharedPreferences.getString("language", "0")?.toInt() ?: 0
-        storepath = defaultSharedPreferences.getString(
+        animationEnable = pre.getBoolean("animation", true)
+        language = pre.getString("language", "0")?.toInt() ?: 0
+        storepath = pre.getString(
             "storepath1",
             Environment.getExternalStorageDirectory().absolutePath + File.separator + "PxEz"
         )
             ?: Environment.getExternalStorageDirectory().absolutePath + File.separator + "PxEz"
-        if (defaultSharedPreferences.getBoolean("crashreport", true)) {
+        if (pre.getBoolean("crashreport", true)) {
             CrashHandler.getInstance().init(this)
         }
         locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -81,7 +120,6 @@ class PxEZApp : Application() {
         }
         if (!BuildConfig.ISGOOGLEPLAY)
             Bugly.init(this, "1a2d5c746f", BuildConfig.DEBUG)
-        WorkManager.getInstance(this).pruneWork()
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
 //                Logger.t(TAG).v("${activity.simpleName}: onActivityCreated")
@@ -144,10 +182,13 @@ class PxEZApp : Application() {
     companion object {
         @JvmStatic
         var storepath = ""
+
         @JvmStatic
         var locale = "zh"
+
         @JvmStatic
         var language: Int = 0
+
         @JvmStatic
         var animationEnable: Boolean = false
         lateinit var instance: PxEZApp

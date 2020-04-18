@@ -29,18 +29,18 @@ import android.widget.ImageView
 import androidx.preference.PreferenceManager
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.sql.UserEntity
 import kotlinx.coroutines.runBlocking
 
 class AccountChoiceAdapter(layoutResId: Int, data: List<UserEntity>) :
-    BaseQuickAdapter<UserEntity, BaseViewHolder>(layoutResId, data) {
+    BaseQuickAdapter<UserEntity, BaseViewHolder>(layoutResId, data.toMutableList()) {
 
     override fun convert(helper: BaseViewHolder, item: UserEntity) {
         val userImage = helper.getView<ImageView>(R.id.imageView4)
-        Glide.with(mContext).load(item.userimage).circleCrop().into(userImage)
+        Glide.with(context).load(item.userimage).circleCrop().into(userImage)
         helper.setImageResource(R.id.imageview_delete, R.drawable.ic_action_lajitong)
                 .setText(R.id.textView4, item.username)
                 .setText(R.id.textview_email, item.useremail)
@@ -48,11 +48,10 @@ class AccountChoiceAdapter(layoutResId: Int, data: List<UserEntity>) :
         delete.setOnClickListener {
             runBlocking {
                 AppDataRepository.deleteUser(item)
-                data -= item
-                this@AccountChoiceAdapter.setNewData(data)
+                this@AccountChoiceAdapter.remove(item)
             }
         }
-        if (helper.layoutPosition == PreferenceManager.getDefaultSharedPreferences(mContext).getInt(
+        if (helper.layoutPosition == PreferenceManager.getDefaultSharedPreferences(context).getInt(
                 "usernum",
                 0
             )

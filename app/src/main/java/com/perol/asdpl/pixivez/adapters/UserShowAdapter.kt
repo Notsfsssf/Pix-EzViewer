@@ -25,29 +25,31 @@
 package com.perol.asdpl.pixivez.adapters
 
 import android.content.Intent
-import android.view.View
 import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.module.LoadMoreModule
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.UserMActivity
 import com.perol.asdpl.pixivez.responses.SearchUserResponse
 import com.perol.asdpl.pixivez.services.GlideApp
 
 
-class UserShowAdapter(layoutResId: Int) : BaseQuickAdapter<SearchUserResponse.UserPreviewsBean, BaseViewHolder>(layoutResId), BaseQuickAdapter.OnItemClickListener {
-    override fun onItemClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
-        val intent = Intent(mContext, UserMActivity::class.java)
-        intent.putExtra("data", this.data[position].user.id)
-        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        mContext.startActivity(intent)
-    }
+class UserShowAdapter(layoutResId: Int) :
+    BaseQuickAdapter<SearchUserResponse.UserPreviewsBean, BaseViewHolder>(layoutResId),
+    LoadMoreModule {
+
 
     init {
-        this.onItemClickListener = this
+        setOnItemClickListener { adapter, view, position ->
+            val intent = Intent(context, UserMActivity::class.java)
+            intent.putExtra("data", this.data[position].user.id)
+            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            context.startActivity(intent)
+        }
     }
 
     override fun convert(helper: BaseViewHolder, item: SearchUserResponse.UserPreviewsBean) {

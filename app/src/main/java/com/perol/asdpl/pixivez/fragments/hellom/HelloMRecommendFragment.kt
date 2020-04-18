@@ -144,8 +144,7 @@ class HelloMRecommendFragment : BaseFragment() {
         swiperefresh_recom.setOnRefreshListener {
             loadData()
         }
-        rankingAdapter.setOnLoadMoreListener({
-
+        rankingAdapter.loadMoreModule?.setOnLoadMoreListener {
             if (!nextUrl.isNullOrBlank())
                 viewmodel.onLoadMoreRxRequested(nextUrl).subscribe({
                     rankingAdapter.addData(it.illusts)
@@ -155,7 +154,7 @@ class HelloMRecommendFragment : BaseFragment() {
                     rankingAdapter.loadMoreFail()
                 }, {})
             else rankingAdapter.loadMoreEnd()
-        }, recyclerview_recom)
+        }
         banner = bannerView.findViewById<Banner>(R.id.banner)
         banner.setImageLoader(object : ImageLoader() {
             override fun displayImage(context: Context, path: Any?, imageView: ImageView?) {

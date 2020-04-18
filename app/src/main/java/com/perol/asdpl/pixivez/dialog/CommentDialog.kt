@@ -130,6 +130,7 @@ class CommentDialog : DialogFragment() {
                         val dialog = builder.create()
                         dialog.show()
                     }
+                    commentAdapter!!.addChildClickViewIds(R.id.commentuserimage, R.id.repley_to_hit)
                     commentAdapter!!.setOnItemChildClickListener { adapter, view, position ->
                         if (view.id == R.id.commentuserimage) {
                             val intent = Intent(context, UserMActivity::class.java)
@@ -146,7 +147,7 @@ class CommentDialog : DialogFragment() {
                         }
                     }
                     nextUrl = illustCommentsResponse.next_url
-                    commentAdapter?.setOnLoadMoreListener({
+                    commentAdapter?.loadMoreModule?.setOnLoadMoreListener {
                         if (!nextUrl.isNullOrBlank()) {
                             Observable.just(1).flatMap {
 
@@ -161,7 +162,7 @@ class CommentDialog : DialogFragment() {
                                 .retryWhen(ReFreshFunction(context!!)).subscribe({
                                     commentAdapter?.addData(it.comments)
                                     nextUrl = it.next_url
-                                    commentAdapter?.loadMoreComplete()
+                                    commentAdapter?.loadMoreModule?.loadMoreComplete()
                                 }, {
                                     it.printStackTrace()
                                 }, {
@@ -170,9 +171,9 @@ class CommentDialog : DialogFragment() {
                                     compositeDisposable.add(it)
                                 })
                         } else {
-                            commentAdapter?.loadMoreEnd()
+                            commentAdapter?.loadMoreModule?.loadMoreEnd()
                         }
-                    }, recyclerviewPicture)
+                    }
                     button.setOnClickListener { commit() }
 
                 }

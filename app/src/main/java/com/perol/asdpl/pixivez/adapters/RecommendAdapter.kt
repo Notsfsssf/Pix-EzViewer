@@ -34,19 +34,21 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.bumptech.glide.request.target.ImageViewTarget
 import com.bumptech.glide.request.transition.Transition
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseQuickAdapter.OnItemClickListener
-import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.listener.OnLoadMoreListener
+import com.chad.library.adapter.base.module.LoadMoreModule
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.google.android.material.button.MaterialButton
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.PictureActivity
 import com.perol.asdpl.pixivez.repository.RetrofitRepository
@@ -62,11 +64,28 @@ class RecommendAdapter(
     private val R18on: Boolean,
     var blockTags: List<String>
 ) :
-    BaseQuickAdapter<Illust, BaseViewHolder>(layoutResId, data) {
+    BaseQuickAdapter<Illust, BaseViewHolder>(layoutResId, data?.toMutableList()), LoadMoreModule {
+
+    fun loadMoreEnd() {
+        this.loadMoreModule?.loadMoreEnd()
+    }
+
+    fun loadMoreComplete() {
+        this.loadMoreModule?.loadMoreComplete()
+    }
+
+    fun loadMoreFail() {
+        this.loadMoreModule?.loadMoreFail()
+    }
+
+    fun setOnLoadMoreListener(onLoadMoreListener: OnLoadMoreListener, recyclerView: RecyclerView?) {
+        this.loadMoreModule?.setOnLoadMoreListener(onLoadMoreListener)
+    }
+
     init {
-        this.openLoadAnimation(SCALEIN)
-//        addFooterView(LayoutInflater.from(mContext).inflate(R.layout.foot_list,null))
-        this.onItemClickListener = OnItemClickListener { adapter, view, position ->
+
+
+        this.setOnItemClickListener { adapter, view, position ->
             val bundle = Bundle()
             bundle.putLong("illustid", this@RecommendAdapter.data[position].id)
             val illustlist = LongArray(this.data.count())
@@ -74,32 +93,34 @@ class RecommendAdapter(
                 illustlist[i] = this.data[i].id
             }
             bundle.putLongArray("illustlist", illustlist)
-            val intent = Intent(mContext, PictureActivity::class.java)
+            val intent = Intent(context, PictureActivity::class.java)
             intent.putExtras(bundle)
             if (PxEZApp.animationEnable) {
                 val mainimage = view!!.findViewById<View>(R.id.item_img)
                 val title = view.findViewById<View>(R.id.title)
                 val options = ActivityOptions.makeSceneTransitionAnimation(
-                    mContext as Activity,
+                    context as Activity,
                     UtilPair.create(
                         mainimage,
                         "mainimage"
                     ),
                     UtilPair.create(title, "title")
                 )
-                startActivity(mContext, intent, options.toBundle())
+                startActivity(context, intent, options.toBundle())
             } else
-                startActivity(mContext, intent, null)
+                startActivity(context, intent, null)
         }
 
 
     }
 
-
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        addFooterView(LayoutInflater.from(context).inflate(R.layout.foot_list, null))
+        animationEnable = true
+        setAnimationWithDefault(AnimationType.AlphaIn)
+    }
     override fun convert(helper: BaseViewHolder, item: Illust) {
-        if (helper.adapterPosition == 0) {
-            addFooterView(LayoutInflater.from(mContext).inflate(R.layout.foot_list, null))
-        }
         val tags = item.tags.map {
             it.name
         }
@@ -126,36 +147,37 @@ class RecommendAdapter(
             }
         }
         val typedValue = TypedValue();
-        mContext.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
+        context.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
 
         val colorPrimary = typedValue.resourceId;
+        helper.getView<MaterialButton>(R.id.save).setOnClickListener {
+            Works.imageDownloadAll(item)
+        }
         helper.setText(R.id.title, item.title).setTextColor(
             R.id.like, if (item.is_bookmarked) {
                 Color.YELLOW
             } else {
-                ContextCompat.getColor(mContext, colorPrimary)
+                ContextCompat.getColor(context, colorPrimary)
             }
         )
-            .setOnClickListener(R.id.save) {
-                Works.imageDownloadAll(item)
+
+        helper.getView<MaterialButton>((R.id.like)).setOnClickListener { v ->
+            val textView = v as Button
+            val retrofit = RetrofitRepository.getInstance()
+            if (item.is_bookmarked) {
+                retrofit.postUnlikeIllust(item.id).subscribe({
+                    textView.setTextColor(ContextCompat.getColor(context, colorPrimary))
+                    item.is_bookmarked = false
+                }, {}, {})
+            } else {
+                retrofit.postLikeIllust(item.id)!!.subscribe({
+                    textView.setTextColor(
+                        Color.YELLOW
+                    )
+                    item.is_bookmarked = true
+                }, {}, {})
             }
-            .setOnClickListener(R.id.like) { v ->
-                val textView = v as Button
-                val retrofit = RetrofitRepository.getInstance()
-                if (item.is_bookmarked) {
-                    retrofit.postUnlikeIllust(item.id).subscribe({
-                        textView.setTextColor(ContextCompat.getColor(mContext, colorPrimary))
-                        item.is_bookmarked = false
-                    }, {}, {})
-                } else {
-                    retrofit.postLikeIllust(item.id)!!.subscribe({
-                        textView.setTextColor(
-                            Color.YELLOW
-                        )
-                        item.is_bookmarked = true
-                    }, {}, {})
-                }
-            }
+        }
 
         val constraintLayout =
             helper.itemView.findViewById<ConstraintLayout>(R.id.constraintLayout_num)
@@ -188,7 +210,7 @@ class RecommendAdapter(
             val isr18 = tags.contains("R-18") || tags.contains("R-18G")
             if (isr18) {
                 GlideApp.with(imageView.context)
-                    .load(ContextCompat.getDrawable(mContext, R.drawable.h))
+                    .load(ContextCompat.getDrawable(context, R.drawable.h))
                     .placeholder(R.drawable.h).into(imageView)
             } else {
                 GlideApp.with(imageView.context).load(loadurl)

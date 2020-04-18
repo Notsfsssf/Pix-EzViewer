@@ -60,6 +60,13 @@ import kotlinx.coroutines.withContext
 import java.io.File
 
 class UserMActivity : RinkActivity() {
+    companion object {
+        fun start(context: Context, id: Long) {
+            val intent = Intent(context, UserMActivity::class.java)
+            intent.putExtra("data", id)
+            context.startActivity(intent)
+        }
+    }
     var id: Long = 0
     private val SELECT_IMAGE = 2
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

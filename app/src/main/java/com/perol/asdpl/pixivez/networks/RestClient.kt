@@ -43,12 +43,13 @@ import java.security.NoSuchAlgorithmException
 import java.security.cert.X509Certificate
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.X509TrustManager
 
 
 class RestClient {
-    private val httpsDns = RubyHttpDns()
+    private val httpsDns by lazy { RubyHttpDns() }
     private val local = when (PxEZApp.language) {
         1 -> {
             Locale.ENGLISH
@@ -217,7 +218,7 @@ class RestClient {
                     return chain.proceed(request)
                 }
             })
-                .addInterceptor(httpLoggingInterceptor)
+//                .addInterceptor(httpLoggingInterceptor)
             if (!PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance).getBoolean(
                     "disableproxy",
                     false
@@ -236,6 +237,9 @@ class RestClient {
                 }).hostnameVerifier(HostnameVerifier { p0, p1 -> true })
                 builder.dns(RubyHttpDns())
             }
+            builder.connectTimeout(30L, TimeUnit.SECONDS)
+                .readTimeout(30L, TimeUnit.SECONDS)
+                .writeTimeout(30L, TimeUnit.SECONDS)
             return builder
                 .build()
         }

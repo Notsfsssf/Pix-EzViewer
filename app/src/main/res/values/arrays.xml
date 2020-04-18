@@ -109,4 +109,9 @@
         <item>保存头像</item>
         <item>更换头像</item>
     </string-array>
+    <string-array name="download_task_choice">
+        <item>暂停</item>
+        <item>恢复</item>
+        <item>取消</item>
+    </string-array>
 </resources>
