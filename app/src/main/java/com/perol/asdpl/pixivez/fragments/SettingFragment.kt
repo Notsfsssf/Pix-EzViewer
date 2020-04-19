@@ -213,11 +213,21 @@ class SettingFragment : PreferenceFragmentCompat() {
                 try {
 
                     val binding = DialogMeBinding.inflate(layoutInflater)
-                    MaterialDialog(requireContext(), BottomSheet()).show {
+                    val dialog = MaterialDialog(requireContext(), BottomSheet()).show {
                         cornerRadius(16f)
                         customView(view = binding.root)
-                    }
 
+                    }
+                    binding.bg.setOnClickListener {
+                        val url = if (BuildConfig.ISGOOGLEPLAY) {
+                            "https://youtu.be/Wu4fVGsEn8s"
+                        } else {
+                            "https://www.bilibili.com/video/BV1E741137mf"
+                        }
+                        val uri = Uri.parse(url)
+                        val intent = Intent(Intent.ACTION_VIEW, uri)
+                        startActivity(intent)
+                    }
 
 
                 } catch (e: Exception) {

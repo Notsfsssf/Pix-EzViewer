@@ -5,24 +5,18 @@
 
     </data>
 
-    <ScrollView
+    <FrameLayout
+        android:background="#110E13"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/bg"
+            android:src="@drawable/sustain"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:scaleType="centerCrop"
+            android:layout_height="match_parent" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="160dp" />
-
-            <TextView
-                android:id="@+id/content"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-    </ScrollView>
+    </FrameLayout>
 
 </layout>
