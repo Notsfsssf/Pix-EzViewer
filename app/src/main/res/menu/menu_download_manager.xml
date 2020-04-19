@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_settings"
+        app:iconTint="?android:textColorPrimaryInverse"
+        android:title="@string/task_setting"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_resume"
+        android:icon="@drawable/ic_action_share_setting"
+        app:iconTint="?android:textColorPrimaryInverse"
+        android:title="@string/all_resume"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_cancel"
+        android:icon="@drawable/ic_action_share_setting"
+        app:iconTint="?android:textColorPrimaryInverse"
+        android:title="@string/all_cancel"
+        app:showAsAction="never" />
+</menu>

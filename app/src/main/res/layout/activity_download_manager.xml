@@ -14,6 +14,7 @@
             android:id="@+id/toolbar"
             app:titleTextColor="?android:attr/textColorPrimaryInverse"
             android:theme="@style/MyToolbar"
+            android:background="?attr/colorPrimary"
             app:title="@string/download_progress"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize" />

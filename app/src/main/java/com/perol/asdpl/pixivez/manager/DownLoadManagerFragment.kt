@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItems
 import com.arialyy.annotations.Download
@@ -25,7 +24,10 @@ import com.perol.asdpl.pixivez.activity.PictureActivity
 import com.perol.asdpl.pixivez.databinding.DownLoadManagerFragmentBinding
 import com.perol.asdpl.pixivez.databinding.ItemDownloadTaskBinding
 import com.perol.asdpl.pixivez.services.IllustD
+import com.perol.asdpl.pixivez.services.PxEZApp
+import com.perol.asdpl.pixivez.services.Works
 import org.jetbrains.annotations.NotNull
+import java.io.File
 
 
 class DownloadTaskAdapter() :
@@ -38,22 +40,37 @@ class DownloadTaskAdapter() :
         }
         this.setOnItemLongClickListener { adapter, view, position ->
             val item = data[position]
-            val illust = objectMapper.readValue(item.str, IllustD::class.java)
+            val illustD = objectMapper.readValue(item.str, IllustD::class.java)
             MaterialDialog(context).show {
-                title(text = illust.title)
+                title(text = illustD.title)
                 listItems(R.array.download_task_choice) { _, index, string ->
                     when (index) {
                         0 -> {
-                            Aria.download(context).load(data[position].id).stop()
+                            val fileName = item.fileName
+                            val targetPath =
+                                "${PxEZApp.instance.cacheDir}${File.separator}${fileName}"
+                            Aria.download(PxEZApp.instance)
+                                .load(item.url) //读取下载地址
+                                .setFilePath(targetPath) //设置文件保存的完整路径
+                                .ignoreFilePathOccupy()
+                                .setExtendField(Works.mapper.writeValueAsString(illustD))
+                                .option(Works.option)
+                                .create()
 
                         }
                         1 -> {
-                            Aria.download(context).load(data[position].id).resume()
+                            Aria.download(context).load(data[position].id).stop()
                         }
                         2 -> {
+                            Aria.download(context).load(data[position].id).resume()
+                        }
+                        3 -> {
                             Aria.download(context).load(data[position].id).cancel(true)
                         }
                     }
+                    val taskList = Aria.download(this).taskList
+                    if (taskList?.isNotEmpty() == true)
+                        this@DownloadTaskAdapter.setNewData(taskList.asReversed())
                 }
             }
             true
@@ -183,6 +200,7 @@ class DownLoadManagerFragment : Fragment() {
     fun onTaskFail(task: DownloadTask) {
         refreshSingle(task)
     }
+
     companion object {
         fun newInstance() = DownLoadManagerFragment()
     }
@@ -219,7 +237,8 @@ class DownLoadManagerFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         val taskList = Aria.download(this).taskList
-        downloadTaskAdapter.setNewData(taskList)
+        if (taskList?.isNotEmpty() == true)
+            downloadTaskAdapter.setNewData(taskList.asReversed())
     }
 
 }

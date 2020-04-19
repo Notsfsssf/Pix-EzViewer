@@ -92,9 +92,11 @@ class PxEZApp : Application() {
             }
         super.onCreate()
         pre = PreferenceManager.getDefaultSharedPreferences(this)
-
+        Aria.init(this)
         Aria.download(this).register()
-//        Aria.get(this).appConfig.logLevel= ALog.LOG_CLOSE
+        Aria.get(this).downloadConfig.apply {
+            maxTaskNum = pre.getString("max_task_num", "2")!!.toInt()
+        }
         Aria.download(this).removeAllTask(true)
         instance = this
         AppCompatDelegate.setDefaultNightMode(
@@ -122,30 +124,22 @@ class PxEZApp : Application() {
             Bugly.init(this, "1a2d5c746f", BuildConfig.DEBUG)
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-//                Logger.t(TAG).v("${activity.simpleName}: onActivityCreated")
-
                 ActivityCollector.collect(activity)
             }
 
             override fun onActivityStarted(activity: Activity) {
-//                Logger.t(TAG).v("${activity.simpleName}: onActivityStarted")
             }
 
             override fun onActivityResumed(activity: Activity) {
-//                Logger.t(TAG).v("${activity.simpleName}: onActivityResumed")
             }
 
             override fun onActivityPaused(activity: Activity) {
-//                Logger.t(TAG).v("${activity.simpleName}: onActivityPaused")
             }
 
             override fun onActivityStopped(activity: Activity) {
-//                Logger.t(TAG).v("${activity.simpleName}: onActivityStopped")
             }
 
             override fun onActivityDestroyed(activity: Activity) {
-//                Logger.t(TAG).v("${activity.simpleName}: onActivityDestroyed")
-
                 ActivityCollector.discard(activity)
             }
 

@@ -276,4 +276,8 @@
     <string name="block_tag">標簽屏蔽</string>
     <string name="block_face"><![CDATA[>_<]]></string>
     <string name="help_maintenance">支援開發者的工作</string>
+    <string name="max_task_num">最大任務數</string>
+    <string name="task_setting">任務設置</string>
+    <string name="all_resume">全部恢復</string>
+    <string name="all_cancel">清空列隊</string>
 </resources>

@@ -56,39 +56,41 @@
     </string-array>
     <!-- Reply Preference -->
     <string-array name="reply_entries">
-        <item>Reply</item>
-        <item>Reply to all</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
     </string-array>
 
     <string-array name="reply_values">
-        <item>reply</item>
-        <item>reply_all</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
     </string-array>
-    <string-array name="modellist" >
-          <item>每日</item>
-          <item>男性</item>
-          <item>女性</item>
-          <item>原创</item>
-          <item>新人</item>
-          <item>每周</item>
-          <item>每月</item>
-          <item>XVIII</item>
+    <string-array name="modellist">
+        <item>每日</item>
+        <item>男性</item>
+        <item>女性</item>
+        <item>原创</item>
+        <item>新人</item>
+        <item>每周</item>
+        <item>每月</item>
+        <item>XVIII</item>
         <item>XVIII_Male</item>
         <item>XVIII_FeMale</item>
-          <item>XVIII_Week</item>
+        <item>XVIII_Week</item>
         <item>XVIII_WeekG</item>
     </string-array>
-    <string-array name="language" >
+    <string-array name="language">
         <item>zh</item>
         <item>en</item>
         <item>zh-rTW</item>
-		<item>ja</item>
+        <item>ja</item>
     </string-array>
-    <string-array name="language_values" >
+    <string-array name="language_values">
         <item>0</item>
         <item>1</item>
         <item>2</item>
-		<item>3</item>
+        <item>3</item>
     </string-array>
     <string-array name="dark_mode">
         <item>跟随系统</item>
@@ -110,6 +112,7 @@
         <item>更换头像</item>
     </string-array>
     <string-array name="download_task_choice">
+        <item>重试</item>
         <item>暂停</item>
         <item>恢复</item>
         <item>取消</item>

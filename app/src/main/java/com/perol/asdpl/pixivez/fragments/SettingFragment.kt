@@ -42,29 +42,29 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BasicGridItem
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.afollestad.materialdialogs.bottomsheets.gridItems
+import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.files.folderChooser
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.perol.asdpl.pixivez.BuildConfig
 import com.perol.asdpl.pixivez.R
+import com.perol.asdpl.pixivez.databinding.DialogMeBinding
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.tencent.bugly.beta.Beta
-import okhttp3.*
 import java.io.File
 import java.io.FilenameFilter
-import java.io.IOException
-import java.util.*
 
 class SettingFragment : PreferenceFragmentCompat() {
     private val storagePermissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         defaultComponent =
-            ComponentName(requireContext().packageName, "com.perol.asdpl.pixivez.normal")  //拿到默认的组件
+            ComponentName(requireContext().packageName, "com.perol.asdpl.pixivez.normal")
         testComponent =
             ComponentName(requireContext().packageName, "com.perol.asdpl.pixivez.triangle")
         mdComponent = ComponentName(requireContext().packageName, "com.perol.asdpl.pixivez.md")
@@ -193,7 +193,6 @@ class SettingFragment : PreferenceFragmentCompat() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (requireContext().allPermissionsGranted(storagePermissions)) {
                 showDirectorySelectionDialog()
@@ -208,15 +207,19 @@ class SettingFragment : PreferenceFragmentCompat() {
     }
 
 
-
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         when (preference?.key) {
             "me" -> {
-//                Toasty.info(PxEZApp.instance, "no browser found", Toast.LENGTH_SHORT).show()
                 try {
-                    /*         val uri = Uri.parse("https://music.163.com/song?id=1335514068&userid=32973424")
-                             val intent = Intent(Intent.ACTION_VIEW, uri)
-                             startActivity(intent)*/
+
+                    val binding = DialogMeBinding.inflate(layoutInflater)
+                    MaterialDialog(requireContext(), BottomSheet()).show {
+                        cornerRadius(16f)
+                        customView(view = binding.root)
+                    }
+
+
+
                 } catch (e: Exception) {
 
                 }
@@ -273,7 +276,7 @@ class SettingFragment : PreferenceFragmentCompat() {
                     val cr = File(activity?.filesDir, list[a])
                     string += cr.readText()
                 }
-                val dialogBuild = MaterialAlertDialogBuilder(activity!!)
+                val dialogBuild = MaterialAlertDialogBuilder(requireActivity())
                 dialogBuild.setMessage(string).setTitle("这是崩溃报告，如果遇到个别功能闪退，请将此报告反馈给开发者")
                     .setPositiveButton(android.R.string.ok) { _, _ ->
 

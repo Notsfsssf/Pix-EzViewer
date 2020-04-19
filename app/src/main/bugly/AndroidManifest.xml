@@ -13,10 +13,13 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcherep"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
-        android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/AppThemeBase">
+        <activity
+            android:name=".manager.ManagerSettingsActivity"
+            android:label="@string/title_activity_manager_settings"></activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -32,12 +35,8 @@
             android:name="com.tencent.bugly.beta.ui.BetaActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|locale"
             android:theme="@android:style/Theme.Translucent" />
-
-        <activity android:name=".activity.BlockActivity"></activity>
+        <activity android:name=".activity.BlockActivity" />
         <activity android:name=".activity.NovelActivity" />
-        <activity
-            android:name=".activity.ProgressActivity"
-            android:label="@string/title_activity_progress" />
         <activity android:name=".activity.WebViewActivity" />
         <activity
             android:name=".activity.SettingActivity"
@@ -60,9 +59,9 @@
         </activity>
 
         <activity-alias
-            android:name=".md"
+            android:name=".normal"
             android:enabled="false"
-            android:icon="@mipmap/ic_launchermd"
+            android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:targetActivity=".activity.HelloMActivity">
             <intent-filter>
@@ -84,9 +83,9 @@
             </intent-filter>
         </activity-alias>
         <activity-alias
-            android:name=".normal"
+            android:name=".md"
             android:enabled="false"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@mipmap/ic_launchermd"
             android:label="@string/app_name"
             android:targetActivity=".activity.HelloMActivity">
             <intent-filter>
@@ -156,6 +155,7 @@
         <activity android:name=".activity.HistoryMActivity" />
         <activity android:name=".activity.UserShowActivity" />
         <activity android:name=".activity.UserMActivity" />
+        <activity android:name=".manager.DownloadManagerActivity" />
     </application>
 
 </manifest>

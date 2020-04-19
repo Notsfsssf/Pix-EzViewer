@@ -261,4 +261,8 @@
     <string name="block_tag">Block tag</string>
     <string name="block_face"><![CDATA[>_<]]></string>
     <string name="help_maintenance">Help maintenance</string>
+    <string name="max_task_num">Max task num</string>
+    <string name="task_setting">Task Setting</string>
+    <string name="all_resume">Resume All</string>
+    <string name="all_cancel">Clear queue</string>
 </resources>

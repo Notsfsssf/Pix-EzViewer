@@ -16,6 +16,9 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppThemeBase">
+        <activity
+            android:name=".manager.ManagerSettingsActivity"
+            android:label="@string/title_activity_manager_settings"></activity>
 
         <activity
             android:name=".activity.ImgDActivity"

@@ -39,16 +39,7 @@
         <item>ZH</item>
         <item>EN</item>
     </string-array>
-    <!-- Reply Preference -->
-    <string-array name="reply_entries">
-        <item>Reply</item>
-        <item>Reply to all</item>
-    </string-array>
 
-    <string-array name="reply_values">
-        <item>reply</item>
-        <item>reply_all</item>
-    </string-array>
     <string-array name="modellist">
         <item>每日</item>
         <item>男性</item>
@@ -76,7 +67,8 @@
         <item>更換頭圖</item>
     </string-array>
     <string-array name="download_task_choice">
-        <item>暫停</item>
+        <item>重試</item>
+        <item>攢停</item>
         <item>恢復</item>
         <item>取消</item>
     </string-array>

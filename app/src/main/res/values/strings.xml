@@ -302,4 +302,9 @@
     <string name="help_maintenance">支持开发者工作</string>
     <string name="title_activity_img_d">My Compose App</string>
     <string name="title_activity_main">My Compose App</string>
+    <string name="title_activity_manager_settings">Settings</string>
+    <string name="max_task_num">最大任务数</string>
+    <string name="task_setting">任务设置</string>
+    <string name="all_resume">全部恢复</string>
+    <string name="all_cancel">清空列队</string>
 </resources>

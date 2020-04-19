@@ -62,6 +62,7 @@
         <item>Change Avatar</item>
     </string-array>
     <string-array name="download_task_choice">
+        <item>RETRY</item>
         <item>PAUSE</item>
         <item>RESUME</item>
         <item>CANCEL</item>
