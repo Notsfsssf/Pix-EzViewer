@@ -139,7 +139,7 @@
     <string name="checktochang">點擊更換</string>
     <string name="limit">限制</string>
     <string name="_18">隐藏遮罩</string>
-    <string name="picturequality">圖像質量</string>
+    <string name="picturequality">圖像品質</string>
     <string name="opensource">引用開源庫</string>
     <string name="tababout">關於</string>
     <string name="tabthanks">感謝</string>
@@ -150,10 +150,10 @@
     <string name="completemessage">完善資訊</string>
     <string name="logout">登出</string>
     <string name="account">賬號</string>
-    <string name="account_helper">Pixiv ID 或信箱</string>
+    <string name="account_helper">Pixiv ID 或電子郵件</string>
     <string name="password">密碼</string>
-    <string name="login">登錄</string>
-    <string name="login_help">登錄幫助</string>
+    <string name="login">登入</string>
+    <string name="login_help">登入幫助</string>
     <string name="donthaveaccount">沒有帳號？</string>
     <string name="error_blank_account">賬號不能為空</string>
     <string name="error_blank_password">密碼不能為空</string>
@@ -162,7 +162,7 @@
     <string name="savepath">儲存路徑</string>
     <string name="secondpath">第二路徑</string>
     <string name="startpage">初始頁面</string>
-    <string name="try_to_login">嘗試登錄中</string>
+    <string name="try_to_login">嘗試登入中</string>
     <string name="pixel">解析度</string>
     <string name="view">查看</string>
     <string name="bookmark">收藏</string>
@@ -199,7 +199,7 @@
     <string name="setting">設定</string>
     <string name="savesuccess">儲存成功!</string>
     <string name="alreadysaved">圖像已存在</string>
-    <string name="registerclose">應用內註冊入口已關閉，請自行前往官網註冊</string>
+    <string name="registerclose">軟體內註冊入口已關閉，請自行前往官網註冊</string>
     <string name="nodiscribe">沒有說明哦~</string>
     <string name="proxy">不啟用防屏蔽方案</string>
     <string name="proxydetail">不啟用內建的防屏蔽方案，在中國大陸需要使用</string>
@@ -210,9 +210,9 @@
     <string name="privates">非公開</string>
     <string name="onlysupportinternalstorage">僅支援內建儲存空間</string>
     <string name="title_activity_path_provider">PathProviderActivity</string>
-    <string name="pickapath">選擇檔案夾</string>
+    <string name="pickapath">選擇資料夾</string>
     <string name="noaccess">未取得權限</string>
-    <string name="conflict">用戶資訊存在衝突，請重新登錄以顯示頭圖</string>
+    <string name="conflict">用戶資訊存在衝突，請重新登入以顯示頭圖</string>
     <string name="title_activity_settings">Settings</string>
 
     <!-- Preference Titles -->
@@ -232,19 +232,19 @@
     <string name="illust">插畫</string>
     <string name="manga">漫畫</string>
     <string name="abouts">關於</string>
-    <string name="painter">畫師</string>
+    <string name="painter">繪師</string>
     <string name="new1">動態</string>
     <string name="saveselectpic1">儲存選定圖像?</string>
     <string name="confirm">確定</string>
     <string name="mutichoicesave">多選儲存</string>
     <string name="choice">選擇</string>
     <string name="logoutallaccount">Log out of all accounts</string>
-    <string name="mypage">我的主頁</string>
+    <string name="mypage">個人頁面</string>
     <string name="savegifsuccess">成功儲存動態圖</string>
     <string name="savegifsuccesserr">儲存動態圖失敗</string>
     <string name="encodegif">Encode ugoria?</string>
     <string name="crash_report">錯誤回報</string>
-    <string name="feed_back">錯誤回報</string>
+    <string name="feed_back">問題回報</string>
     <string name="needstatusbar">熒幕凹口</string>
     <string name="changeicons">更換圖示</string>
     <string name="supporttitle">支援</string>
@@ -253,7 +253,7 @@
     <string name="animation">動畫</string>
     <string name="download_progress">下載進度</string>
     <string name="join_download_queue">加入下載佇列</string>
-    <string name="again_to_exit">再按一次返回鍵以退出</string>
+    <string name="again_to_exit">再次點擊返回鍵以退出</string>
     <string name="dark_mode">深色主題</string>
     <string name="restart_now">立即重新啟動</string>
     <string name="account_management">賬號管理</string>
@@ -266,18 +266,18 @@
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
     <string name="choice_date">Choice Date</string>
-    <string name="create_painter_folder">為每個畫師單獨建立檔案夾</string>
+    <string name="create_painter_folder">為每個繪師單獨建立資料夾</string>
     <string name="create_separate_folder">create separate folder</string>
     <string name="refresh_token">重新載入 token</string>
     <string name="translate">翻譯</string>
-    <string name="back_to_the_top">雙擊回到頂部</string>
+    <string name="back_to_the_top">雙擊返回頂部</string>
     <string name="savefail">儲存失敗</string>
     <string name="add_to_block_tag_list">添加到屏蔽標簽列表</string>
     <string name="block_tag">標簽屏蔽</string>
     <string name="block_face"><![CDATA[>_<]]></string>
     <string name="help_maintenance">支援開發者的工作</string>
     <string name="max_task_num">最大任務數</string>
-    <string name="task_setting">任務設置</string>
+    <string name="task_setting">任務設定</string>
     <string name="all_resume">全部恢復</string>
-    <string name="all_cancel">清空列隊</string>
+    <string name="all_cancel">清空佇列</string>
 </resources>
