@@ -280,4 +280,7 @@
     <string name="task_setting">任務設定</string>
     <string name="all_resume">全部恢復</string>
     <string name="all_cancel">清空佇列</string>
+    <string name="save_zip">儲存zip</string>
+    <string name="already_going_on">已在進行</string>
+    <string name="save_zip_success">儲存zip成功</string>
 </resources>

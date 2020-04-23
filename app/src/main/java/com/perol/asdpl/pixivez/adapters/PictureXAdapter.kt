@@ -561,10 +561,11 @@ class PictureXAdapter(
             imageViewGif!!.setOnLongClickListener {
                 if (progressBar?.visibility != View.VISIBLE) {
                     MaterialDialog(mContext).show {
+                        title(R.string.choice)
                         listItems(
                             items = arrayListOf(
                                 mContext.getString(R.string.encodegif),
-                                "保存Zip"
+                                mContext.getString(R.string.save_zip)
                             )
                         ) { dialog, index, text ->
                             when (index) {
@@ -637,7 +638,7 @@ class PictureXAdapter(
                                     } else {
                                         Toasty.info(
                                             PxEZApp.instance,
-                                            "It's already going on",
+                                            mContext.getString(R.string.already_going_on),
                                             Toast.LENGTH_LONG
                                         ).show()
                                     }
@@ -651,7 +652,7 @@ class PictureXAdapter(
                                         )
                                         Toasty.info(
                                             PxEZApp.instance,
-                                            "save zip success",
+                                            mContext.getString(R.string.save_zip_success),
                                             Toast.LENGTH_SHORT
                                         ).show()
                                     }
