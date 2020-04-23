@@ -94,8 +94,15 @@ class PxEZApp : Application() {
         pre = PreferenceManager.getDefaultSharedPreferences(this)
         Aria.init(this)
         Aria.download(this).register()
-        Aria.get(this).downloadConfig.apply {
-            maxTaskNum = pre.getString("max_task_num", "2")!!.toInt()
+
+        Aria.get(this).apply {
+            downloadConfig.apply {
+//                queueMod=QueueMod.NOW.tag
+                maxTaskNum = pre.getString("max_task_num", "2")!!.toInt()
+            }
+            appConfig.apply {
+                isNotNetRetry = true
+            }
         }
         Aria.download(this).removeAllTask(true)
         instance = this

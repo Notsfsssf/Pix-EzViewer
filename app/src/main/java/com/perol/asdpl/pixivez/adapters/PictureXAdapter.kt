@@ -55,6 +55,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
+import com.afollestad.materialdialogs.list.listItems
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -63,17 +64,14 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.DrawableImageViewTarget
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.dinuscxj.progressbar.CircleProgressBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.PictureActivity
 import com.perol.asdpl.pixivez.activity.SearchResultActivity
 import com.perol.asdpl.pixivez.activity.UserMActivity
 import com.perol.asdpl.pixivez.activity.ZoomActivity
 import com.perol.asdpl.pixivez.databinding.ViewPicturexDetailBinding
-import com.perol.asdpl.pixivez.fragments.PictureXFragment
 import com.perol.asdpl.pixivez.objects.AdapterRefreshEvent
 import com.perol.asdpl.pixivez.objects.TToast
 import com.perol.asdpl.pixivez.objects.Toasty
@@ -91,22 +89,18 @@ import com.waynejo.androidndkgif.GifEncoder
 import com.zhy.view.flowlayout.FlowLayout
 import com.zhy.view.flowlayout.TagAdapter
 import com.zhy.view.flowlayout.TagFlowLayout
-import io.reactivex.Completable
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.extensions.LayoutContainer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 import java.io.File
-import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
-
+//我写的是个啥
 class PictureXAdapter(
     private val pictureXViewModel: PictureXViewModel,
     private val data: Illust,
@@ -566,82 +560,112 @@ class PictureXAdapter(
             imageViewGif = holder.itemView.findViewById(R.id.imageview_gif)
             imageViewGif!!.setOnLongClickListener {
                 if (progressBar?.visibility != View.VISIBLE) {
-                    Snackbar.make(
-                        imageViewGif!!,
-                        mContext.getString(R.string.encodegif),
-                        Snackbar.LENGTH_LONG
-                    ).setAction(android.R.string.ok) { view ->
-                        if (!isEncoding) {
-                            isEncoding = true
-                            val file1 = File(path2)
-                            if (!file1.parentFile.exists()) {
-                                file1.parentFile.mkdirs()
-                            }
-                            val ob = encodingGif()
-                            if (ob != null) {
-                                ob.subscribe({
-                                    runBlocking {
-                                        withContext(Dispatchers.IO) {
-                                            File(path).copyTo(file1, true)
+                    MaterialDialog(mContext).show {
+                        listItems(
+                            items = arrayListOf(
+                                mContext.getString(R.string.encodegif),
+                                "保存Zip"
+                            )
+                        ) { dialog, index, text ->
+                            when (index) {
+                                0 -> {
+                                    if (!isEncoding) {
+                                        isEncoding = true
+                                        val file1 = File(path2)
+                                        if (!file1.parentFile.exists()) {
+                                            file1.parentFile.mkdirs()
                                         }
-                                        MediaScannerConnection.scanFile(
-                                            PxEZApp.instance, arrayOf(path2), arrayOf(
-                                                MimeTypeMap.getSingleton().getMimeTypeFromExtension(
-                                                    file1.extension
-                                                )
-                                            )
-                                        ) { _, _ ->
+                                        val ob = encodingGif()
+                                        if (ob != null) {
+                                            ob.subscribe({
+                                                runBlocking {
+                                                    withContext(Dispatchers.IO) {
+                                                        File(path).copyTo(file1, true)
+                                                    }
+                                                    MediaScannerConnection.scanFile(
+                                                        PxEZApp.instance, arrayOf(path2), arrayOf(
+                                                            MimeTypeMap.getSingleton()
+                                                                .getMimeTypeFromExtension(
+                                                                    file1.extension
+                                                                )
+                                                        )
+                                                    ) { _, _ ->
+
+                                                    }
+                                                    isEncoding = false
+                                                    Toast.makeText(
+                                                        PxEZApp.instance,
+                                                        R.string.savegifsuccess,
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+
+                                                }
+                                            }, {
+                                                isEncoding = false
+                                                Toast.makeText(
+                                                    PxEZApp.instance,
+                                                    R.string.savegifsuccesserr,
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+
+                                            }, {
+
+                                            })
+                                        } else {
+                                            runBlocking {
+                                                withContext(Dispatchers.IO) {
+                                                    File(path).copyTo(file1, true)
+                                                }
+                                                MediaScannerConnection.scanFile(
+                                                    PxEZApp.instance, arrayOf(path2), arrayOf(
+                                                        MimeTypeMap.getSingleton()
+                                                            .getMimeTypeFromExtension(
+                                                                file1.extension
+                                                            )
+                                                    )
+                                                ) { _, _ ->
+                                                }
+                                                isEncoding = false
+                                                Toast.makeText(
+                                                    PxEZApp.instance,
+                                                    R.string.savegifsuccess,
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                            }
 
                                         }
-                                        isEncoding = false
-                                        Toast.makeText(
+                                    } else {
+                                        Toasty.info(
                                             PxEZApp.instance,
-                                            R.string.savegifsuccess,
+                                            "It's already going on",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
+                                }
+                                else -> {
+                                    val file1 = File(zipPath)
+                                    if (file1.exists()) {
+                                        file1.copyTo(
+                                            File(PxEZApp.storepath, "${data.id}.zip"),
+                                            overwrite = true
+                                        )
+                                        Toasty.info(
+                                            PxEZApp.instance,
+                                            "save zip success",
                                             Toast.LENGTH_SHORT
                                         ).show()
-
                                     }
-                                }, {
-                                    isEncoding = false
-                                    Toast.makeText(
-                                        PxEZApp.instance,
-                                        R.string.savegifsuccesserr,
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-
-                                }, {
-
-                                })
-                            } else {
-                                runBlocking {
-                                    withContext(Dispatchers.IO) {
-                                        File(path).copyTo(file1, true)
-                                    }
-                                    MediaScannerConnection.scanFile(
-                                        PxEZApp.instance, arrayOf(path2), arrayOf(
-                                            MimeTypeMap.getSingleton().getMimeTypeFromExtension(
-                                                file1.extension
-                                            )
-                                        )
-                                    ) { _, _ ->
-                                    }
-                                    isEncoding = false
-                                    Toast.makeText(
-                                        PxEZApp.instance,
-                                        R.string.savegifsuccess,
-                                        Toast.LENGTH_SHORT
-                                    ).show()
                                 }
-
                             }
-                        } else {
-                            Toasty.info(
-                                PxEZApp.instance,
-                                "It's already going on",
-                                Toast.LENGTH_LONG
-                            ).show()
                         }
-                    }.show()
+                    }
+                    /*          Snackbar.make(
+                                  imageViewGif!!,
+                                  mContext.getString(R.string.encodegif),
+                                  Snackbar.LENGTH_LONG
+                              ).setAction(android.R.string.ok) { view ->
+
+                              }.show()*/
                 }
                 true
             }
@@ -684,6 +708,7 @@ class PictureXAdapter(
     var isEncoding = false
 
     private val path: String = PxEZApp.instance.cacheDir.toString() + "/" + data.id + ".gif"
+    private val zipPath: String = PxEZApp.instance.cacheDir.toString() + "/" + data.id + ".zip"
     private val path3: String = PxEZApp.instance.cacheDir.toString() + "/" + data.id + ".ojbk"
     private fun encodingGif(): Observable<Int>? {
 

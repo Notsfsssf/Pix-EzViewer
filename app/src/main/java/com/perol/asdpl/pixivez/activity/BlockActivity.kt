@@ -2,16 +2,17 @@ package com.perol.asdpl.pixivez.activity
 
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.fragments.BlockTagFragment
+import com.perol.asdpl.pixivez.objects.ThemeUtil
 import kotlinx.android.synthetic.main.activity_block.*
 
 
-class BlockActivity : AppCompatActivity() {
+class BlockActivity : RinkActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ThemeUtil.themeInit(this)
         setContentView(R.layout.activity_block)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
