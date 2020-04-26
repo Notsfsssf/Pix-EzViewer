@@ -564,7 +564,7 @@ class PictureXAdapter(
                         title(R.string.choice)
                         listItems(
                             items = arrayListOf(
-                                mContext.getString(R.string.encodegif),
+                                mContext.getString(R.string.encodinggif),
                                 mContext.getString(R.string.save_zip)
                             )
                         ) { dialog, index, text ->

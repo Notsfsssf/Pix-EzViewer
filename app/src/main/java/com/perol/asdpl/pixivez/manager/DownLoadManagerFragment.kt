@@ -1,9 +1,8 @@
 package com.perol.asdpl.pixivez.manager
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ProgressBar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -149,6 +148,30 @@ class DownLoadManagerFragment : Fragment() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_download_manager, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+            R.id.action_settings -> {
+                startActivity(Intent(requireActivity(), ManagerSettingsActivity::class.java))
+            }
+            R.id.action_resume -> {
+                Aria.download(this).resumeAllTask()
+            }
+            R.id.action_cancel -> {
+                Aria.download(this).removeAllTask(false);
+            }
+
+        }
+        val taskList = Aria.download(this).taskList
+        if (taskList?.isNotEmpty() == true)
+            downloadTaskAdapter.setNewData(taskList.asReversed())
+        return true
+    }
+
     @Download.onTaskPre
     fun onTaskPre(task: DownloadTask) {
         refreshSingle(task)
@@ -225,6 +248,7 @@ class DownLoadManagerFragment : Fragment() {
             adapter = downloadTaskAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
+        setHasOptionsMenu(true)
         return binding.root
     }
 
