@@ -266,6 +266,7 @@
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
     <string name="choice_date">Choice Date</string>
+    <string name="hide_bookmarked">隐藏已收藏圖像</string>
     <string name="create_painter_folder">為每個繪師單獨建立資料夾</string>
     <string name="create_separate_folder">create separate folder</string>
     <string name="refresh_token">重新載入 token</string>

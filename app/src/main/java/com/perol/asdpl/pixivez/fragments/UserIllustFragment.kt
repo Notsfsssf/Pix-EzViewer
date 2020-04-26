@@ -27,6 +27,7 @@ package com.perol.asdpl.pixivez.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -34,6 +35,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.perol.asdpl.pixivez.R
+import com.perol.asdpl.pixivez.activity.UserMActivity
 import com.perol.asdpl.pixivez.adapters.RecommendAdapter
 import com.perol.asdpl.pixivez.objects.AdapterRefreshEvent
 import com.perol.asdpl.pixivez.objects.BaseFragment
@@ -81,6 +83,7 @@ class UserIllustFragment : BaseFragment() {
         mrecyclerview.layoutManager =
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         mrecyclerview.adapter = recommendAdapter
+        recommendAdapter.hideBookmarked = viewactivity.viewModel.hideBookmarked.value!!
     }
 
     // TODO: Rename and change types of parameters
@@ -102,6 +105,7 @@ class UserIllustFragment : BaseFragment() {
                 recommendAdapter.loadMoreComplete()
             }
         })
+        viewactivity = activity as UserMActivity
         viewmodel.data.observe(this, Observer {
             if (it != null) {
                 mrefreshlayout.isRefreshing = false
@@ -123,7 +127,7 @@ class UserIllustFragment : BaseFragment() {
     }
 
     lateinit var viewmodel: UserMillustViewModel
-
+    lateinit var viewactivity: UserMActivity
 
     lateinit var recommendAdapter: RecommendAdapter
     override fun onCreateView(

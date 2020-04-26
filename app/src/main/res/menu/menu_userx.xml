@@ -7,9 +7,14 @@
     <item
         android:id="@+id/action_share"
         android:icon="@drawable/ic_action_share"
-        app:iconTint="?android:textColorPrimaryInverse"
         android:title="share"
+        app:iconTint="?android:textColorPrimaryInverse"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_hideBookmarked"
+        android:checkable="true"
+        android:title="@string/hide_bookmarked"
+        app:showAsAction="collapseActionView" />
     <item
         android:id="@+id/action_download"
         android:title="Σ( ° △ °|||)︴"

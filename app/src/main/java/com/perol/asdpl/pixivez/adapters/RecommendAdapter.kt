@@ -62,7 +62,8 @@ class RecommendAdapter(
     layoutResId: Int,
     data: List<Illust>?,
     private val R18on: Boolean,
-    var blockTags: List<String>
+    var blockTags: List<String>,
+    var hideBookmarked: Boolean = false
 ) :
     BaseQuickAdapter<Illust, BaseViewHolder>(layoutResId, data?.toMutableList()), LoadMoreModule {
 
@@ -131,7 +132,14 @@ class RecommendAdapter(
                 break
             }
         }
-
+        if (hideBookmarked && item.is_bookmarked){
+            helper.itemView.visibility = View.GONE
+            helper.itemView.layoutParams.apply {
+                height = 0
+                width = 0
+            }
+            return
+        }
         if (blockTags.isNotEmpty() && tags.isNotEmpty() && needBlock) {
             helper.itemView.visibility = View.GONE
             helper.itemView.layoutParams.apply {

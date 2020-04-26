@@ -39,7 +39,11 @@ class UserMPagerAdapter(
     var newInstance: Fragment
 ) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-
+    override fun getItemPosition(`object`: Any): Int {
+        return if (`object`.javaClass.name == "com.perol.asdpl.pixivez.fragments.UserIllustFragment") {
+            FragmentStatePagerAdapter.POSITION_NONE
+        } else super.getItemPosition(`object`)
+    }
 /*    override fun getItemCount() = 4
 
     override fun createFragment(position: Int) = when (position) {
