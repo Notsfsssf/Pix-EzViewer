@@ -117,9 +117,10 @@ object Works {
         val targetFile = File(path, filename)
         try {
             file.copyTo(targetFile, overwrite = true)
+            file.delete()
             Toasty.success(
                 PxEZApp.instance,
-                PxEZApp.instance.resources.getString(R.string.savesuccess),
+                PxEZApp.instance.resources.getString(R.string.savesuccess)+"!",
                 Toast.LENGTH_SHORT
             ).show()
             MediaScannerConnection.scanFile(
@@ -134,7 +135,6 @@ object Works {
         } catch (e: Exception) {
 
         }
-
     }
 
     fun imageDownloadAll(illust: Illust) {
