@@ -78,6 +78,7 @@ class PxEZApp : Application() {
             ) { _, _ ->
 
             }
+            sourceFile.delete()
             Toasty.success(this, "${title}${getString(R.string.savesuccess)}", Toast.LENGTH_SHORT)
                 .show()
         }
