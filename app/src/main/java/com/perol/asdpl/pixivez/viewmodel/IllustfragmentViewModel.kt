@@ -48,6 +48,7 @@ class IllustfragmentViewModel : BaseViewModel() {
     var nexturl = MutableLiveData<String>()
     var bookmarkid = MutableLiveData<Long>()
     var isRefresh = MutableLiveData<Boolean>(false)
+    var hideBookmarked = MutableLiveData<Boolean>(false)
     val sort = MutableLiveData<String>(sortT[0])
     val searchTarget = MutableLiveData<String>(search_targetT[0])
     val startDate = MutableLiveData<Calendar>()

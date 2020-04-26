@@ -109,6 +109,13 @@ class SearchSectionDialog : DialogFragment() {
             isChecked = viewModel.endDate.value != null && viewModel.startDate.value != null
 
         }
+        val toggleShow= view.findViewById<ToggleButton>(R.id.toggleShow).apply {
+            setOnCheckedChangeListener { buttonView, isChecked ->
+                viewModel.hideBookmarked.value = isChecked
+            }
+            isChecked = viewModel.hideBookmarked.value == true
+
+        }
         val button = view.findViewById<Button>(R.id.pick_button).apply {
             var calendar = Calendar.getInstance()
             if (viewModel.endDate.value != null) {
