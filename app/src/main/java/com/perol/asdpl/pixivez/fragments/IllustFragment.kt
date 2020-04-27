@@ -92,13 +92,13 @@ class IllustFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                         Toasty.error(PxEZApp.instance, "not premium!").show()
                         viewModel.setPreview(param1!!, sort[position], null, null)
                     } else {
-                        viewModel.sort.value = sort[position]
+                        viewModel.sort.value = position
                         viewModel.firstSetData(param1!!)
                     }
 
                 }
             } else {
-                viewModel.sort.value = sort[position]
+                viewModel.sort.value = position
                 viewModel.firstSetData(param1!!)
             }
         }
