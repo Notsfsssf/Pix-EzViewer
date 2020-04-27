@@ -92,13 +92,13 @@ class IllustFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
                         Toasty.error(PxEZApp.instance, "not premium!").show()
                         viewModel.setPreview(param1!!, sort[position], null, null)
                     } else {
-                        viewModel.sort.value = sort[position]
+                        viewModel.sort.value = position
                         viewModel.firstSetData(param1!!)
                     }
 
                 }
             } else {
-                viewModel.sort.value = sort[position]
+                viewModel.sort.value = position
                 viewModel.firstSetData(param1!!)
             }
         }
@@ -207,14 +207,14 @@ class IllustFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         }*/
         requireActivity().findViewById<TabLayout>(R.id.tablayout_searchresult)?.getTabAt(0)
             ?.view?.setOnClickListener {
-            if ((System.currentTimeMillis() - exitTime) > 3000) {
+                if ((System.currentTimeMillis() - exitTime) > 3000) {
 
-                exitTime = System.currentTimeMillis()
-            } else {
-                recyclerview_illust.smoothScrollToPosition(0)
+                    exitTime = System.currentTimeMillis()
+                } else {
+                    recyclerview_illust.smoothScrollToPosition(0)
+                }
+
             }
-
-        }
     }
 
     private val starnum = intArrayOf(50000, 30000, 20000, 10000, 5000, 1000, 500, 250, 100, 0)
@@ -275,7 +275,11 @@ class IllustFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         viewModel.isRefresh.observe(this, Observer {
             swiperefresh.isRefreshing = it
         })
-
+        viewModel.hideBookmarked.observe(this, Observer {
+            if (it != null) {
+                searchIllustAdapter.hideBookmarked = it
+            }
+        })
     }
 
     private fun addIllust(it: java.util.ArrayList<Illust>) {

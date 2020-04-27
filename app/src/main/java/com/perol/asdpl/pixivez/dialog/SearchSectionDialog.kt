@@ -50,9 +50,7 @@ class SearchSectionDialog : DialogFragment() {
     val tms = Calendar.getInstance()
     val thisMonth01 = "${tms.get(Calendar.YEAR)}-${tms.get(Calendar.MONTH) + 1}-01"
     val halfYear01 = "${tms.get(Calendar.YEAR)}-${tms.get(Calendar.MONTH) + 1}-01"
-    var sort = arrayOf("date_desc", "date_asc", "popular_desc")
-    var search_target =
-        arrayOf("partial_match_for_tags", "exact_match_for_tags", "title_and_caption")
+
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val word = arguments?.getString("word", "")
@@ -64,8 +62,10 @@ class SearchSectionDialog : DialogFragment() {
         )
         val viewModel =
             ViewModelProviders.of(requireParentFragment()).get(IllustfragmentViewModel::class.java)
+        var searchTargeti = viewModel.searchTarget.value
         val first = view.findViewById<TabLayout>(R.id.tablayout_search_target).apply {
             clearOnTabSelectedListeners()
+            searchTargeti?.let { getTabAt(it)?.select() }
             addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabReselected(tab: TabLayout.Tab?) {
 
@@ -76,13 +76,15 @@ class SearchSectionDialog : DialogFragment() {
                 }
 
                 override fun onTabSelected(tab: TabLayout.Tab) {
-                    viewModel.searchTarget.value = search_target[tab.position]
+                    searchTargeti = tab.position
                 }
             })
         }
+        var sorti = viewModel.sort.value
         val second = view.findViewById<TabLayout>(R.id.tablayout_sort)
             .apply {
                 clearOnTabSelectedListeners()
+                sorti?.let { getTabAt(it)?.select() }
                 addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                     override fun onTabReselected(tab: TabLayout.Tab?) {
 
@@ -93,7 +95,7 @@ class SearchSectionDialog : DialogFragment() {
                     }
 
                     override fun onTabSelected(tab: TabLayout.Tab) {
-                        viewModel.sort.value = sort[tab.position]
+                        sorti = tab.position
                     }
                 })
             }
@@ -108,6 +110,13 @@ class SearchSectionDialog : DialogFragment() {
             }
             isChecked = viewModel.endDate.value != null && viewModel.startDate.value != null
 
+        }
+        var hideBookmarked = viewModel.hideBookmarked.value
+        val toggleShow= view.findViewById<ToggleButton>(R.id.toggleShow).apply {
+            isChecked = hideBookmarked == true
+            setOnCheckedChangeListener { buttonView, isChecked ->
+                hideBookmarked = isChecked
+            }
         }
         val button = view.findViewById<Button>(R.id.pick_button).apply {
             var calendar = Calendar.getInstance()
@@ -173,6 +182,9 @@ class SearchSectionDialog : DialogFragment() {
 
         }
         builder.setPositiveButton(android.R.string.ok) { p0, p1 ->
+            viewModel.hideBookmarked.value = hideBookmarked
+            viewModel.sort.value = sorti
+            viewModel.searchTarget.value = searchTargeti
             if (word != null)
                 viewModel.firstSetData(word)
         }

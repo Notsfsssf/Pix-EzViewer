@@ -39,7 +39,7 @@ fun Calendar?.generateDateString(): String? {
 
 class IllustfragmentViewModel : BaseViewModel() {
     var sortT = arrayOf("date_desc", "date_asc", "popular_desc")
-    var search_targetT =
+    var searchTargetT =
         arrayOf("partial_match_for_tags", "exact_match_for_tags", "title_and_caption")
 
     var illusts = MutableLiveData<ArrayList<Illust>>()
@@ -48,8 +48,9 @@ class IllustfragmentViewModel : BaseViewModel() {
     var nexturl = MutableLiveData<String>()
     var bookmarkid = MutableLiveData<Long>()
     var isRefresh = MutableLiveData<Boolean>(false)
-    val sort = MutableLiveData<String>(sortT[0])
-    val searchTarget = MutableLiveData<String>(search_targetT[0])
+    var hideBookmarked = MutableLiveData<Boolean>(false)
+    val sort = MutableLiveData<Int>(0)
+    val searchTarget = MutableLiveData<Int>(0)
     val startDate = MutableLiveData<Calendar>()
     val endDate = MutableLiveData<Calendar>()
     fun setPreview(word: String, sort: String, search_target: String?, duration: String?) {
@@ -74,8 +75,8 @@ class IllustfragmentViewModel : BaseViewModel() {
 
         retrofitRespository.getSearchIllust(
             word,
-            sort.value!!,
-            searchTarget.value!!,
+            sortT[sort.value!!],
+            searchTargetT[searchTarget.value!!],
             startDate.value.generateDateString(),
             endDate.value.generateDateString(),
             null

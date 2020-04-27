@@ -251,6 +251,7 @@
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
     <string name="choice_date">Choice Date</string>
+    <string name="hide_bookmarked">Hide Bookmarked Pic</string>
     <string name="create_painter_folder">Create a separate folder for each painter</string>
     <string name="create_separate_folder">create separate folder</string>
     <string name="refresh_token">refresh token</string>
