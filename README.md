@@ -11,7 +11,7 @@
 
 |来源|说明|
 |:---:|:---:|
-|[Google Play](https://play.google.com/store/apps/details?id=com.perol.asdpl.play.pixivez)|**★推荐!** 点这个，从 Google Play 上下载<br />需要已配置好 Play 全家桶，更新方便<br />已重新上架|
+|[Google Play](https://play.google.com/store/apps/details?id=com.perol.asdpl.play.pixivez)|~~**★推荐!** 点这个，从 Google Play 上下载<br />需要已配置好 Play 全家桶，更新方便~~<br />已下架|
 |[GitHub Release](https://github.com/Notsfsssf/Pix-EzViewer/releases)|点这个，在 GitHub Release 页面下载完整 APK<br />适用于没有 Play / 分享给他人时|
 
 Java 端通过修改 `OkHttp` 的 `SSLSocket` 实现绕过 SNI 审查（即旁路阻断）直连 Pixiv 的功能
