@@ -31,8 +31,6 @@ import android.content.Intent
 import android.content.pm.ResolveInfo
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.graphics.drawable.AnimationDrawable
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.media.MediaScannerConnection
 import android.os.Build
@@ -45,10 +43,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.MimeTypeMap
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
@@ -58,12 +53,9 @@ import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.afollestad.materialdialogs.list.listItems
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.DrawableImageViewTarget
 import com.bumptech.glide.request.target.Target
-import com.bumptech.glide.request.transition.Transition
 import com.dinuscxj.progressbar.CircleProgressBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.perol.asdpl.pixivez.R
@@ -73,6 +65,7 @@ import com.perol.asdpl.pixivez.activity.UserMActivity
 import com.perol.asdpl.pixivez.activity.ZoomActivity
 import com.perol.asdpl.pixivez.databinding.ViewPicturexDetailBinding
 import com.perol.asdpl.pixivez.objects.AdapterRefreshEvent
+import com.perol.asdpl.pixivez.objects.AnimationView
 import com.perol.asdpl.pixivez.objects.TToast
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.responses.Illust
@@ -92,6 +85,8 @@ import com.zhy.view.flowlayout.TagFlowLayout
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.view_picturex_surface_gif.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -100,7 +95,7 @@ import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
-//我写的是个啥
+
 class PictureXAdapter(
     private val pictureXViewModel: PictureXViewModel,
     private val data: Illust,
@@ -156,6 +151,11 @@ class PictureXAdapter(
     }
 
     class GifViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    }
+
+    class SurfaceGifViewHolder(override val containerView: View) :
+        RecyclerView.ViewHolder(containerView), LayoutContainer {
+
     }
 
     class FisrtDetailViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -356,8 +356,8 @@ class PictureXAdapter(
             }
             ITEM_TYPE.ITEM_TYPE_GIF.ordinal -> {
                 val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.view_picturex_gif, parent, false)
-                return GifViewHolder(view)
+                    .inflate(R.layout.view_picturex_surface_gif, parent, false)
+                return SurfaceGifViewHolder(view)
             }
             ITEM_TYPE.ITEM_TYPE_BLANK.ordinal -> {
                 val view = LayoutInflater.from(parent.context)
@@ -554,10 +554,28 @@ class PictureXAdapter(
                 }
             }
 //            (mContext as FragmentActivity).supportStartPostponedEnterTransition()
-        } else if (holder is GifViewHolder) {
+        } else if (holder is SurfaceGifViewHolder) {
             progressBar = holder.itemView.findViewById<CircleProgressBar>(R.id.progressbar_gif)
             val play = holder.itemView.findViewById<ImageView>(R.id.imageview_play)
-            imageViewGif = holder.itemView.findViewById(R.id.imageview_gif)
+
+            imageViewGif = holder.itemView.imageview_gif
+            val s = (data.height.toFloat() / data.width.toFloat())
+            holder.itemView.post {
+                val finalHeight = s * holder.itemView.width.toFloat()
+                holder.itemView.container.apply {
+                    layoutParams = layoutParams.apply {
+                        width = FrameLayout.LayoutParams.MATCH_PARENT
+                        height = finalHeight.toInt()
+                    }
+                }
+                imageViewGif!!.layoutParams = imageViewGif!!.layoutParams.apply {
+                    width = FrameLayout.LayoutParams.MATCH_PARENT
+                    height = finalHeight.toInt()
+                }
+            }
+            GlideApp.with(holder.itemView).asBitmap().load(data.image_urls.medium)
+                .into(holder.itemView.preview)
+            previewImageView = holder.itemView.preview
             imageViewGif!!.setOnLongClickListener {
                 if (progressBar?.visibility != View.VISIBLE) {
                     MaterialDialog(mContext).show {
@@ -660,13 +678,6 @@ class PictureXAdapter(
                             }
                         }
                     }
-                    /*          Snackbar.make(
-                                  imageViewGif!!,
-                                  mContext.getString(R.string.encodegif),
-                                  Snackbar.LENGTH_LONG
-                              ).setAction(android.R.string.ok) { view ->
-
-                              }.show()*/
                 }
                 true
             }
@@ -685,18 +696,7 @@ class PictureXAdapter(
                     play.visibility = View.VISIBLE
                 }, {})
             }
-            GlideApp.with(imageViewGif!!).load(data.image_urls.medium).placeholder(R.color.white)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(object : DrawableImageViewTarget(imageViewGif) {
 
-                    override fun onResourceReady(
-                        resource: Drawable,
-                        transition: Transition<in Drawable>?
-                    ) {
-                        super.onResourceReady(resource, transition)
-                        mListen.invoke()
-                    }
-                })
         } else if (holder is DetailViewHolder) {
 
             holder.updateWithPage(mContext, data, mViewCommentListen, mUserPicLongClick)
@@ -759,7 +759,7 @@ class PictureXAdapter(
     var size = 1
     var duration: Int = 50
     var progressBar: CircleProgressBar? = null
-    var imageViewGif: ImageView? = null
+    var imageViewGif: AnimationView? = null
     val aboutPictureAdapter = AboutPictureAdapter(R.layout.view_aboutpic_item)
     fun setRelativeNow(it: ArrayList<Illust>) {
         if (it.isEmpty()) {
@@ -799,32 +799,25 @@ class PictureXAdapter(
 
     }
 
-    var animationDrawable: AnimationDrawable? = null
-    private fun createAnimationFrame(illustBean: Illust, imageView: ImageView, duration: Int) {
-        if (animationDrawable == null)
-            animationDrawable = AnimationDrawable()
-        val parentPath = PxEZApp.instance.cacheDir.path + "/" + illustBean.id
-        val parentFile = File(parentPath)
-        val listFiles = parentFile.listFiles()
-        listFiles.sortWith(Comparator { o1, o2 -> o1.name.compareTo(o2.name) })
-
-        runBlocking {
-            withContext(Dispatchers.IO) {
-                for (i in listFiles) {
-                    val bitmap = GlideApp.with(imageView).asBitmap().load(i).skipMemoryCache(true)
-                        .submit(illustBean.width, illustBean.height).get()
-                    val drawable = BitmapDrawable(imageView.context.resources, bitmap)
-                    animationDrawable!!.addFrame(drawable, duration)
-                }
-                animationDrawable!!.isOneShot = false
-            }
-            imageView.setImageDrawable(animationDrawable)
-            animationDrawable!!.start()
-        }
-    }
-
+    var previewImageView: ImageView? = null
     fun setProgressComplete(it: Boolean) {
         progressBar?.visibility = View.GONE
-        createAnimationFrame(data, imageViewGif!!, duration)
+        previewImageView?.visibility = View.GONE
+        val parentPath = PxEZApp.instance.cacheDir.path + "/" + data.id
+        val parentFile = File(parentPath)
+        val listFiles = parentFile.listFiles()!!
+        listFiles.sortWith(Comparator { o1, o2 -> o1.name.compareTo(o2.name) })
+        val result = listFiles.map {
+            it.path
+        }
+        imageViewGif?.onStartListener {
+
+        }
+        imageViewGif?.onEndListener {
+
+        }
+
+        imageViewGif?.delayTime = duration.toLong()
+        imageViewGif?.startAnimation(result)
     }
 }

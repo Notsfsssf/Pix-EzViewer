@@ -26,7 +26,6 @@ package com.perol.asdpl.pixivez.fragments
 
 
 import TagsBookMarkDialog
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -36,7 +35,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.perol.asdpl.pixivez.R
@@ -88,16 +86,17 @@ class PictureXFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        pictureXAdapter?.animationDrawable?.start()
+        pictureXAdapter?.imageViewGif?.startPlay()
     }
 
     override fun onPause() {
-        pictureXAdapter?.animationDrawable?.stop()
+        pictureXAdapter?.imageViewGif?.pausePlay()
         super.onPause()
 
     }
 
     private var pictureXAdapter: PictureXAdapter? = null
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: AdapterRefreshEvent) {
         runBlocking {
@@ -114,6 +113,7 @@ class PictureXFragment : BaseFragment() {
             }
         }
     }
+
     private fun initViewModel() {
 
         pictureXViewModel = ViewModelProvider(this).get(PictureXViewModel::class.java)
@@ -197,8 +197,8 @@ class PictureXFragment : BaseFragment() {
             }
         })
         pictureXViewModel.downloadGifSuccess.observe(this, Observer {
-            if (pictureXAdapter != null)
-                pictureXAdapter?.setProgressComplete(it)
+
+            pictureXAdapter?.setProgressComplete(it)
         })
 
 
@@ -226,7 +226,7 @@ class PictureXFragment : BaseFragment() {
         imageButton.setOnClickListener {
             recyclerview.scrollToPosition(position)
         }
-        val linearLayoutManager = LinearLayoutManager(activity!!)
+        val linearLayoutManager = LinearLayoutManager(requireActivity())
         recyclerview.layoutManager = linearLayoutManager
         recyclerview.setHasFixedSize(true)
         recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {

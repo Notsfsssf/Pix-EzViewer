@@ -110,6 +110,18 @@ class DownloadTaskAdapter() :
     }
 
     val objectMapper = ObjectMapper().registerKotlinModule()
+    override fun convert(helper: BaseViewHolder, item: DownloadEntity, payloads: List<Any>) {
+        val dataPayload = payloads
+        val binding = helper.getBinding<ItemDownloadTaskBinding>()!!
+        if (dataPayload.isNotEmpty()) {
+            val thatItem = dataPayload[0] as DownloadEntity
+            val progress = helper.getView<ProgressBar>(R.id.progress)
+            progress.max = thatItem.fileSize.toInt()
+            progress.progress = thatItem.currentProgress.toInt()
+            binding.progressFont.text =
+                "${thatItem.currentProgress.toInt()}/${thatItem.fileSize.toInt()}"
+        }
+    }
     override fun convert(helper: BaseViewHolder, item: DownloadEntity) {
         val binding = helper.getBinding<ItemDownloadTaskBinding>()!!
         val progress = helper.getView<ProgressBar>(R.id.progress)
@@ -143,7 +155,9 @@ class DownLoadManagerFragment : Fragment() {
             }
 
             if (index != -1) {
-                downloadTaskAdapter.setData(index, it.entity)
+                downloadTaskAdapter.data[index] = it.entity
+                downloadTaskAdapter.notifyItemChanged(index, it.entity)
+
             }
         }
     }
@@ -172,6 +186,10 @@ class DownLoadManagerFragment : Fragment() {
         return true
     }
 
+    @Download.onPre
+    fun onPre(task: DownloadTask) {
+        refreshSingle(task)
+    }
     @Download.onTaskPre
     fun onTaskPre(task: DownloadTask) {
         refreshSingle(task)
@@ -219,6 +237,10 @@ class DownLoadManagerFragment : Fragment() {
         refreshSingle(task)
     }
 
+    @Download.onWait
+    fun onWait(task: DownloadTask) {
+        refreshSingle(task)
+    }
     @Download.onTaskFail
     fun onTaskFail(task: DownloadTask) {
         refreshSingle(task)

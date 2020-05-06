@@ -27,12 +27,12 @@ package com.perol.asdpl.pixivez.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.UserMActivity
@@ -68,6 +68,7 @@ class UserIllustFragment : BaseFragment() {
             blockTags = allTags.map {
                 it.name
             }
+            recommendAdapter.hideBookmarked = viewactivity.viewModel.hideBookmarked.value!!
             recommendAdapter.blockTags = blockTags
             recommendAdapter.notifyDataSetChanged()
         }
@@ -83,10 +84,10 @@ class UserIllustFragment : BaseFragment() {
         mrecyclerview.layoutManager =
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         mrecyclerview.adapter = recommendAdapter
-        recommendAdapter.hideBookmarked = viewactivity.viewModel.hideBookmarked.value!!
+
+
     }
 
-    // TODO: Rename and change types of parameters
     private var param1: Long? = null
     private var param2: String? = null
 
@@ -135,7 +136,14 @@ class UserIllustFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        recommendAdapter = RecommendAdapter(R.layout.view_recommand_item, null, isR18on, blockTags)
+        recommendAdapter = RecommendAdapter(
+            R.layout.view_recommand_item,
+            null,
+            isR18on,
+            blockTags,
+            PreferenceManager.getDefaultSharedPreferences(requireActivity())
+                .getBoolean(UserMActivity.HIDE_BOOKMARK_ITEM, false)
+        )
 
         return inflater.inflate(R.layout.fragment_user_illust, container, false)
     }

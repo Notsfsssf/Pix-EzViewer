@@ -40,7 +40,7 @@ class UserMViewModel : BaseViewModel() {
     var retrofitRespository = RetrofitRepository.getInstance()
     var userDetail = MutableLiveData<UserDetailResponse>()
     var isfollow = MutableLiveData<Boolean>()
-    var hideBookmarked = MutableLiveData<Boolean>(false)
+    var hideBookmarked = MutableLiveData(false)
 
     fun getData(userid: Long) {
         retrofitRespository.getUserDetail(userid).subscribe({

@@ -42,11 +42,13 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.preference.PreferenceManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.viewpager.UserMPagerAdapter
 import com.perol.asdpl.pixivez.databinding.ActivityUserMBinding
 import com.perol.asdpl.pixivez.fragments.UserMessageFragment
+import com.perol.asdpl.pixivez.objects.AdapterRefreshEvent
 import com.perol.asdpl.pixivez.objects.ThemeUtil
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.perol.asdpl.pixivez.services.GlideApp
@@ -57,16 +59,19 @@ import kotlinx.android.synthetic.main.activity_user_m.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import org.greenrobot.eventbus.EventBus
 import java.io.File
 
 class UserMActivity : RinkActivity() {
     companion object {
+        const val HIDE_BOOKMARK_ITEM = "hide_bookmark_item"
         fun start(context: Context, id: Long) {
             val intent = Intent(context, UserMActivity::class.java)
             intent.putExtra("data", id)
             context.startActivity(intent)
         }
     }
+
     var id: Long = 0
     private val SELECT_IMAGE = 2
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -75,7 +80,7 @@ class UserMActivity : RinkActivity() {
             val selectedImage = data.data;
             val filePathColumns = arrayOf(MediaStore.Images.Media.DATA);
             val c = contentResolver.query(selectedImage!!, filePathColumns, null, null, null);
-            c!!.moveToFirst();
+            c!!.moveToFirst()
             val columnIndex = c.getColumnIndex(filePathColumns[0]);
             val imagePath = c.getString(columnIndex);
             Toasty.info(this, "Uploading", Toast.LENGTH_SHORT).show()
@@ -133,15 +138,6 @@ class UserMActivity : RinkActivity() {
                     id, UserMessageFragment.newInstance(it)
                 )
                 mtablayout.setupWithViewPager(mviewpager)
-                /*            TabLayoutMediator(mtablayout, mviewpager) { tab, position ->
-                                tab.text = when (position) {
-                                    0 -> getString(R.string.illust)
-                                    1 -> getString(R.string.manga)
-                                    2 -> getString(R.string.bookmark)
-                                    else -> getString(R.string.abouts)
-                                }
-                                mviewpager.setCurrentItem(tab.position, true)
-                            }.attach()*/
             }
         })
         viewModel.isfollow.observe(this, Observer {
@@ -230,6 +226,9 @@ class UserMActivity : RinkActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_userx, menu)
+        menu.getItem(1).isChecked = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
+            HIDE_BOOKMARK_ITEM, false
+        )
         return true
     }
 
@@ -238,9 +237,12 @@ class UserMActivity : RinkActivity() {
             android.R.id.home -> finishAfterTransition()
             R.id.action_share -> share()
             R.id.action_hideBookmarked -> {
-                viewModel.hideBookmarked.value = !viewModel.hideBookmarked.value!!
+                viewModel.hideBookmarked.value = !item.isChecked
                 item.isChecked = !item.isChecked
-                mviewpager.adapter?.notifyDataSetChanged()
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(
+                    HIDE_BOOKMARK_ITEM, item.isChecked
+                ).apply()
+                EventBus.getDefault().post(AdapterRefreshEvent())
             }
             R.id.action_download -> {
 //                val intent =Intent(this,WorkActivity::class.java)

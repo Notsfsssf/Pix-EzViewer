@@ -25,6 +25,11 @@
             app:title="LuckXuemo"
             android:summary="💻" />
         <Preference
+            android:summary="💻"
+            app:icon="@drawable/ultranity"
+            app:key="ultranity"
+            app:title="ultranity" />
+        <Preference
             app:key="hunterx9"
             app:icon="@drawable/hunterx9"
             app:title="hunterx9"

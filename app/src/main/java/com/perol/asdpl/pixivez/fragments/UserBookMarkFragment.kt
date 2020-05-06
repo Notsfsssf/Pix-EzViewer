@@ -33,13 +33,16 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.perol.asdpl.pixivez.R
+import com.perol.asdpl.pixivez.activity.UserMActivity
 import com.perol.asdpl.pixivez.adapters.RecommendAdapter
 import com.perol.asdpl.pixivez.dialog.TagsShowDialog
 import com.perol.asdpl.pixivez.objects.AdapterRefreshEvent
 import com.perol.asdpl.pixivez.objects.BaseFragment
+import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.viewmodel.UserBookMarkViewModel
 import kotlinx.android.synthetic.main.fragment_user_book_mark.*
 import kotlinx.coroutines.runBlocking
@@ -83,8 +86,12 @@ class UserBookMarkFragment : BaseFragment(), TagsShowDialog.Callback {
             R.layout.view_recommand_item,
             null,
             isR18on,
-            blockTags
+            blockTags,
+            PreferenceManager.getDefaultSharedPreferences(requireActivity())
+                .getBoolean(UserMActivity.HIDE_BOOKMARK_ITEM, false)
         )
+
+
         mrecyclerview.layoutManager =
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         mrecyclerview.adapter = recommendAdapter
@@ -149,7 +156,6 @@ class UserBookMarkFragment : BaseFragment(), TagsShowDialog.Callback {
 
     var first = true
 
-    // TODO: Rename and change types of parameters
     private var param1: Long? = null
     private var param2: String? = null
 
@@ -197,6 +203,10 @@ class UserBookMarkFragment : BaseFragment(), TagsShowDialog.Callback {
             blockTags = allTags.map {
                 it.name
             }
+            val id = AppDataRepository.getUser().userid
+            if (param1 != id)
+                recommendAdapter.hideBookmarked =
+                    (requireActivity() as UserMActivity).viewModel.hideBookmarked.value!!
             recommendAdapter.blockTags = blockTags
             recommendAdapter.notifyDataSetChanged()
         }
