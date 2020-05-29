@@ -53,7 +53,7 @@ class IllustfragmentViewModel : BaseViewModel() {
     var isRefresh = MutableLiveData<Boolean>(false)
     var hideBookmarked = MutableLiveData<Boolean>(
         PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance)
-            .getBoolean(UserMActivity.HIDE_BOOKMARK_ITEM, false)
+            .getBoolean(UserMActivity.HIDE_BOOKMARK_ITEM_IN_SEARCH, false)
     )
     val sort = MutableLiveData<Int>(0)
     val searchTarget = MutableLiveData<Int>(0)

@@ -65,6 +65,7 @@ import java.io.File
 class UserMActivity : RinkActivity() {
     companion object {
         const val HIDE_BOOKMARK_ITEM = "hide_bookmark_item"
+        const val HIDE_BOOKMARK_ITEM_IN_SEARCH = "hide_bookmark_item_in_search"
         fun start(context: Context, id: Long) {
             val intent = Intent(context, UserMActivity::class.java)
             intent.putExtra("data", id)

@@ -255,7 +255,7 @@ class IllustFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         viewModel.hideBookmarked.observe(this, Observer {
             if (it != null) {
                 PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance).edit().putBoolean(
-                    UserMActivity.HIDE_BOOKMARK_ITEM, it
+                    UserMActivity.HIDE_BOOKMARK_ITEM_IN_SEARCH, it
                 ).apply()
                 searchIllustAdapter.hideBookmarked = it
             }
