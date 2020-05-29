@@ -40,7 +40,9 @@ import com.perol.asdpl.pixivez.responses.Illust
 import java.io.File
 
 fun String.toLegal(): String {
-    return this.replace("/", "").replace("\\", "").replace(":", "")
+    return this.replace("/", "／").replace("\\", "＼").replace(":", "꞉")
+                .replace("*", "∗").replace("?", "？").replace("|", "ǀ")
+                .replace("\"", "\'\'").replace("<", "＜").replace(">", "＞")
 }
 
 @JsonIgnoreProperties(ignoreUnknown = true)
