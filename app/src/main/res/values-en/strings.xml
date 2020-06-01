@@ -266,6 +266,7 @@
     <string name="task_setting">Task Setting</string>
     <string name="all_resume">Resume All</string>
     <string name="all_cancel">Clear queue</string>
+    <string name="finished_cancel">Remove finished</string>
     <string name="save_zip">save zip</string>
     <string name="already_going_on">It\'s already going on</string>
     <string name="save_zip_success">save zip success</string>

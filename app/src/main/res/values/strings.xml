@@ -308,6 +308,7 @@
     <string name="task_setting">任务设置</string>
     <string name="all_resume">全部恢复</string>
     <string name="all_cancel">清空列队</string>
+    <string name="finished_cancel">移除已完成任务</string>
     <string name="save_zip">保存zip</string>
     <string name="already_going_on">已在进行</string>
     <string name="save_zip_success">保存zip成功</string>

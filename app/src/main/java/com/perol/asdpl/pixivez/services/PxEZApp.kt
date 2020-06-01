@@ -105,7 +105,31 @@ class PxEZApp : Application() {
                 isNotNetRetry = true
             }
         }
-        Aria.download(this).removeAllTask(true)
+
+        //Aria.download(this).removeAllTask(true)
+        Aria.download(this).allCompleteTask?.forEach {
+            Aria.download(this).load(it.id).cancel(true)
+        }
+        /*Aria.download(this).allNotCompleteTask?.forEach {
+            Aria.download(this).load(it.id).resume()
+        }*/
+        /*Aria.download(this).taskList?.forEach {
+            if(it.isComplete)
+                Aria.download(this).load(it.id).cancel()
+            else
+            {
+                Aria.download(this).load(it.id).cancel(true)
+                val illustD = objectMapper.readValue(it.str, IllustD::class.java)
+                Aria.download(PxEZApp.instance)
+                    .load(it.url) //读取下载地址
+                    .setFilePath(it.filePath) //设置文件保存的完整路径
+                    .ignoreFilePathOccupy()
+                    .setExtendField(Works.mapper.writeValueAsString(illustD))
+                    .option(Works.option)
+                    .create()
+            }
+        }*/
+
         instance = this
         AppCompatDelegate.setDefaultNightMode(
             pre.getString(
@@ -129,7 +153,8 @@ class PxEZApp : Application() {
             resources.configuration.locale.language
         }
         if (!BuildConfig.ISGOOGLEPLAY)
-            Bugly.init(this, "1a2d5c746f", BuildConfig.DEBUG)
+            Bugly.init(this, "5f21ff45b7", BuildConfig.DEBUG)
+
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
                 ActivityCollector.collect(activity)

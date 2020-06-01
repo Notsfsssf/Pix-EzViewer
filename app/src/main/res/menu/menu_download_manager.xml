@@ -13,6 +13,12 @@
         android:title="@string/all_resume"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_finished_cancel"
+        android:icon="@drawable/ic_action_share_setting"
+        android:title="@string/finished_cancel"
+        app:iconTint="?android:textColorPrimaryInverse"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_cancel"
         android:icon="@drawable/ic_action_share_setting"
         app:iconTint="?android:textColorPrimaryInverse"
