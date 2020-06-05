@@ -91,8 +91,8 @@ kapt {
 
 dependencies {
 
-    implementation 'com.arialyy.aria:core:3.8.6'
-    kapt 'com.arialyy.aria:compiler:3.8.6'
+    implementation 'com.arialyy.aria:core:3.8.7'
+    kapt 'com.arialyy.aria:compiler:3.8.7'
 
     implementation 'com.hyman:flowlayout-lib:1.1.2'
     implementation 'io.noties.markwon:core:4.1.2'
