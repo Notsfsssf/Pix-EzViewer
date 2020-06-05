@@ -1,7 +1,10 @@
 # PixEz 阅读器
 ![](https://github.com/Notsfsssf/Pix-EzViewer/raw/master/app/src/main/res/mipmap-xxhdpi/ic_launcherep.png)
 
-![当前版本](https://img.shields.io/github/v/release/Notsfsssf/Pix-EzViewer?label=%E5%BD%93%E5%89%8D%E7%89%88%E6%9C%AC) 
+![当前版本](https://img.shields.io/github/v/release/ultranity/Pix-EzViewer.svg)
+**!原作者[Notsfsssf](https://github.com/Notsfsssf)因学业及flutter android版PixEz开发原因停止维护，**
+**经商议，从 1.5.4W 版本开始将由[我](https://github.com/ultranity)接手继续维护[Pix-EzViewer](https://github.com/ultranity/Pix-EzViewer)**
+**目前建议优先通过本repo提交issue进行反馈**
 
 一个支持免代理直连及查看动图的第三方 Pixiv Android 客户端。
 
@@ -12,7 +15,7 @@
 |来源|说明|
 |:---:|:---:|
 |[Google Play](https://play.google.com/store/apps/details?id=com.perol.asdpl.play.pixivez)|~~**★推荐!** 点这个，从 Google Play 上下载<br />需要已配置好 Play 全家桶，更新方便~~<br />因bugly依赖已下架|
-|[GitHub Release](https://github.com/Notsfsssf/Pix-EzViewer/releases)|点这个，在 GitHub Release 页面下载完整 APK<br />适用于没有 Play / 分享给他人时|
+|[GitHub Release](https://github.com/ultranity/Pix-EzViewer/releases)|点这个，在 GitHub Release 页面下载完整 APK<br />适用于没有 Play / 分享给他人时|
 
 Java 端通过修改 `OkHttp` 的 `SSLSocket` 实现绕过 SNI 审查（即旁路阻断）直连 Pixiv 的功能
 
@@ -36,7 +39,7 @@ Java 端通过修改 `OkHttp` 的 `SSLSocket` 实现绕过 SNI 审查（即旁�
 
 对于普通用户，**如果在使用过程中有任何疑问，请先参考我们的 [常见问题](/help/README.md) 页进行快速自查。**
 
-如果你的问题不在上述页面范围内，你可以通过 Email (PxEzFeedBack@outlook.com) 或 [GitHub Issues](https://github.com/Notsfsssf/Pix-EzViewer/issues) 或 下面的聊天群 提交反馈。
+如果你的问题不在上述页面范围内，你可以通过 Email (PxEzFeedBack@outlook.com) 或 [GitHub Issues](https://github.com/ultranity/Pix-EzViewer/issues) 或 下面的聊天群 提交反馈。
 
 ![](https://img.shields.io/badge/PR-welcome-blue.svg)
 
