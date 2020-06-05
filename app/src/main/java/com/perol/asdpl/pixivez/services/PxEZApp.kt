@@ -113,8 +113,9 @@ class PxEZApp : Application() {
             Aria.download(this).allCompleteTask?.forEach {
                 Aria.download(this).load(it.id).cancel(true)
             }
-            if(pre.getBoolean("resume_unfinished_task",true)
-                && Aria.download(this).allNotCompleteTask.isNotEmpty())
+            if( pre.getBoolean("resume_unfinished_task",true)
+                //&& Aria.download(this).allNotCompleteTask?.isNotEmpty()
+            )
             {
                 //Toasty.normal(this, getString(R.string.unfinished_task_title), Toast.LENGTH_SHORT).show()
                 Aria.download(this).allNotCompleteTask?.forEach {
