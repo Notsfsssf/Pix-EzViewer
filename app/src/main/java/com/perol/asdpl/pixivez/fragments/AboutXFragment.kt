@@ -62,7 +62,7 @@ class AboutXFragment : PreferenceFragmentCompat() {
                 startActivity(intent)
             }
             "about_rate_github" -> {
-                val url = "https://github.com/Notsfsssf"
+                val url = "https://github.com/ultranity/Pix-EzViewer"
                 val uri = Uri.parse(url)
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                 startActivity(intent)

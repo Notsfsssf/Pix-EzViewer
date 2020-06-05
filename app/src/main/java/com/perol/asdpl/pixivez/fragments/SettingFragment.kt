@@ -239,6 +239,12 @@ class SettingFragment : PreferenceFragmentCompat() {
 
                 }
             }
+            "me0" -> {
+                        val url = "https://github.com/ultranity"
+                        val uri = Uri.parse(url)
+                        val intent = Intent(Intent.ACTION_VIEW, uri)
+                        startActivity(intent)
+            }
             "check" -> {
                 if (BuildConfig.ISGOOGLEPLAY) {
                     try {
@@ -269,13 +275,21 @@ class SettingFragment : PreferenceFragmentCompat() {
 
             }
             "version" -> {
-                try {
-                    val uri =
-                        Uri.parse("https://play.google.com/store/apps/details?id=com.perol.asdpl.play.pixivez")
+                if (BuildConfig.ISGOOGLEPLAY) {
+                    try {
+                        val uri =
+                            Uri.parse("https://play.google.com/store/apps/details?id=com.perol.asdpl.play.pixivez")
+                        val intent = Intent(Intent.ACTION_VIEW, uri)
+                        startActivity(intent)
+                    } catch (e: Exception) {
+                        Toasty.info(PxEZApp.instance, "no browser found", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                else {
+                    val url = "https://github.com/ultranity/Pix-EzViewer"
+                    val uri = Uri.parse(url)
                     val intent = Intent(Intent.ACTION_VIEW, uri)
                     startActivity(intent)
-                } catch (e: Exception) {
-                    Toasty.info(PxEZApp.instance, "no browser found", Toast.LENGTH_SHORT).show()
                 }
             }
             "icons" -> {

@@ -28,7 +28,7 @@
         <Preference
         app:key="about_rate_github"
         app:title="Github"
-        app:summary="https://github.com/Notsfsssf"/>
+        app:summary="https://github.com/ultranity/Pix-EzViewer"/>
         <Preference
             app:key="about_rate_license"
             app:title="License"

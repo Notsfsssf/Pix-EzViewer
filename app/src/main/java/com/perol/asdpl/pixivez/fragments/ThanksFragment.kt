@@ -181,7 +181,7 @@ class ThanksFragment : PreferenceFragmentCompat() {
 //                }
             }
             "wepay" -> {
-                val view = activity!!.layoutInflater.inflate(R.layout.wepayimage, null)
+                val view = requireActivity().layoutInflater.inflate(R.layout.wepayimage, null)
                 view.findViewById<ImageView>(R.id.imageview).setImageResource(R.drawable.weixinqr)
                 MaterialAlertDialogBuilder(activity).setView(view).setPositiveButton(android.R.string.ok) { _, _ ->
                 }.show()

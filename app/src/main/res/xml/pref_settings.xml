@@ -12,7 +12,13 @@
             app:key="me"
             app:icon="@drawable/xinobu"
             app:title="Perol_Notsf"
-            android:summary="编写开发调试"
+            android:summary="编写开发调试(原作者)"
+            />
+        <Preference
+            app:key="me0"
+            app:icon="@drawable/ultranity"
+            app:title="Ultranity"
+            android:summary="编写开发调试(当前维护者)"
             />
         <Preference
             app:key="me1"
