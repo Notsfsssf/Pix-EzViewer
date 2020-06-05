@@ -42,6 +42,12 @@
             app:key="disableproxy"
             app:title="@string/proxy" />
         <SwitchPreference
+            app:defaultValue="true"
+            app:key="resume_unfinished_task"
+            app:summaryOff="@string/resume_unfinished_task_off"
+            app:summaryOn="@string/resume_unfinished_task_on"
+            app:title="@string/unfinished_task" />
+        <SwitchPreference
             android:summary="——v——"
             app:key="needstatusbar"
             app:title="@string/needstatusbar" />

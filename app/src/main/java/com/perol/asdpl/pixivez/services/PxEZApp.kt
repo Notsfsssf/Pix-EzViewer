@@ -46,6 +46,8 @@ import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.objects.CrashHandler
 import com.perol.asdpl.pixivez.objects.Toasty
 import com.tencent.bugly.Bugly
+import kotlinx.coroutines.delay
+import okhttp3.internal.waitMillis
 import java.io.File
 
 
@@ -106,14 +108,54 @@ class PxEZApp : Application() {
             }
         }
 
-        //Aria.download(this).removeAllTask(true)
-        Aria.download(this).allCompleteTask?.forEach {
-            Aria.download(this).load(it.id).cancel(true)
+        Thread(Runnable {
+            //Aria.download(this).removeAllTask(true)
+            Aria.download(this).allCompleteTask?.forEach {
+                Aria.download(this).load(it.id).cancel(true)
+            }
+            if(pre.getBoolean("resume_unfinished_task",true)
+                && Aria.download(this).allNotCompleteTask.isNotEmpty())
+            {
+                //Toasty.normal(this, getString(R.string.unfinished_task_title), Toast.LENGTH_SHORT).show()
+                Aria.download(this).allNotCompleteTask?.forEach {
+                    Aria.download(this).load(it.id).cancel(true)
+                    val illustD = objectMapper.readValue(it.str, IllustD::class.java)
+                    Aria.download(this).load(it.url)
+                        .setFilePath(it.filePath) //设置文件保存的完整路径
+                        .ignoreFilePathOccupy()
+                        .setExtendField(Works.mapper.writeValueAsString(illustD))
+                        .option(Works.option)
+                        .create()
+                    Thread.sleep(500)
+                }
+            }
+            /*
+        if(Aria.download(this).allNotCompleteTask.isNotEmpty())
+        {
+            MaterialDialog(this).show {
+                title(R.string.unfinished_task_title)
+                message(R.string.unfinished_task_content)
+                negativeButton(android.R.string.cancel)
+                positiveButton(android.R.string.ok) {
+                    Aria.download(this).allNotCompleteTask?.forEach {
+                        //Aria.download(this).load(it.id).resume()
+                        val illustD = objectMapper.readValue(it.str, IllustD::class.java)
+                        val fileName = it.fileName
+                        val targetPath =
+                            "${PxEZApp.instance.cacheDir}${File.separator}${fileName}"
+                        Aria.download(PxEZApp.instance)
+                            .load(it.url) //读取下载地址
+                            .setFilePath(targetPath) //设置文件保存的完整路径
+                            .ignoreFilePathOccupy()
+                            .setExtendField(Works.mapper.writeValueAsString(illustD))
+                            .option(Works.option)
+                            .create()
+                    }
+                }
+            }
         }
-        /*Aria.download(this).allNotCompleteTask?.forEach {
-            Aria.download(this).load(it.id).resume()
-        }*/
-        /*Aria.download(this).taskList?.forEach {
+        */
+            /*Aria.download(this).taskList?.forEach {
             if(it.isComplete)
                 Aria.download(this).load(it.id).cancel()
             else
@@ -129,7 +171,7 @@ class PxEZApp : Application() {
                     .create()
             }
         }*/
-
+        }).start()
         instance = this
         AppCompatDelegate.setDefaultNightMode(
             pre.getString(

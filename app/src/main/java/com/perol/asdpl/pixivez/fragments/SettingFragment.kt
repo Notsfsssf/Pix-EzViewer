@@ -162,6 +162,11 @@ class SettingFragment : PreferenceFragmentCompat() {
                 .show()
             true
         }
+        findPreference<SwitchPreference>("resume_unfinished_task")!!.setOnPreferenceChangeListener { preference, newValue ->
+            Toasty.normal(PxEZApp.instance, getString(R.string.needtorestart), Toast.LENGTH_SHORT)
+                .show()
+            true
+        }
         findPreference<SwitchPreference>("animation")!!.setOnPreferenceChangeListener { preference, newValue ->
             PxEZApp.animationEnable = newValue as Boolean
             true

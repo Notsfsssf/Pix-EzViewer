@@ -282,6 +282,11 @@
     <string name="all_resume">全部恢復</string>
     <string name="all_cancel">清空佇列</string>
     <string name="finished_cancel">移除已完成任務</string>
+    <string name="unfinished_task">下載未完成的任務</string>
+    <string name="resume_unfinished_task_on">載入app时自动恢复未完成任務</string>
+    <string name="resume_unfinished_task_off">載入app时仅保留下載未完成任務</string>
+    <string name="unfinished_task_title">发现未完成任務</string>
+    <string name="unfinished_task_content">是否恢復下載？</string>
     <string name="save_zip">儲存zip</string>
     <string name="already_going_on">已在進行</string>
     <string name="save_zip_success">儲存zip成功</string>

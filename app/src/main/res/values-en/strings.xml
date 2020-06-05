@@ -267,6 +267,11 @@
     <string name="all_resume">Resume All</string>
     <string name="all_cancel">Clear queue</string>
     <string name="finished_cancel">Remove finished</string>
+    <string name="unfinished_task">Resume unfinished task</string>
+    <string name="resume_unfinished_task_on">Resume unfinished task when start</string>
+    <string name="resume_unfinished_task_off">Keep unfinished task but not resume</string>
+    <string name="unfinished_task_title">unfinished task found</string>
+    <string name="unfinished_task_content">resume download?</string>
     <string name="save_zip">save zip</string>
     <string name="already_going_on">It\'s already going on</string>
     <string name="save_zip_success">save zip success</string>
