@@ -55,9 +55,8 @@ import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
+// pixvision
 class SpotlightActivity : RinkActivity() {
-
-
     private val reurls = HashSet<Int>()
     private var appApiPixivService: AppApiPixivService? = null
     private var sharedPreferencesServices: SharedPreferencesServices? = null

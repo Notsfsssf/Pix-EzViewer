@@ -36,7 +36,7 @@ import com.perol.asdpl.pixivez.responses.Illust
 import kotlinx.android.synthetic.main.activity_zoom.*
 import java.util.*
 
-
+// zoom pic for viewing when clicked
 class ZoomActivity : RinkActivity() {
     lateinit var str: ArrayList<String>
 

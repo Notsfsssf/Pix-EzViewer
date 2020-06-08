@@ -29,7 +29,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.perol.asdpl.pixivez.objects.LanguageUtil
 import com.perol.asdpl.pixivez.services.PxEZApp
 
-
+// base activity with i18n support
 abstract class RinkActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

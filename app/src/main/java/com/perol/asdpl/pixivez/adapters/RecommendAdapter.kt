@@ -58,6 +58,7 @@ import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.services.Works
 import android.util.Pair as UtilPair
 
+// simple Adapter for image item, without user imageView
 class RecommendAdapter(
     layoutResId: Int,
     data: List<Illust>?,
