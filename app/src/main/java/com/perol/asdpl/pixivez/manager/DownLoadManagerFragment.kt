@@ -174,6 +174,25 @@ class DownLoadManagerFragment : Fragment() {
             }
             R.id.action_resume -> {
                 Aria.download(this).resumeAllTask()
+                Thread(Runnable {
+                    // wait for resumeAllTask
+                    Thread.sleep(2000)
+                    // restart other failed task
+                    val objectMapper = ObjectMapper().registerKotlinModule()
+                    Aria.download(this).allNotCompleteTask?.forEach {
+                        if(it.state == 0) {
+                            Aria.download(this).load(it.id).cancel(true)
+                            val illustD = objectMapper.readValue(it.str, IllustD::class.java)
+                            Aria.download(this).load(it.url)
+                                .setFilePath(it.filePath) //设置文件保存的完整路径
+                                .ignoreFilePathOccupy()
+                                .setExtendField(Works.mapper.writeValueAsString(illustD))
+                                .option(Works.option)
+                                .create()
+                            Thread.sleep(500)
+                        }
+                    }
+                }).start()
             }
             R.id.action_cancel -> {
                 Aria.download(this).removeAllTask(false);
