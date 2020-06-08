@@ -27,7 +27,7 @@
             android:layout_height="wrap_content">
 
             <com.shehuan.niv.NiceImageView
-                android:id="@+id/imageView5"
+                android:id="@+id/imageViewUser_picX"
                 userUrl="@{illust.user.profile_image_urls.medium}"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
@@ -45,7 +45,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_toEndOf="@id/imageView5"
+                android:layout_toEndOf="@id/imageViewUser_picX"
                 android:text="@{illust.title}"
                 android:transitionName="title"
                 android:textColor="?attr/colorPrimary"
@@ -59,7 +59,7 @@
                 android:layout_below="@id/textView6"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_toEndOf="@id/imageView5"
+                android:layout_toEndOf="@id/imageViewUser_picX"
                 android:text="@{illust.user.name}"
                 android:textIsSelectable="true"
                 android:textSize="14sp" />
@@ -70,7 +70,7 @@
                 android:layout_below="@id/textView21"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_toEndOf="@id/imageView5"
+                android:layout_toEndOf="@id/imageViewUser_picX"
                 android:text="@{illust.create_date}"
                 android:textSize="12sp" />
         </RelativeLayout>

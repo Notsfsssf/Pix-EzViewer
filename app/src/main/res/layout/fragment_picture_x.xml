@@ -46,7 +46,7 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageView5"
+                    android:id="@+id/imageViewUser_picX"
                     userUrl="@{illust.user.profile_image_urls.medium}"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
@@ -68,8 +68,8 @@
                     android:text="@{illust.title}"
                     android:textColor="?attr/colorPrimary"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView5"
-                    app:layout_constraintTop_toTopOf="@+id/imageView5" />
+                    app:layout_constraintStart_toEndOf="@+id/imageViewUser_picX"
+                    app:layout_constraintTop_toTopOf="@+id/imageViewUser_picX" />
 
                 <TextView
                     android:id="@+id/textView21"
@@ -82,7 +82,7 @@
                     android:text="@{illust.user.name}"
                     android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView5"
+                    app:layout_constraintStart_toEndOf="@+id/imageViewUser_picX"
                     app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
                 <TextView
@@ -94,7 +94,7 @@
                     android:textColor="@android:color/darker_gray"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView5"
+                    app:layout_constraintStart_toEndOf="@+id/imageViewUser_picX"
                     app:layout_constraintTop_toBottomOf="@+id/textView21" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 

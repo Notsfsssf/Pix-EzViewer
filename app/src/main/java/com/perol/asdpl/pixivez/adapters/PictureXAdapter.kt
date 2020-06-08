@@ -168,40 +168,40 @@ class PictureXAdapter(
         private val captionTextView = itemView.findViewById<TextView>(R.id.textview_caption)
         private val btnTranslate = itemView.findViewById<TextView>(R.id.btn_translate)
         private val viewCommentTextView = itemView.findViewById<TextView>(R.id.textview_viewcomment)
-        private val imageView = itemView.findViewById<NiceImageView>(R.id.imageView5)
+        private val imageViewUser = itemView.findViewById<NiceImageView>(R.id.imageViewUser_picX)
         private val imageButtonDownload =
             itemView.findViewById<ImageButton>(R.id.imagebutton_download)
 
         fun updateWithPage(
             mContext: Context,
-            s: Illust,
+            illust: Illust,
             mViewCommentListen: () -> Unit,
             mUserPicLongClick: () -> Unit
         ) {
-            binding.illust = s
+            binding.illust = illust
             captionTextView.autoLinkMask = Linkify.WEB_URLS
             val typedValue = TypedValue();
             mContext.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
             val colorPrimary = typedValue.resourceId
-            if (s.type == "ugoira")
+            if (illust.type == "ugoira") //gif
                 imageButtonDownload.visibility = View.GONE
             else
                 imageButtonDownload.setColorFilter(ContextCompat.getColor(mContext, colorPrimary))
-            if (s.user.is_followed)
-                imageView.setBorderColor(Color.YELLOW)
+            if (illust.user.is_followed)
+                imageViewUser.setBorderColor(Color.YELLOW)
             else
-                imageView.setBorderColor(ContextCompat.getColor(mContext, colorPrimary))
-            imageView.setOnLongClickListener {
+                imageViewUser.setBorderColor(ContextCompat.getColor(mContext, colorPrimary))
+            imageViewUser.setOnLongClickListener {
                 mUserPicLongClick.invoke()
                 true
             }
-            imageView.setOnClickListener {
+            imageViewUser.setOnClickListener {
                 val intent = Intent(mContext, UserMActivity::class.java)
-                intent.putExtra("data", s.user.id)
+                intent.putExtra("data", illust.user.id)
                 mContext.startActivity(intent)
             }
-            if (s.caption.isNotBlank())
-                binding.html = Html.fromHtml(s.caption)
+            if (illust.caption.isNotBlank())
+                binding.html = Html.fromHtml(illust.caption)
             else
                 binding.html = Html.fromHtml("~")
             viewCommentTextView.setOnClickListener {
@@ -252,7 +252,7 @@ class PictureXAdapter(
 
             tagFlowLayout.apply {
 
-                adapter = object : TagAdapter<Tag>(s.tags) {
+                adapter = object : TagAdapter<Tag>(illust.tags) {
                     override fun getView(parent: FlowLayout, position: Int, t: Tag): View {
                         val tv = LayoutInflater.from(context)
                             .inflate(R.layout.picture_tag, parent, false)
@@ -268,14 +268,14 @@ class PictureXAdapter(
                         }
                         translateName.setOnClickListener {
                             val bundle = Bundle()
-                            bundle.putString("searchword", s.tags[position].name)
+                            bundle.putString("searchword", illust.tags[position].name)
                             val intent = Intent(context, SearchResultActivity::class.java)
                             intent.putExtras(bundle)
                             context.startActivity(intent)
                         }
                         name.setOnClickListener {
                             val bundle = Bundle()
-                            bundle.putString("searchword", s.tags[position].name)
+                            bundle.putString("searchword", illust.tags[position].name)
                             val intent = Intent(context, SearchResultActivity::class.java)
                             intent.putExtras(bundle)
                             context.startActivity(intent)
@@ -331,7 +331,7 @@ class PictureXAdapter(
 
             }
             imageButtonDownload.setOnClickListener {
-                Works.imageDownloadAll(s)
+                Works.imageDownloadAll(illust)
             }
         }
     }
@@ -416,8 +416,8 @@ class PictureXAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is PictureViewHolder) {
-            val imageView = holder.itemView.findViewById<ImageView>(R.id.imageview_pic)
-            GlideApp.with(imageView).load(imageUrls[position]).placeholder(R.color.white)
+            val imageViewPic = holder.itemView.findViewById<ImageView>(R.id.imageview_pic)
+            GlideApp.with(imageViewPic).load(imageUrls[position]).placeholder(R.color.white)
                 .transition(withCrossFade()).listener(object : RequestListener<Drawable> {
 
                     override fun onLoadFailed(
@@ -443,8 +443,8 @@ class PictureXAdapter(
 
                         return false
                     }
-                }).into(imageView)
-            imageView.apply {
+                }).into(imageViewPic)
+            imageViewPic.apply {
                 setOnLongClickListener { it ->
                     val builder = MaterialAlertDialogBuilder(mContext as Activity)
                     builder.setTitle(mContext.resources.getString(R.string.saveselectpic1))

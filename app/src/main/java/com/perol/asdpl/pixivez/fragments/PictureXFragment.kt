@@ -164,7 +164,7 @@ class PictureXFragment : BaseFragment() {
 
                 recyclerview.adapter = pictureXAdapter
 
-                imageView5.setOnClickListener { ot ->
+                imageViewUser_picX.setOnClickListener { ot ->
                     val intent = Intent(context, UserMActivity::class.java)
                     intent.putExtra("data", it.illust.user.id)
                     startActivity(intent)
