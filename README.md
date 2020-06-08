@@ -2,8 +2,11 @@
 ![](https://github.com/Notsfsssf/Pix-EzViewer/raw/master/app/src/main/res/mipmap-xxhdpi/ic_launcherep.png)
 
 ![当前版本](https://img.shields.io/github/v/release/ultranity/Pix-EzViewer.svg)
-**!原作者[Notsfsssf](https://github.com/Notsfsssf)因学业及flutter android版PixEz开发原因停止维护，**
-**经商议，从 1.5.4W 版本开始将由[我](https://github.com/ultranity)接手继续维护[Pix-EzViewer](https://github.com/ultranity/Pix-EzViewer)**
+
+**!原作者[Notsfsssf](https://github.com/Notsfsssf)因学业及flutter android版PixEz开发原因停止维护**
+
+**经商议，从 1.5.4W 版本开始将由 [我](https://github.com/ultranity) 接手继续维护 [Pix-EzViewer](https://github.com/ultranity/Pix-EzViewer)**
+
 **目前建议优先通过本repo提交issue进行反馈**
 
 一个支持免代理直连及查看动图的第三方 Pixiv Android 客户端。
