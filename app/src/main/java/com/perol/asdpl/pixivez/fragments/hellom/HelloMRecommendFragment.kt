@@ -103,7 +103,7 @@ class HelloMRecommendFragment : BaseFragment() {
                     banner.setOnBannerListener {
                         startActivity(
                             Intent(
-                                activity!!.applicationContext,
+                                requireActivity().applicationContext,
                                 PixivsionActivity::class.java
                             )
                         )
