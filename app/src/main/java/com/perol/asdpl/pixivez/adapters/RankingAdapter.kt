@@ -57,6 +57,7 @@ import com.perol.asdpl.pixivez.responses.Illust
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.services.Works
+import com.shehuan.niv.NiceImageView
 
 
 class RankingAdapter(
@@ -171,15 +172,19 @@ class RankingAdapter(
         }
         val imageView = helper.getView<ImageView>(R.id.item_img)
         imageView.setTag(R.id.tag_first, item.image_urls.medium)
-        val imageViewuser = helper.getView<ImageView>(R.id.imageview_user)
-        imageViewuser.setOnClickListener {
+        val imageViewUser = helper.getView<NiceImageView>(R.id.imageview_user)
+        if (item.user.is_followed)
+            imageViewUser.setBorderColor(Color.YELLOW)
+        else
+            imageViewUser.setBorderColor(ContextCompat.getColor(context, colorPrimary))
+        imageViewUser.setOnClickListener {
             val intent = Intent(context, UserMActivity::class.java)
             intent.putExtra("data", item.user.id)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
 
         }
-        imageViewuser.setTag(R.id.tag_first, item.user.profile_image_urls.medium)
+        imageViewUser.setTag(R.id.tag_first, item.user.profile_image_urls.medium)
         helper.setText(R.id.textview_title, item.title)
             .setTextColor(R.id.textview_context, ContextCompat.getColor(context, colorPrimary))
         helper.setText(R.id.textview_context, item.user.name)
@@ -211,17 +216,17 @@ class RankingAdapter(
             }
         }
 
-        GlideApp.with(imageViewuser.context).load(item.user.profile_image_urls.medium).circleCrop()
-            .into(object : ImageViewTarget<Drawable>(imageViewuser) {
+        GlideApp.with(imageViewUser.context).load(item.user.profile_image_urls.medium).circleCrop()
+            .into(object : ImageViewTarget<Drawable>(imageViewUser) {
                 override fun setResource(resource: Drawable?) {
-                    imageViewuser.setImageDrawable(resource)
+                    imageViewUser.setImageDrawable(resource)
                 }
 
                 override fun onResourceReady(
                     resource: Drawable,
                     transition: Transition<in Drawable>?
                 ) {
-                    if (item.user.profile_image_urls.medium === imageViewuser.getTag(R.id.tag_first)) {
+                    if (item.user.profile_image_urls.medium === imageViewUser.getTag(R.id.tag_first)) {
                         super.onResourceReady(resource, transition)
 
                     }
