@@ -45,13 +45,17 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
-                <ImageView
+                <com.shehuan.niv.NiceImageView
                     android:id="@+id/imageViewUser_picX"
                     userUrl="@{illust.user.profile_image_urls.medium}"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
+                    android:transitionName="userimage"
+                    app:border_color='?attr/colorPrimary'
+                    app:border_width="4dp"
+                    app:is_circle="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageButton"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -106,8 +110,8 @@
                 <ProgressBar
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true" />
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true" />
 
             </RelativeLayout>
 

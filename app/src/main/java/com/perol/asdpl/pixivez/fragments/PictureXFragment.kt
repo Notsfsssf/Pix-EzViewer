@@ -27,6 +27,7 @@ package com.perol.asdpl.pixivez.fragments
 
 import TagsBookMarkDialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -59,7 +60,7 @@ import org.greenrobot.eventbus.ThreadMode
 private const val ARG_PARAM1 = "param1"
 
 /**
- * A simple [Fragment] subclass.
+ * A simple [Fragment] subclass for pic detail.
  * Use the [PictureXFragment.newInstance] factory method to
  * create an instance of this fragment.
  *
@@ -163,7 +164,10 @@ class PictureXFragment : BaseFragment() {
                     }
 
                 recyclerview.adapter = pictureXAdapter
-
+                if (it.illust.user.is_followed)
+                    imageViewUser_picX.setBorderColor(Color.YELLOW)
+                //else
+                //    imageViewUser_picX.setBorderColor(ContextCompat.getColor(requireContext(), colorPrimary))
                 imageViewUser_picX.setOnClickListener { ot ->
                     val intent = Intent(context, UserMActivity::class.java)
                     intent.putExtra("data", it.illust.user.id)
