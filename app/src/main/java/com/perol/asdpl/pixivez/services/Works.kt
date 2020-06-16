@@ -63,34 +63,37 @@ object Works {
         var url = ""
         val title = illust.title.toLegal()
         val userName = illust.user.name.toLegal()
-        val user = illust.user.id
-        val name = illust.id
+        val userid = illust.user.id
+        val illustid = illust.id
         val pre = PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance);
-        val format = pre.getString(
+        val saveformat = pre.getString(
             "saveformat",
             "0"
         )?.toInt()
             ?: 0
         val needCreateFold = pre.getBoolean("needcreatefold", false)
         var type = ".png"
-        var filename = "${name}_p$part$type"
+        var filename = "${illustid}_p$part$type"
         if (part != null && illust.meta_pages.isNotEmpty()) {
             url = illust.meta_pages[part].image_urls.original
             type = if (url.contains("png")) {
                 ".png"
             } else ".jpg"
-            when (format) {
+            when (saveformat) {
                 0 -> {
-                    filename = "${name}_$part$type"
+                    filename = "${illustid}_$part$type"
                 }
                 1 -> {
-                    filename = "${name}_p$part$type"
+                    filename = "${illustid}_p$part$type"
                 }
                 2 -> {
-                    filename = "${user}_${name}_$part$type"
+                    filename = "${userid}_${illustid}_$part$type"
                 }
                 3 -> {
-                    filename = "${name}_${title}_$part$type"
+                    filename = "${illustid}_${title}_$part$type"
+                }
+                4 -> {
+                    filename = "${illustid}(${userid})_${title}_$part$type"
                 }
             }
         } else {
@@ -98,23 +101,26 @@ object Works {
             type = if (url.contains("png")) {
                 ".png"
             } else ".jpg"
-            when (format) {
+            when (saveformat) {
                 0 -> {
-                    filename = "$name$type"
+                    filename = "$illustid$type"
                 }
                 1 -> {
-                    filename = "$name$type"
+                    filename = "$illustid$type"
                 }
                 2 -> {
-                    filename = "${user}_$name$type"
+                    filename = "${userid}_$illustid$type"
                 }
                 3 -> {
-                    filename = "${name}_${title}$type"
+                    filename = "${illustid}_${title}$type"
+                }
+                4 -> {
+                    filename = "${illustid}(${userid})_${title}$type"
                 }
             }
         }
         val path = if (needCreateFold) {
-            "${PxEZApp.storepath}/${userName}_${user}"
+            "${PxEZApp.storepath}/${userName}_${userid}"
         } else PxEZApp.storepath
         val targetFile = File(path, filename)
         try {
@@ -167,8 +173,8 @@ object Works {
         var url = ""
         val title = illust.title.toLegal()
         val userName = illust.user.name.toLegal()
-        val user = illust.user.id
-        val name = illust.id
+        val userid = illust.user.id
+        val illustid = illust.id
         val pre = PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance)
         val format = pre.getString(
             "saveformat",
@@ -177,7 +183,7 @@ object Works {
             ?: 0
 
         var type = ".png"
-        var filename = "${name}_p$part$type"
+        var filename = "${illustid}_p$part$type"
         if (part != null && illust.meta_pages.isNotEmpty()) {
             url = illust.meta_pages[part].image_urls.original
             type = if (url.contains("png")) {
@@ -185,16 +191,19 @@ object Works {
             } else ".jpg"
             when (format) {
                 0 -> {
-                    filename = "${name}_$part$type"
+                    filename = "${illustid}_$part$type"
                 }
                 1 -> {
-                    filename = "${name}_p$part$type"
+                    filename = "${illustid}_p$part$type"
                 }
                 2 -> {
-                    filename = "${user}_${name}_$part$type"
+                    filename = "${userid}_${illustid}_$part$type"
                 }
                 3 -> {
-                    filename = "${name}_${title}_$part$type"
+                    filename = "${illustid}_${title}_$part$type"
+                }
+                4 -> {
+                    filename = "${illustid}(${userid})_${title}_$part$type"
                 }
             }
         } else {
@@ -204,16 +213,19 @@ object Works {
             } else ".jpg"
             when (format) {
                 0 -> {
-                    filename = "$name$type"
+                    filename = "$illustid$type"
                 }
                 1 -> {
-                    filename = "$name$type"
+                    filename = "$illustid$type"
                 }
                 2 -> {
-                    filename = "${user}_$name$type"
+                    filename = "${userid}_$illustid$type"
                 }
                 3 -> {
-                    filename = "${name}_${title}$type"
+                    filename = "${illustid}_${title}$type"
+                }
+                4 -> {
+                    filename = "${illustid}(${userid})_${title}$type"
                 }
             }
         }
@@ -222,7 +234,7 @@ object Works {
             "${PxEZApp.storepath}/${userName}_${illust.user.id}"
         } else PxEZApp.storepath
         val targetFile = File(path, filename)
-        if (targetFile.exists()) {
+        if (targetFile.exists() || (format == 4 && File(path, "${illustid}_${title}_$part$type").exists())) {
             Toasty.normal(
                 PxEZApp.instance,
                 PxEZApp.instance.getString(R.string.alreadysaved),
@@ -251,7 +263,7 @@ object Works {
 
     }
 
-
+/*
     @Deprecated("imgD")
     fun imageDownloadOne(illust: Illust, part: Int?) {
         var url = ""
@@ -310,6 +322,6 @@ object Works {
 
 
     }
-
+*/
 
 }

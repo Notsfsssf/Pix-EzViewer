@@ -219,7 +219,7 @@
     <string name="new1">新規</string>
     <string name="saveselectpic1">保存しますか？</string>
     <string name="confirm">確定</string>
-    <string name="mutichoicesave">複数選択</string>
+    <string name="multichoicesave">複数選択</string>
     <string name="choice">選択</string>
     <string name="errorgif">GIFアニメが破損しています</string>
     <string name="add">追加</string>

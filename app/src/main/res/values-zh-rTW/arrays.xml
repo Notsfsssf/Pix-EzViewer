@@ -25,11 +25,12 @@
         <item>排行</item>
         <item>個人</item>
     </string-array>
-    <string-array name="format">
+    <string-array name="filenameformat">
         <item>預設:id_+part</item>
         <item>P站:id_p+part</item>
         <item>血書:userid_id_part</item>
         <item>特殊:id_title_part</item>
+        <item>增强:id(user)_title_part</item>
     </string-array>
     <string-array name="quality">
         <item>中圖（更快）</item>

@@ -236,7 +236,7 @@
     <string name="new1">动态</string>
     <string name="saveselectpic1">保存选定图片?</string>
     <string name="confirm">确定</string>
-    <string name="mutichoicesave">多选保存</string>
+    <string name="multichoicesave">多选保存</string>
     <string name="choice">选择</string>
     <string name="title_activity_work">WorkActivity</string>
     <string name="title_activity_login_m">Sign in</string>

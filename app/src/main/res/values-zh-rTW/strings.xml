@@ -236,7 +236,7 @@
     <string name="new1">動態</string>
     <string name="saveselectpic1">儲存選定圖像?</string>
     <string name="confirm">確定</string>
-    <string name="mutichoicesave">多選儲存</string>
+    <string name="multichoicesave">多選儲存</string>
     <string name="choice">選擇</string>
     <string name="logoutallaccount">Log out of all accounts</string>
     <string name="mypage">個人頁面</string>

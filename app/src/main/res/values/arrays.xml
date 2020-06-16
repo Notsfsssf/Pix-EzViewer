@@ -30,17 +30,19 @@
         <item>1</item>
         <item>2</item>
     </string-array>
-    <string-array name="format">
+    <string-array name="filenameformat">
         <item>默认:id_+part</item>
         <item>P站:id_p+part</item>
         <item>血书:userid_id_part</item>
         <item>特殊:id_title_part</item>
+        <item>增强:id(user)_title_part</item>
     </string-array>
     <string-array name="format_value">
         <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
+        <item>4</item>
     </string-array>
     <string-array name="quality">
         <item>中图（更快）</item>

@@ -85,7 +85,7 @@
             app:title="@string/create_separate_folder"
            app:summary="@string/create_painter_folder"/>
         <ListPreference
-            android:entries="@array/format"
+            android:entries="@array/filenameformat"
             android:entryValues="@array/format_value"
             app:defaultValue="0"
             app:key="saveformat"

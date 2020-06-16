@@ -25,11 +25,12 @@
         <item>ランキング</item>
         <item>マイページ</item>
     </string-array>
-    <string-array name="format">
+    <string-array name="filenameformat">
         <item>デフォルト:id_+part</item>
         <item>P付きデフォルト:id_p+part</item>
         <item>血书:userid_id_part</item>
         <item>特殊:id_title_part</item>
+        <item>增强:id(user)_title_part</item>
     </string-array>
     <string-array name="quality">
         <item>標準画質（高速）</item>

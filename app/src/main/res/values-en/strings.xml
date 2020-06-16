@@ -219,7 +219,7 @@
     <string name="new1">New</string>
     <string name="saveselectpic1">Save?</string>
     <string name="confirm">confirm</string>
-    <string name="mutichoicesave">Multiple selection</string>
+    <string name="multichoicesave">Multiple selection</string>
     <string name="choice">Choice</string>
     <string name="errorgif">动图文件似乎出现了损坏，请清除缓存后重试</string>
     <string name="add">Add</string>
