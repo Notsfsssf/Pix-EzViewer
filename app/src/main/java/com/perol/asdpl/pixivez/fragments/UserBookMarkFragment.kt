@@ -33,7 +33,6 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.perol.asdpl.pixivez.R
@@ -81,14 +80,13 @@ class UserBookMarkFragment : BaseFragment(), TagsShowDialog.Callback {
     private var exitTime = 0L
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        savedInstanceState
         recommendAdapter = RecommendAdapter(
             R.layout.view_recommand_item,
             null,
             isR18on,
             blockTags,
-            PreferenceManager.getDefaultSharedPreferences(requireActivity())
-                .getBoolean(UserMActivity.HIDE_BOOKMARK_ITEM, false)
+            viewactivity.viewModel.hideBookmarked.value!!
         )
 
 
@@ -126,6 +124,7 @@ class UserBookMarkFragment : BaseFragment(), TagsShowDialog.Callback {
 
     fun lazyLoad() {
         viewmodel = ViewModelProviders.of(this).get(UserBookMarkViewModel::class.java)
+        viewactivity = activity as UserMActivity
 
         viewmodel!!.nexturl.observe(this, Observer {
             if (it.isNullOrEmpty()) {
@@ -172,6 +171,7 @@ class UserBookMarkFragment : BaseFragment(), TagsShowDialog.Callback {
     var pub = "public"
 
     var viewmodel: UserBookMarkViewModel? = null
+    lateinit var viewactivity: UserMActivity
 
 
     private fun showTagDialog() {
@@ -204,9 +204,10 @@ class UserBookMarkFragment : BaseFragment(), TagsShowDialog.Callback {
                 it.name
             }
             val id = AppDataRepository.getUser().userid
-            if (param1 != id)
                 recommendAdapter.hideBookmarked =
-                    (requireActivity() as UserMActivity).viewModel.hideBookmarked.value!!
+                    if (param1 != id) {
+                        viewactivity.viewModel.hideBookmarked.value!!
+                    } else false
             recommendAdapter.blockTags = blockTags
             recommendAdapter.notifyDataSetChanged()
         }

@@ -27,6 +27,7 @@ package com.perol.asdpl.pixivez.activity
 import android.os.Bundle
 import com.perol.asdpl.pixivez.R
 
+// now useless
 class UserShowActivity : RinkActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

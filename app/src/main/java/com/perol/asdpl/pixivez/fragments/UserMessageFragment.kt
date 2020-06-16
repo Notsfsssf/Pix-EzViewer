@@ -67,10 +67,10 @@ class UserMessageFragment : Fragment() {
             textView_tacomment!!.text = mParam1!!.user.comment
         else
             textView_tacomment!!.text = "~"
-        val mInflater = LayoutInflater.from(activity!!)
+        val mInflater = LayoutInflater.from(requireActivity())
         textView_fans!!.text = mParam1!!.profile.total_mypixiv_users.toString()
         textView_fans!!.setOnClickListener {
-            val intent = Intent(activity!!.applicationContext, UserFollowActivity::class.java)
+            val intent = Intent(requireActivity().applicationContext, UserFollowActivity::class.java)
             val bundle = Bundle()
             bundle.putLong("user", mParam1!!.user.id.toLong())
             bundle.putBoolean("isfollower", true)

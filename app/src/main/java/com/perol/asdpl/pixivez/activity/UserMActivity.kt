@@ -121,12 +121,14 @@ class UserMActivity : RinkActivity() {
         id = intent.getLongExtra("data", 1)
         viewModel = ViewModelProviders.of(this).get(UserMViewModel::class.java)
         viewModel.getData(id)
+        viewModel.hideBookmarked.value = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(HIDE_BOOKMARK_ITEM, false)
         viewModel.userDetail.observe(this, Observer {
             if (it != null) {
                 fab.show()
                 disposables.add(viewModel.isuser(id).subscribe({
-                    if (it) {
+                    if (it) { //用户自己
                         fab.hide()
+                        viewModel.hideBookmarked.value = false
                         mviewpager.currentItem = 2
                     }
                 }, {}))
