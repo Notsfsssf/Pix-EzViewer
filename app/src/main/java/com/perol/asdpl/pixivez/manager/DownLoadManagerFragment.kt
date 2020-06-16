@@ -198,11 +198,12 @@ class DownLoadManagerFragment : Fragment() {
                 Aria.download(this).removeAllTask(false);
             }
             R.id.action_finished_cancel -> {
-                Aria.download(this).allCompleteTask?.forEach {
-                    Aria.download(this).load(it.id).cancel(true)
-                }
+                Thread(Runnable {
+                    Aria.download(this).allCompleteTask?.forEach {
+                        Aria.download(this).load(it.id).cancel(true)
+                    }
+                }).start()
             }
-
         }
         val taskList = Aria.download(this).taskList
         if (taskList?.isNotEmpty() == true)

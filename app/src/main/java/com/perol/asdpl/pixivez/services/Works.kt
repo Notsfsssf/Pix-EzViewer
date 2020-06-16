@@ -25,6 +25,7 @@
 package com.perol.asdpl.pixivez.services
 
 import android.media.MediaScannerConnection
+import android.os.Looper
 import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.preference.PreferenceManager
@@ -147,12 +148,17 @@ object Works {
 
     fun imageDownloadAll(illust: Illust) {
         TToast.startDownload(PxEZApp.instance)
+
         if (illust.meta_pages.isEmpty()) {
             imgD(illust, null)
         } else {
-            for (i in illust.meta_pages.indices) {
-                imgD(illust, i)
-            }
+            Thread(Runnable {
+                Looper.prepare()
+                for (i in illust.meta_pages.indices) {
+                    imgD(illust, i)
+                }
+                Looper.loop()
+            }).start()
         }
     }
 
