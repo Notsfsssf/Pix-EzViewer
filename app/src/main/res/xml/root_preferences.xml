@@ -2,7 +2,6 @@
 
     <PreferenceCategory app:title="Task">
 
-
         <ListPreference
             app:defaultValue="2"
             app:entries="@array/reply_entries"
@@ -10,8 +9,13 @@
             app:key="max_task_num"
             app:title="@string/max_task_num"
             app:useSimpleSummaryProvider="true" />
-
+        <ListPreference
+            app:defaultValue="2"
+            app:entries="@array/reply_entries"
+            app:entryValues="@array/reply_values"
+            app:key="thread_num"
+            app:title="@string/thread_num"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
-
 
 </PreferenceScreen>

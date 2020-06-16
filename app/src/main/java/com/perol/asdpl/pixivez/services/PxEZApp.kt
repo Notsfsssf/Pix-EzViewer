@@ -102,6 +102,7 @@ class PxEZApp : Application() {
             downloadConfig.apply {
 //                queueMod=QueueMod.NOW.tag
                 maxTaskNum = pre.getString("max_task_num", "2")!!.toInt()
+                threadNum = pre.getString("thread_num", "2")!!.toInt()
             }
             appConfig.apply {
                 isNotNetRetry = true
@@ -127,7 +128,7 @@ class PxEZApp : Application() {
                         .setExtendField(Works.mapper.writeValueAsString(illustD))
                         .option(Works.option)
                         .create()
-                    Thread.sleep(500)
+                    Thread.sleep(550)
                 }
             }
             /*
