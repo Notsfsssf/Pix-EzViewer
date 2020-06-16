@@ -35,6 +35,12 @@ class ManagerSettingsActivity : RinkActivity() {
                 }
                 true
             }
+            findPreference<ListPreference>("thread_num")!!.setOnPreferenceChangeListener { preference, newValue ->
+                Aria.get(requireActivity()).downloadConfig.apply {
+                    threadNum  = (newValue as String).toInt()
+                }
+                true
+            }
         }
 
         override fun onConfigurationChanged(newConfig: Configuration) {
