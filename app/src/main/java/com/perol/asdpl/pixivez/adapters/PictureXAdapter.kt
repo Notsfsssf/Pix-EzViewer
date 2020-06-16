@@ -333,6 +333,33 @@ class PictureXAdapter(
             imageButtonDownload.setOnClickListener {
                 Works.imageDownloadAll(illust)
             }
+            imageButtonDownload.setOnLongClickListener {
+                //show detail of illust
+                var detailstring =
+                        //"caption: " + illust.caption.toString() + "create_date: " + illust.create_date.toString() +
+                        //"width: " + illust.width.toString() + "height: " + illust.height.toString() + "id: " + illust.id.toString()
+                        //+ "image_urls: " + illust.image_urls.toString() + "is_bookmarked: " + illust.is_bookmarked.toString() +
+                        //"user: " + illust.user.toString() + "tags: " + illust.tags.toString() + "title: " + illust.title.toString() +
+                        //"total_bookmarks: " + illust.total_bookmarks.toString() + "total_view: " + illust.total_view.toString() +
+                         //"meta_pages: " + illust.meta_pages.toString() + "\n" +
+                         //"meta_single_page: " + illust.meta_single_page.toString() + "\n" +
+                        "user account: " + illust.user.account.toString() + "\n" +
+                        "tools: " + illust.tools.toString() + "\n" +
+                        "type: " + illust.type.toString() + "\n" +
+                        "page_count: " + illust.page_count.toString() + "\n" +
+                        "visible: " + illust.visible.toString() + "\n" +
+                        "is_muted: " + illust.is_muted.toString() + "\n" +
+                        "sanity_level: " + illust.sanity_level.toString() + "\n" +
+                        "restrict: " + illust.restrict.toString() + "\n" +
+                        "x_restrict: " + illust.x_restrict.toString()
+                MaterialAlertDialogBuilder(mContext as Activity)
+                    .setMessage(detailstring)
+                    .setTitle("Detail")
+                    .setPositiveButton(android.R.string.ok) { _, _ ->
+                    }
+                    .create().show()
+                true
+            }
         }
     }
 
@@ -448,7 +475,18 @@ class PictureXAdapter(
                 setOnLongClickListener { it ->
                     val builder = MaterialAlertDialogBuilder(mContext as Activity)
                     builder.setTitle(mContext.resources.getString(R.string.saveselectpic1))
-                    builder.setMessage("描述: " + Html.fromHtml(data.caption))
+                    //show detail of illust
+                    var detailstring ="描述: " + Html.fromHtml(data.caption) + "\n" +
+                                "user account: " + data.user.account.toString() + "\n" +
+                                "tools: " + data.tools.toString() + "\n" +
+                                "type: " + data.type.toString() + "\n" +
+                                "page_count: " + data.page_count.toString() + "\n" +
+                                "visible: " + data.visible.toString() + "\n" +
+                                "is_muted: " + data.is_muted.toString() + "\n" +
+                                "sanity_level: " + data.sanity_level.toString() + "\n" +
+                                "restrict: " + data.restrict.toString() + "\n" +
+                                "x_restrict: " + data.x_restrict.toString()
+                    builder.setMessage(detailstring)
                     builder.setPositiveButton(mContext.resources.getString(R.string.confirm)) { dialog, which ->
                         TToast.startDownload(PxEZApp.instance)
                         Works.imgD(data, position)
@@ -457,7 +495,7 @@ class PictureXAdapter(
 
                     }
                     if (data.meta_pages.isNotEmpty()) {
-                        builder.setNeutralButton(R.string.mutichoicesave) { dialog, which ->
+                        builder.setNeutralButton(R.string.multichoicesave) { dialog, which ->
 
                             val list = ArrayList<String>()
                             data.meta_pages.map { ot ->
