@@ -154,6 +154,8 @@ class RankingAdapter(
         val typedValue = TypedValue()
         context.getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
         val colorPrimary = typedValue.resourceId;
+        context.getTheme().resolveAttribute(R.attr.badgeTextColor, typedValue, true);
+        val badgeTextColor = typedValue.resourceId;
         when (item.type) {
             "illust" -> if (item.meta_pages.isEmpty()) {
                 constraintLayout.visibility = View.INVISIBLE
@@ -174,7 +176,7 @@ class RankingAdapter(
         imageView.setTag(R.id.tag_first, item.image_urls.medium)
         val imageViewUser = helper.getView<NiceImageView>(R.id.imageview_user)
         if (item.user.is_followed)
-            imageViewUser.setBorderColor(Color.YELLOW)
+            imageViewUser.setBorderColor(ContextCompat.getColor(context, badgeTextColor)) // Color.YELLOW
         else
             imageViewUser.setBorderColor(ContextCompat.getColor(context, colorPrimary))
         imageViewUser.setOnClickListener {
@@ -193,7 +195,7 @@ class RankingAdapter(
         }
         helper.setTextColor(
             R.id.like, if (item.is_bookmarked) {
-                Color.YELLOW
+                ContextCompat.getColor(context, badgeTextColor)
             } else {
                 ContextCompat.getColor(context, colorPrimary)
             }
@@ -209,7 +211,7 @@ class RankingAdapter(
             } else {
                 retrofit.postLikeIllust(item.id)!!.subscribe({
                     textView.setTextColor(
-                        Color.YELLOW
+                        ContextCompat.getColor(context, badgeTextColor)
                     )
                     item.is_bookmarked = true
                 }, {}, {})

@@ -157,14 +157,15 @@ class RecommendAdapter(
         }
         val typedValue = TypedValue();
         context.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
-
         val colorPrimary = typedValue.resourceId;
+        context.theme.resolveAttribute(R.attr.badgeTextColor, typedValue, true)
+        val badgeTextColor = typedValue.resourceId;
         helper.getView<MaterialButton>(R.id.save).setOnClickListener {
             Works.imageDownloadAll(item)
         }
         helper.setText(R.id.title, item.title).setTextColor(
             R.id.like, if (item.is_bookmarked) {
-                Color.YELLOW
+                ContextCompat.getColor(context, badgeTextColor)
             } else {
                 ContextCompat.getColor(context, colorPrimary)
             }
@@ -180,9 +181,7 @@ class RecommendAdapter(
                 }, {}, {})
             } else {
                 retrofit.postLikeIllust(item.id)!!.subscribe({
-                    textView.setTextColor(
-                        Color.YELLOW
-                    )
+                    textView.setTextColor(ContextCompat.getColor(context, badgeTextColor))
                     item.is_bookmarked = true
                 }, {}, {})
             }

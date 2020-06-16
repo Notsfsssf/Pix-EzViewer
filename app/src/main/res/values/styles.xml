@@ -28,10 +28,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="badgeTextColor">@color/yellow</item>
         <item name="android:navigationBarColor">?attr/colorPrimary</item>
         <item name="android:statusBarColor">?attr/colorPrimary</item>
         <item name="autoCompleteTextViewStyle">@style/AppAutoCompleteTextView</item>
-        r
     </style>
 
     <style name="AppAutoCompleteTextView" parent="Widget.AppCompat.AutoCompleteTextView">
