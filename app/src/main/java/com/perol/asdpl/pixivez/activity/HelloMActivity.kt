@@ -310,7 +310,7 @@ class HelloMActivity : RinkActivity(), NavigationView.OnNavigationItemSelectedLi
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_settings -> {
+            R.id.action_search -> {
                 val intent = Intent(this, SearchRActivity::class.java)
                 startActivity(intent)
                 true
