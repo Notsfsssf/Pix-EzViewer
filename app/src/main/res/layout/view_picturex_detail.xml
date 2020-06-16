@@ -76,6 +76,7 @@
         </RelativeLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/picX_detail_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -111,7 +112,7 @@
                 app:layout_constraintTop_toTopOf="@+id/textview11" />
 
             <TextView
-                android:id="@+id/textView27"
+                android:id="@+id/pixelWxH"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -163,8 +164,8 @@
 
             <ImageButton
                 android:id="@+id/imagebutton_download"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="@android:color/transparent"
@@ -211,11 +212,12 @@
 
             <TextView
                 android:id="@+id/textview_viewcomment"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="16dp"
+                android:gravity="center"
                 android:text="@string/viewcomment" />
         </RelativeLayout>
 
