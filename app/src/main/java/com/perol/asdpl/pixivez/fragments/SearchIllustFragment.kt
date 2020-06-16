@@ -38,6 +38,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.UserMActivity
+import com.perol.asdpl.pixivez.adapters.PicItemAdapter
+import com.perol.asdpl.pixivez.adapters.RankingAdapter
 import com.perol.asdpl.pixivez.adapters.RecommendAdapter
 import com.perol.asdpl.pixivez.dialog.SearchSectionDialog
 import com.perol.asdpl.pixivez.objects.AdapterRefreshEvent
@@ -47,7 +49,7 @@ import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.responses.Illust
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.viewmodel.IllustfragmentViewModel
-import kotlinx.android.synthetic.main.fragment_illust.*
+import kotlinx.android.synthetic.main.fragment_search_illust.*
 import kotlinx.coroutines.runBlocking
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -60,11 +62,11 @@ private const val ARG_PARAM1 = "word"
 
 /**
 
- * Use the [IllustFragment.newInstance] factory method to
+ * Use the [SearchIllustFragment.newInstance] factory method to
  * create an instance of this fragment.
  *
  */
-class IllustFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
+class SearchIllustFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     override fun loadData() {
     }
 
@@ -115,17 +117,27 @@ class IllustFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val searchtext = requireActivity().findViewById<TextView>(R.id.searchtext)
-        searchIllustAdapter = RecommendAdapter(
-            R.layout.view_recommand_item,
-            emptyList(),
-            isR18on,
-            blockTags
-        ).apply {
+        searchIllustAdapter =
+            if(PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance).getBoolean("show_user_img_searchr",true)){
+            RankingAdapter(
+                R.layout.view_ranking_item,
+                null,
+                isR18on,
+                blockTags,
+                singleLine = false)
+        } else{
+            RecommendAdapter(
+                R.layout.view_recommand_item,
+                null,
+                isR18on,
+                blockTags)
+        }
+        searchIllustAdapter.apply {
             val view = LayoutInflater.from(requireContext()).inflate(
                 R.layout.search_result_header, null
             )
             view.findViewById<Spinner>(R.id.spinner_result).onItemSelectedListener =
-                this@IllustFragment
+                this@SearchIllustFragment
             setHeaderView(view)
         }
         searchtext.text = param1
@@ -198,7 +210,7 @@ class IllustFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
 
     private val starnum = intArrayOf(50000, 30000, 20000, 10000, 5000, 1000, 500, 250, 100, 0)
     private var param1: String? = null
-    lateinit var searchIllustAdapter: RecommendAdapter
+    lateinit var searchIllustAdapter: PicItemAdapter
     var sort = arrayOf("date_desc", "date_asc", "popular_desc")
     var search_target =
         arrayOf("partial_match_for_tags", "exact_match_for_tags", "title_and_caption")
@@ -230,7 +242,7 @@ class IllustFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_illust, container, false)
+        return inflater.inflate(R.layout.fragment_search_illust, container, false)
     }
 
 
@@ -302,7 +314,7 @@ class IllustFragment : BaseFragment(), AdapterView.OnItemSelectedListener {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String) =
-            IllustFragment().apply {
+            SearchIllustFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
 

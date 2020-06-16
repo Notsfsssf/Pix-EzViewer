@@ -28,7 +28,6 @@ package com.perol.asdpl.pixivez.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -38,7 +37,7 @@ import androidx.viewpager.widget.ViewPager
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.adapters.SearchResultAdapter
 import com.perol.asdpl.pixivez.databinding.ActivitySearchResultBinding
-import com.perol.asdpl.pixivez.fragments.IllustFragment
+import com.perol.asdpl.pixivez.fragments.SearchIllustFragment
 import com.perol.asdpl.pixivez.fragments.UserFragment
 import com.perol.asdpl.pixivez.objects.ThemeUtil
 import kotlinx.android.synthetic.main.activity_search_result.*
@@ -89,7 +88,7 @@ class SearchResultActivity : RinkActivity() {
     private fun initView() {
 
         tablayout_searchresult.setupWithViewPager(viewpage_searchresult)
-        arrayList.add(IllustFragment.newInstance(searchword))
+        arrayList.add(SearchIllustFragment.newInstance(searchword))
         arrayList.add(UserFragment.newInstance(searchword))
         viewpage_searchresult.adapter = SearchResultAdapter(this, supportFragmentManager, arrayList)
         viewpage_searchresult.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {

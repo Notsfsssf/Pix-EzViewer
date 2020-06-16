@@ -205,7 +205,7 @@ class SpotlightActivity : RinkActivity() {
                     }
 
                     override fun onComplete() {
-                        spotlightAdapter = SpotlightAdapter(R.layout.view_ranking_item1, list)
+                        spotlightAdapter = SpotlightAdapter(R.layout.view_spotlight_item, list)
                         recyclerview_spotlight.layoutManager =
                             LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
 
