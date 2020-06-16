@@ -24,10 +24,10 @@
 
 package com.perol.asdpl.pixivez.adapters
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Pair
@@ -37,6 +37,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -59,33 +60,19 @@ import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.services.Works
 import com.shehuan.niv.NiceImageView
 
-
+// simple Adapter for image item with user imageView
+//TODO: rename
 class RankingAdapter(
     layoutResId: Int,
     data: List<Illust>?,
     private val R18on: Boolean,
-    var blockTags: List<String>
-) : BaseQuickAdapter<Illust, BaseViewHolder>(layoutResId, data?.toMutableList()), LoadMoreModule {
-    fun loadMoreEnd() {
-        this.loadMoreModule?.loadMoreEnd()
-    }
-
-    fun loadMoreComplete() {
-        this.loadMoreModule?.loadMoreComplete()
-    }
-
-    fun loadMoreFail() {
-        this.loadMoreModule?.loadMoreFail()
-    }
-
-    fun setOnLoadMoreListener(onLoadMoreListener: OnLoadMoreListener, recyclerView: RecyclerView?) {
-        this.loadMoreModule?.setOnLoadMoreListener(onLoadMoreListener)
-    }
-
-    val retrofit = RetrofitRepository.getInstance()
+    override var blockTags: List<String>,
+    singleLine: Boolean = false,
+    override var hideBookmarked: Boolean = false
+) :
+    PicItemAdapter(layoutResId, data?.toMutableList()), LoadMoreModule {
 
     init {
-
         this.setOnItemClickListener { adapter, view, position ->
             val bundle = Bundle()
             bundle.putLong("illustid", this.data[position].id)
@@ -98,8 +85,9 @@ class RankingAdapter(
             val intent = Intent(context, PictureActivity::class.java)
             intent.putExtras(bundle)
             if (PxEZApp.animationEnable) {
-                val mainimage = view!!.findViewById<View>(R.id.item_img)
-                val title = view.findViewById<View>(R.id.textview_title)
+                val mainimage = view.findViewById<View>(R.id.item_img)
+                val title = view.findViewById<TextView>(R.id.textview_title)
+                if (singleLine) title.setSingleLine()
                 val userImage = view.findViewById<View>(R.id.imageview_user)
 
                 val options = ActivityOptions.makeSceneTransitionAnimation(
@@ -112,10 +100,12 @@ class RankingAdapter(
                     Pair.create(userImage, "userimage")
                 )
                 ContextCompat.startActivity(context, intent, options.toBundle())
-            } else ContextCompat.startActivity(context, intent, null)
+            } else
+                ContextCompat.startActivity(context, intent, null)
         }
     }
 
+    @SuppressLint("InflateParams")
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         addFooterView(LayoutInflater.from(context).inflate(R.layout.foot_list, null))
@@ -123,6 +113,14 @@ class RankingAdapter(
         setAnimationWithDefault(AnimationType.ScaleIn)
     }
     override fun convert(helper: BaseViewHolder, item: Illust) {
+        if (hideBookmarked && item.is_bookmarked){
+            helper.itemView.visibility = View.GONE
+            helper.itemView.layoutParams.apply {
+                height = 0
+                width = 0
+            }
+            return
+        }
         val tags = item.tags.map {
             it.name
         }
@@ -133,7 +131,6 @@ class RankingAdapter(
                 break
             }
         }
-
         if (blockTags.isNotEmpty() && tags.isNotEmpty() && needBlock) {
             helper.itemView.visibility = View.GONE
             helper.itemView.layoutParams.apply {
@@ -148,18 +145,49 @@ class RankingAdapter(
                 width = LinearLayout.LayoutParams.MATCH_PARENT
             }
         }
+        val typedValue = TypedValue()
+        context.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
+        val colorPrimary = typedValue.resourceId
+        context.theme.resolveAttribute(R.attr.badgeTextColor, typedValue, true)
+        val badgeTextColor = typedValue.resourceId
+        helper.getView<MaterialButton>(R.id.save).setOnClickListener {
+            Works.imageDownloadAll(item)
+        }
+        helper.setText(R.id.textview_title, item.title)
+        helper.setText(R.id.textview_context, item.user.name)
+        helper.setTextColor(R.id.textview_context, ContextCompat.getColor(context, colorPrimary))
+        helper.setTextColor(
+            R.id.like, if (item.is_bookmarked) {
+                ContextCompat.getColor(context, badgeTextColor)
+            } else {
+                ContextCompat.getColor(context, colorPrimary)
+            }
+        )
+
+        helper.getView<MaterialButton>((R.id.like)).setOnClickListener { v ->
+            val textView = v as Button
+            val retrofit = RetrofitRepository.getInstance()
+            if (item.is_bookmarked) {
+                retrofit.postUnlikeIllust(item.id).subscribe({
+                    textView.setTextColor(ContextCompat.getColor(context, colorPrimary))
+                    item.is_bookmarked = false
+                }, {}, {})
+            } else {
+                retrofit.postLikeIllust(item.id)!!.subscribe({
+                    textView.setTextColor(
+                        ContextCompat.getColor(context, badgeTextColor)
+                    )
+                    item.is_bookmarked = true
+                }, {}, {})
+            }
+        }
 
         val constraintLayout =
             helper.itemView.findViewById<ConstraintLayout>(R.id.constraintLayout_num)
-        val typedValue = TypedValue()
-        context.getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
-        val colorPrimary = typedValue.resourceId;
-        context.getTheme().resolveAttribute(R.attr.badgeTextColor, typedValue, true);
-        val badgeTextColor = typedValue.resourceId;
         when (item.type) {
             "illust" -> if (item.meta_pages.isEmpty()) {
                 constraintLayout.visibility = View.INVISIBLE
-            } else if (!item.meta_pages.isEmpty()) {
+            } else if (item.meta_pages.isNotEmpty()) {
                 constraintLayout.visibility = View.VISIBLE
                 helper.setText(R.id.textview_num, item.meta_pages.size.toString())
             }
@@ -187,36 +215,6 @@ class RankingAdapter(
 
         }
         imageViewUser.setTag(R.id.tag_first, item.user.profile_image_urls.medium)
-        helper.setText(R.id.textview_title, item.title)
-            .setTextColor(R.id.textview_context, ContextCompat.getColor(context, colorPrimary))
-        helper.setText(R.id.textview_context, item.user.name)
-        helper.getView<MaterialButton>(R.id.save).setOnClickListener {
-            Works.imageDownloadAll(item)
-        }
-        helper.setTextColor(
-            R.id.like, if (item.is_bookmarked) {
-                ContextCompat.getColor(context, badgeTextColor)
-            } else {
-                ContextCompat.getColor(context, colorPrimary)
-            }
-        )
-        helper.getView<MaterialButton>((R.id.like)).setOnClickListener { v ->
-            val textView = v as Button
-            val retrofit = RetrofitRepository.getInstance()
-            if (item.is_bookmarked) {
-                retrofit.postUnlikeIllust(item.id).subscribe({
-                    textView.setTextColor(ContextCompat.getColor(context, colorPrimary))
-                    item.is_bookmarked = false
-                }, {}, {})
-            } else {
-                retrofit.postLikeIllust(item.id)!!.subscribe({
-                    textView.setTextColor(
-                        ContextCompat.getColor(context, badgeTextColor)
-                    )
-                    item.is_bookmarked = true
-                }, {}, {})
-            }
-        }
 
         GlideApp.with(imageViewUser.context).load(item.user.profile_image_urls.medium).circleCrop()
             .into(object : ImageViewTarget<Drawable>(imageViewUser) {
@@ -242,6 +240,7 @@ class RankingAdapter(
         } else {
             item.image_urls.medium
         }
+
         if (!R18on) {
             val isr18 = tags.contains("R-18") || tags.contains("R-18G")
             if (isr18) {
@@ -249,10 +248,9 @@ class RankingAdapter(
                     .load(ContextCompat.getDrawable(context, R.drawable.h))
                     .placeholder(R.drawable.h).into(imageView)
             } else {
-
-                GlideApp.with(imageView.context).load(loadUrl).transition(withCrossFade())
-                    .placeholder(android.R.color.white)
+                GlideApp.with(imageView.context).load(loadUrl)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .transition(withCrossFade()).placeholder(R.color.white)
                     .into(object : ImageViewTarget<Drawable>(imageView) {
                         override fun setResource(resource: Drawable?) {
                             imageView.setImageDrawable(resource)
@@ -265,13 +263,12 @@ class RankingAdapter(
                             if (imageView.getTag(R.id.tag_first) === item.image_urls.medium) {
                                 super.onResourceReady(resource, transition)
                             }
-
                         }
                     })
             }
         } else {
             GlideApp.with(imageView.context).load(loadUrl).transition(withCrossFade())
-                .placeholder(android.R.color.white)
+                .placeholder(R.color.white)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .error(ContextCompat.getDrawable(imageView.context, R.drawable.ai))
                 .into(object : ImageViewTarget<Drawable>(imageView) {
@@ -291,6 +288,4 @@ class RankingAdapter(
                 })
         }
     }
-
-
 }

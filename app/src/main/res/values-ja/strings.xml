@@ -269,4 +269,6 @@
     <string name="save_zip">save zip</string>
     <string name="already_going_on">It\'s already going on</string>
     <string name="save_zip_success">save zip success</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="messages_header">Messages</string>
 </resources>

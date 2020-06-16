@@ -24,12 +24,13 @@
 
 package com.perol.asdpl.pixivez.adapters
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Pair
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -38,7 +39,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
@@ -56,37 +56,20 @@ import com.perol.asdpl.pixivez.responses.Illust
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.services.Works
-import android.util.Pair as UtilPair
+
 
 // simple Adapter for image item, without user imageView
+//TODO: rename
 class RecommendAdapter(
     layoutResId: Int,
     data: List<Illust>?,
     private val R18on: Boolean,
-    var blockTags: List<String>,
-    var hideBookmarked: Boolean = false
+    override var blockTags: List<String>,
+    override var hideBookmarked: Boolean = false
 ) :
-    BaseQuickAdapter<Illust, BaseViewHolder>(layoutResId, data?.toMutableList()), LoadMoreModule {
-
-    fun loadMoreEnd() {
-        this.loadMoreModule?.loadMoreEnd()
-    }
-
-    fun loadMoreComplete() {
-        this.loadMoreModule?.loadMoreComplete()
-    }
-
-    fun loadMoreFail() {
-        this.loadMoreModule?.loadMoreFail()
-    }
-
-    fun setOnLoadMoreListener(onLoadMoreListener: OnLoadMoreListener, recyclerView: RecyclerView?) {
-        this.loadMoreModule?.setOnLoadMoreListener(onLoadMoreListener)
-    }
+    PicItemAdapter(layoutResId, data?.toMutableList()), LoadMoreModule {
 
     init {
-
-
         this.setOnItemClickListener { adapter, view, position ->
             val bundle = Bundle()
             bundle.putLong("illustid", this@RecommendAdapter.data[position].id)
@@ -98,24 +81,25 @@ class RecommendAdapter(
             val intent = Intent(context, PictureActivity::class.java)
             intent.putExtras(bundle)
             if (PxEZApp.animationEnable) {
-                val mainimage = view!!.findViewById<View>(R.id.item_img)
+                val mainimage = view.findViewById<View>(R.id.item_img)
                 val title = view.findViewById<View>(R.id.title)
                 val options = ActivityOptions.makeSceneTransitionAnimation(
                     context as Activity,
-                    UtilPair.create(
+                    Pair.create(
                         mainimage,
                         "mainimage"
                     ),
-                    UtilPair.create(title, "title")
+                    Pair.create(title, "title")
                 )
-                startActivity(context, intent, options.toBundle())
+                ContextCompat.startActivity(context, intent, options.toBundle())
             } else
-                startActivity(context, intent, null)
+                ContextCompat.startActivity(context, intent, null)
         }
 
 
     }
 
+    @SuppressLint("InflateParams")
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         addFooterView(LayoutInflater.from(context).inflate(R.layout.foot_list, null))
@@ -123,6 +107,14 @@ class RecommendAdapter(
         setAnimationWithDefault(AnimationType.AlphaIn)
     }
     override fun convert(helper: BaseViewHolder, item: Illust) {
+        if (hideBookmarked && item.is_bookmarked){
+            helper.itemView.visibility = View.GONE
+            helper.itemView.layoutParams.apply {
+                height = 0
+                width = 0
+            }
+            return
+        }
         val tags = item.tags.map {
             it.name
         }
@@ -132,14 +124,6 @@ class RecommendAdapter(
                 needBlock = true
                 break
             }
-        }
-        if (hideBookmarked && item.is_bookmarked){
-            helper.itemView.visibility = View.GONE
-            helper.itemView.layoutParams.apply {
-                height = 0
-                width = 0
-            }
-            return
         }
         if (blockTags.isNotEmpty() && tags.isNotEmpty() && needBlock) {
             helper.itemView.visibility = View.GONE
@@ -155,15 +139,16 @@ class RecommendAdapter(
                 width = LinearLayout.LayoutParams.MATCH_PARENT
             }
         }
-        val typedValue = TypedValue();
+        val typedValue = TypedValue()
         context.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
-        val colorPrimary = typedValue.resourceId;
+        val colorPrimary = typedValue.resourceId
         context.theme.resolveAttribute(R.attr.badgeTextColor, typedValue, true)
-        val badgeTextColor = typedValue.resourceId;
+        val badgeTextColor = typedValue.resourceId
         helper.getView<MaterialButton>(R.id.save).setOnClickListener {
             Works.imageDownloadAll(item)
         }
-        helper.setText(R.id.title, item.title).setTextColor(
+        helper.setText(R.id.title, item.title)
+        helper.setTextColor(
             R.id.like, if (item.is_bookmarked) {
                 ContextCompat.getColor(context, badgeTextColor)
             } else {
@@ -181,7 +166,9 @@ class RecommendAdapter(
                 }, {}, {})
             } else {
                 retrofit.postLikeIllust(item.id)!!.subscribe({
-                    textView.setTextColor(ContextCompat.getColor(context, badgeTextColor))
+                    textView.setTextColor(
+                        ContextCompat.getColor(context, badgeTextColor)
+                    )
                     item.is_bookmarked = true
                 }, {}, {})
             }
@@ -189,7 +176,6 @@ class RecommendAdapter(
 
         val constraintLayout =
             helper.itemView.findViewById<ConstraintLayout>(R.id.constraintLayout_num)
-        val imageView = helper.getView<ImageView>(R.id.item_img)
         when (item.type) {
             "illust" -> if (item.meta_pages.isEmpty()) {
                 constraintLayout.visibility = View.INVISIBLE
@@ -206,9 +192,10 @@ class RecommendAdapter(
                 helper.setText(R.id.textview_num, "CoM")
             }
         }
+        val imageView = helper.getView<ImageView>(R.id.item_img)
         imageView.setTag(R.id.tag_first, item.image_urls.medium)
-        val needsmall = item.height > 1500 || item.height > 1500
-        val loadurl = if (needsmall) {
+        val needSmall = item.height > 1500 || item.height > 1500
+        val loadUrl = if (needSmall) {
             item.image_urls.square_medium
         } else {
             item.image_urls.medium
@@ -221,10 +208,13 @@ class RecommendAdapter(
                     .load(ContextCompat.getDrawable(context, R.drawable.h))
                     .placeholder(R.drawable.h).into(imageView)
             } else {
-                GlideApp.with(imageView.context).load(loadurl)
+                GlideApp.with(imageView.context).load(loadUrl)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .transition(withCrossFade()).placeholder(R.color.white)
                     .into(object : ImageViewTarget<Drawable>(imageView) {
+                        override fun setResource(resource: Drawable?) {
+                            imageView.setImageDrawable(resource)
+                        }
 
                         override fun onResourceReady(
                             resource: Drawable,
@@ -234,18 +224,10 @@ class RecommendAdapter(
                                 super.onResourceReady(resource, transition)
                             }
                         }
-
-                        override fun setResource(resource: Drawable?) {
-
-                            imageView.setImageDrawable(resource)
-                        }
-                    }
-                    )
-
+                    })
             }
         } else {
-
-            GlideApp.with(imageView.context).load(loadurl).transition(withCrossFade())
+            GlideApp.with(imageView.context).load(loadUrl).transition(withCrossFade())
                 .placeholder(R.color.white)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .error(ContextCompat.getDrawable(imageView.context, R.drawable.ai))
@@ -265,11 +247,5 @@ class RecommendAdapter(
                     }
                 })
         }
-
     }
-
-
 }
-
-
-

@@ -25,6 +25,7 @@
 package com.perol.asdpl.pixivez.fragments
 
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -33,15 +34,19 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.UserMActivity
+import com.perol.asdpl.pixivez.adapters.PicItemAdapter
+import com.perol.asdpl.pixivez.adapters.RankingAdapter
 import com.perol.asdpl.pixivez.adapters.RecommendAdapter
 import com.perol.asdpl.pixivez.dialog.TagsShowDialog
 import com.perol.asdpl.pixivez.objects.AdapterRefreshEvent
 import com.perol.asdpl.pixivez.objects.BaseFragment
 import com.perol.asdpl.pixivez.repository.AppDataRepository
+import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.viewmodel.UserBookMarkViewModel
 import kotlinx.android.synthetic.main.fragment_user_book_mark.*
 import kotlinx.coroutines.runBlocking
@@ -62,6 +67,7 @@ private const val ARG_PARAM2 = "param2"
  */
 
 class UserBookMarkFragment : BaseFragment(), TagsShowDialog.Callback {
+    @SuppressLint("InflateParams")
     override fun loadData() {
         viewmodel!!.first(param1!!, pub).doOnSuccess {
             if (it) {
@@ -81,13 +87,23 @@ class UserBookMarkFragment : BaseFragment(), TagsShowDialog.Callback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         savedInstanceState
-        recommendAdapter = RecommendAdapter(
-            R.layout.view_recommand_item,
-            null,
-            isR18on,
-            blockTags,
-            viewactivity.viewModel.hideBookmarked.value!!
-        )
+        recommendAdapter =
+            if(PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance).getBoolean("show_user_img_bookmarked",true)){
+                RankingAdapter(
+                    R.layout.view_ranking_item,
+                    null,
+                    isR18on,
+                    blockTags,
+                    singleLine = false,
+                    hideBookmarked = viewactivity.viewModel.hideBookmarked.value!!)
+            } else{
+                RecommendAdapter(
+                    R.layout.view_recommand_item,
+                    null,
+                    isR18on,
+                    blockTags,
+                    hideBookmarked = viewactivity.viewModel.hideBookmarked.value!!)
+            }
 
 
         mrecyclerview.layoutManager =
@@ -122,9 +138,9 @@ class UserBookMarkFragment : BaseFragment(), TagsShowDialog.Callback {
         )
     }
 
-    fun lazyLoad() {
+    private fun lazyLoad() {
         viewmodel = ViewModelProviders.of(this).get(UserBookMarkViewModel::class.java)
-        viewactivity = activity as UserMActivity
+        this.viewactivity = activity as UserMActivity
 
         viewmodel!!.nexturl.observe(this, Observer {
             if (it.isNullOrEmpty()) {
@@ -168,10 +184,10 @@ class UserBookMarkFragment : BaseFragment(), TagsShowDialog.Callback {
 
     }
 
-    var pub = "public"
+    private var pub = "public"
 
     var viewmodel: UserBookMarkViewModel? = null
-    lateinit var viewactivity: UserMActivity
+    private lateinit var viewactivity: UserMActivity
 
 
     private fun showTagDialog() {
@@ -212,7 +228,7 @@ class UserBookMarkFragment : BaseFragment(), TagsShowDialog.Callback {
             recommendAdapter.notifyDataSetChanged()
         }
     }
-    private lateinit var recommendAdapter: RecommendAdapter
+    private lateinit var recommendAdapter: PicItemAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

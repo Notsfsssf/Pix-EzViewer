@@ -156,6 +156,15 @@ class SettingFragment : PreferenceFragmentCompat() {
                 .show()
             true
         }
+        findPreference<SwitchPreference>("show_user_img_main")!!.setOnPreferenceChangeListener { preference, newValue ->
+            Snackbar.make(requireView(), getString(R.string.needtorestart), Snackbar.LENGTH_SHORT)
+                .setAction(R.string.restart_now) {
+                    PxEZApp.language = newValue.toString().toInt()
+                    PxEZApp.ActivityCollector.recreate()
+                }
+                .show()
+            true
+        }
 
         findPreference<SwitchPreference>("r18on")!!.setOnPreferenceChangeListener { preference, newValue ->
             Toasty.normal(PxEZApp.instance, getString(R.string.needtorestart), Toast.LENGTH_SHORT)

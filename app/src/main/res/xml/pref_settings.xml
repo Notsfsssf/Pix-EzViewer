@@ -58,10 +58,25 @@
             app:key="needstatusbar"
             app:title="@string/needstatusbar" />
         <SwitchPreference
-            android:summary="节省转场动画的运存"
+            android:summary="@string/animation_summary"
             app:defaultValue="true"
             app:key="animation"
             app:title="@string/animation" />
+        <SwitchPreference
+            app:defaultValue="true"
+            app:key="show_user_img_main"
+            app:summary="@string/show_user_img_main_summary"
+            app:title="@string/show_user_img_main" />
+        <SwitchPreference
+            app:defaultValue="true"
+            app:key="show_user_img_bookmarked"
+            app:summary="@string/show_user_img_bookmarked_summary"
+            app:title="@string/show_user_img_bookmarked" />
+        <SwitchPreference
+            app:defaultValue="true"
+            app:key="show_user_img_searchr"
+            app:summary="@string/show_user_img_searchr_summary"
+            app:title="@string/show_user_img_searchr" />
         <SwitchPreference
             app:defaultValue="true"
             app:summary="play版本不生效"

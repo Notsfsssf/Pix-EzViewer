@@ -276,4 +276,16 @@
     <string name="save_zip">save zip</string>
     <string name="already_going_on">It\'s already going on</string>
     <string name="save_zip_success">save zip success</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="messages_header">Messages</string>
+    <string name="title_activity_manager_settings">Settings</string>
+    <string name="title_activity_main">My Compose App</string>
+    <string name="title_activity_img_d">My Compose App</string>
+    <string name="action_change">change</string>
+    <string name="action_select">select</string>
+    <string name="title_change_theme">change theme</string>
+    <string name="title_save_path">save path</string>
+    <string name="action_apply">apply</string>
+    <string name="title_change_icon">change icon</string>
+    <string name="title_theme_color">theme color</string>
 </resources>

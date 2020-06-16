@@ -35,13 +35,17 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.PixivsionActivity
+import com.perol.asdpl.pixivez.adapters.PicItemAdapter
+import com.perol.asdpl.pixivez.adapters.RankingAdapter
 import com.perol.asdpl.pixivez.adapters.RecommendAdapter
 import com.perol.asdpl.pixivez.objects.AdapterRefreshEvent
 import com.perol.asdpl.pixivez.objects.BaseFragment
+import com.perol.asdpl.pixivez.responses.Illust
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.viewmodel.HelloMRecomModel
@@ -121,7 +125,7 @@ class HelloMRecommendFragment : BaseFragment() {
 
     }
 
-    lateinit var rankingAdapter: RecommendAdapter
+    lateinit var rankingAdapter: PicItemAdapter
     lateinit var viewmodel: HelloMRecomModel
     lateinit var banner: Banner
 
@@ -186,12 +190,24 @@ class HelloMRecommendFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        rankingAdapter = RecommendAdapter(
-            R.layout.view_recommand_item,
-            null,
-            isR18on,
-            blockTags
-        )
+        rankingAdapter =
+            if(PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance).getBoolean("show_user_img_main",true)){
+                RankingAdapter(
+                R.layout.view_ranking_item,
+                    null,
+                    isR18on,
+                    blockTags,
+                    singleLine = true,
+                    hideBookmarked = false)
+            } else{
+                RecommendAdapter(
+                R.layout.view_recommand_item,
+                null,
+                isR18on,
+                blockTags,
+                hideBookmarked = false)
+            }
+
         bannerView = inflater.inflate(R.layout.header_recom, container, false)
         rankingAdapter.apply {
             addHeaderView(bannerView)
