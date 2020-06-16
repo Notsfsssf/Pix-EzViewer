@@ -68,7 +68,6 @@ class TrendTagViewModel : BaseViewModel() {
     fun resethistory() {
         appDatabase.searchhistoryDao().getSearchHistory().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-
                     searchhistroy.value = it
                 }, {}, {}).add()
     }

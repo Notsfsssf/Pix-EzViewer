@@ -104,7 +104,7 @@ class TrendTagFragment : Fragment() {
                 }
             }
         }, {}))
-        viewModel.searchhistroy.observe(this, Observer { it ->
+        viewModel.searchhistroy.observe(viewLifecycleOwner, Observer { it ->
 
             val arrayList = ArrayList<String>()
             chipgroup.removeAllViews()
@@ -151,7 +151,7 @@ class TrendTagFragment : Fragment() {
             nameQuery = splits[0]
         }
         bundle.putString("searchword", nameQuery)
-        val intent = Intent(activity!!, SearchResultActivity::class.java)
+        val intent = Intent(requireActivity(), SearchResultActivity::class.java)
         intent.putExtras(bundle)
         startActivityForResult(intent, 775)
     }

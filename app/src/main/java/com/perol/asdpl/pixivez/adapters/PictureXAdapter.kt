@@ -60,7 +60,7 @@ import com.dinuscxj.progressbar.CircleProgressBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.PictureActivity
-import com.perol.asdpl.pixivez.activity.SearchResultActivity
+import com.perol.asdpl.pixivez.activity.SearchRActivity
 import com.perol.asdpl.pixivez.activity.UserMActivity
 import com.perol.asdpl.pixivez.activity.ZoomActivity
 import com.perol.asdpl.pixivez.databinding.ViewPicturexDetailBinding
@@ -269,14 +269,14 @@ class PictureXAdapter(
                         translateName.setOnClickListener {
                             val bundle = Bundle()
                             bundle.putString("searchword", illust.tags[position].name)
-                            val intent = Intent(context, SearchResultActivity::class.java)
+                            val intent = Intent(context, SearchRActivity::class.java)
                             intent.putExtras(bundle)
                             context.startActivity(intent)
                         }
                         name.setOnClickListener {
                             val bundle = Bundle()
                             bundle.putString("searchword", illust.tags[position].name)
-                            val intent = Intent(context, SearchResultActivity::class.java)
+                            val intent = Intent(context, SearchRActivity::class.java)
                             intent.putExtras(bundle)
                             context.startActivity(intent)
                         }

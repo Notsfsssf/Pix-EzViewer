@@ -159,6 +159,10 @@ class SearchRActivity : RinkActivity() {
 
         })
 
+        if (intent.extras != null) {
+            searchview_searchm.setQuery(intent.extras!!.getString("searchword")!!, true)
+        }
+
     }
 
     private fun uptopage(query: String) {
