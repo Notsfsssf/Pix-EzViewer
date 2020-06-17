@@ -64,6 +64,8 @@ class SearchRActivity : RinkActivity() {
         if (resultCode == Activity.RESULT_OK && data != null) {
             val word = data.getStringExtra("word")
             searchview_searchm.setQuery(word, false)
+        }else if(intent.extras !=null){
+            finish()
         }
     }
 
