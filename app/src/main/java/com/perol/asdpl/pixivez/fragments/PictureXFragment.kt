@@ -47,6 +47,7 @@ import com.perol.asdpl.pixivez.dialog.CommentDialog
 import com.perol.asdpl.pixivez.objects.AdapterRefreshEvent
 import com.perol.asdpl.pixivez.objects.BaseFragment
 import com.perol.asdpl.pixivez.objects.Toasty
+import com.perol.asdpl.pixivez.responses.Illust
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.viewmodel.PictureXViewModel
 import kotlinx.android.synthetic.main.fragment_picture_x.*
@@ -58,6 +59,7 @@ import org.greenrobot.eventbus.ThreadMode
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass for pic detail.
@@ -68,11 +70,12 @@ private const val ARG_PARAM1 = "param1"
 class PictureXFragment : BaseFragment() {
 
     private var param1: Long? = null
+    private var param2: Illust? = null
     private lateinit var pictureXViewModel: PictureXViewModel
     override fun loadData() {
 //        val item = activity?.intent?.extras
 //        val illust = item?.getParcelable<Illust>(param1.toString())
-        pictureXViewModel.firstGet(param1!!)
+        pictureXViewModel.firstGet(param1!!,param2)
     }
 
     override fun onDestroy() {
@@ -106,7 +109,7 @@ class PictureXFragment : BaseFragment() {
                 it.name
             }
             var needBlock = false
-            pictureXViewModel.illustDetailResponse.value?.illust?.tags?.forEach {
+            pictureXViewModel.illustDetail.value?.tags?.forEach {
                 if (blockTags.contains(it.name)) needBlock = true
             }
             if (!needBlock) {
@@ -118,10 +121,10 @@ class PictureXFragment : BaseFragment() {
     private fun initViewModel() {
 
         pictureXViewModel = ViewModelProvider(this).get(PictureXViewModel::class.java)
-        pictureXViewModel.illustDetailResponse.observe(this, Observer {
+        pictureXViewModel.illustDetail.observe(this, Observer {
             progress_view.visibility = View.GONE
             if (it != null) {
-                val tags = it.illust.tags.map {
+                val tags = it.tags.map {
                     it.name
                 }
                 for (i in tags) {
@@ -133,18 +136,18 @@ class PictureXFragment : BaseFragment() {
                         block_view.visibility = View.VISIBLE
                     }
                 }
-                rootBinding.illust = it.illust
+                rootBinding.illust = it
 
-                if (it.illust.meta_pages.isNotEmpty())
-                    position = it.illust.meta_pages.size
+                if (it.meta_pages.isNotEmpty())
+                    position = it.meta_pages.size
                 else position = 1
                 pictureXAdapter =
-                    PictureXAdapter(pictureXViewModel, it.illust, requireContext()).also {
+                    PictureXAdapter(pictureXViewModel, it, requireContext()).also {
                         it.setListener {
                             //                        activity?.supportStartPostponedEnterTransition()
                             if (!hasMoved) {
                                 recyclerview?.scrollToPosition(0)
-                                (recyclerview?.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
+                                (recyclerview?.layoutManager as LinearLayoutManager)?.scrollToPositionWithOffset(
                                     0,
                                     0
                                 )
@@ -154,7 +157,7 @@ class PictureXFragment : BaseFragment() {
                         }
                         it.setViewCommentListen {
                             val commentDialog =
-                                CommentDialog.newInstance(pictureXViewModel.illustDetailResponse.value!!.illust.id)
+                                CommentDialog.newInstance(pictureXViewModel.illustDetail.value!!.id)
                             commentDialog.show(childFragmentManager)
                         }
                         it.setUserPicLongClick {
@@ -164,13 +167,13 @@ class PictureXFragment : BaseFragment() {
                     }
 
                 recyclerview.adapter = pictureXAdapter
-                if (it.illust.user.is_followed)
+                if (it.user.is_followed)
                     imageViewUser_picX.setBorderColor(Color.YELLOW)
                 //else
                 //    imageViewUser_picX.setBorderColor(ContextCompat.getColor(requireContext(), colorPrimary))
                 imageViewUser_picX.setOnClickListener { ot ->
                     val intent = Intent(context, UserMActivity::class.java)
-                    intent.putExtra("data", it.illust.user.id)
+                    intent.putExtra("data", it.user.id)
                     startActivity(intent)
                 }
                 fab.show()
@@ -214,7 +217,7 @@ class PictureXFragment : BaseFragment() {
             pictureXViewModel.fabClick()
         }
         fab.setOnLongClickListener {
-            if (pictureXViewModel.illustDetailResponse.value!!.illust.is_bookmarked) {
+            if (pictureXViewModel.illustDetail.value!!.is_bookmarked) {
                 return@setOnLongClickListener true
             }
             Toasty.info(
@@ -253,6 +256,7 @@ class PictureXFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getLong(ARG_PARAM1)
+            param2 = it.getParcelable(ARG_PARAM2)?:null
         }
         initViewModel()
     }
@@ -289,10 +293,15 @@ class PictureXFragment : BaseFragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: Long) =
+        fun newInstance(param1: Long?,param2: Illust?) =
             PictureXFragment().apply {
                 arguments = Bundle().apply {
-                    putLong(ARG_PARAM1, param1)
+                    if (param2 != null) {
+                        putParcelable(ARG_PARAM2, param2)
+                        putLong(ARG_PARAM1, param2.id)
+                    } else {
+                        putLong(ARG_PARAM1, param1!!)
+                    }
 /*                    putParcelable("illust", illust)*/
                 }
             }

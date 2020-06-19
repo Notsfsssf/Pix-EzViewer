@@ -62,7 +62,7 @@ class HistoryMActivity : RinkActivity() {
             val bundle = Bundle()
             val arrayList = LongArray(1)
             arrayList[0] = (historyMViewModel!!.illustBeans.value!![position].illustid)
-            bundle.putLongArray("illustlist", arrayList)
+            bundle.putLongArray("illustidlist", arrayList)
             bundle.putLong("illustid", historyMViewModel!!.illustBeans.value!![position].illustid)
             val intent2 = Intent(applicationContext, PictureActivity::class.java)
             intent2.putExtras(bundle)

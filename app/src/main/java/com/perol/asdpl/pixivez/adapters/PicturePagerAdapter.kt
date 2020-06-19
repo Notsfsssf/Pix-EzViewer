@@ -28,15 +28,17 @@ package com.perol.asdpl.pixivez.adapters
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.perol.asdpl.pixivez.fragments.PictureXFragment
+import com.perol.asdpl.pixivez.responses.Illust
 
 class PicturePagerAdapter(
     fm: FragmentManager,
-    private val fragments: LongArray
+    private val fragments: LongArray?,
+    private val fragments2: ArrayList<Illust>? = null
 ) : FragmentPagerAdapter(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     override fun getItem(position: Int) = PictureXFragment.newInstance(
-        fragments[position]
+        fragments?.get(position), fragments2?.get(position)
     )
 
-    override fun getCount() = fragments.size
+    override fun getCount() = fragments2?.size ?: fragments?.size ?: 0
 
 }

@@ -230,7 +230,7 @@ class SaucenaoActivity : RinkActivity() {
 
         if (arrayList.isNotEmpty()) {
             val it = arrayList.toLongArray()
-            bundle.putLongArray("illustlist", it)
+            bundle.putLongArray("illustidlist", it)
             bundle.putLong("illustid", it[0])
             val intent2 = Intent(applicationContext, PictureActivity::class.java)
             intent2.putExtras(bundle)

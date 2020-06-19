@@ -364,7 +364,7 @@ class PictureXAdapter(
     }
 
     class RelativeHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun updateWithPage(s: AboutPictureAdapter, mContext: Context) {
+        fun updateWithPage(s: RelativePictureAdapter, mContext: Context) {
             recyclerView.layoutManager = GridLayoutManager(mContext, 3)
             recyclerView.adapter = s
 
@@ -443,8 +443,8 @@ class PictureXAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is PictureViewHolder) {
-            val imageViewPic = holder.itemView.findViewById<ImageView>(R.id.imageview_pic)
-            GlideApp.with(imageViewPic).load(imageUrls[position]).placeholder(R.color.halftrans)
+            val mainImage = holder.itemView.findViewById<ImageView>(R.id.imageview_pic)
+            GlideApp.with(mainImage).load(imageUrls[position]).placeholder(R.color.halftrans)
                 .transition(withCrossFade()).listener(object : RequestListener<Drawable> {
 
                     override fun onLoadFailed(
@@ -470,8 +470,8 @@ class PictureXAdapter(
 
                         return false
                     }
-                }).into(imageViewPic)
-            imageViewPic.apply {
+                }).into(mainImage)
+            mainImage.apply {
                 setOnLongClickListener { it ->
                     val builder = MaterialAlertDialogBuilder(mContext as Activity)
                     builder.setTitle(mContext.resources.getString(R.string.saveselectpic1))
@@ -581,7 +581,7 @@ class PictureXAdapter(
                     bundle.putStringArrayList("url", arrayList)
                     bundle.putParcelable(
                         "illust",
-                        pictureXViewModel.illustDetailResponse.value?.illust
+                        pictureXViewModel.illustDetail.value
                     )
                     intent.putExtras(bundle)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -593,7 +593,7 @@ class PictureXAdapter(
             }
 //            (mContext as FragmentActivity).supportStartPostponedEnterTransition()
         } else if (holder is SurfaceGifViewHolder) {
-            progressBar = holder.itemView.findViewById<CircleProgressBar>(R.id.progressbar_gif)
+            gifProgressBar = holder.itemView.findViewById<CircleProgressBar>(R.id.progressbar_gif)
             val play = holder.itemView.findViewById<ImageView>(R.id.imageview_play)
 
             imageViewGif = holder.itemView.imageview_gif
@@ -615,7 +615,7 @@ class PictureXAdapter(
                 .into(holder.itemView.preview)
             previewImageView = holder.itemView.preview
             imageViewGif!!.setOnLongClickListener {
-                if (progressBar?.visibility != View.VISIBLE) {
+                if (gifProgressBar?.visibility != View.VISIBLE) {
                     MaterialDialog(mContext).show {
                         title(R.string.choice)
                         listItems(
@@ -740,7 +740,7 @@ class PictureXAdapter(
             holder.updateWithPage(mContext, data, mViewCommentListen, mUserPicLongClick)
         } else if (holder is RelativeHolder) {
 //            aboutPictureAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN)
-            holder.updateWithPage(aboutPictureAdapter, mContext)
+            holder.updateWithPage(relativePictureAdapter, mContext)
         }
     }
 
@@ -796,9 +796,9 @@ class PictureXAdapter(
 
     var size = 1
     var duration: Int = 50
-    var progressBar: CircleProgressBar? = null
+    var gifProgressBar: CircleProgressBar? = null
     var imageViewGif: AnimationView? = null
-    val aboutPictureAdapter = AboutPictureAdapter(R.layout.view_aboutpic_item)
+    val relativePictureAdapter = RelativePictureAdapter(R.layout.view_relativepic_item)
     fun setRelativeNow(it: ArrayList<Illust>) {
         if (it.isEmpty()) {
             return
@@ -808,16 +808,18 @@ class PictureXAdapter(
             list.add(it.image_urls.square_medium)
         }
 
-        aboutPictureAdapter.setNewData(list)
-        aboutPictureAdapter.setOnItemClickListener { adapter, view, position ->
-            val id = it[position].id
+        relativePictureAdapter.setNewData(list)
+        relativePictureAdapter.setOnItemClickListener { adapter, view, position ->
             val bundle = Bundle()
-            val arrayList = ArrayList<Long>()
-            it.forEach {
-                arrayList.add(it.id)
-            }
-            bundle.putLongArray("illustlist", arrayList.toLongArray())
-            bundle.putLong("illustid", id)
+            //val id = it[position].id
+            //val arrayList = ArrayList<Long>()
+            //it.forEach {
+            //    arrayList.add(it.id)
+            //}
+            //bundle.putLongArray("illustidlist", arrayList.toLongArray())
+            //bundle.putLong("illustid", id)
+            bundle.putInt("position", position)
+            bundle.putParcelableArrayList("illustslist",it as ArrayList<out Illust>)
             val intent = Intent(mContext, PictureActivity::class.java)
             intent.putExtras(bundle)
             mContext.startActivity(intent)
@@ -825,9 +827,9 @@ class PictureXAdapter(
     }
 
     fun setProgress(it: ProgressInfo) {
-        if (progressBar != null) {
-            progressBar!!.max = it.all.toInt()
-            progressBar!!.progress = it.now.toInt()
+        if (gifProgressBar != null) {
+            gifProgressBar!!.max = it.all.toInt()
+            gifProgressBar!!.progress = it.now.toInt()
         }
     }
 
@@ -839,7 +841,7 @@ class PictureXAdapter(
 
     var previewImageView: ImageView? = null
     fun setProgressComplete(it: Boolean) {
-        progressBar?.visibility = View.GONE
+        gifProgressBar?.visibility = View.GONE
         previewImageView?.visibility = View.GONE
         val parentPath = PxEZApp.instance.cacheDir.path + "/" + data.id
         val parentFile = File(parentPath)

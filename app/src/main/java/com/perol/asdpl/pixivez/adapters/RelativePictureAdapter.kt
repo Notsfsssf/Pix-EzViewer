@@ -31,7 +31,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.services.GlideApp
 
-class AboutPictureAdapter(layoutResId: Int) : BaseQuickAdapter<String, BaseViewHolder>(layoutResId) {
+class RelativePictureAdapter(layoutResId: Int) : BaseQuickAdapter<String, BaseViewHolder>(layoutResId) {
 
     override fun convert(helper: BaseViewHolder, item: String) {
         val imageView = helper.getView<ImageView>(R.id.imageview_aboutpic)

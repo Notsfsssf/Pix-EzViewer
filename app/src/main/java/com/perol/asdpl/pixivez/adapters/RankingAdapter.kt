@@ -45,8 +45,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.bumptech.glide.request.target.ImageViewTarget
 import com.bumptech.glide.request.transition.Transition
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.button.MaterialButton
@@ -59,6 +57,7 @@ import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.services.Works
 import com.shehuan.niv.NiceImageView
+import java.util.ArrayList
 
 // simple Adapter for image item with user imageView
 //TODO: rename
@@ -67,7 +66,7 @@ class RankingAdapter(
     data: List<Illust>?,
     private val R18on: Boolean,
     override var blockTags: List<String>,
-    singleLine: Boolean = false,
+    var singleLine: Boolean = false,
     override var hideBookmarked: Boolean = false
 ) :
     PicItemAdapter(layoutResId, data?.toMutableList()), LoadMoreModule {
@@ -75,12 +74,14 @@ class RankingAdapter(
     init {
         this.setOnItemClickListener { adapter, view, position ->
             val bundle = Bundle()
-            bundle.putLong("illustid", this.data[position].id)
-            val illustlist = LongArray(this.data.count())
-            for (i in this.data.indices) {
-                illustlist[i] = this.data[i].id
-            }
-            bundle.putLongArray("illustlist", illustlist)
+            //bundle.putLong("illustid", this.data[position].id)
+            //val illustlist = LongArray(this.data.count())
+            //for (i in this.data.indices) {
+            //    illustlist[i] = this.data[i].id
+            //}
+            //bundle.putParcelable("illust", this.data[position])
+            bundle.putInt("position", position)
+            bundle.putParcelableArrayList("illustslist",this.data as ArrayList<out Illust>)
             //  bundle.putParcelable(this.data[position].id.toString(), this.data[position])
             val intent = Intent(context, PictureActivity::class.java)
             intent.putExtras(bundle)
@@ -154,8 +155,8 @@ class RankingAdapter(
             Works.imageDownloadAll(item)
         }
         helper.setText(R.id.textview_title, item.title)
-        helper.setText(R.id.textview_context, item.user.name)
-        helper.setTextColor(R.id.textview_context, ContextCompat.getColor(context, colorPrimary))
+        if (!singleLine) helper.setText(R.id.textview_context, item.user.name)
+        //helper.setTextColor(R.id.textview_context, ContextCompat.getColor(context, colorPrimary))
         helper.setTextColor(
             R.id.like, if (item.is_bookmarked) {
                 ContextCompat.getColor(context, badgeTextColor)

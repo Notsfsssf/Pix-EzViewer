@@ -44,8 +44,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.bumptech.glide.request.target.ImageViewTarget
 import com.bumptech.glide.request.transition.Transition
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnLoadMoreListener
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.button.MaterialButton
@@ -56,6 +54,7 @@ import com.perol.asdpl.pixivez.responses.Illust
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.PxEZApp
 import com.perol.asdpl.pixivez.services.Works
+import java.util.ArrayList
 
 
 // simple Adapter for image item, without user imageView
@@ -72,12 +71,14 @@ class RecommendAdapter(
     init {
         this.setOnItemClickListener { adapter, view, position ->
             val bundle = Bundle()
-            bundle.putLong("illustid", this@RecommendAdapter.data[position].id)
-            val illustlist = LongArray(this.data.count())
-            for (i in this.data.indices) {
-                illustlist[i] = this.data[i].id
-            }
-            bundle.putLongArray("illustlist", illustlist)
+            //bundle.putLong("illustid", this@RecommendAdapter.data[position].id)
+            //val illustlist = LongArray(this.data.count())
+            //for (i in this.data.indices) {
+            //    illustlist[i] = this.data[i].id
+            //}
+            //bundle.putLongArray("illustidlist", illustlist)
+            bundle.putInt("position", position)
+            bundle.putParcelableArrayList("illustslist",this.data as ArrayList<out Illust>)
             val intent = Intent(context, PictureActivity::class.java)
             intent.putExtras(bundle)
             if (PxEZApp.animationEnable) {

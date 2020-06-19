@@ -46,24 +46,24 @@ class SpotlightAdapter(layoutResId: Int, data: List<Spotlight>?) :
     override fun convert(helper: BaseViewHolder, item: Spotlight) {
         val constraintLayout = helper.itemView.findViewById<ConstraintLayout>(R.id.constraintLayout_num)
         constraintLayout.visibility = View.GONE
-        val imageView = helper.getView<ImageView>(R.id.imageview_user)
-        val imageView1 = helper.getView<ImageView>(R.id.item_img)
+        val userImage = helper.getView<ImageView>(R.id.imageview_user)
+        val mainImage = helper.getView<ImageView>(R.id.item_img)
         helper.setText(R.id.textview_context, item.username)
                 .setText(R.id.textview_title, item.title)
-        GlideApp.with(imageView1.context).load(item.pictureurl).error(R.drawable.ai).transition(withCrossFade()).into(imageView1)
-        GlideApp.with(imageView.context).load(item.userpic).transition(withCrossFade()).circleCrop().into(imageView)
-        imageView1.setOnClickListener {
+        GlideApp.with(mainImage.context).load(item.pictureurl).error(R.drawable.ai).transition(withCrossFade()).into(mainImage)
+        GlideApp.with(userImage.context).load(item.userpic).transition(withCrossFade()).circleCrop().into(userImage)
+        mainImage.setOnClickListener {
             val bundle = Bundle()
             val arrayList = LongArray(1)
             arrayList[0] = item.illustrateid.toLong()
-            bundle.putLongArray("illustlist", arrayList)
+            bundle.putLongArray("illustidlist", arrayList)
             bundle.putLong("illustid", item.illustrateid.toLong())
             val intent = Intent(context, PictureActivity::class.java)
             intent.putExtras(bundle)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
         }
-        imageView.setOnClickListener {
+        userImage.setOnClickListener {
             val intent = Intent(context, UserMActivity::class.java)
             val userid = item.userid.toLong()
 

@@ -39,6 +39,7 @@ import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.PictureActivity
 import com.perol.asdpl.pixivez.activity.SearchResultActivity
 import com.perol.asdpl.pixivez.adapters.TrendingTagAdapter
+import com.perol.asdpl.pixivez.responses.Illust
 import com.perol.asdpl.pixivez.sql.SearchHistoryEntity
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.trend_tag_fragment.*
@@ -91,12 +92,16 @@ class TrendTagFragment : Fragment() {
                     viewModel.addhistory(searchword)
                 }
                 trendingtagAdapter.setOnItemLongClickListener { adapter, view, position ->
-                    var id = it.trend_tags[position].illust.id
                     val bundle = Bundle()
-                    val arrayList = LongArray(1)
-                    arrayList[0] = id
-                    bundle.putLongArray("illustlist", arrayList)
-                    bundle.putLong("illustid", id)
+                    //var id = it.trend_tags[position].illust.id
+                    //val arrayList = LongArray(1)
+                    //arrayList[0] = id
+                    //bundle.putLongArray("illustidlist", arrayList)
+                    //bundle.putLong("illustid", id)
+                    val arrayList = ArrayList<Illust>(1)
+                    arrayList.add(it.trend_tags[position].illust)
+                    bundle.putInt("position", position)
+                    bundle.putParcelableArrayList("illustslist",arrayList)
                     val intent2 = Intent(requireActivity(), PictureActivity::class.java)
                     intent2.putExtras(bundle)
                     startActivity(intent2)

@@ -44,7 +44,7 @@ class IntentActivity : RinkActivity() {
                 val arrayList = LongArray(1)
                 try {
                     arrayList[arrayList.size - 1] = id
-                    bundle.putLongArray("illustlist", arrayList)
+                    bundle.putLongArray("illustidlist", arrayList)
                     bundle.putLong("illustid", id)
                     val intent2 = Intent(this, PictureActivity::class.java)
                     intent2.putExtras(bundle)
@@ -89,7 +89,7 @@ class IntentActivity : RinkActivity() {
                     val arrayList = LongArray(1)
                     try {
                         arrayList[0] = id
-                        bundle.putLongArray("illustlist", arrayList)
+                        bundle.putLongArray("illustidlist", arrayList)
                         bundle.putLong("illustid", id)
                         val intent2 = Intent(this, PictureActivity::class.java)
                         intent2.putExtras(bundle)
@@ -105,7 +105,7 @@ class IntentActivity : RinkActivity() {
                 val bundle = Bundle()
                 val arrayList = longArrayOf(it.toLong())
                 try {
-                    bundle.putLongArray("illustlist", arrayList)
+                    bundle.putLongArray("illustidlist", arrayList)
                     bundle.putLong("illustid", it.toLong())
                     val intent2 = Intent(this, PictureActivity::class.java)
                     intent2.putExtras(bundle)

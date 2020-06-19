@@ -127,7 +127,7 @@ class SearchRActivity : RinkActivity() {
                             val bundle = Bundle()
                             val arrayList = LongArray(1)
                             arrayList[0] = query.toLong()
-                            bundle.putLongArray("illustlist", arrayList)
+                            bundle.putLongArray("illustidlist", arrayList)
                             bundle.putLong("illustid", query.toLong())
                             val intent = Intent(this@SearchRActivity, PictureActivity::class.java)
                             intent.putExtras(bundle)

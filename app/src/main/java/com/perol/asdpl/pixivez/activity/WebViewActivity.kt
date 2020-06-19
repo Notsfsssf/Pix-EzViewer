@@ -94,7 +94,7 @@ class WebViewActivity : RinkActivity() {
                         val bundle = Bundle()
                         val arrayList = LongArray(1)
                         arrayList[0] = id
-                        bundle.putLongArray("illustlist", arrayList)
+                        bundle.putLongArray("illustidlist", arrayList)
                         bundle.putLong("illustid", id)
                         val intent = Intent(this@WebViewActivity, PictureActivity::class.java)
                         intent.putExtras(bundle)
