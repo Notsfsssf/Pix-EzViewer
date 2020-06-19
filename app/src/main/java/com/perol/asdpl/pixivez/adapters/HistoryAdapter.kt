@@ -34,6 +34,6 @@ import com.perol.asdpl.pixivez.sql.IllustBeanEntity
 class HistoryAdapter(layoutResId: Int) : BaseQuickAdapter<IllustBeanEntity, BaseViewHolder>(layoutResId) {
     override fun convert(helper: BaseViewHolder, item: IllustBeanEntity) {
         val imageView = helper.getView<ImageView>(R.id.item_img)
-        GlideApp.with(imageView.context).load(item.imageurl).placeholder(R.color.white).into(imageView)
+        GlideApp.with(imageView.context).load(item.imageurl).placeholder(R.color.halftrans).into(imageView)
     }
 }

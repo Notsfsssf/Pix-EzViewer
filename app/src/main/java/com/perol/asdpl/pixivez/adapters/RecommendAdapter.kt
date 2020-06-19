@@ -210,7 +210,7 @@ class RecommendAdapter(
             } else {
                 GlideApp.with(imageView.context).load(loadUrl)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .transition(withCrossFade()).placeholder(R.color.white)
+                    .transition(withCrossFade()).placeholder(R.color.halftrans)
                     .into(object : ImageViewTarget<Drawable>(imageView) {
                         override fun setResource(resource: Drawable?) {
                             imageView.setImageDrawable(resource)
@@ -228,7 +228,7 @@ class RecommendAdapter(
             }
         } else {
             GlideApp.with(imageView.context).load(loadUrl).transition(withCrossFade())
-                .placeholder(R.color.white)
+                .placeholder(R.color.halftrans)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .error(ContextCompat.getDrawable(imageView.context, R.drawable.ai))
                 .into(object : ImageViewTarget<Drawable>(imageView) {

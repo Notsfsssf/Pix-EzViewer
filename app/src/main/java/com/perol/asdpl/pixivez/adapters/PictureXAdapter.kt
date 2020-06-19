@@ -444,7 +444,7 @@ class PictureXAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is PictureViewHolder) {
             val imageViewPic = holder.itemView.findViewById<ImageView>(R.id.imageview_pic)
-            GlideApp.with(imageViewPic).load(imageUrls[position]).placeholder(R.color.white)
+            GlideApp.with(imageViewPic).load(imageUrls[position]).placeholder(R.color.halftrans)
                 .transition(withCrossFade()).listener(object : RequestListener<Drawable> {
 
                     override fun onLoadFailed(
