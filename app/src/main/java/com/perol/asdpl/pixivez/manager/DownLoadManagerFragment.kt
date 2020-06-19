@@ -144,7 +144,7 @@ class DownloadTaskAdapter() :
 class DownLoadManagerFragment : Fragment() {
 
 
-    fun refreshSingle(task: DownloadTask) {
+    fun refreshSingle(task: DownloadTask?) {
         task?.let {
             var index = -1
             for (i in downloadTaskAdapter.data.indices) {
