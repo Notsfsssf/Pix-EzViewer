@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.perol.asdpl.pixivez.R
 import com.perol.asdpl.pixivez.activity.PictureActivity
-import com.perol.asdpl.pixivez.databinding.DownLoadManagerFragmentBinding
+import com.perol.asdpl.pixivez.databinding.FragmentDownloadManagerBinding
 import com.perol.asdpl.pixivez.databinding.ItemDownloadTaskBinding
 import com.perol.asdpl.pixivez.services.IllustD
 import com.perol.asdpl.pixivez.services.PxEZApp
@@ -135,10 +135,7 @@ class DownloadTaskAdapter() :
         } catch (e: Exception) {
 
         }
-
     }
-
-
 }
 
 class DownLoadManagerFragment : Fragment() {
@@ -282,7 +279,7 @@ class DownLoadManagerFragment : Fragment() {
     }
 
     private lateinit var viewModel: DownLoadManagerViewModel
-    lateinit var binding: DownLoadManagerFragmentBinding
+    lateinit var binding: FragmentDownloadManagerBinding
     lateinit var downloadTaskAdapter: DownloadTaskAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -290,10 +287,16 @@ class DownLoadManagerFragment : Fragment() {
     ): View? {
         Aria.download(this).register()
         downloadTaskAdapter = DownloadTaskAdapter()
-        binding = DownLoadManagerFragmentBinding.inflate(inflater)
+        binding = FragmentDownloadManagerBinding.inflate(inflater)
         binding.progressList.apply {
             adapter = downloadTaskAdapter
             layoutManager = LinearLayoutManager(requireContext())
+        }
+        binding.downloadlistrefreshlayout.setOnRefreshListener {
+            val taskList = Aria.download(this).taskList
+            if (taskList?.isNotEmpty() == true)
+                downloadTaskAdapter.setNewData(taskList.asReversed())
+            binding.downloadlistrefreshlayout.isRefreshing = false
         }
         setHasOptionsMenu(true)
         return binding.root
