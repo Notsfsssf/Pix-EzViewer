@@ -3,7 +3,7 @@
 
 ![当前版本](https://img.shields.io/github/v/release/Notsfsssf/Pix-EzViewer?label=%E5%BD%93%E5%89%8D%E7%89%88%E6%9C%AC)  
 !停止维护，转为开发flutter版，可以选择由[ultranity](https://github.com/ultranity)继续维护的[Pix-EzViewer](https://github.com/ultranity/Pix-EzViewer)（1.5.4W开始）  
-或是使用flutter android版PixEz（与IOS双端同步，google play更新）[前往](https://play.google.com/store/apps/details?id=com.perol.pixez)
+或是使用flutter android版PixEz（与IOS双端同步）[前往](https://github.com/Notsfsssf/pixez-flutter)
 
 一个支持免代理直连及查看动图的第三方 Pixiv Android 客户端。
 
