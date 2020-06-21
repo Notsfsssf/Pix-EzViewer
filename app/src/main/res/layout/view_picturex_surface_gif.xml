@@ -16,7 +16,8 @@
         android:id="@+id/preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:adjustViewBounds="true" />
+        android:adjustViewBounds="true"
+        android:transitionName="mainimage" />
 
     <com.dinuscxj.progressbar.CircleProgressBar
         android:id="@+id/progressbar_gif"

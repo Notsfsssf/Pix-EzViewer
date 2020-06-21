@@ -31,8 +31,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="68dp"
                 android:layout_gravity="bottom"
-                android:background="@android:color/background_light"
-                android:visibility="invisible">
+                android:background="?android:attr/colorBackground"
+                android:visibility="invisible"
+                tools:targetApi="m">
 
                 <ImageButton
                     android:id="@+id/imageButton"
@@ -40,7 +41,7 @@
                     android:layout_height="60dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@android:color/background_light"
+                    android:background="?android:attr/colorBackground"
                     android:src="@drawable/ic_action_fold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
@@ -70,7 +71,6 @@
                     android:ellipsize="end"
                     android:lines="1"
                     android:text="@{illust.title}"
-                    android:textColor="?attr/colorPrimary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageViewUser_picX"
                     app:layout_constraintTop_toTopOf="@+id/imageViewUser_picX" />
@@ -84,7 +84,7 @@
                     android:ellipsize="end"
                     android:lines="1"
                     android:text="@{illust.user.name}"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/colorPrimary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageViewUser_picX"
                     app:layout_constraintTop_toBottomOf="@+id/textView6" />
@@ -105,7 +105,8 @@
             <RelativeLayout
                 android:id="@+id/progress_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:visibility="visible">
 
                 <ProgressBar
                     android:layout_width="wrap_content"
@@ -115,32 +116,28 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/block_view"
-                android:visibility="gone"
-                android:background="?attr/colorSurface"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:background="?attr/colorSurface"
+                android:visibility="gone"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:text="@string/block_face"
-                        android:textSize="24sp"
+                        android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:layout_height="wrap_content" />
+                        android:text="@string/block_face"
+                        android:textSize="24sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:text="@string/block_tag"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="@string/block_tag" />
 
                     <TextView
                         android:id="@+id/blocktag_textview"
@@ -150,10 +147,9 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/jump_button"
                         android:layout_width="wrap_content"
-                        android:text="@string/setting"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="@string/setting" />
                 </LinearLayout>
-            </RelativeLayout>
         </FrameLayout>
 
 
@@ -162,11 +158,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
-            app:backgroundTint="@android:color/white"
+            app:backgroundTint="?android:attr/colorBackgroundFloating"
             app:layout_anchor="@+id/frameLayout"
             android:visibility="gone"
             app:layout_anchorGravity="end|bottom"
-            app:tint="@null" />
+            app:tint="@null"
+            tools:targetApi="m" />
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

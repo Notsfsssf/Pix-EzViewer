@@ -22,6 +22,7 @@
             android:scaleType="centerCrop"
             android:src="@color/grayx"
             android:maxHeight="400dp"
+            android:transitionName="mainimage"
             />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

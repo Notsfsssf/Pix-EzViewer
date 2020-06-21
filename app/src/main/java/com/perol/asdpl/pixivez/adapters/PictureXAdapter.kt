@@ -45,6 +45,7 @@ import android.view.ViewGroup
 import android.webkit.MimeTypeMap
 import android.widget.*
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -444,7 +445,7 @@ class PictureXAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is PictureViewHolder) {
             val mainImage = holder.itemView.findViewById<ImageView>(R.id.imageview_pic)
-            GlideApp.with(mainImage).load(imageUrls[position]).placeholder(R.color.halftrans)
+            GlideApp.with(mContext).load(imageUrls[position]).placeholder(R.color.halftrans)
                 .transition(withCrossFade()).listener(object : RequestListener<Drawable> {
 
                     override fun onLoadFailed(
@@ -454,6 +455,7 @@ class PictureXAdapter(
                         isFirstResource: Boolean
                     ): Boolean {
                         mListen.invoke()
+                        (mContext as FragmentActivity).supportStartPostponedEnterTransition()
                         return false
                     }
 
@@ -467,7 +469,7 @@ class PictureXAdapter(
                         if (position == 0) {
                             mListen.invoke()
                         }
-
+                        (mContext as FragmentActivity).supportStartPostponedEnterTransition()
                         return false
                     }
                 }).into(mainImage)
@@ -611,8 +613,31 @@ class PictureXAdapter(
                     height = finalHeight.toInt()
                 }
             }
-            GlideApp.with(holder.itemView).asBitmap().load(data.image_urls.medium)
-                .into(holder.itemView.preview)
+            GlideApp.with(mContext).load(imageUrls[position]).placeholder(R.color.halftrans)
+                .transition(withCrossFade()).listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any,
+                        target: Target<Drawable>,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        mListen.invoke()
+                        (mContext as FragmentActivity).supportStartPostponedEnterTransition()
+                        return false
+                    }
+
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        model: Any,
+                        target: Target<Drawable>,
+                        dataSource: DataSource,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        mListen.invoke()
+                        (mContext as FragmentActivity).supportStartPostponedEnterTransition()
+                        return false
+                    }
+                }).into(holder.itemView.preview)
             previewImageView = holder.itemView.preview
             imageViewGif!!.setOnLongClickListener {
                 if (gifProgressBar?.visibility != View.VISIBLE) {

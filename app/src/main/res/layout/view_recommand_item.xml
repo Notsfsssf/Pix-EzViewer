@@ -24,7 +24,8 @@
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:maxHeight="420dp"
-                android:src="@color/white" />
+                android:src="@color/white"
+                android:transitionName="mainimage"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout_num"

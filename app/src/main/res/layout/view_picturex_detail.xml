@@ -48,7 +48,6 @@
                 android:layout_toEndOf="@id/imageViewUser_picX"
                 android:text="@{illust.title}"
                 android:transitionName="title"
-                android:textColor="?attr/colorPrimary"
                 android:textIsSelectable="true"
                 android:textSize="14sp" />
 
@@ -61,6 +60,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_toEndOf="@id/imageViewUser_picX"
                 android:text="@{illust.user.name}"
+                android:textColor="?attr/colorPrimary"
                 android:textIsSelectable="true"
                 android:textSize="14sp" />
 

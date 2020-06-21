@@ -105,7 +105,7 @@ class RecommendAdapter(
         super.onAttachedToRecyclerView(recyclerView)
         addFooterView(LayoutInflater.from(context).inflate(R.layout.foot_list, null))
         animationEnable = true
-        setAnimationWithDefault(AnimationType.AlphaIn)
+        setAnimationWithDefault(AnimationType.ScaleIn)
     }
     override fun convert(helper: BaseViewHolder, item: Illust) {
         if (hideBookmarked && item.is_bookmarked){
