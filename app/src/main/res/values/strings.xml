@@ -204,6 +204,7 @@
     <string name="proxy">不启用直连</string>
     <string name="proxydetail">不启用内置的直连方案</string>
     <string name="encodinggif">合成gif</string>
+    <string name="savefirst">下载首图</string>
     <string name="privatep">私人</string>
     <string name="fetchtags">请求标签....</string>
     <string name="publics">公开</string>
@@ -238,6 +239,8 @@
     <string name="confirm">确定</string>
     <string name="multichoicesave">多选保存</string>
     <string name="choice">选择</string>
+    <string name="save">保存</string>
+    <string name="download">下载</string>
     <string name="title_activity_work">WorkActivity</string>
     <string name="title_activity_login_m">Sign in</string>
     <string name="prompt_email">Email</string>

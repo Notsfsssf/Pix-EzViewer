@@ -184,10 +184,6 @@ class PictureXAdapter(
             val typedValue = TypedValue()
             mContext.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
             val colorPrimary = typedValue.resourceId
-            if (illust.type == "ugoira") //gif
-                imageButtonDownload.visibility = View.GONE
-            else
-                imageButtonDownload.setColorFilter(ContextCompat.getColor(mContext, colorPrimary))
             if (illust.user.is_followed)
                 imageViewUser.setBorderColor(Color.YELLOW)
             else
@@ -331,9 +327,20 @@ class PictureXAdapter(
 
 
             }
-            imageButtonDownload.setOnClickListener {
-                Works.imageDownloadAll(illust)
-            }
+
+            if (illust.type == "ugoira") //gif
+                imageButtonDownload.setOnClickListener {
+
+                    MaterialAlertDialogBuilder(mContext as Activity)
+                        .setTitle(R.string.download)
+                        .setPositiveButton(R.string.savefirst) { _, _ ->
+                            Works.imageDownloadAll(illust)
+                        }.show()
+                }
+            else
+                imageButtonDownload.setOnClickListener {
+                    Works.imageDownloadAll(illust)
+                }
             imageButtonDownload.setOnLongClickListener {
                 //show detail of illust
                 val detailstring =
