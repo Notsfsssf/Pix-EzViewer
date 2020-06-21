@@ -239,6 +239,8 @@ class HelloMRecommendFragment : BaseFragment() {
             manager.orientation = LinearLayoutManager.HORIZONTAL
             spotlightView.layoutManager = manager
             spotlightView.adapter = pixiVisionAdapter
+            spotlightView.addItemDecoration(LinearItemDecoration(ScreenUtil.dip2px(8.0f)))
+            //LinearSnapHelper().attachToRecyclerView(spotlightView)
             PagerSnapHelper().attachToRecyclerView(spotlightView)
         }
 
