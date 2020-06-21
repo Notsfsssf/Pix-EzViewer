@@ -4,9 +4,8 @@ import android.content.res.Resources
 
 class ScreenUtil {
     companion object {
-
         @JvmStatic
-        fun dip2px(dpValue: Int): Int {
+        fun dip2px(dpValue: Float): Int {
             return (0.5f + dpValue * Resources.getSystem()
                 .displayMetrics.density).toInt()
         }

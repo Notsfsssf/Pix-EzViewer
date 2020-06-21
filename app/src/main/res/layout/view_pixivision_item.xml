@@ -14,9 +14,10 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <View
+            android:id="@+id/pixivision_viewed"
             android:layout_width="match_parent"
-            android:layout_height="12dp"
+            android:layout_height="4dp"
             android:background="?attr/colorPrimary" />
 
         <ImageView

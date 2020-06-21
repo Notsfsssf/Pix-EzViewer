@@ -23,7 +23,7 @@
             android:layout_height="180dp"
             android:adjustViewBounds="true"
             android:maxWidth="360dp"
-            android:minWidth="200dp"
+            android:minWidth="250dp"
             android:scaleType="fitXY"
             android:src="@drawable/h" />
 
@@ -40,7 +40,8 @@
             android:text="膝枕を描いたイラスト特集"
             android:textSize="14sp" />
 
-        <LinearLayout
+        <View
+            android:id="@+id/pixivision_viewed"
             android:layout_width="match_parent"
             android:layout_height="4dp"
             android:background="?attr/colorPrimary" />

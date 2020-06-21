@@ -164,6 +164,14 @@ class SettingFragment : PreferenceFragmentCompat() {
                 .show()
             true
         }
+        findPreference<SwitchPreference>("use_new_banner")!!.setOnPreferenceChangeListener { preference, newValue ->
+            Snackbar.make(requireView(), getString(R.string.needtorestart), Snackbar.LENGTH_SHORT)
+                .setAction(R.string.restart_now) {
+                    PxEZApp.ActivityCollector.recreate()
+                }
+                .show()
+            true
+        }
 
         findPreference<SwitchPreference>("r18on")!!.setOnPreferenceChangeListener { preference, newValue ->
             Toasty.normal(PxEZApp.instance, getString(R.string.needtorestart), Toast.LENGTH_SHORT)

@@ -27,11 +27,15 @@ package com.perol.asdpl.pixivez.fragments.hellom
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.*
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.view.animation.LayoutAnimationController
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -51,8 +55,10 @@ import com.perol.asdpl.pixivez.adapters.RankingAdapter
 import com.perol.asdpl.pixivez.adapters.RecommendAdapter
 import com.perol.asdpl.pixivez.objects.AdapterRefreshEvent
 import com.perol.asdpl.pixivez.objects.BaseFragment
+import com.perol.asdpl.pixivez.objects.ScreenUtil
 import com.perol.asdpl.pixivez.services.GlideApp
 import com.perol.asdpl.pixivez.services.PxEZApp
+import com.perol.asdpl.pixivez.ui.LinearItemDecoration
 import com.perol.asdpl.pixivez.viewmodel.HelloMRecomModel
 import com.youth.banner.Banner
 import com.youth.banner.loader.ImageLoader
@@ -133,18 +139,20 @@ class HelloMRecommendFragment : BaseFragment() {
                                 it.interpolator = AccelerateInterpolator(0.5f)
                             }
                         pixiVisionAdapter.setNewData(it.spotlight_articles)
-                        pixiVisionAdapter.addChildClickViewIds(R.id.imageView_pixivision)
-                        pixiVisionAdapter.setOnItemChildClickListener { adapter, view, position ->
-                            val intent = Intent(requireContext(), WebViewActivity::class.java)
+                        pixiVisionAdapter.setOnItemClickListener { adapter, view, position ->
+                            val intent = Intent(context, WebViewActivity::class.java)
                             intent.putExtra(
                                 "url",
                                 it.spotlight_articles[position].article_url
                             )
                             startActivity(intent)
+                            view.findViewById<View>(R.id.pixivision_viewed).setBackgroundColor(Color.YELLOW)
                         }
                        spotlightView.setLayoutAnimationListener(object : Animation.AnimationListener {
-                            override fun onAnimationStart(animation: Animation) {}
+                            override fun onAnimationStart(animation: Animation) {
+                            }
                             override fun onAnimationEnd(animation: Animation) {
+                                spotlightView.smoothScrollToPosition(0)
                                 spotlightView.layoutAnimation = null //show animation only at first time
                             }
                             override fun onAnimationRepeat(animation: Animation) {}
@@ -215,6 +223,18 @@ class HelloMRecommendFragment : BaseFragment() {
                     }, {})
                 else pixiVisionAdapter.loadMoreModule?.loadMoreEnd()
             }
+            /*val logo = LayoutInflater.from(requireContext()).inflate(R.layout.header_pixvision_logo, null)
+            logo.setOnClickListener {
+                startActivity(
+                    Intent(
+                        requireActivity().applicationContext,
+                        PixivsionActivity::class.java
+                    )
+                )
+            }
+            pixiVisionAdapter.setHeaderView(logo)
+            logo.scaleX =0.6f
+            logo.scaleY =0.6f*/
             val manager = LinearLayoutManager(requireContext())
             manager.orientation = LinearLayoutManager.HORIZONTAL
             spotlightView.layoutManager = manager
@@ -267,7 +287,7 @@ class HelloMRecommendFragment : BaseFragment() {
             }
             if(PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance).getBoolean("use_new_banner",true)){
                 oldBanner = false
-                bannerView = inflater.inflate(R.layout.header_pixvision, container, false)
+                bannerView = inflater.inflate(R.layout.header_pixivision, container, false)
                 pixiVisionAdapter = PixiVisionAdapter(
                     R.layout.view_pixivision_item_small,
                     null,

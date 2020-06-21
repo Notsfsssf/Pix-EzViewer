@@ -260,12 +260,12 @@
     <string name="title_activity_search_x">SearchXActivity</string>
     <string name="title_activity_search_r">SearchRActivity</string>
     <string name="title_activity_setting">SettingActivity</string>
-    <string name="needstatusbar">异形屏</string>
+    <string name="needstatusbar">异形屏：图片详情状态栏不沉浸</string>
     <string name="changeicons">更换图标</string>
     <string name="supporttitle">支持</string>
     <string name="viewreport">查看报告</string>
     <string name="needtorestart">重启应用生效</string>
-    <string name="animation">动画</string>
+    <string name="animation">更多动画</string>
     <string name="animation_summary">关闭可节省转场动画的运存</string>
     <string name="show_user_img_searchr">搜索页面显示用户头像</string>
     <string name="show_user_img_searchr_summary">使用大卡片样式,关闭可节省部分运存</string>
