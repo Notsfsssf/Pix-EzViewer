@@ -273,6 +273,8 @@
     <string name="show_user_img_bookmarked_summary">使用大卡片样式,关闭可节省部分运存</string>
     <string name="show_user_img_main">首页显示用户头像</string>
     <string name="show_user_img_main_summary">使用大卡片样式,关闭可节省部分运存</string>
+    <string name="new_banner">滑动式pixivision展示</string>
+    <string name="banner_summary">使用自适应的滑动式banner，减少交互层级</string>
     <string name="title_activity_progress">ProgressActivity</string>
     <string name="download_progress">下载进度</string>
     <string name="join_download_queue">加入下载队列</string>

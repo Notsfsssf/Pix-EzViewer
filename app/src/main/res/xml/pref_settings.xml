@@ -54,6 +54,20 @@
             app:summaryOn="@string/resume_unfinished_task_on"
             app:title="@string/unfinished_task" />
         <SwitchPreference
+            app:defaultValue="true"
+            app:summary="play版本不生效"
+            app:key="autocheck"
+            app:title="@string/auto_check_update" />
+        <SwitchPreference
+            android:key="crashreport"
+            app:defaultValue="true"
+            app:title="@string/crash_report" />
+        <Preference
+            app:key="viewreport"
+            android:title="@string/viewreport"/>
+    </PreferenceCategory>
+    <PreferenceCategory app:title="UI">
+        <SwitchPreference
             android:summary="——v——"
             app:key="needstatusbar"
             app:title="@string/needstatusbar" />
@@ -62,6 +76,11 @@
             app:defaultValue="true"
             app:key="animation"
             app:title="@string/animation" />
+        <SwitchPreference
+            android:summary="@string/banner_summary"
+            app:defaultValue="true"
+            app:key="use_new_banner"
+            app:title="@string/new_banner" />
         <SwitchPreference
             app:defaultValue="true"
             app:key="show_user_img_main"
@@ -77,18 +96,6 @@
             app:key="show_user_img_searchr"
             app:summary="@string/show_user_img_searchr_summary"
             app:title="@string/show_user_img_searchr" />
-        <SwitchPreference
-            app:defaultValue="true"
-            app:summary="play版本不生效"
-            app:key="autocheck"
-            app:title="@string/auto_check_update" />
-        <SwitchPreference
-            android:key="crashreport"
-            app:defaultValue="true"
-            app:title="@string/crash_report" />
-        <Preference
-            app:key="viewreport"
-            android:title="@string/viewreport"/>
     </PreferenceCategory>
     <PreferenceCategory app:title="Selection">
         <Preference

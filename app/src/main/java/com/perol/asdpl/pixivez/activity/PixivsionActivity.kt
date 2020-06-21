@@ -29,7 +29,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.perol.asdpl.pixivez.R
-import com.perol.asdpl.pixivez.adapters.PixiviSionAdapter
+import com.perol.asdpl.pixivez.adapters.PixiVisionAdapter
 import com.perol.asdpl.pixivez.networks.RestClient
 import com.perol.asdpl.pixivez.networks.SharedPreferencesServices
 import com.perol.asdpl.pixivez.objects.ReFreshFunction
@@ -37,13 +37,10 @@ import com.perol.asdpl.pixivez.objects.ThemeUtil
 import com.perol.asdpl.pixivez.repository.AppDataRepository
 import com.perol.asdpl.pixivez.responses.SpotlightResponse
 import com.perol.asdpl.pixivez.services.AppApiPixivService
-import com.perol.asdpl.pixivez.services.PxEZApp
 import io.reactivex.Observable
-import io.reactivex.ObservableSource
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_pixivision.*
 import kotlinx.coroutines.runBlocking
@@ -99,7 +96,7 @@ class PixivsionActivity : RinkActivity() {
                     override fun onNext(spotlightResponse: SpotlightResponse) {
                         data = spotlightResponse
                         Nexturl = spotlightResponse.next_url
-                        val pixiviSionAdapter = PixiviSionAdapter(R.layout.view_pixivision_item, spotlightResponse.spotlight_articles, this@PixivsionActivity)
+                        val pixiviSionAdapter = PixiVisionAdapter(R.layout.view_pixivision_item, spotlightResponse.spotlight_articles, this@PixivsionActivity)
                         recyclerview_pixivision.layoutManager = LinearLayoutManager(applicationContext)
                         recyclerview_pixivision.adapter = pixiviSionAdapter
                         pixiviSionAdapter.loadMoreModule?.setOnLoadMoreListener {

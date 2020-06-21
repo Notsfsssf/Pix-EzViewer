@@ -34,4 +34,5 @@ class HelloMRecomModel : BaseViewModel() {
     fun firstRxGet(): Observable<RecommendResponse> = retrofitRepository.getRecommend()
     fun onLoadMoreRxRequested(nextUrl: String) = retrofitRepository.getNext(nextUrl)
     fun getBanner(): Observable<SpotlightResponse> = retrofitRepository.getPixivison("all")
+    fun onLoadMoreBannerRequested(nextUrl: String) = retrofitRepository.getNextPixivisionArticles(nextUrl)
 }

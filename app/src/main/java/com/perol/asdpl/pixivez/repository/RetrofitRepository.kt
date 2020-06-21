@@ -184,6 +184,13 @@ class RetrofitRepository {
         }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).retryWhen(reFreshFunction)
     }
 
+    fun getNextPixivisionArticles(string: String): Observable<SpotlightResponse> {
+        return Observable.just(1).flatMap {
+            resetToken()
+            appApiPixivService.getNextPixivisionArticles(Authorization, string)
+        }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).retryWhen(reFreshFunction)
+    }
+
     fun getFollowIllusts(restrict: String) = Observable.just(1).flatMap {
         resetToken()
         appApiPixivService.getFollowIllusts(Authorization, restrict)
