@@ -193,7 +193,7 @@ class HelloMRecommendFragment : BaseFragment() {
         rankingAdapter =
             if(PreferenceManager.getDefaultSharedPreferences(PxEZApp.instance).getBoolean("show_user_img_main",true)){
                 RankingAdapter(
-                R.layout.view_ranking_item,
+                R.layout.view_ranking_item_mid,
                     null,
                     isR18on,
                     blockTags,

@@ -88,7 +88,7 @@ class RankingAdapter(
             if (PxEZApp.animationEnable) {
                 val mainimage = view.findViewById<View>(R.id.item_img)
                 val title = view.findViewById<TextView>(R.id.textview_title)
-                if (singleLine) title.setSingleLine()
+                //if (singleLine) title.maxLines = 1
                 val userImage = view.findViewById<View>(R.id.imageview_user)
 
                 val options = ActivityOptions.makeSceneTransitionAnimation(
@@ -201,8 +201,8 @@ class RankingAdapter(
                 helper.setText(R.id.textview_num, "CoM")
             }
         }
-        val imageView = helper.getView<ImageView>(R.id.item_img)
-        imageView.setTag(R.id.tag_first, item.image_urls.medium)
+        val mainimage = helper.getView<ImageView>(R.id.item_img)
+        mainimage.setTag(R.id.tag_first, item.image_urls.medium)
         val imageViewUser = helper.getView<NiceImageView>(R.id.imageview_user)
         if (item.user.is_followed)
             imageViewUser.setBorderColor(ContextCompat.getColor(context, badgeTextColor)) // Color.YELLOW
@@ -213,7 +213,23 @@ class RankingAdapter(
             intent.putExtra("data", item.user.id)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
-
+        }
+        imageViewUser.setOnLongClickListener {
+            val id = item.user.id
+            val retrofitRespository: RetrofitRepository = RetrofitRepository.getInstance()
+            if (!item.user.is_followed) {
+                retrofitRespository.postfollowUser(id, "public").subscribe({
+                    item.user.is_followed = true
+                    imageViewUser.setBorderColor(ContextCompat.getColor(context, badgeTextColor)) // Color.YELLOW
+                }, {}, {})
+            } else {
+                retrofitRespository.postunfollowUser(id).subscribe({
+                    item.user.is_followed = false
+                    imageViewUser.setBorderColor(ContextCompat.getColor(context, colorPrimary))
+                }, {}, {}
+                )
+            }
+            true
         }
         imageViewUser.setTag(R.id.tag_first, item.user.profile_image_urls.medium)
 
@@ -245,43 +261,43 @@ class RankingAdapter(
         if (!R18on) {
             val isr18 = tags.contains("R-18") || tags.contains("R-18G")
             if (isr18) {
-                GlideApp.with(imageView.context)
+                GlideApp.with(mainimage.context)
                     .load(ContextCompat.getDrawable(context, R.drawable.h))
-                    .placeholder(R.drawable.h).into(imageView)
+                    .placeholder(R.drawable.h).into(mainimage)
             } else {
-                GlideApp.with(imageView.context).load(loadUrl)
+                GlideApp.with(mainimage.context).load(loadUrl)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .transition(withCrossFade()).placeholder(R.color.halftrans)
-                    .into(object : ImageViewTarget<Drawable>(imageView) {
+                    .into(object : ImageViewTarget<Drawable>(mainimage) {
                         override fun setResource(resource: Drawable?) {
-                            imageView.setImageDrawable(resource)
+                            mainimage.setImageDrawable(resource)
                         }
 
                         override fun onResourceReady(
                             resource: Drawable,
                             transition: Transition<in Drawable>?
                         ) {
-                            if (imageView.getTag(R.id.tag_first) === item.image_urls.medium) {
+                            if (mainimage.getTag(R.id.tag_first) === item.image_urls.medium) {
                                 super.onResourceReady(resource, transition)
                             }
                         }
                     })
             }
         } else {
-            GlideApp.with(imageView.context).load(loadUrl).transition(withCrossFade())
+            GlideApp.with(mainimage.context).load(loadUrl).transition(withCrossFade())
                 .placeholder(R.color.halftrans)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .error(ContextCompat.getDrawable(imageView.context, R.drawable.ai))
-                .into(object : ImageViewTarget<Drawable>(imageView) {
+                .error(ContextCompat.getDrawable(mainimage.context, R.drawable.ai))
+                .into(object : ImageViewTarget<Drawable>(mainimage) {
                     override fun setResource(resource: Drawable?) {
-                        imageView.setImageDrawable(resource)
+                        mainimage.setImageDrawable(resource)
                     }
 
                     override fun onResourceReady(
                         resource: Drawable,
                         transition: Transition<in Drawable>?
                     ) {
-                        if (imageView.getTag(R.id.tag_first) === item.image_urls.medium) {
+                        if (mainimage.getTag(R.id.tag_first) === item.image_urls.medium) {
                             super.onResourceReady(resource, transition)
                         }
 
