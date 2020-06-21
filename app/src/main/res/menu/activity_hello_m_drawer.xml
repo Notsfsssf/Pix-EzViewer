@@ -13,7 +13,7 @@
             android:icon="@drawable/ic_action_logo"
             android:title="@string/searchsource" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_cache_clean"
             android:icon="@drawable/ic_action_lajitong"
             android:title="@string/cleancatche" />
         <item

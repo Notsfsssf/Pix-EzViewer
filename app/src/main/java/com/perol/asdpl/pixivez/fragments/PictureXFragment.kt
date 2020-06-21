@@ -58,8 +58,8 @@ import org.greenrobot.eventbus.ThreadMode
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val ARG_ILLUSTID = "param1"
+private const val ARG_ILLUSTOBJ = "param2"
 
 /**
  * A simple [Fragment] subclass for pic detail.
@@ -255,8 +255,8 @@ class PictureXFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getLong(ARG_PARAM1)
-            param2 = it.getParcelable(ARG_PARAM2)?:null
+            param1 = it.getLong(ARG_ILLUSTID)
+            param2 = it.getParcelable(ARG_ILLUSTOBJ)?:null
         }
         initViewModel()
     }
@@ -267,8 +267,10 @@ class PictureXFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        rootBinding = FragmentPictureXBinding.inflate(inflater, container, false).apply {
-            lifecycleOwner = this@PictureXFragment
+        if(! this::rootBinding.isInitialized) {
+            rootBinding = FragmentPictureXBinding.inflate(inflater, container, false).apply {
+                lifecycleOwner = this@PictureXFragment
+            }
         }
         return rootBinding.root
     }
@@ -297,10 +299,10 @@ class PictureXFragment : BaseFragment() {
             PictureXFragment().apply {
                 arguments = Bundle().apply {
                     if (param2 != null) {
-                        putParcelable(ARG_PARAM2, param2)
-                        putLong(ARG_PARAM1, param2.id)
+                        putParcelable(ARG_ILLUSTOBJ, param2)
+                        putLong(ARG_ILLUSTID, param2.id)
                     } else {
-                        putLong(ARG_PARAM1, param1!!)
+                        putLong(ARG_ILLUSTID, param1!!)
                     }
 /*                    putParcelable("illust", illust)*/
                 }

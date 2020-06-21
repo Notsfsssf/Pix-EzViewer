@@ -104,8 +104,8 @@ class PictureXAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val imageUrls = ArrayList<String>()
     lateinit var mListen: () -> Unit
-    lateinit var mViewCommentListen: () -> Unit
-    lateinit var mUserPicLongClick: () -> Unit
+    private lateinit var mViewCommentListen: () -> Unit
+    private lateinit var mUserPicLongClick: () -> Unit
     fun setUserPicLongClick(listener: () -> Unit) {
         this.mUserPicLongClick = listener
 
@@ -181,8 +181,8 @@ class PictureXAdapter(
         ) {
             binding.illust = illust
             captionTextView.autoLinkMask = Linkify.WEB_URLS
-            val typedValue = TypedValue();
-            mContext.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
+            val typedValue = TypedValue()
+            mContext.theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
             val colorPrimary = typedValue.resourceId
             if (illust.type == "ugoira") //gif
                 imageButtonDownload.visibility = View.GONE
@@ -336,7 +336,7 @@ class PictureXAdapter(
             }
             imageButtonDownload.setOnLongClickListener {
                 //show detail of illust
-                var detailstring =
+                val detailstring =
                         //"caption: " + illust.caption.toString() + "create_date: " + illust.create_date.toString() +
                         //"width: " + illust.width.toString() + "height: " + illust.height.toString() + "id: " + illust.id.toString()
                         //+ "image_urls: " + illust.image_urls.toString() + "is_bookmarked: " + illust.is_bookmarked.toString() +
@@ -344,9 +344,9 @@ class PictureXAdapter(
                         //"total_bookmarks: " + illust.total_bookmarks.toString() + "total_view: " + illust.total_view.toString() +
                          //"meta_pages: " + illust.meta_pages.toString() + "\n" +
                          //"meta_single_page: " + illust.meta_single_page.toString() + "\n" +
-                        "user account: " + illust.user.account.toString() + "\n" +
+                        "user account: " + illust.user.account + "\n" +
                         "tools: " + illust.tools.toString() + "\n" +
-                        "type: " + illust.type.toString() + "\n" +
+                        "type: " + illust.type + "\n" +
                         "page_count: " + illust.page_count.toString() + "\n" +
                         "visible: " + illust.visible.toString() + "\n" +
                         "is_muted: " + illust.is_muted.toString() + "\n" +
@@ -474,14 +474,14 @@ class PictureXAdapter(
                     }
                 }).into(mainImage)
             mainImage.apply {
-                setOnLongClickListener { it ->
+                setOnLongClickListener {
                     val builder = MaterialAlertDialogBuilder(mContext as Activity)
                     builder.setTitle(mContext.resources.getString(R.string.saveselectpic1))
                     //show detail of illust
-                    var detailstring ="描述: " + Html.fromHtml(data.caption) + "\n" +
-                                "user account: " + data.user.account.toString() + "\n" +
+                    val detailstring ="描述: " + Html.fromHtml(data.caption) + "\n" +
+                                "user account: " + data.user.account + "\n" +
                                 "tools: " + data.tools.toString() + "\n" +
-                                "type: " + data.type.toString() + "\n" +
+                                "type: " + data.type + "\n" +
                                 "page_count: " + data.page_count.toString() + "\n" +
                                 "visible: " + data.visible.toString() + "\n" +
                                 "is_muted: " + data.is_muted.toString() + "\n" +
@@ -821,9 +821,9 @@ class PictureXAdapter(
 
     var size = 1
     var duration: Int = 50
-    var gifProgressBar: CircleProgressBar? = null
+    private var gifProgressBar: CircleProgressBar? = null
     var imageViewGif: AnimationView? = null
-    val relativePictureAdapter = RelativePictureAdapter(R.layout.view_relativepic_item)
+    private val relativePictureAdapter = RelativePictureAdapter(R.layout.view_relativepic_item)
     fun setRelativeNow(it: ArrayList<Illust>) {
         if (it.isEmpty()) {
             return

@@ -159,10 +159,10 @@ class HelloMRecommendFragment : BaseFragment() {
 
     }
 
-    lateinit var rankingAdapter: PicItemAdapter
+    private lateinit var rankingAdapter: PicItemAdapter
+    private lateinit var pixiVisionAdapter: PixiVisionAdapter
     lateinit var viewmodel: HelloMRecomModel
-    lateinit var banner: Banner
-
+    private lateinit var banner: Banner
 
     private var param1: String? = null
     private var param2: String? = null
@@ -233,7 +233,7 @@ class HelloMRecommendFragment : BaseFragment() {
                     PxEZApp.instance,
                     getString(R.string.back_to_the_top),
                     Toast.LENGTH_SHORT
-                ).show();
+                ).show()
                 exitTime = System.currentTimeMillis()
             } else {
                 recyclerview_recom.smoothScrollToPosition(0)
