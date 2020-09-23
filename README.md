@@ -2,7 +2,8 @@
 ![](https://github.com/Notsfsssf/Pix-EzViewer/raw/master/app/src/main/res/mipmap-xxhdpi/ic_launcherep.png)
 
 ![当前版本](https://img.shields.io/github/v/release/Notsfsssf/Pix-EzViewer?label=%E5%BD%93%E5%89%8D%E7%89%88%E6%9C%AC)  
-!!(**deprecated**)停止维护，转为开发flutter android版[PixEz](https://github.com/Notsfsssf/pixez-flutter)（与IOS双端同步）  
+!!(**deprecated**)停止维护，转为开发flutter版[新版PixEz](https://github.com/Notsfsssf/pixez-flutter)（与IOS双端同步）  
+
 由[ultranity](https://github.com/ultranity)继续维护[原生版](https://github.com/ultranity/Pix-EzViewer)（1.5.4W开始）  
 
 
