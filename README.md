@@ -6,7 +6,9 @@
 
 转为开发flutter版[新版PixEz](https://github.com/Notsfsssf/pixez-flutter)（与IOS双端同步）  
 
-由[ultranity](https://github.com/ultranity)继续维护[原生版](https://github.com/ultranity/Pix-EzViewer)（1.5.4W开始）  
+直连仍然可用，请转到flutter版[PixEz](https://github.com/Notsfsssf/pixez-flutter)
+
+由[ultranity](https://github.com/ultranity)继续维护的原生版已经过商议不再维护，全面转到flutter版
 
 
 一个支持免代理直连及查看动图的第三方 Pixiv Android 客户端。
