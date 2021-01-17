@@ -8,12 +8,10 @@
 
 直连仍然可用，请转到flutter版[PixEz](https://github.com/Notsfsssf/pixez-flutter)
 
-由[ultranity](https://github.com/ultranity)继续维护的原生版已经过商议不再维护，全面转到flutter版
+由ultranity继续维护的原生版已经过商议不再维护，全面转到flutter版
 
 
 一个支持免代理直连及查看动图的第三方 Pixiv Android 客户端。
-
-如果你觉得这个应用还不错，[点此](https://github.com/Notsfsssf/Pix-EzViewer#支持) 支持一下吧！
 
 # 下载
 
