@@ -51,11 +51,3 @@ Java 端通过修改 `OkHttp` 的 `SSLSocket` 实现绕过 SNI 审查（即旁�
 此外，你可以进企鹅群交流经验或者反馈：815791942
 
 也可以在 Telegram 群交流反馈：[@PixEzViewer](https://t.me/PixEzViewer)
-
-## 支持
-
-如果你觉得这个应用还不错，就支持一下吧！
-
-|                             国内                             |                             国外                             |
-| :----------------------------------------------------------: | :----------------------------------------------------------: |
-| [点此](https://github.com/Notsfsssf/Pix-EzViewer/blob/master/donation/README.md) | <a href='https://ko-fi.com/W7W5YU4B' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a> |
